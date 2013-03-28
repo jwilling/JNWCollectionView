@@ -24,26 +24,38 @@ static void NSGraphicsContextState(CGContextRef ctx, NSGraphicsStateBlock block)
 	[NSGraphicsContext restoreGraphicsState];
 }
 
+- (void)drawBackgroundInRect:(CGRect)dstRect selected:(BOOL)selected {
+	CGRect b = dstRect;
+	NSGradient *gradient = [[NSGradient alloc] initWithColors: @[[NSColor colorWithCalibratedRed:.87 green:.87 blue:.87 alpha:1],
+							[NSColor colorWithCalibratedRed:.81 green:.81 blue:.81 alpha:1]]];
+	[gradient drawInRect:b angle:selected ? 90 : 270];
+	
+	[[[NSColor whiteColor] colorWithAlphaComponent:0.6] setFill];
+	NSRectFillUsingOperation(CGRectMake(0, b.size.height-1, b.size.width, 1), NSCompositeSourceOver);
+	
+	[[[NSColor blackColor] colorWithAlphaComponent:0.08] setFill];
+	NSRectFillUsingOperation(CGRectMake(0, 0, b.size.width, 1), NSCompositeSourceOver);
+}
+
 - (NSImage *)sharedBackgroundImage {
 	static NSImage *backgroundImage = nil;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
 		backgroundImage = [NSImage imageWithSize:CGSizeMake(2, 44) flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
-			CGRect b = dstRect;
-			
-			if (self.selected) {
-				
-			} else {
-				NSGradient *gradient = [[NSGradient alloc] initWithColors: @[[NSColor colorWithCalibratedRed:.87 green:.87 blue:.87 alpha:1],
-																 [NSColor colorWithCalibratedRed:.81 green:.81 blue:.81 alpha:1]]];
-				[gradient drawInRect:b angle:270];
-								
-				[[[NSColor whiteColor] colorWithAlphaComponent:0.6] setFill];
-				NSRectFillUsingOperation(CGRectMake(0, b.size.height-1, b.size.width, 1), NSCompositeSourceOver);
-				
-				[[[NSColor blackColor] colorWithAlphaComponent:0.08] setFill];
-				NSRectFillUsingOperation(CGRectMake(0, 0, b.size.width, 1), NSCompositeSourceOver);
-			}
+			[self drawBackgroundInRect:dstRect selected:NO];
+			return YES;
+		}];
+	});
+	
+	return backgroundImage;
+}
+
+- (NSImage *)sharedSelectedBackgroundImage {
+	static NSImage *backgroundImage = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		backgroundImage = [NSImage imageWithSize:CGSizeMake(2, 44) flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
+			[self drawBackgroundInRect:dstRect selected:YES];
 			return YES;
 		}];
 	});
@@ -80,7 +92,12 @@ static void NSGraphicsContextState(CGContextRef ctx, NSGraphicsStateBlock block)
 }
 
 - (void)setSelected:(BOOL)selected {
-	NSLog(@"%s",__PRETTY_FUNCTION__);
+	[super setSelected:selected];
+	
+	if (selected)
+		self.backgroundImage = [self sharedSelectedBackgroundImage];
+	else
+		self.backgroundImage = [self sharedBackgroundImage];
 }
 
 @end

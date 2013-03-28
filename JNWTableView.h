@@ -7,11 +7,11 @@
 @protocol JNWTableViewDataSource <NSObject>
 - (NSUInteger)tableView:(JNWTableView *)tableView numberOfRowsInSection:(NSInteger)section;
 - (JNWTableViewCell *)tableView:(JNWTableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
-- (JNWTableViewHeaderFooterView *)tableView:(JNWTableView *)tableView viewForHeaderInSection:(NSInteger)section;
-- (JNWTableViewHeaderFooterView *)tableView:(JNWTableView *)tableView viewForFooterInSection:(NSInteger)section;
 
 @optional
 - (NSInteger)numberOfSectionsInTableView:(JNWTableView *)tableView;
+- (JNWTableViewHeaderFooterView *)tableView:(JNWTableView *)tableView viewForHeaderInSection:(NSInteger)section;
+- (JNWTableViewHeaderFooterView *)tableView:(JNWTableView *)tableView viewForFooterInSection:(NSInteger)section;
 @end
 
 @protocol JNWTableViewDelegate <NSObject>

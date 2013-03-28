@@ -4,6 +4,7 @@
 #import "JNWTableViewCell+Private.h"
 #import <QuartzCore/QuartzCore.h>
 
+static const NSUInteger JNWTableViewMaximumNumberOfQueuedCells = 2;
 static const CGFloat JNWTableViewDefaultRowHeight = 44.f;
 
 @interface JNWTableView() {
@@ -26,6 +27,7 @@ static const CGFloat JNWTableViewDefaultRowHeight = 44.f;
 // Cells
 @property (nonatomic, strong) NSMutableDictionary *reusableTableCells;
 @property (nonatomic, strong) NSMutableDictionary *visibleCells;
+@property (nonatomic, strong) NSMutableArray *selectedIndexes;
 
 // Headers and footers
 @property (nonatomic, strong) NSMutableDictionary *visibleTableHeaders;
@@ -38,6 +40,7 @@ static const CGFloat JNWTableViewDefaultRowHeight = 44.f;
 
 static void JNWTableViewCommonInit(JNWTableView *_self) {
 	_self.sectionData = [NSMutableArray array];
+	_self.selectedIndexes = [NSMutableArray array];
 	_self.visibleCells = [NSMutableDictionary dictionary];
 	_self.visibleTableFooters = [NSMutableDictionary dictionary];
 	_self.visibleTableHeaders = [NSMutableDictionary dictionary];
@@ -127,7 +130,17 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 		reusableCells = [NSMutableArray array];
 		reuse[identifier] = reusableCells;
 	}
+	
+	//NSLog(@"%ld", reusableCells.count);
 
+//	if (reusableCells.count > JNWTableViewMaximumNumberOfQueuedCells) {
+//		if ([item isKindOfClass:NSView.class] && [item superview] != nil)
+//			[(NSView *)item removeFromSuperview];
+//		return;
+//	}
+	
+	//NSLog(@"%ld", reusableCells.count);
+	
 	[reusableCells addObject:item];
 }
 
@@ -255,6 +268,11 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 	}];
 	
 	return indexPath;
+}
+
+// Returns the last object in the selection array. There may be more than just one.
+- (NSIndexPath *)indexPathForSelectedRow {
+	return self.selectedIndexes.lastObject;
 }
 
 - (NSArray *)indexPathsForRowsInRect:(CGRect)rect {
@@ -398,6 +416,12 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 		else {
 			[cell setHidden:NO];
 		}
+		
+		if ([self.selectedIndexes containsObject:indexPath])
+			cell.selected = YES;
+		else
+			cell.selected = NO;
+		
 		self.visibleCells[indexPath] = cell;
 	}
 }
@@ -413,20 +437,18 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 	NSMutableIndexSet *oldVisibleHeaderIndexes = [NSMutableIndexSet indexSet];
 	NSMutableIndexSet *oldVisibleFooterIndexes = [NSMutableIndexSet indexSet];
 
-	/*
-	 if (needsVisibleRedraw) {
-	 JNWTableViewHeaderFooterView *header = self.visibleCells[index];
-	 header.frame = [self rectForHeaderInSection:index.unsignedIntegerValue];
-	 [header setNeedsDisplay:YES];
-	 }
-	 */
-	
 	for (NSNumber *index in self.visibleTableHeaders.allKeys) {
 		[oldVisibleHeaderIndexes addIndex:index.unsignedIntegerValue];
+		if (needsVisibleRedraw) {
+			[self.visibleTableHeaders[index] setFrame:[self rectForHeaderInSection:index.unsignedIntegerValue]];
+		}
 	}
 	
 	for (NSNumber *index in self.visibleTableFooters.allKeys) {
 		[oldVisibleFooterIndexes addIndex:index.unsignedIntegerValue];
+		if (needsVisibleRedraw) {
+			[self.visibleTableFooters[index] setFrame:[self rectForFooterInSection:index.unsignedIntegerValue]];
+		}
 	}
 	
 	NSIndexSet *updatedVisibleHeaderIndexes = [self indexesForHeadersInRect:self.documentVisibleRect];
@@ -486,7 +508,86 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 
 #pragma mark Mouse events and selection
 
+- (BOOL)canBecomeKeyView {
+	return YES;
+}
+
+
+- (BOOL)acceptsFirstResponder {
+	return YES;
+}
+
+- (BOOL)becomeFirstResponder {
+	return YES;
+}
+
+- (BOOL)resignFirstResponder {
+	return YES;
+}
+
 - (void)mouseDownInTableViewCell:(JNWTableViewCell *)cell withEvent:(NSEvent *)event {
+	NSIndexPath *indexPath = [self indexPathForCell:cell];
+	if (indexPath == nil) {
+		NSLog(@"***index path not found for selection.");
+	}
+	
+	//NSMutableArray *indexSetsToRemove = [NSMutableArray arrayWithCapacity:self.selectedIndexes.count];
+	for (NSIndexSet *indexSetToDeselect in self.selectedIndexes) {
+		NSIndexPath *indexToDeselect = self.selectedIndexes.lastObject;
+		JNWTableViewCell *cell = [self cellForRowAtIndexPath:indexToDeselect];
+		cell.selected = NO;
+		//[indexSetsToRemove addObject:indexToDeselect];
+	}
+	[self.selectedIndexes removeAllObjects];
+	//[self.selectedIndexes removeObjectsInArray:indexSetsToRemove];
+	
+	cell.selected = YES;
+	[self.selectedIndexes addObject:indexPath];
+	
+	// for now, just delete previous selections
+	// TODO: see if we need to extend selection
+}
+
+- (void)keyDown:(NSEvent *)theEvent {
+	[self interpretKeyEvents:@[theEvent]];
+}
+
+- (BOOL)validateIndexPath:(NSIndexPath *)indexPath {
+	return (indexPath.section <= self.sectionData.count && indexPath.row <= [self.sectionData[indexPath.section] numberOfRows]);
+}
+
+- (void)selectRowAtIndexPath:(NSIndexPath *)indexPath {
+	JNWTableViewCell *cell = [self cellForRowAtIndexPath:indexPath];
+	if (cell == nil || ![self validateIndexPath:indexPath])
+		return;
+	
+	NSIndexPath *oldIndexPath = [self indexPathForSelectedRow];
+	if (oldIndexPath != nil) {
+		JNWTableViewCell *oldCell = [self cellForRowAtIndexPath:oldIndexPath];
+		oldCell.selected = NO;
+		[self.selectedIndexes removeObject:oldIndexPath];
+	}
+	
+	cell.selected = YES;
+	[self.selectedIndexes addObject:indexPath];
+}
+
+
+- (void)moveDown:(id)sender {
+	NSIndexPath *oldIndexPath = [self indexPathForSelectedRow];
+	[self selectRowAtIndexPath:[NSIndexPath jnw_indexPathForRow:oldIndexPath.row + 1 inSection:oldIndexPath.section]];
+}
+
+- (void)moveUp:(id)sender {
+	NSIndexPath *oldIndexPath = [self indexPathForSelectedRow];
+	[self selectRowAtIndexPath:[NSIndexPath jnw_indexPathForRow:oldIndexPath.row - 1 inSection:oldIndexPath.section]];
+}
+
+- (void)moveUpAndModifySelection:(id)sender {
+	NSLog(@"%s",__PRETTY_FUNCTION__);
+}
+
+- (void)moveDownAndModifySelection:(id)sender {
 	NSLog(@"%s",__PRETTY_FUNCTION__);
 }
 

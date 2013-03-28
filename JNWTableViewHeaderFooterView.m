@@ -15,6 +15,7 @@
 	if (self == nil) return nil;
 	_reuseIdentifier = reuseIdentifier;
 	self.wantsLayer = YES;
+	self.layerContentsRedrawPolicy = NSViewLayerContentsRedrawOnSetNeedsDisplay;
 	return self;
 }
 

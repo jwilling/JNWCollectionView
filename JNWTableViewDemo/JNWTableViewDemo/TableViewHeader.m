@@ -28,6 +28,27 @@
 	return self;
 }
 
+- (NSImage *)sharedBackgroundImage {
+	static NSImage *backgroundImage = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		backgroundImage = [NSImage imageWithSize:CGSizeMake(2, 24) flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
+			NSColor *start = [NSColor colorWithCalibratedRed:0.9 green:0.9 blue:0.9 alpha:1];
+			NSColor *end = [NSColor colorWithCalibratedRed:0.95 green:0.95 blue:0.95 alpha:1];
+			NSGradient *gradient = nil;
+			
+			gradient = [[NSGradient alloc] initWithStartingColor:start endingColor:end];
+			[gradient drawInRect:dstRect angle:90];
+			
+			[[start shadowWithLevel:0.1] set];
+			NSRectFill(NSMakeRect(0, 0, dstRect.size.width, 1));
+			return YES;
+		}];
+	});
+	
+	return backgroundImage;
+}
+
 - (void)layout {
 	[super layout];
 	
@@ -41,18 +62,7 @@
 }
 
 - (void)updateLayer {
-	self.layer.contents = [NSImage imageWithSize:CGSizeMake(2, 24) flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
-		NSColor *start = [NSColor colorWithCalibratedRed:0.9 green:0.9 blue:0.9 alpha:1];
-		NSColor *end = [NSColor colorWithCalibratedRed:0.95 green:0.95 blue:0.95 alpha:1];
-		NSGradient *gradient = nil;
-		
-		gradient = [[NSGradient alloc] initWithStartingColor:start endingColor:end];
-		[gradient drawInRect:dstRect angle:90];
-		
-		[[start shadowWithLevel:0.1] set];
-		NSRectFill(NSMakeRect(0, 0, dstRect.size.width, 1));
-		return YES;
-	}];
+	self.layer.contents = self.sharedBackgroundImage;
 }
 
 - (void)setHeaderLabelText:(NSString *)headerLabelText {

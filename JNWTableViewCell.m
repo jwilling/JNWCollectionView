@@ -27,6 +27,7 @@
 
 - (void)setImage:(NSImage *)image {
 	_image = image;
+	[self setNeedsDisplay:YES];
 }
 
 - (void)setFrame:(NSRect)frameRect {

@@ -26,7 +26,7 @@ static const CGFloat JNWTableViewDefaultRowHeight = 44.f;
 
 // Cells
 @property (nonatomic, strong) NSMutableDictionary *reusableTableCells;
-@property (nonatomic, strong) NSMutableDictionary *visibleCells;
+@property (nonatomic, strong) NSMutableDictionary *visibleCellsMap;
 @property (nonatomic, strong) NSMutableArray *selectedIndexes;
 
 // Headers and footers
@@ -41,7 +41,7 @@ static const CGFloat JNWTableViewDefaultRowHeight = 44.f;
 static void JNWTableViewCommonInit(JNWTableView *_self) {
 	_self.sectionData = [NSMutableArray array];
 	_self.selectedIndexes = [NSMutableArray array];
-	_self.visibleCells = [NSMutableDictionary dictionary];
+	_self.visibleCellsMap = [NSMutableDictionary dictionary];
 	_self.visibleTableFooters = [NSMutableDictionary dictionary];
 	_self.visibleTableHeaders = [NSMutableDictionary dictionary];
 	_self.rowHeight = JNWTableViewDefaultRowHeight;
@@ -246,7 +246,7 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 - (JNWTableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath == nil)
 		return nil;
-	return self.visibleCells[indexPath];
+	return self.visibleCellsMap[indexPath];
 }
 
 - (JNWTableViewHeaderFooterView *)headerAtSectionIndex:(NSUInteger)index {
@@ -260,7 +260,7 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 - (NSIndexPath *)indexPathForCell:(JNWTableViewCell *)cell {
 	__block NSIndexPath *indexPath = nil;
 	
-	[self.visibleCells enumerateKeysAndObjectsUsingBlock:^(id key, id visibleCell, BOOL *stop) {
+	[self.visibleCellsMap enumerateKeysAndObjectsUsingBlock:^(id key, id visibleCell, BOOL *stop) {
 		if (cell == visibleCell) {
 			indexPath = key;
 			*stop = YES;
@@ -373,14 +373,14 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 		return;
 	
 	if (needsVisibleRedraw) {
-		for (NSIndexPath *indexPath in self.visibleCells.allKeys) {
-			JNWTableViewCell *cell = self.visibleCells[indexPath];
+		for (NSIndexPath *indexPath in self.visibleCellsMap.allKeys) {
+			JNWTableViewCell *cell = self.visibleCellsMap[indexPath];
 			cell.frame = [self rectForRowAtIndexPath:indexPath];
 			[cell setNeedsLayout:YES];
 		}
 	}
 
-	NSArray *oldVisibleIndexPaths = [self.visibleCells allKeys];
+	NSArray *oldVisibleIndexPaths = [self.visibleCellsMap allKeys];
 	NSArray *updatedVisibleIndexPaths = [self indexPathsForRowsInRect:self.documentVisibleRect];
 	
 	NSMutableArray *indexPathsToRemove = [NSMutableArray arrayWithArray:oldVisibleIndexPaths];
@@ -392,7 +392,7 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 	// Remove old cells and put them in the reuse queue
 	for (NSIndexPath *indexPath in indexPathsToRemove) {
 		JNWTableViewCell *cell = [self cellForRowAtIndexPath:indexPath];
-		[self.visibleCells removeObjectForKey:indexPath];
+		[self.visibleCellsMap removeObjectForKey:indexPath];
 
 		[self enqueueReusableCell:cell withIdentifier:cell.reuseIdentifier];
 		//[cell removeFromSuperview];
@@ -422,7 +422,7 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 		else
 			cell.selected = NO;
 		
-		self.visibleCells[indexPath] = cell;
+		self.visibleCellsMap[indexPath] = cell;
 	}
 }
 

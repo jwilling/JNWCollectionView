@@ -26,9 +26,11 @@ static void NSGraphicsContextState(CGContextRef ctx, NSGraphicsStateBlock block)
 
 - (void)drawBackgroundInRect:(CGRect)dstRect selected:(BOOL)selected {
 	CGRect b = dstRect;
-	NSGradient *gradient = [[NSGradient alloc] initWithColors: @[[NSColor colorWithCalibratedRed:.87 green:.87 blue:.87 alpha:1],
-							[NSColor colorWithCalibratedRed:.81 green:.81 blue:.81 alpha:1]]];
-	[gradient drawInRect:b angle:selected ? 90 : 270];
+	CGFloat top = selected ? .82 : 0.81;
+	CGFloat bottom = selected ? .76 : 0.87;
+	NSGradient *gradient = [[NSGradient alloc] initWithColors: @[[NSColor colorWithCalibratedRed:top green:top blue:top alpha:1],
+							[NSColor colorWithCalibratedRed:bottom green:bottom blue:bottom alpha:1]]];
+	[gradient drawInRect:b angle:90];
 	
 	[[[NSColor whiteColor] colorWithAlphaComponent:0.6] setFill];
 	NSRectFillUsingOperation(CGRectMake(0, b.size.height-1, b.size.width, 1), NSCompositeSourceOver);

@@ -1,5 +1,6 @@
 #import <Cocoa/Cocoa.h>
 #import "JNWTableViewCell.h"
+#import "RBLScrollView.h"
 #import "JNWTableViewHeaderFooterView.h"
 #import "NSIndexPath+JNWAdditions.h"
 
@@ -37,7 +38,7 @@ typedef NS_ENUM(NSInteger, JNWTableViewScrollPosition) {
 @end
 
 
-@interface JNWTableView : NSScrollView
+@interface JNWTableView : RBLScrollView
 
 
 // If variable row heights are not needed, setting the row height

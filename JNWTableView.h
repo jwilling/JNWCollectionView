@@ -4,10 +4,11 @@
 #import "NSIndexPath+JNWAdditions.h"
 
 typedef NS_ENUM(NSInteger, JNWTableViewScrollPosition) {
-    JNWTableViewScrollPositionNearest,
-    JNWTableViewScrollPositionTop,
-    JNWTableViewScrollPositionMiddle,
-    JNWTableViewScrollPositionBottom
+	JNWTableViewScrollPositionNone, // does not scroll, only selects
+	JNWTableViewScrollPositionNearest,
+	JNWTableViewScrollPositionTop,
+	JNWTableViewScrollPositionMiddle,
+	JNWTableViewScrollPositionBottom
 };
 
 @class JNWTableView;
@@ -49,12 +50,12 @@ typedef NS_ENUM(NSInteger, JNWTableViewScrollPosition) {
 // Defaults to 44.
 @property (nonatomic, assign) CGFloat rowHeight;
 
-- (NSUInteger)numberOfSections;
-- (NSUInteger)numberOfRowsInSection:(NSUInteger)section;
+- (NSInteger)numberOfSections;
+- (NSInteger)numberOfRowsInSection:(NSInteger)section;
 
 // These will be provided in flipped coordinates.
-- (CGRect)rectForHeaderInSection:(NSUInteger)section;
-- (CGRect)rectForFooterInSection:(NSUInteger)section;
+- (CGRect)rectForHeaderInSection:(NSInteger)section;
+- (CGRect)rectForFooterInSection:(NSInteger)section;
 - (CGRect)rectForRowAtIndexPath:(NSIndexPath *)indexPath;
 
 - (NSIndexPath *)indexPathForRowAtPoint:(CGPoint)point;
@@ -64,10 +65,11 @@ typedef NS_ENUM(NSInteger, JNWTableViewScrollPosition) {
 - (JNWTableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (NSArray *)visibleCells;
 - (NSArray *)indexPathsForVisibleRows;
-- (JNWTableViewHeaderFooterView *)headerViewForSection:(NSUInteger)section;
-- (JNWTableViewHeaderFooterView *)footerViewForSection:(NSUInteger)section;
+- (JNWTableViewHeaderFooterView *)headerViewForSection:(NSInteger)section;
+- (JNWTableViewHeaderFooterView *)footerViewForSection:(NSInteger)section;
 
 - (void)scrollToRowAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWTableViewScrollPosition)scrollPosition animated:(BOOL)animated;
+- (void)selectRowAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWTableViewScrollPosition)scrollPosition animated:(BOOL)animated;
 
 @property (nonatomic, weak) id<JNWTableViewDelegate> delegate;
 @property (nonatomic, weak) id<JNWTableViewDataSource> dataSource;

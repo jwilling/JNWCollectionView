@@ -1,0 +1,3 @@
+[submodule "external/Rebel"]
+	path = external/Rebel
+	url = https://github.com/jwilling/Rebel.git

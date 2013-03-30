@@ -12,7 +12,10 @@
 
 + (instancetype)jnw_indexPathForRow:(NSUInteger)row inSection:(NSUInteger)section;
 
-@property (nonatomic, readonly) NSUInteger row;
-@property (nonatomic, readonly) NSUInteger section;
++ (instancetype)jnw_indexPathByIncrementingRow:(NSIndexPath *)indexPath withCurrentSectionNumberOfRows:(NSInteger)currentSectionRows;
++ (instancetype)jnw_indexPathByDecrementingRow:(NSIndexPath *)indexPath withPreviousSectionNumberOfRows:(NSInteger)previousSectionRows;
+
+@property (nonatomic, readonly) NSInteger row;
+@property (nonatomic, readonly) NSInteger section;
 
 @end

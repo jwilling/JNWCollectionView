@@ -1,0 +1,508 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		ABB023F5170791D300537A92 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB023F4170791D300537A92 /* Cocoa.framework */; };
+		ABB023FF170791D300537A92 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = ABB023FD170791D300537A92 /* InfoPlist.strings */; };
+		ABB0240B170791D300537A92 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB0240A170791D300537A92 /* SenTestingKit.framework */; };
+		ABB0240C170791D300537A92 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB023F4170791D300537A92 /* Cocoa.framework */; };
+		ABB0240F170791D300537A92 /* JNWTableView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB023F1170791D300537A92 /* JNWTableView.framework */; };
+		ABB02415170791D300537A92 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = ABB02413170791D300537A92 /* InfoPlist.strings */; };
+		ABB02418170791D300537A92 /* JNWTableViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB02417170791D300537A92 /* JNWTableViewTests.m */; };
+		ABB0242D1707921B00537A92 /* JNWTableView.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB024211707921B00537A92 /* JNWTableView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ABB0242E1707921B00537A92 /* JNWTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB024221707921B00537A92 /* JNWTableView.m */; };
+		ABB0242F1707921B00537A92 /* JNWTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB024221707921B00537A92 /* JNWTableView.m */; };
+		ABB024301707921B00537A92 /* JNWTableView+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB024231707921B00537A92 /* JNWTableView+Private.h */; };
+		ABB024311707921B00537A92 /* JNWTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB024241707921B00537A92 /* JNWTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ABB024321707921B00537A92 /* JNWTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB024251707921B00537A92 /* JNWTableViewCell.m */; };
+		ABB024331707921B00537A92 /* JNWTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB024251707921B00537A92 /* JNWTableViewCell.m */; };
+		ABB024341707921B00537A92 /* JNWTableViewCell+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB024261707921B00537A92 /* JNWTableViewCell+Private.h */; };
+		ABB024351707921B00537A92 /* JNWTableViewHeaderFooterView.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB024271707921B00537A92 /* JNWTableViewHeaderFooterView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ABB024361707921B00537A92 /* JNWTableViewHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB024281707921B00537A92 /* JNWTableViewHeaderFooterView.m */; };
+		ABB024371707921B00537A92 /* JNWTableViewHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB024281707921B00537A92 /* JNWTableViewHeaderFooterView.m */; };
+		ABB024381707921B00537A92 /* JNWTableViewSection.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB024291707921B00537A92 /* JNWTableViewSection.h */; settings = {ATTRIBUTES = (); }; };
+		ABB024391707921B00537A92 /* JNWTableViewSection.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB0242A1707921B00537A92 /* JNWTableViewSection.m */; };
+		ABB0243A1707921B00537A92 /* JNWTableViewSection.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB0242A1707921B00537A92 /* JNWTableViewSection.m */; };
+		ABB0243B1707921B00537A92 /* NSIndexPath+JNWAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB0242B1707921B00537A92 /* NSIndexPath+JNWAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ABB0243C1707921B00537A92 /* NSIndexPath+JNWAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB0242C1707921B00537A92 /* NSIndexPath+JNWAdditions.m */; };
+		ABB0243D1707921B00537A92 /* NSIndexPath+JNWAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB0242C1707921B00537A92 /* NSIndexPath+JNWAdditions.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		ABB0240D170791D300537A92 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ABB023E8170791D300537A92 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ABB023F0170791D300537A92;
+			remoteInfo = JNWTableView;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		ABB023F1170791D300537A92 /* JNWTableView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JNWTableView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		ABB023F4170791D300537A92 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		ABB023F7170791D300537A92 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		ABB023F8170791D300537A92 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		ABB023F9170791D300537A92 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		ABB023FC170791D300537A92 /* JNWTableView-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "JNWTableView-Info.plist"; sourceTree = "<group>"; };
+		ABB023FE170791D300537A92 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		ABB02400170791D300537A92 /* JNWTableView-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JNWTableView-Prefix.pch"; sourceTree = "<group>"; };
+		ABB02409170791D300537A92 /* JNWTableViewTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JNWTableViewTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		ABB0240A170791D300537A92 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		ABB02412170791D300537A92 /* JNWTableViewTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "JNWTableViewTests-Info.plist"; sourceTree = "<group>"; };
+		ABB02414170791D300537A92 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		ABB02416170791D300537A92 /* JNWTableViewTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JNWTableViewTests.h; sourceTree = "<group>"; };
+		ABB02417170791D300537A92 /* JNWTableViewTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JNWTableViewTests.m; sourceTree = "<group>"; };
+		ABB024211707921B00537A92 /* JNWTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNWTableView.h; sourceTree = "<group>"; };
+		ABB024221707921B00537A92 /* JNWTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNWTableView.m; sourceTree = "<group>"; };
+		ABB024231707921B00537A92 /* JNWTableView+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JNWTableView+Private.h"; sourceTree = "<group>"; };
+		ABB024241707921B00537A92 /* JNWTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNWTableViewCell.h; sourceTree = "<group>"; };
+		ABB024251707921B00537A92 /* JNWTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNWTableViewCell.m; sourceTree = "<group>"; };
+		ABB024261707921B00537A92 /* JNWTableViewCell+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JNWTableViewCell+Private.h"; sourceTree = "<group>"; };
+		ABB024271707921B00537A92 /* JNWTableViewHeaderFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNWTableViewHeaderFooterView.h; sourceTree = "<group>"; };
+		ABB024281707921B00537A92 /* JNWTableViewHeaderFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNWTableViewHeaderFooterView.m; sourceTree = "<group>"; };
+		ABB024291707921B00537A92 /* JNWTableViewSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNWTableViewSection.h; sourceTree = "<group>"; };
+		ABB0242A1707921B00537A92 /* JNWTableViewSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNWTableViewSection.m; sourceTree = "<group>"; };
+		ABB0242B1707921B00537A92 /* NSIndexPath+JNWAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexPath+JNWAdditions.h"; sourceTree = "<group>"; };
+		ABB0242C1707921B00537A92 /* NSIndexPath+JNWAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+JNWAdditions.m"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		ABB023ED170791D300537A92 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ABB023F5170791D300537A92 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ABB02405170791D300537A92 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ABB0240B170791D300537A92 /* SenTestingKit.framework in Frameworks */,
+				ABB0240C170791D300537A92 /* Cocoa.framework in Frameworks */,
+				ABB0240F170791D300537A92 /* JNWTableView.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		ABB023E7170791D300537A92 = {
+			isa = PBXGroup;
+			children = (
+				ABB023FA170791D300537A92 /* JNWTableView */,
+				ABB02410170791D300537A92 /* JNWTableViewTests */,
+				ABB023F3170791D300537A92 /* Frameworks */,
+				ABB023F2170791D300537A92 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		ABB023F2170791D300537A92 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				ABB023F1170791D300537A92 /* JNWTableView.framework */,
+				ABB02409170791D300537A92 /* JNWTableViewTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		ABB023F3170791D300537A92 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ABB023F4170791D300537A92 /* Cocoa.framework */,
+				ABB0240A170791D300537A92 /* SenTestingKit.framework */,
+				ABB023F6170791D300537A92 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		ABB023F6170791D300537A92 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ABB023F7170791D300537A92 /* AppKit.framework */,
+				ABB023F8170791D300537A92 /* CoreData.framework */,
+				ABB023F9170791D300537A92 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		ABB023FA170791D300537A92 /* JNWTableView */ = {
+			isa = PBXGroup;
+			children = (
+				ABB024211707921B00537A92 /* JNWTableView.h */,
+				ABB024221707921B00537A92 /* JNWTableView.m */,
+				ABB024231707921B00537A92 /* JNWTableView+Private.h */,
+				ABB024241707921B00537A92 /* JNWTableViewCell.h */,
+				ABB024251707921B00537A92 /* JNWTableViewCell.m */,
+				ABB024261707921B00537A92 /* JNWTableViewCell+Private.h */,
+				ABB024271707921B00537A92 /* JNWTableViewHeaderFooterView.h */,
+				ABB024281707921B00537A92 /* JNWTableViewHeaderFooterView.m */,
+				ABB024291707921B00537A92 /* JNWTableViewSection.h */,
+				ABB0242A1707921B00537A92 /* JNWTableViewSection.m */,
+				ABB0242B1707921B00537A92 /* NSIndexPath+JNWAdditions.h */,
+				ABB0242C1707921B00537A92 /* NSIndexPath+JNWAdditions.m */,
+				ABB023FB170791D300537A92 /* Supporting Files */,
+			);
+			path = JNWTableView;
+			sourceTree = "<group>";
+		};
+		ABB023FB170791D300537A92 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				ABB023FC170791D300537A92 /* JNWTableView-Info.plist */,
+				ABB023FD170791D300537A92 /* InfoPlist.strings */,
+				ABB02400170791D300537A92 /* JNWTableView-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		ABB02410170791D300537A92 /* JNWTableViewTests */ = {
+			isa = PBXGroup;
+			children = (
+				ABB02416170791D300537A92 /* JNWTableViewTests.h */,
+				ABB02417170791D300537A92 /* JNWTableViewTests.m */,
+				ABB02411170791D300537A92 /* Supporting Files */,
+			);
+			path = JNWTableViewTests;
+			sourceTree = "<group>";
+		};
+		ABB02411170791D300537A92 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				ABB02412170791D300537A92 /* JNWTableViewTests-Info.plist */,
+				ABB02413170791D300537A92 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		ABB023EE170791D300537A92 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ABB0242D1707921B00537A92 /* JNWTableView.h in Headers */,
+				ABB024311707921B00537A92 /* JNWTableViewCell.h in Headers */,
+				ABB024351707921B00537A92 /* JNWTableViewHeaderFooterView.h in Headers */,
+				ABB0243B1707921B00537A92 /* NSIndexPath+JNWAdditions.h in Headers */,
+				ABB024381707921B00537A92 /* JNWTableViewSection.h in Headers */,
+				ABB024301707921B00537A92 /* JNWTableView+Private.h in Headers */,
+				ABB024341707921B00537A92 /* JNWTableViewCell+Private.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		ABB023F0170791D300537A92 /* JNWTableView */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ABB0241B170791D300537A92 /* Build configuration list for PBXNativeTarget "JNWTableView" */;
+			buildPhases = (
+				ABB023EC170791D300537A92 /* Sources */,
+				ABB023ED170791D300537A92 /* Frameworks */,
+				ABB023EE170791D300537A92 /* Headers */,
+				ABB023EF170791D300537A92 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JNWTableView;
+			productName = JNWTableView;
+			productReference = ABB023F1170791D300537A92 /* JNWTableView.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		ABB02408170791D300537A92 /* JNWTableViewTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ABB0241E170791D300537A92 /* Build configuration list for PBXNativeTarget "JNWTableViewTests" */;
+			buildPhases = (
+				ABB02404170791D300537A92 /* Sources */,
+				ABB02405170791D300537A92 /* Frameworks */,
+				ABB02406170791D300537A92 /* Resources */,
+				ABB02407170791D300537A92 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				ABB0240E170791D300537A92 /* PBXTargetDependency */,
+			);
+			name = JNWTableViewTests;
+			productName = JNWTableViewTests;
+			productReference = ABB02409170791D300537A92 /* JNWTableViewTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		ABB023E8170791D300537A92 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = AppJon;
+			};
+			buildConfigurationList = ABB023EB170791D300537A92 /* Build configuration list for PBXProject "JNWTableView" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = ABB023E7170791D300537A92;
+			productRefGroup = ABB023F2170791D300537A92 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				ABB023F0170791D300537A92 /* JNWTableView */,
+				ABB02408170791D300537A92 /* JNWTableViewTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		ABB023EF170791D300537A92 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ABB023FF170791D300537A92 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ABB02406170791D300537A92 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ABB02415170791D300537A92 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		ABB02407170791D300537A92 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		ABB023EC170791D300537A92 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ABB0242E1707921B00537A92 /* JNWTableView.m in Sources */,
+				ABB024321707921B00537A92 /* JNWTableViewCell.m in Sources */,
+				ABB024361707921B00537A92 /* JNWTableViewHeaderFooterView.m in Sources */,
+				ABB024391707921B00537A92 /* JNWTableViewSection.m in Sources */,
+				ABB0243C1707921B00537A92 /* NSIndexPath+JNWAdditions.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ABB02404170791D300537A92 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ABB02418170791D300537A92 /* JNWTableViewTests.m in Sources */,
+				ABB0242F1707921B00537A92 /* JNWTableView.m in Sources */,
+				ABB024331707921B00537A92 /* JNWTableViewCell.m in Sources */,
+				ABB024371707921B00537A92 /* JNWTableViewHeaderFooterView.m in Sources */,
+				ABB0243A1707921B00537A92 /* JNWTableViewSection.m in Sources */,
+				ABB0243D1707921B00537A92 /* NSIndexPath+JNWAdditions.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		ABB0240E170791D300537A92 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ABB023F0170791D300537A92 /* JNWTableView */;
+			targetProxy = ABB0240D170791D300537A92 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		ABB023FD170791D300537A92 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				ABB023FE170791D300537A92 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		ABB02413170791D300537A92 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				ABB02414170791D300537A92 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		ABB02419170791D300537A92 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		ABB0241A170791D300537A92 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		ABB0241C170791D300537A92 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "JNWTableView/JNWTableView-Prefix.pch";
+				INFOPLIST_FILE = "JNWTableView/JNWTableView-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		ABB0241D170791D300537A92 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "JNWTableView/JNWTableView-Prefix.pch";
+				INFOPLIST_FILE = "JNWTableView/JNWTableView-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
+		ABB0241F170791D300537A92 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "JNWTableView/JNWTableView-Prefix.pch";
+				INFOPLIST_FILE = "JNWTableViewTests/JNWTableViewTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		ABB02420170791D300537A92 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "JNWTableView/JNWTableView-Prefix.pch";
+				INFOPLIST_FILE = "JNWTableViewTests/JNWTableViewTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		ABB023EB170791D300537A92 /* Build configuration list for PBXProject "JNWTableView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ABB02419170791D300537A92 /* Debug */,
+				ABB0241A170791D300537A92 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ABB0241B170791D300537A92 /* Build configuration list for PBXNativeTarget "JNWTableView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ABB0241C170791D300537A92 /* Debug */,
+				ABB0241D170791D300537A92 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ABB0241E170791D300537A92 /* Build configuration list for PBXNativeTarget "JNWTableViewTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ABB0241F170791D300537A92 /* Debug */,
+				ABB02420170791D300537A92 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = ABB023E8170791D300537A92 /* Project object */;
+}

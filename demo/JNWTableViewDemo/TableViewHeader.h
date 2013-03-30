@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 AppJon. All rights reserved.
 //
 
-#import "JNWTableViewHeaderFooterView.h"
+#import <JNWTableView/JNWTableViewHeaderFooterView.h>
 
 @interface TableViewHeader : JNWTableViewHeaderFooterView
 

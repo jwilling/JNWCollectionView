@@ -7,14 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AB29A67A16FE640000C9A941 /* NSIndexPath+JNWAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AB29A67916FE640000C9A941 /* NSIndexPath+JNWAdditions.m */; };
 		AB29A67D16FE67F900C9A941 /* TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AB29A67C16FE67F900C9A941 /* TableViewCell.m */; };
-		AB29A68616FECBEC00C9A941 /* JNWTableViewSection.m in Sources */ = {isa = PBXBuildFile; fileRef = AB29A68516FECBEC00C9A941 /* JNWTableViewSection.m */; };
 		AB29A69016FEFE1B00C9A941 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB29A68F16FEFE1B00C9A941 /* QuartzCore.framework */; };
-		AB9EADAE1701757F00D750C7 /* JNWTableViewHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB9EADAD1701757F00D750C7 /* JNWTableViewHeaderFooterView.m */; };
 		AB9EADB91702E7B400D750C7 /* TableViewHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = AB9EADB81702E7B400D750C7 /* TableViewHeader.m */; };
-		ABA0AC7A16FDA2310019352D /* JNWTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA0AC7916FDA2310019352D /* JNWTableView.m */; };
-		ABA0AC8216FE33E60019352D /* JNWTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA0AC8116FE33E60019352D /* JNWTableViewCell.m */; };
+		ABB024471707929200537A92 /* JNWTableView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB024441707928C00537A92 /* JNWTableView.framework */; };
 		ABB0F2F716FD7D19002004F5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB0F2F616FD7D19002004F5 /* Cocoa.framework */; };
 		ABB0F30116FD7D19002004F5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = ABB0F2FF16FD7D19002004F5 /* InfoPlist.strings */; };
 		ABB0F30316FD7D19002004F5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB0F30216FD7D19002004F5 /* main.m */; };
@@ -23,24 +19,37 @@
 		ABB0F30D16FD7D19002004F5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABB0F30B16FD7D19002004F5 /* MainMenu.xib */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		ABB024431707928C00537A92 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ABB0243E1707928B00537A92 /* JNWTableView.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ABB023F1170791D300537A92;
+			remoteInfo = JNWTableView;
+		};
+		ABB024451707928C00537A92 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ABB0243E1707928B00537A92 /* JNWTableView.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ABB02409170791D300537A92;
+			remoteInfo = JNWTableViewTests;
+		};
+		ABB02448170792A300537A92 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ABB0243E1707928B00537A92 /* JNWTableView.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = ABB023F0170791D300537A92;
+			remoteInfo = JNWTableView;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		AB29A67816FE640000C9A941 /* NSIndexPath+JNWAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSIndexPath+JNWAdditions.h"; path = "../../NSIndexPath+JNWAdditions.h"; sourceTree = "<group>"; };
-		AB29A67916FE640000C9A941 /* NSIndexPath+JNWAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSIndexPath+JNWAdditions.m"; path = "../../NSIndexPath+JNWAdditions.m"; sourceTree = "<group>"; };
 		AB29A67B16FE67F900C9A941 /* TableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCell.h; sourceTree = "<group>"; };
 		AB29A67C16FE67F900C9A941 /* TableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCell.m; sourceTree = "<group>"; };
-		AB29A68416FECBEC00C9A941 /* JNWTableViewSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWTableViewSection.h; path = ../../JNWTableViewSection.h; sourceTree = "<group>"; };
-		AB29A68516FECBEC00C9A941 /* JNWTableViewSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWTableViewSection.m; path = ../../JNWTableViewSection.m; sourceTree = "<group>"; };
 		AB29A68F16FEFE1B00C9A941 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		AB9EADAC1701757F00D750C7 /* JNWTableViewHeaderFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWTableViewHeaderFooterView.h; path = ../../JNWTableViewHeaderFooterView.h; sourceTree = "<group>"; };
-		AB9EADAD1701757F00D750C7 /* JNWTableViewHeaderFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWTableViewHeaderFooterView.m; path = ../../JNWTableViewHeaderFooterView.m; sourceTree = "<group>"; };
-		AB9EADB51701A20200D750C7 /* JNWTableView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "JNWTableView+Private.h"; path = "../../JNWTableView+Private.h"; sourceTree = "<group>"; };
-		AB9EADB61701A21600D750C7 /* JNWTableViewCell+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JNWTableViewCell+Private.h"; path = "../../JNWTableViewCell+Private.h"; sourceTree = "<group>"; };
 		AB9EADB71702E7B400D750C7 /* TableViewHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewHeader.h; sourceTree = "<group>"; };
 		AB9EADB81702E7B400D750C7 /* TableViewHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewHeader.m; sourceTree = "<group>"; };
-		ABA0AC7816FDA2310019352D /* JNWTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWTableView.h; path = ../../JNWTableView.h; sourceTree = "<group>"; };
-		ABA0AC7916FDA2310019352D /* JNWTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWTableView.m; path = ../../JNWTableView.m; sourceTree = "<group>"; };
-		ABA0AC8016FE33E60019352D /* JNWTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWTableViewCell.h; path = ../../JNWTableViewCell.h; sourceTree = "<group>"; };
-		ABA0AC8116FE33E60019352D /* JNWTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWTableViewCell.m; path = ../../JNWTableViewCell.m; sourceTree = "<group>"; };
+		ABB0243E1707928B00537A92 /* JNWTableView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JNWTableView.xcodeproj; path = ../../JNWTableView.xcodeproj; sourceTree = "<group>"; };
 		ABB0F2F316FD7D19002004F5 /* JNWTableViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JNWTableViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABB0F2F616FD7D19002004F5 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		ABB0F2F916FD7D19002004F5 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -62,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ABB024471707929200537A92 /* JNWTableView.framework in Frameworks */,
 				AB29A69016FEFE1B00C9A941 /* QuartzCore.framework in Frameworks */,
 				ABB0F2F716FD7D19002004F5 /* Cocoa.framework in Frameworks */,
 			);
@@ -70,23 +80,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		AB29A67716FE63DE00C9A941 /* JNWTableView */ = {
+		ABB0243F1707928B00537A92 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				ABA0AC7816FDA2310019352D /* JNWTableView.h */,
-				ABA0AC7916FDA2310019352D /* JNWTableView.m */,
-				ABA0AC8016FE33E60019352D /* JNWTableViewCell.h */,
-				ABA0AC8116FE33E60019352D /* JNWTableViewCell.m */,
-				AB29A67816FE640000C9A941 /* NSIndexPath+JNWAdditions.h */,
-				AB29A67916FE640000C9A941 /* NSIndexPath+JNWAdditions.m */,
-				AB29A68416FECBEC00C9A941 /* JNWTableViewSection.h */,
-				AB29A68516FECBEC00C9A941 /* JNWTableViewSection.m */,
-				AB9EADAC1701757F00D750C7 /* JNWTableViewHeaderFooterView.h */,
-				AB9EADAD1701757F00D750C7 /* JNWTableViewHeaderFooterView.m */,
-				AB9EADB61701A21600D750C7 /* JNWTableViewCell+Private.h */,
-				AB9EADB51701A20200D750C7 /* JNWTableView+Private.h */,
+				ABB024441707928C00537A92 /* JNWTableView.framework */,
+				ABB024461707928C00537A92 /* JNWTableViewTests.octest */,
 			);
-			name = JNWTableView;
+			name = Products;
 			sourceTree = "<group>";
 		};
 		ABB0F2EA16FD7D19002004F5 = {
@@ -130,7 +130,7 @@
 		ABB0F2FC16FD7D19002004F5 /* JNWTableViewDemo */ = {
 			isa = PBXGroup;
 			children = (
-				AB29A67716FE63DE00C9A941 /* JNWTableView */,
+				ABB0243E1707928B00537A92 /* JNWTableView.xcodeproj */,
 				ABB0F30816FD7D19002004F5 /* AppDelegate.h */,
 				ABB0F30916FD7D19002004F5 /* AppDelegate.m */,
 				ABB0F30B16FD7D19002004F5 /* MainMenu.xib */,
@@ -169,6 +169,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				ABB02449170792A300537A92 /* PBXTargetDependency */,
 			);
 			name = JNWTableViewDemo;
 			productName = JNWTableViewDemo;
@@ -194,12 +195,35 @@
 			mainGroup = ABB0F2EA16FD7D19002004F5;
 			productRefGroup = ABB0F2F416FD7D19002004F5 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = ABB0243F1707928B00537A92 /* Products */;
+					ProjectRef = ABB0243E1707928B00537A92 /* JNWTableView.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				ABB0F2F216FD7D19002004F5 /* JNWTableViewDemo */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		ABB024441707928C00537A92 /* JNWTableView.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = JNWTableView.framework;
+			remoteRef = ABB024431707928C00537A92 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		ABB024461707928C00537A92 /* JNWTableViewTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = JNWTableViewTests.octest;
+			remoteRef = ABB024451707928C00537A92 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		ABB0F2F116FD7D19002004F5 /* Resources */ = {
@@ -221,17 +245,20 @@
 			files = (
 				ABB0F30316FD7D19002004F5 /* main.m in Sources */,
 				ABB0F30A16FD7D19002004F5 /* AppDelegate.m in Sources */,
-				ABA0AC7A16FDA2310019352D /* JNWTableView.m in Sources */,
-				ABA0AC8216FE33E60019352D /* JNWTableViewCell.m in Sources */,
-				AB29A67A16FE640000C9A941 /* NSIndexPath+JNWAdditions.m in Sources */,
 				AB29A67D16FE67F900C9A941 /* TableViewCell.m in Sources */,
-				AB29A68616FECBEC00C9A941 /* JNWTableViewSection.m in Sources */,
-				AB9EADAE1701757F00D750C7 /* JNWTableViewHeaderFooterView.m in Sources */,
 				AB9EADB91702E7B400D750C7 /* TableViewHeader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		ABB02449170792A300537A92 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = JNWTableView;
+			targetProxy = ABB02448170792A300537A92 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		ABB0F2FF16FD7D19002004F5 /* InfoPlist.strings */ = {

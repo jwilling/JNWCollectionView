@@ -1,4 +1,5 @@
 #import "JNWTableView.h"
+#import "RBLClipView.h"
 #import "JNWTableViewSection.h"
 #import "JNWTableView+Private.h"
 #import "JNWTableViewCell+Private.h"
@@ -6,6 +7,12 @@
 
 static const NSUInteger JNWTableViewMaximumNumberOfQueuedCells = 2;
 static const CGFloat JNWTableViewDefaultRowHeight = 44.f;
+
+typedef NS_ENUM(NSInteger, JNWTableViewSelectionType) {
+	JNWTableViewSelectionTypeSingle,
+	JNWTableViewSelectionTypeExtending,
+	JNWTableViewSelectionTypeMultiple
+};
 
 @interface JNWTableView() {
 	struct {
@@ -22,7 +29,6 @@ static const CGFloat JNWTableViewDefaultRowHeight = 44.f;
 
 @property (nonatomic, strong) NSMutableArray *sectionData;
 @property (nonatomic, assign) CGFloat contentHeight;
-
 
 // Cells
 @property (nonatomic, strong) NSMutableDictionary *reusableTableCells;
@@ -170,37 +176,39 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 		numberOfSections = [self.dataSource numberOfSectionsInTableView:self];
 	
 	for (NSInteger section = 0; section < numberOfSections; section++) {
-		// Create a new section
-		NSInteger numberOfRows = [self.dataSource tableView:self numberOfRowsInSection:section];
-		NSInteger headerHeight = (_tableFlags.delegateHeightForHeader ? [self.delegate tableView:self heightForHeaderInSection:section] : 0);
-		NSInteger footerHeight = (_tableFlags.delegateHeightForFooter ? [self.delegate tableView:self heightForFooterInSection:section] : 0);
-		
-		JNWTableViewSection *sectionInfo = [[JNWTableViewSection alloc] initWithNumberOfRows:numberOfRows];
-		sectionInfo.index = section;
-		sectionInfo.offset = tableViewHeight + headerHeight;
-		sectionInfo.height = 0;
-		sectionInfo.headerHeight = headerHeight;
-		sectionInfo.footerHeight = footerHeight;
-		
-		
-		// Calculate the individual height of each row, and also
-		// keep track of the total height of the section.
-		for (NSInteger row = 0; row < numberOfRows; row++) {
-			CGFloat rowHeight = 0;
-			if (_tableFlags.delegateHeightForRow) {
-				NSIndexPath *indexPath = [NSIndexPath jnw_indexPathForRow:row inSection:section];
-				rowHeight = [self.delegate tableView:self heightForRowAtIndexPath:indexPath];
-			} else {
-				rowHeight = self.rowHeight;
+		@autoreleasepool {
+			// Create a new section
+			NSInteger numberOfRows = [self.dataSource tableView:self numberOfRowsInSection:section];
+			NSInteger headerHeight = (_tableFlags.delegateHeightForHeader ? [self.delegate tableView:self heightForHeaderInSection:section] : 0);
+			NSInteger footerHeight = (_tableFlags.delegateHeightForFooter ? [self.delegate tableView:self heightForFooterInSection:section] : 0);
+			
+			JNWTableViewSection *sectionInfo = [[JNWTableViewSection alloc] initWithNumberOfRows:numberOfRows];
+			sectionInfo.index = section;
+			sectionInfo.offset = tableViewHeight + headerHeight;
+			sectionInfo.height = 0;
+			sectionInfo.headerHeight = headerHeight;
+			sectionInfo.footerHeight = footerHeight;
+			
+			
+			// Calculate the individual height of each row, and also
+			// keep track of the total height of the section.
+			for (NSInteger row = 0; row < numberOfRows; row++) {
+				CGFloat rowHeight = 0;
+				if (_tableFlags.delegateHeightForRow) {
+					NSIndexPath *indexPath = [NSIndexPath jnw_indexPathForRow:row inSection:section];
+					rowHeight = [self.delegate tableView:self heightForRowAtIndexPath:indexPath];
+				} else {
+					rowHeight = self.rowHeight;
+				}
+				
+				sectionInfo.rowInfo[row].rowHeight = rowHeight;
+				sectionInfo.rowInfo[row].yOffset = sectionInfo.height;
+				sectionInfo.height += rowHeight;
 			}
 			
-			sectionInfo.rowInfo[row].rowHeight = rowHeight;
-			sectionInfo.rowInfo[row].yOffset = sectionInfo.height;
-			sectionInfo.height += rowHeight;
-		}		
-		
-		tableViewHeight += sectionInfo.height + footerHeight + headerHeight;
-		[self.sectionData addObject:sectionInfo];
+			tableViewHeight += sectionInfo.height + footerHeight + headerHeight;
+			[self.sectionData addObject:sectionInfo];
+		}
 	}
 	
 	self.contentHeight = tableViewHeight;
@@ -226,6 +234,17 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 
 - (NSArray *)visibleCells {
 	return self.visibleCellsMap.allValues;
+}
+
+- (NSArray *)allIndexPaths {
+	NSMutableArray *indexPaths = [NSMutableArray array];
+	for (JNWTableViewSection *section in self.sectionData) {
+		for (NSInteger row = 0; row < section.numberOfRows; row++) {
+			[indexPaths addObject:[NSIndexPath jnw_indexPathForRow:row inSection:section.index]];
+		}
+	}
+	
+	return indexPaths.copy;
 }
 
 - (NSArray *)indexPathsForRowsInRect:(CGRect)rect {
@@ -275,7 +294,6 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 - (void)scrollToRowAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWTableViewScrollPosition)scrollPosition animated:(BOOL)animated {
 	CGRect rect = [self rectForRowAtIndexPath:indexPath];
 	CGRect visibleRect = self.documentVisibleRect;
-#warning eventually use our CVDisplayLink's animated scrolling
 #warning this is actually pretty broken.
 	
 	switch (scrollPosition) {
@@ -302,33 +320,7 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 			break;
 	}
 	
-	[self.contentView scrollRectToVisible:rect];	
-}
-
-- (void)selectRowAtIndexPath:(NSIndexPath *)indexPath
-			atScrollPosition:(JNWTableViewScrollPosition)scrollPosition
-					animated:(BOOL)animated {	
-	[self selectRowAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated extendingSelection:NO];
-}
-
-- (void)selectRowAtIndexPath:(NSIndexPath *)indexPath
-			atScrollPosition:(JNWTableViewScrollPosition)scrollPosition
-					animated:(BOOL)animated
-		  extendingSelection:(BOOL)extending {
-#warning implement extending selection
-	
-	if (!extending) {
-		for (NSIndexPath *indexPath in self.selectedIndexes) {
-			JNWTableViewCell *cell = [self cellForRowAtIndexPath:indexPath];
-			cell.selected = NO;
-		}
-		[self.selectedIndexes removeAllObjects];
-	}
-	
-	JNWTableViewCell *cell = [self cellForRowAtIndexPath:indexPath];
-	cell.selected = YES;
-	[self.selectedIndexes addObject:indexPath];
-	[self scrollToRowAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated];
+	[(RBLClipView *)self.contentView scrollRectToVisible:rect animated:animated];
 }
 
 - (CGRect)rectForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -579,7 +571,6 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 	return YES;
 }
 
-
 - (BOOL)acceptsFirstResponder {
 	return YES;
 }
@@ -592,32 +583,29 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 	return YES;
 }
 
-// Returns the last object in the selection array. There may be more than just one.
+// Returns the last object in the selection array.
 - (NSIndexPath *)indexPathForSelectedRow {
-#warning may not work with multi selection
 	return self.selectedIndexes.lastObject;
 }
 
 // Both of these methods may return nil if there is no selection, or might
 // return the same index path if there is no possible next/previous selection.
-- (NSIndexPath *)indexPathForNextSelectableRowWithOrder:(NSComparisonResult)order {
-	NSIndexPath *selectedIndexPath = [self indexPathForSelectedRow];
+- (NSIndexPath *)indexPathForNextSelectableRowFromIndex:(NSIndexPath *)indexPath withOrder:(NSComparisonResult)order {
+	if (indexPath == nil) return nil;
 	
-	if (selectedIndexPath == nil) return nil;
-	
-	NSInteger section = selectedIndexPath.section;
+	NSInteger section = indexPath.section;
 	NSIndexPath *attemptedIndexPath = nil;
 	switch (order) {
 		case NSOrderedAscending: {
 			NSInteger numberOfRows = [self.sectionData[section] numberOfRows];
-			attemptedIndexPath = [NSIndexPath jnw_indexPathByIncrementingRow:selectedIndexPath withCurrentSectionNumberOfRows:numberOfRows];
+			attemptedIndexPath = [NSIndexPath jnw_indexPathByIncrementingRow:indexPath withCurrentSectionNumberOfRows:numberOfRows];
 			break;
 		}
 		case NSOrderedDescending: {
 			NSInteger previousNumberOfRows = 0;
 			if (section - 1 >= 0)
 				previousNumberOfRows = [self.sectionData[section - 1] numberOfRows];
-			attemptedIndexPath = [NSIndexPath jnw_indexPathByDecrementingRow:selectedIndexPath withPreviousSectionNumberOfRows:previousNumberOfRows];
+			attemptedIndexPath = [NSIndexPath jnw_indexPathByDecrementingRow:indexPath withPreviousSectionNumberOfRows:previousNumberOfRows];
 			break;
 		}
 		default:
@@ -627,15 +615,92 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 	if ([self validateIndexPath:attemptedIndexPath]) {
 		return attemptedIndexPath;
 	}
-	return selectedIndexPath;
+	return indexPath;
 }
 
 - (NSIndexPath *)indexPathForNextSelectableRow {
-	return [self indexPathForNextSelectableRowWithOrder:NSOrderedAscending];
+	return [self indexPathForNextSelectableRowFromIndex:[self indexPathForSelectedRow] withOrder:NSOrderedAscending];
 }
 
 - (NSIndexPath *)indexPathForPreviousSelectableRow {
-	return [self indexPathForNextSelectableRowWithOrder:NSOrderedDescending];
+	return [self indexPathForNextSelectableRowFromIndex:[self indexPathForSelectedRow] withOrder:NSOrderedDescending];
+}
+
+- (void)deselectRowAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
+	// TODO animated
+	JNWTableViewCell *cell = [self cellForRowAtIndexPath:indexPath];
+	cell.selected = NO;
+	[self.selectedIndexes removeObject:indexPath];
+}
+
+- (void)deselectRowsAtIndexPaths:(NSArray *)indexes animated:(BOOL)animated {
+	// TODO animated
+	NSArray *indexPaths = indexes.copy;
+	for (NSIndexPath *indexPath in indexPaths) {
+		[self deselectRowAtIndexPath:indexPath animated:animated];
+	}
+}
+
+- (void)selectRowAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
+	// TODO animated
+	JNWTableViewCell *cell = [self cellForRowAtIndexPath:indexPath];
+	cell.selected = YES;
+	[self.selectedIndexes addObject:indexPath];
+}
+
+- (void)selectRowsAtIndexPaths:(NSArray *)indexPaths animated:(BOOL)animated {
+	for (NSIndexPath *indexPath in indexPaths) {
+		[self selectRowAtIndexPath:indexPath animated:animated];
+	}
+}
+
+- (void)selectRowAtIndexPath:(NSIndexPath *)indexPath
+			atScrollPosition:(JNWTableViewScrollPosition)scrollPosition
+					animated:(BOOL)animated {
+	[self selectRowAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated selectionType:JNWTableViewSelectionTypeSingle];
+}
+
+- (void)selectRowAtIndexPath:(NSIndexPath *)indexPath
+			atScrollPosition:(JNWTableViewScrollPosition)scrollPosition
+					animated:(BOOL)animated
+			   selectionType:(JNWTableViewSelectionType)selectionType {
+#warning implement extending selection
+	NSMutableSet *indexesToSelect = [NSMutableSet set];
+	
+	if (selectionType == JNWTableViewSelectionTypeSingle) {
+		[indexesToSelect addObject:indexPath];
+	} else if (selectionType == JNWTableViewSelectionTypeMultiple) {
+		[indexesToSelect addObjectsFromArray:self.selectedIndexes];
+		if ([indexesToSelect containsObject:indexPath]) {
+			[indexesToSelect removeObject:indexPath];
+		} else {
+			[indexesToSelect addObject:indexPath];
+		}
+	} else if (selectionType == JNWTableViewSelectionTypeExtending) {
+		// From what I have determined, this behavior should be as follows.
+		// Take the index selected first, and select all rows between there and the
+		// last selected row.
+		NSIndexPath *firstIndex = (self.selectedIndexes.count > 0 ? self.selectedIndexes[0] : nil);
+		if (firstIndex != nil) {
+			[indexesToSelect addObject:firstIndex];
+			
+			NSComparisonResult order = [firstIndex compare:indexPath];
+			NSIndexPath *nextIndex = [self indexPathForNextSelectableRowFromIndex:firstIndex withOrder:order];
+			while (nextIndex != nil && ![nextIndex isEqual:indexPath]) {
+				[indexesToSelect addObject:nextIndex];
+				nextIndex = [self indexPathForNextSelectableRowFromIndex:nextIndex withOrder:order];
+			}
+		}
+		
+		[indexesToSelect addObject:indexPath];
+	}
+	
+	NSMutableSet *indexesToDeselect = [NSMutableSet setWithArray:self.selectedIndexes];
+	[indexesToDeselect minusSet:indexesToSelect];
+	
+	[self selectRowsAtIndexPaths:indexesToSelect.allObjects animated:animated];
+	[self deselectRowsAtIndexPaths:indexesToDeselect.allObjects animated:animated];
+	[self scrollToRowAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated];
 }
 
 - (void)mouseDownInTableViewCell:(JNWTableViewCell *)cell withEvent:(NSEvent *)event {
@@ -644,43 +709,41 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 		NSLog(@"***index path not found for selection.");
 	}
 	
-	//NSMutableArray *indexSetsToRemove = [NSMutableArray arrayWithCapacity:self.selectedIndexes.count];
-	for (NSIndexSet *indexSetToDeselect in self.selectedIndexes) {
-		NSIndexPath *indexToDeselect = self.selectedIndexes.lastObject;
-		JNWTableViewCell *cell = [self cellForRowAtIndexPath:indexToDeselect];
-		cell.selected = NO;
-		//[indexSetsToRemove addObject:indexToDeselect];
+	// Detect if modifier flags are held down.
+	// We prioritize the command key over the shift key.
+	if (event.modifierFlags & NSCommandKeyMask) {
+#warning TODO: animated flag should be a property
+		[self selectRowAtIndexPath:indexPath atScrollPosition:JNWTableViewScrollPositionNearest animated:YES selectionType:JNWTableViewSelectionTypeMultiple];
+	} else if (event.modifierFlags & NSShiftKeyMask) {
+		[self selectRowAtIndexPath:indexPath atScrollPosition:JNWTableViewScrollPositionNearest animated:YES selectionType:JNWTableViewSelectionTypeExtending];
+	} else {
+		[self selectRowAtIndexPath:indexPath atScrollPosition:JNWTableViewScrollPositionNearest animated:YES];
 	}
-	[self.selectedIndexes removeAllObjects];
-	//[self.selectedIndexes removeObjectsInArray:indexSetsToRemove];
-	
-	cell.selected = YES;
-	[self.selectedIndexes addObject:indexPath];
-	
-	// for now, just delete previous selections
-	// TODO: see if we need to extend selection
-#warning this does not handle modifier keys for multi-selection
 }
 
 - (void)keyDown:(NSEvent *)theEvent {
 	[self interpretKeyEvents:@[theEvent]];
 }
 
-- (void)moveDown:(id)sender {
-	[self selectRowAtIndexPath:[self indexPathForNextSelectableRow] atScrollPosition:JNWTableViewScrollPositionNearest animated:YES];
-}
-
 - (void)moveUp:(id)sender {
 	[self selectRowAtIndexPath:[self indexPathForPreviousSelectableRow] atScrollPosition:JNWTableViewScrollPositionNearest animated:YES];}
 
 - (void)moveUpAndModifySelection:(id)sender {
-	[self selectRowAtIndexPath:[self indexPathForPreviousSelectableRow] atScrollPosition:JNWTableViewScrollPositionNearest animated:YES extendingSelection:YES];
-	NSLog(@"%s",__PRETTY_FUNCTION__);
+#warning This, along with the corresponding moveDown* method, do not function properly.
+	[self selectRowAtIndexPath:[self indexPathForPreviousSelectableRow] atScrollPosition:JNWTableViewScrollPositionNearest animated:YES selectionType:JNWTableViewSelectionTypeExtending];
+}
+
+- (void)moveDown:(id)sender {
+	[self selectRowAtIndexPath:[self indexPathForNextSelectableRow] atScrollPosition:JNWTableViewScrollPositionNearest animated:YES];
 }
 
 - (void)moveDownAndModifySelection:(id)sender {
-	[self selectRowAtIndexPath:[self indexPathForNextSelectableRow] atScrollPosition:JNWTableViewScrollPositionNearest animated:YES extendingSelection:YES];
-	NSLog(@"%s",__PRETTY_FUNCTION__);
+	[self selectRowAtIndexPath:[self indexPathForNextSelectableRow] atScrollPosition:JNWTableViewScrollPositionNearest animated:YES selectionType:JNWTableViewSelectionTypeExtending];
+}
+
+- (void)selectAll:(id)sender {
+	// TODO animate
+	[self selectRowsAtIndexPaths:[self allIndexPaths] animated:YES];
 }
 
 @end

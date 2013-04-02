@@ -11,6 +11,7 @@
 		AB29A69016FEFE1B00C9A941 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB29A68F16FEFE1B00C9A941 /* QuartzCore.framework */; };
 		AB9EADB91702E7B400D750C7 /* TableViewHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = AB9EADB81702E7B400D750C7 /* TableViewHeader.m */; };
 		ABB024471707929200537A92 /* JNWTableView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB024441707928C00537A92 /* JNWTableView.framework */; };
+		ABB024E6170A59BB00537A92 /* JNWTableView.framework in Copy Framework */ = {isa = PBXBuildFile; fileRef = ABB024441707928C00537A92 /* JNWTableView.framework */; };
 		ABB0F2F716FD7D19002004F5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB0F2F616FD7D19002004F5 /* Cocoa.framework */; };
 		ABB0F30116FD7D19002004F5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = ABB0F2FF16FD7D19002004F5 /* InfoPlist.strings */; };
 		ABB0F30316FD7D19002004F5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB0F30216FD7D19002004F5 /* main.m */; };
@@ -42,6 +43,20 @@
 			remoteInfo = JNWTableView;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		ABB024E5170A598B00537A92 /* Copy Framework */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				ABB024E6170A59BB00537A92 /* JNWTableView.framework in Copy Framework */,
+			);
+			name = "Copy Framework";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		AB29A67B16FE67F900C9A941 /* TableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCell.h; sourceTree = "<group>"; };
@@ -165,6 +180,7 @@
 				ABB0F2EF16FD7D19002004F5 /* Sources */,
 				ABB0F2F016FD7D19002004F5 /* Frameworks */,
 				ABB0F2F116FD7D19002004F5 /* Resources */,
+				ABB024E5170A598B00537A92 /* Copy Framework */,
 			);
 			buildRules = (
 			);
@@ -353,7 +369,12 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "JNWTableViewDemo/JNWTableViewDemo-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(BUILD_ROOT)/../IntermediateBuildFilesPath/UninstalledProducts/include",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = "JNWTableViewDemo/JNWTableViewDemo-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -365,7 +386,12 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "JNWTableViewDemo/JNWTableViewDemo-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(BUILD_ROOT)/../IntermediateBuildFilesPath/UninstalledProducts/include",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = "JNWTableViewDemo/JNWTableViewDemo-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

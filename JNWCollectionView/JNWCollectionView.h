@@ -13,28 +13,28 @@ typedef NS_ENUM(NSInteger, JNWTableViewScrollPosition) {
 };
 
 @class JNWCollectionView;
-@protocol JNWTableViewDataSource <NSObject>
-- (NSUInteger)tableView:(JNWCollectionView *)tableView numberOfRowsInSection:(NSInteger)section;
-- (JNWCollectionViewCell *)tableView:(JNWCollectionView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+@protocol JNWCollectionViewDataSource <NSObject>
+- (NSUInteger)collectionView:(JNWCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section;
+- (JNWCollectionViewCell *)collectionView:(JNWCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
 
 @optional
-- (NSInteger)numberOfSectionsInTableView:(JNWCollectionView *)tableView;
-- (JNWCollectionViewHeaderFooterView *)tableView:(JNWCollectionView *)tableView viewForHeaderInSection:(NSInteger)section;
-- (JNWCollectionViewHeaderFooterView *)tableView:(JNWCollectionView *)tableView viewForFooterInSection:(NSInteger)section;
+- (NSInteger)numberOfSectionsInCollectionView:(JNWCollectionView *)collectionView;
+- (JNWCollectionViewHeaderFooterView *)collectionView:(JNWCollectionView *)collectionView viewForHeaderInSection:(NSInteger)section;
+- (JNWCollectionViewHeaderFooterView *)collectionView:(JNWCollectionView *)collectionView viewForFooterInSection:(NSInteger)section;
 @end
 
-@protocol JNWTableViewDelegate <NSObject>
+@protocol JNWCollectionViewDelegate <NSObject>
 @optional
-- (CGFloat)tableView:(JNWCollectionView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
-- (CGFloat)tableView:(JNWCollectionView *)tableView heightForHeaderInSection:(NSInteger)section;
-- (CGFloat)tableView:(JNWCollectionView *)tableView heightForFooterInSection:(NSInteger)section;
+- (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForItemAtIndexPath:(NSIndexPath *)indexPath;
+- (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForHeaderInSection:(NSInteger)section;
+- (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForFooterInSection:(NSInteger)section;
 
-- (BOOL)tableView:(JNWCollectionView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath; // TODO
-- (void)tableView:(JNWCollectionView *)tableView didHighlightRowAtIndexPath:(NSIndexPath *)indexPath; // TODO
-- (void)tableView:(JNWCollectionView *)tableView didUnHighlightRowAtIndexPath:(NSIndexPath *)indexPath; // TODO
+- (BOOL)collectionView:(JNWCollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath; // TODO
+- (void)collectionView:(JNWCollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath; // TODO
+- (void)collectionView:(JNWCollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath; // TODO
 
-- (void)tableView:(JNWCollectionView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath; // TODO
-- (void)tableView:(JNWCollectionView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath; // TODO
+- (void)collectionView:(JNWCollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath; // TODO
+- (void)collectionView:(JNWCollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath; // TODO
 @end
 
 
@@ -45,35 +45,35 @@ typedef NS_ENUM(NSInteger, JNWTableViewScrollPosition) {
 // here will have significant performance benefits if you have many
 // rows in your table view.
 //
-// Note that this value will be ignored if tableView:heightForRowAtIndexPath:
+// Note that this value will be ignored if collectionView:heightForRowAtIndexPath:
 // is implemented.
 //
 // Defaults to 44.
 @property (nonatomic, assign) CGFloat rowHeight;
 
 - (NSInteger)numberOfSections;
-- (NSInteger)numberOfRowsInSection:(NSInteger)section;
+- (NSInteger)numberOfItemsInSection:(NSInteger)section;
 
 // These will be provided in flipped coordinates.
 - (CGRect)rectForHeaderInSection:(NSInteger)section;
 - (CGRect)rectForFooterInSection:(NSInteger)section;
-- (CGRect)rectForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (CGRect)rectForItemAtIndexPath:(NSIndexPath *)indexPath;
 
-- (NSIndexPath *)indexPathForRowAtPoint:(CGPoint)point;
+- (NSIndexPath *)indexPathForItemAtPoint:(CGPoint)point;
 - (NSIndexPath *)indexPathForCell:(JNWCollectionViewCell *)cell;
-- (NSArray *)indexPathsForRowsInRect:(CGRect)rect;
+- (NSArray *)indexPathsForItemsInRect:(CGRect)rect;
 
 - (JNWCollectionViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (NSArray *)visibleCells;
-- (NSArray *)indexPathsForVisibleRows;
+- (NSArray *)indexPathsForVisibleItems;
 - (JNWCollectionViewHeaderFooterView *)headerViewForSection:(NSInteger)section;
 - (JNWCollectionViewHeaderFooterView *)footerViewForSection:(NSInteger)section;
 
-- (void)scrollToRowAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWTableViewScrollPosition)scrollPosition animated:(BOOL)animated;
-- (void)selectRowAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWTableViewScrollPosition)scrollPosition animated:(BOOL)animated;
+- (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWTableViewScrollPosition)scrollPosition animated:(BOOL)animated;
+- (void)selectItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWTableViewScrollPosition)scrollPosition animated:(BOOL)animated;
 
-@property (nonatomic, weak) id<JNWTableViewDelegate> delegate;
-@property (nonatomic, weak) id<JNWTableViewDataSource> dataSource;
+@property (nonatomic, weak) id<JNWCollectionViewDelegate> delegate;
+@property (nonatomic, weak) id<JNWCollectionViewDataSource> dataSource;
 
 - (void)reloadData;
 

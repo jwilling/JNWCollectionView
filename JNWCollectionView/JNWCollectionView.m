@@ -16,7 +16,7 @@ typedef NS_ENUM(NSInteger, JNWTableViewSelectionType) {
 
 @interface JNWCollectionView() {
 	struct {
-		unsigned int delegateHeightForRow;
+		unsigned int delegateHeightForItem;
 		unsigned int delegateHeightForHeader;
 		unsigned int delegateHeightForFooter;
 		unsigned int dataSourceNumberOfSections;
@@ -79,21 +79,21 @@ static void JNWTableViewCommonInit(JNWCollectionView *_self) {
 
 #pragma mark Delegate and data source
 
-- (void)setDelegate:(id<JNWTableViewDelegate>)delegate {	
+- (void)setDelegate:(id<JNWCollectionViewDelegate>)delegate {	
 	_delegate = delegate;
-	_tableFlags.delegateHeightForRow = [delegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)];
-	_tableFlags.delegateHeightForHeader = [delegate respondsToSelector:@selector(tableView:heightForHeaderInSection:)];
-	_tableFlags.delegateHeightForFooter = [delegate respondsToSelector:@selector(tableView:heightForFooterInSection:)];
+	_tableFlags.delegateHeightForItem = [delegate respondsToSelector:@selector(collectionView:heightForItemAtIndexPath:)];
+	_tableFlags.delegateHeightForHeader = [delegate respondsToSelector:@selector(collectionView:heightForHeaderInSection:)];
+	_tableFlags.delegateHeightForFooter = [delegate respondsToSelector:@selector(collectionView:heightForFooterInSection:)];
 }
 
-- (void)setDataSource:(id<JNWTableViewDataSource>)dataSource {
+- (void)setDataSource:(id<JNWCollectionViewDataSource>)dataSource {
 	_dataSource = dataSource;
-	_tableFlags.dataSourceNumberOfSections = [dataSource respondsToSelector:@selector(numberOfSectionsInTableView:)];
-	_tableFlags.dataSourceViewForHeader = [dataSource respondsToSelector:@selector(tableView:viewForHeaderInSection:)];
-	_tableFlags.dataSourceViewForFooter = [dataSource respondsToSelector:@selector(tableView:viewForFooterInSection:)];
+	_tableFlags.dataSourceNumberOfSections = [dataSource respondsToSelector:@selector(numberOfSectionsInCollectionView:)];
+	_tableFlags.dataSourceViewForHeader = [dataSource respondsToSelector:@selector(collectionView:viewForHeaderInSection:)];
+	_tableFlags.dataSourceViewForFooter = [dataSource respondsToSelector:@selector(collectionView:viewForFooterInSection:)];
 	
-	NSAssert([dataSource respondsToSelector:@selector(tableView:numberOfRowsInSection:)],
-			 @"data source should implement tableView:numberOfRowsInSection");
+	NSAssert([dataSource respondsToSelector:@selector(collectionView:numberOfItemsInSection:)],
+			 @"data source must implement collectionView:numberOfRowsInSection");
 }
 
 
@@ -158,13 +158,13 @@ static void JNWTableViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (void)reloadData {
-	[self recalculateHeightAndRowInfo];
+	[self recalculateItemInfo];	
 	[self layoutDocumentView];
 	[self layoutCells];
 	[self layoutHeaderFooters];
 }
 
-- (void)recalculateHeightAndRowInfo {
+- (void)recalculateItemInfo {
 	[self.sectionData removeAllObjects];
 	
 	CGFloat tableViewHeight = 0.f;
@@ -173,14 +173,14 @@ static void JNWTableViewCommonInit(JNWCollectionView *_self) {
 	// We default to 1 if the data source doesn't implement the optional method.
 	NSUInteger numberOfSections = 1;
 	if (_tableFlags.dataSourceNumberOfSections)
-		numberOfSections = [self.dataSource numberOfSectionsInTableView:self];
+		numberOfSections = [self.dataSource numberOfSectionsInCollectionView:self];
 	
 	for (NSInteger section = 0; section < numberOfSections; section++) {
 		@autoreleasepool {
 			// Create a new section
-			NSInteger numberOfRows = [self.dataSource tableView:self numberOfRowsInSection:section];
-			NSInteger headerHeight = (_tableFlags.delegateHeightForHeader ? [self.delegate tableView:self heightForHeaderInSection:section] : 0);
-			NSInteger footerHeight = (_tableFlags.delegateHeightForFooter ? [self.delegate tableView:self heightForFooterInSection:section] : 0);
+			NSInteger numberOfRows = [self.dataSource collectionView:self numberOfItemsInSection:section];
+			NSInteger headerHeight = (_tableFlags.delegateHeightForHeader ? [self.delegate collectionView:self heightForHeaderInSection:section] : 0);
+			NSInteger footerHeight = (_tableFlags.delegateHeightForFooter ? [self.delegate collectionView:self heightForFooterInSection:section] : 0);
 			
 			JNWCollectionViewSection *sectionInfo = [[JNWCollectionViewSection alloc] initWithNumberOfRows:numberOfRows];
 			sectionInfo.index = section;
@@ -194,9 +194,9 @@ static void JNWTableViewCommonInit(JNWCollectionView *_self) {
 			// keep track of the total height of the section.
 			for (NSInteger row = 0; row < numberOfRows; row++) {
 				CGFloat rowHeight = 0;
-				if (_tableFlags.delegateHeightForRow) {
+				if (_tableFlags.delegateHeightForItem) {
 					NSIndexPath *indexPath = [NSIndexPath jnw_indexPathForRow:row inSection:section];
-					rowHeight = [self.delegate tableView:self heightForRowAtIndexPath:indexPath];
+					rowHeight = [self.delegate collectionView:self heightForItemAtIndexPath:indexPath];
 				} else {
 					rowHeight = self.rowHeight;
 				}
@@ -221,13 +221,13 @@ static void JNWTableViewCommonInit(JNWCollectionView *_self) {
 	return self.sectionData.count;
 }
 
-- (NSInteger)numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)numberOfItemsInSection:(NSInteger)section {
 	if (self.sectionData.count < section)
 		return 0.f;
 	return [(JNWCollectionViewSection *)self.sectionData[section] numberOfRows];
 }
 
-- (NSIndexPath *)indexPathForRowAtPoint:(CGPoint)point {
+- (NSIndexPath *)indexPathForItemAtPoint:(CGPoint)point {
 #warning implement
 	return nil;
 }
@@ -247,7 +247,7 @@ static void JNWTableViewCommonInit(JNWCollectionView *_self) {
 	return indexPaths.copy;
 }
 
-- (NSArray *)indexPathsForRowsInRect:(CGRect)rect {
+- (NSArray *)indexPathsForItemsInRect:(CGRect)rect {
 	NSMutableArray *visibleRows = [NSMutableArray array];
 	
 	CGFloat top = rect.origin.y;
@@ -275,8 +275,8 @@ static void JNWTableViewCommonInit(JNWCollectionView *_self) {
 	return visibleRows;
 }
 
-- (NSArray *)indexPathsForVisibleRows {
-	return [self indexPathsForRowsInRect:self.documentVisibleRect];
+- (NSArray *)indexPathsForVisibleItems {
+	return [self indexPathsForItemsInRect:self.documentVisibleRect];
 }
 
 - (JNWCollectionViewHeaderFooterView *)headerViewForSection:(NSInteger)section {
@@ -291,8 +291,8 @@ static void JNWTableViewCommonInit(JNWCollectionView *_self) {
 	return (indexPath.section < self.sectionData.count && indexPath.row < [self.sectionData[indexPath.section] numberOfRows]);
 }
 
-- (void)scrollToRowAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWTableViewScrollPosition)scrollPosition animated:(BOOL)animated {
-	CGRect rect = [self rectForRowAtIndexPath:indexPath];
+- (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWTableViewScrollPosition)scrollPosition animated:(BOOL)animated {
+	CGRect rect = [self rectForItemAtIndexPath:indexPath];
 	CGRect visibleRect = self.documentVisibleRect;
 #warning this is actually pretty broken.
 	
@@ -323,7 +323,7 @@ static void JNWTableViewCommonInit(JNWCollectionView *_self) {
 	[(RBLClipView *)self.contentView scrollRectToVisible:rect animated:animated];
 }
 
-- (CGRect)rectForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGRect)rectForItemAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath == nil || indexPath.section >= self.sectionData.count)
 		return CGRectZero;
 	
@@ -393,7 +393,7 @@ static void JNWTableViewCommonInit(JNWCollectionView *_self) {
 	return visibleFooters;
 }
 
-- (JNWCollectionViewSection *)sectionForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (JNWCollectionViewSection *)sectionForItemAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath == nil)
 		return nil;
 	
@@ -406,10 +406,12 @@ static void JNWTableViewCommonInit(JNWCollectionView *_self) {
 - (void)layout {
 	[super layout];
 	
-	if ([self.documentView frame].size.height != self.contentHeight)
+	if ([self.documentView frame].size.height != self.contentHeight) {
 		[self layoutDocumentView];
+	}
 	
 	if (!CGRectEqualToRect(self.bounds, _lastDrawnBounds)) {
+#warning TODO: Determine whether item recalculation is needed.
 		[self layoutCellsWithRedraw:YES];
 		[self layoutHeaderFootersWithRedraw:YES];
 		_lastDrawnBounds = self.bounds;
@@ -435,13 +437,13 @@ static void JNWTableViewCommonInit(JNWCollectionView *_self) {
 	if (needsVisibleRedraw) {
 		for (NSIndexPath *indexPath in self.visibleCellsMap.allKeys) {
 			JNWCollectionViewCell *cell = self.visibleCellsMap[indexPath];
-			cell.frame = [self rectForRowAtIndexPath:indexPath];
+			cell.frame = [self rectForItemAtIndexPath:indexPath];
 			[cell setNeedsLayout:YES];
 		}
 	}
 
 	NSArray *oldVisibleIndexPaths = [self.visibleCellsMap allKeys];
-	NSArray *updatedVisibleIndexPaths = [self indexPathsForRowsInRect:self.documentVisibleRect];
+	NSArray *updatedVisibleIndexPaths = [self indexPathsForItemsInRect:self.documentVisibleRect];
 	
 	NSMutableArray *indexPathsToRemove = [NSMutableArray arrayWithArray:oldVisibleIndexPaths];
 	[indexPathsToRemove removeObjectsInArray:updatedVisibleIndexPaths];
@@ -455,7 +457,6 @@ static void JNWTableViewCommonInit(JNWCollectionView *_self) {
 		[self.visibleCellsMap removeObjectForKey:indexPath];
 
 		[self enqueueReusableCell:cell withIdentifier:cell.reuseIdentifier];
-		//[cell removeFromSuperview];
 		
 		[cell setHidden:YES];
 		// TODO: Ensure setting views hidden will not be detrimental to performance.
@@ -463,12 +464,11 @@ static void JNWTableViewCommonInit(JNWCollectionView *_self) {
 	
 	// Add the new cells
 	for (NSIndexPath *indexPath in indexPathsToAdd) {
-		JNWCollectionViewCell *cell = [self.dataSource tableView:self cellForRowAtIndexPath:indexPath];
-		NSAssert(cell != nil, @"tableView:cellForRowAtIndexPath: must return a non-nil cell.");
+		JNWCollectionViewCell *cell = [self.dataSource collectionView:self cellForItemAtIndexPath:indexPath];
+		NSAssert(cell != nil, @"collectionView:cellForItemAtIndexPath: must return a non-nil cell.");
 		
 		cell.tableView = self;
-		cell.frame = [self rectForRowAtIndexPath:indexPath];
-		//[self.documentView addSubview:cell];
+		cell.frame = [self rectForItemAtIndexPath:indexPath];
 		
 		if (cell.superview == nil)
 			[self.documentView addSubview:cell];
@@ -540,7 +540,7 @@ static void JNWTableViewCommonInit(JNWCollectionView *_self) {
 	}];
 	
 	[headerIndexesToAdd enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-		JNWCollectionViewHeaderFooterView *header = [self.dataSource tableView:self viewForHeaderInSection:idx];
+		JNWCollectionViewHeaderFooterView *header = [self.dataSource collectionView:self viewForHeaderInSection:idx];
 		if (header == nil) {
 			NSLog(@"header doesn't exist!");
 		} else {
@@ -552,7 +552,7 @@ static void JNWTableViewCommonInit(JNWCollectionView *_self) {
 	}];
 	
 	[footerIndexesToAdd enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-		JNWCollectionViewHeaderFooterView *footer = [self.dataSource tableView:self viewForFooterInSection:idx];
+		JNWCollectionViewHeaderFooterView *footer = [self.dataSource collectionView:self viewForFooterInSection:idx];
 		if (footer == nil) {
 			NSLog(@"footer doesn't exist!");
 		} else {
@@ -654,7 +654,7 @@ static void JNWTableViewCommonInit(JNWCollectionView *_self) {
 	}
 }
 
-- (void)selectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)selectItemAtIndexPath:(NSIndexPath *)indexPath
 			atScrollPosition:(JNWTableViewScrollPosition)scrollPosition
 					animated:(BOOL)animated {
 	[self selectRowAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated selectionType:JNWTableViewSelectionTypeSingle];
@@ -678,8 +678,8 @@ static void JNWTableViewCommonInit(JNWCollectionView *_self) {
 		}
 	} else if (selectionType == JNWTableViewSelectionTypeExtending) {
 		// From what I have determined, this behavior should be as follows.
-		// Take the index selected first, and select all rows between there and the
-		// last selected row.
+		// Take the index selected first, and select all items between there and the
+		// last selected item.
 		NSIndexPath *firstIndex = (self.selectedIndexes.count > 0 ? self.selectedIndexes[0] : nil);
 		if (firstIndex != nil) {
 			[indexesToSelect addObject:firstIndex];
@@ -700,7 +700,7 @@ static void JNWTableViewCommonInit(JNWCollectionView *_self) {
 	
 	[self selectRowsAtIndexPaths:indexesToSelect.allObjects animated:animated];
 	[self deselectRowsAtIndexPaths:indexesToDeselect.allObjects animated:animated];
-	[self scrollToRowAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated];
+	[self scrollToItemAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated];
 }
 
 - (void)mouseDownInTableViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
@@ -717,7 +717,7 @@ static void JNWTableViewCommonInit(JNWCollectionView *_self) {
 	} else if (event.modifierFlags & NSShiftKeyMask) {
 		[self selectRowAtIndexPath:indexPath atScrollPosition:JNWTableViewScrollPositionNearest animated:YES selectionType:JNWTableViewSelectionTypeExtending];
 	} else {
-		[self selectRowAtIndexPath:indexPath atScrollPosition:JNWTableViewScrollPositionNearest animated:YES];
+		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWTableViewScrollPositionNearest animated:YES];
 	}
 }
 
@@ -726,7 +726,7 @@ static void JNWTableViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (void)moveUp:(id)sender {
-	[self selectRowAtIndexPath:[self indexPathForPreviousSelectableRow] atScrollPosition:JNWTableViewScrollPositionNearest animated:YES];}
+	[self selectItemAtIndexPath:[self indexPathForPreviousSelectableRow] atScrollPosition:JNWTableViewScrollPositionNearest animated:YES];}
 
 - (void)moveUpAndModifySelection:(id)sender {
 #warning This, along with the corresponding moveDown* method, do not function properly.
@@ -734,7 +734,7 @@ static void JNWTableViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (void)moveDown:(id)sender {
-	[self selectRowAtIndexPath:[self indexPathForNextSelectableRow] atScrollPosition:JNWTableViewScrollPositionNearest animated:YES];
+	[self selectItemAtIndexPath:[self indexPathForNextSelectableRow] atScrollPosition:JNWTableViewScrollPositionNearest animated:YES];
 }
 
 - (void)moveDownAndModifySelection:(id)sender {

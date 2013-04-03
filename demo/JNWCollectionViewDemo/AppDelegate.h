@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <JNWTableView/JNWTableView.h>
+#import <JNWCollectionView/JNWTableView.h>
 
 @interface AppDelegate : NSObject <NSApplicationDelegate, JNWTableViewDelegate, JNWTableViewDataSource>
 

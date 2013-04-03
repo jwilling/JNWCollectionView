@@ -7,39 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB3C71F4170CA8D3004A91DB /* JNWTableView.h in Headers */ = {isa = PBXBuildFile; fileRef = AB3C71E8170CA8D3004A91DB /* JNWTableView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AB3C71F5170CA8D3004A91DB /* JNWTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C71E9170CA8D3004A91DB /* JNWTableView.m */; };
+		AB3C71F7170CA8D3004A91DB /* JNWTableView+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = AB3C71EA170CA8D3004A91DB /* JNWTableView+Private.h */; };
+		AB3C71F8170CA8D3004A91DB /* JNWTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = AB3C71EB170CA8D3004A91DB /* JNWTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AB3C71F9170CA8D3004A91DB /* JNWTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C71EC170CA8D3004A91DB /* JNWTableViewCell.m */; };
+		AB3C71FB170CA8D3004A91DB /* JNWTableViewCell+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = AB3C71ED170CA8D3004A91DB /* JNWTableViewCell+Private.h */; };
+		AB3C71FC170CA8D3004A91DB /* JNWTableViewHeaderFooterView.h in Headers */ = {isa = PBXBuildFile; fileRef = AB3C71EE170CA8D3004A91DB /* JNWTableViewHeaderFooterView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AB3C71FD170CA8D3004A91DB /* JNWTableViewHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C71EF170CA8D3004A91DB /* JNWTableViewHeaderFooterView.m */; };
+		AB3C71FF170CA8D3004A91DB /* JNWTableViewSection.h in Headers */ = {isa = PBXBuildFile; fileRef = AB3C71F0170CA8D3004A91DB /* JNWTableViewSection.h */; };
+		AB3C7200170CA8D3004A91DB /* JNWTableViewSection.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C71F1170CA8D3004A91DB /* JNWTableViewSection.m */; };
+		AB3C7202170CA8D3004A91DB /* NSIndexPath+JNWAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = AB3C71F2170CA8D3004A91DB /* NSIndexPath+JNWAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AB3C7203170CA8D3004A91DB /* NSIndexPath+JNWAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C71F3170CA8D3004A91DB /* NSIndexPath+JNWAdditions.m */; };
+		AB3C7209170CA8EF004A91DB /* JNWCollectionView-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AB3C7206170CA8EF004A91DB /* JNWCollectionView-Prefix.pch */; };
+		AB3C720C170CA8F3004A91DB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB3C720A170CA8F3004A91DB /* InfoPlist.strings */; };
+		AB3C7210170CA965004A91DB /* JNWCollectionViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C720F170CA965004A91DB /* JNWCollectionViewTests.m */; };
+		AB3C7216170CAADB004A91DB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB024671707937F00537A92 /* QuartzCore.framework */; };
+		AB3C7249170CAD13004A91DB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB3C7211170CA981004A91DB /* InfoPlist.strings */; };
 		ABB023F5170791D300537A92 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB023F4170791D300537A92 /* Cocoa.framework */; };
-		ABB023FF170791D300537A92 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = ABB023FD170791D300537A92 /* InfoPlist.strings */; };
 		ABB0240B170791D300537A92 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB0240A170791D300537A92 /* SenTestingKit.framework */; };
 		ABB0240C170791D300537A92 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB023F4170791D300537A92 /* Cocoa.framework */; };
-		ABB0240F170791D300537A92 /* JNWTableView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB023F1170791D300537A92 /* JNWTableView.framework */; };
-		ABB02415170791D300537A92 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = ABB02413170791D300537A92 /* InfoPlist.strings */; };
-		ABB02418170791D300537A92 /* JNWTableViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB02417170791D300537A92 /* JNWTableViewTests.m */; };
-		ABB0242D1707921B00537A92 /* JNWTableView.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB024211707921B00537A92 /* JNWTableView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		ABB0242E1707921B00537A92 /* JNWTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB024221707921B00537A92 /* JNWTableView.m */; };
-		ABB0242F1707921B00537A92 /* JNWTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB024221707921B00537A92 /* JNWTableView.m */; };
-		ABB024301707921B00537A92 /* JNWTableView+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB024231707921B00537A92 /* JNWTableView+Private.h */; };
-		ABB024311707921B00537A92 /* JNWTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB024241707921B00537A92 /* JNWTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		ABB024321707921B00537A92 /* JNWTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB024251707921B00537A92 /* JNWTableViewCell.m */; };
-		ABB024331707921B00537A92 /* JNWTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB024251707921B00537A92 /* JNWTableViewCell.m */; };
-		ABB024341707921B00537A92 /* JNWTableViewCell+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB024261707921B00537A92 /* JNWTableViewCell+Private.h */; };
-		ABB024351707921B00537A92 /* JNWTableViewHeaderFooterView.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB024271707921B00537A92 /* JNWTableViewHeaderFooterView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		ABB024361707921B00537A92 /* JNWTableViewHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB024281707921B00537A92 /* JNWTableViewHeaderFooterView.m */; };
-		ABB024371707921B00537A92 /* JNWTableViewHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB024281707921B00537A92 /* JNWTableViewHeaderFooterView.m */; };
-		ABB024381707921B00537A92 /* JNWTableViewSection.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB024291707921B00537A92 /* JNWTableViewSection.h */; settings = {ATTRIBUTES = (); }; };
-		ABB024391707921B00537A92 /* JNWTableViewSection.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB0242A1707921B00537A92 /* JNWTableViewSection.m */; };
-		ABB0243A1707921B00537A92 /* JNWTableViewSection.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB0242A1707921B00537A92 /* JNWTableViewSection.m */; };
-		ABB0243B1707921B00537A92 /* NSIndexPath+JNWAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB0242B1707921B00537A92 /* NSIndexPath+JNWAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		ABB0243C1707921B00537A92 /* NSIndexPath+JNWAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB0242C1707921B00537A92 /* NSIndexPath+JNWAdditions.m */; };
-		ABB0243D1707921B00537A92 /* NSIndexPath+JNWAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB0242C1707921B00537A92 /* NSIndexPath+JNWAdditions.m */; };
+		ABB0240F170791D300537A92 /* JNWCollectionView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB023F1170791D300537A92 /* JNWCollectionView.framework */; };
 		ABB0245E1707936300537A92 /* NSColor+RBLCGColorAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB024581707936300537A92 /* NSColor+RBLCGColorAdditions.h */; };
 		ABB0245F1707936300537A92 /* NSColor+RBLCGColorAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB024591707936300537A92 /* NSColor+RBLCGColorAdditions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		ABB024601707936300537A92 /* NSColor+RBLCGColorAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB024591707936300537A92 /* NSColor+RBLCGColorAdditions.m */; };
 		ABB024611707936300537A92 /* RBLClipView.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB0245A1707936300537A92 /* RBLClipView.h */; };
 		ABB024621707936300537A92 /* RBLClipView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB0245B1707936300537A92 /* RBLClipView.m */; };
-		ABB024631707936300537A92 /* RBLClipView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB0245B1707936300537A92 /* RBLClipView.m */; };
 		ABB024641707936300537A92 /* RBLScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB0245C1707936300537A92 /* RBLScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		ABB024651707936300537A92 /* RBLScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB0245D1707936300537A92 /* RBLScrollView.m */; };
-		ABB024661707936300537A92 /* RBLScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB0245D1707936300537A92 /* RBLScrollView.m */; };
 		ABB024681707937F00537A92 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB024671707937F00537A92 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
@@ -54,32 +48,32 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		ABB023F1170791D300537A92 /* JNWTableView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JNWTableView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB3C71E8170CA8D3004A91DB /* JNWTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWTableView.h; path = JNWCollectionView/JNWTableView.h; sourceTree = SOURCE_ROOT; };
+		AB3C71E9170CA8D3004A91DB /* JNWTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWTableView.m; path = JNWCollectionView/JNWTableView.m; sourceTree = SOURCE_ROOT; };
+		AB3C71EA170CA8D3004A91DB /* JNWTableView+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JNWTableView+Private.h"; path = "JNWCollectionView/JNWTableView+Private.h"; sourceTree = SOURCE_ROOT; };
+		AB3C71EB170CA8D3004A91DB /* JNWTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWTableViewCell.h; path = JNWCollectionView/JNWTableViewCell.h; sourceTree = SOURCE_ROOT; };
+		AB3C71EC170CA8D3004A91DB /* JNWTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWTableViewCell.m; path = JNWCollectionView/JNWTableViewCell.m; sourceTree = SOURCE_ROOT; };
+		AB3C71ED170CA8D3004A91DB /* JNWTableViewCell+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JNWTableViewCell+Private.h"; path = "JNWCollectionView/JNWTableViewCell+Private.h"; sourceTree = SOURCE_ROOT; };
+		AB3C71EE170CA8D3004A91DB /* JNWTableViewHeaderFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWTableViewHeaderFooterView.h; path = JNWCollectionView/JNWTableViewHeaderFooterView.h; sourceTree = SOURCE_ROOT; };
+		AB3C71EF170CA8D3004A91DB /* JNWTableViewHeaderFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWTableViewHeaderFooterView.m; path = JNWCollectionView/JNWTableViewHeaderFooterView.m; sourceTree = SOURCE_ROOT; };
+		AB3C71F0170CA8D3004A91DB /* JNWTableViewSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWTableViewSection.h; path = JNWCollectionView/JNWTableViewSection.h; sourceTree = SOURCE_ROOT; };
+		AB3C71F1170CA8D3004A91DB /* JNWTableViewSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWTableViewSection.m; path = JNWCollectionView/JNWTableViewSection.m; sourceTree = SOURCE_ROOT; };
+		AB3C71F2170CA8D3004A91DB /* NSIndexPath+JNWAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSIndexPath+JNWAdditions.h"; path = "JNWCollectionView/NSIndexPath+JNWAdditions.h"; sourceTree = SOURCE_ROOT; };
+		AB3C71F3170CA8D3004A91DB /* NSIndexPath+JNWAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSIndexPath+JNWAdditions.m"; path = "JNWCollectionView/NSIndexPath+JNWAdditions.m"; sourceTree = SOURCE_ROOT; };
+		AB3C7205170CA8EF004A91DB /* JNWCollectionView-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "JNWCollectionView-Info.plist"; path = "JNWCollectionView/JNWCollectionView-Info.plist"; sourceTree = SOURCE_ROOT; };
+		AB3C7206170CA8EF004A91DB /* JNWCollectionView-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JNWCollectionView-Prefix.pch"; path = "JNWCollectionView/JNWCollectionView-Prefix.pch"; sourceTree = SOURCE_ROOT; };
+		AB3C720B170CA8F3004A91DB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = JNWCollectionView/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
+		AB3C720E170CA965004A91DB /* JNWCollectionViewTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewTests.h; path = JNWCollectionViewTests/JNWCollectionViewTests.h; sourceTree = SOURCE_ROOT; };
+		AB3C720F170CA965004A91DB /* JNWCollectionViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewTests.m; path = JNWCollectionViewTests/JNWCollectionViewTests.m; sourceTree = SOURCE_ROOT; };
+		AB3C7212170CA981004A91DB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = JNWCollectionViewTests/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
+		AB3C7214170CA990004A91DB /* JNWCollectionViewTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "JNWCollectionViewTests-Info.plist"; path = "JNWCollectionViewTests/JNWCollectionViewTests-Info.plist"; sourceTree = SOURCE_ROOT; };
+		ABB023F1170791D300537A92 /* JNWCollectionView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JNWCollectionView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABB023F4170791D300537A92 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		ABB023F7170791D300537A92 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		ABB023F8170791D300537A92 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		ABB023F9170791D300537A92 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		ABB023FC170791D300537A92 /* JNWTableView-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "JNWTableView-Info.plist"; sourceTree = "<group>"; };
-		ABB023FE170791D300537A92 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		ABB02400170791D300537A92 /* JNWTableView-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JNWTableView-Prefix.pch"; sourceTree = "<group>"; };
-		ABB02409170791D300537A92 /* JNWTableViewTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JNWTableViewTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		ABB02409170791D300537A92 /* JNWCollectionViewTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JNWCollectionViewTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABB0240A170791D300537A92 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		ABB02412170791D300537A92 /* JNWTableViewTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "JNWTableViewTests-Info.plist"; sourceTree = "<group>"; };
-		ABB02414170791D300537A92 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		ABB02416170791D300537A92 /* JNWTableViewTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JNWTableViewTests.h; sourceTree = "<group>"; };
-		ABB02417170791D300537A92 /* JNWTableViewTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JNWTableViewTests.m; sourceTree = "<group>"; };
-		ABB024211707921B00537A92 /* JNWTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNWTableView.h; sourceTree = "<group>"; };
-		ABB024221707921B00537A92 /* JNWTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNWTableView.m; sourceTree = "<group>"; };
-		ABB024231707921B00537A92 /* JNWTableView+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JNWTableView+Private.h"; sourceTree = "<group>"; };
-		ABB024241707921B00537A92 /* JNWTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNWTableViewCell.h; sourceTree = "<group>"; };
-		ABB024251707921B00537A92 /* JNWTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNWTableViewCell.m; sourceTree = "<group>"; };
-		ABB024261707921B00537A92 /* JNWTableViewCell+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JNWTableViewCell+Private.h"; sourceTree = "<group>"; };
-		ABB024271707921B00537A92 /* JNWTableViewHeaderFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNWTableViewHeaderFooterView.h; sourceTree = "<group>"; };
-		ABB024281707921B00537A92 /* JNWTableViewHeaderFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNWTableViewHeaderFooterView.m; sourceTree = "<group>"; };
-		ABB024291707921B00537A92 /* JNWTableViewSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNWTableViewSection.h; sourceTree = "<group>"; };
-		ABB0242A1707921B00537A92 /* JNWTableViewSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNWTableViewSection.m; sourceTree = "<group>"; };
-		ABB0242B1707921B00537A92 /* NSIndexPath+JNWAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexPath+JNWAdditions.h"; sourceTree = "<group>"; };
-		ABB0242C1707921B00537A92 /* NSIndexPath+JNWAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+JNWAdditions.m"; sourceTree = "<group>"; };
 		ABB024581707936300537A92 /* NSColor+RBLCGColorAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSColor+RBLCGColorAdditions.h"; path = "external/Rebel/Rebel/NSColor+RBLCGColorAdditions.h"; sourceTree = SOURCE_ROOT; };
 		ABB024591707936300537A92 /* NSColor+RBLCGColorAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSColor+RBLCGColorAdditions.m"; path = "external/Rebel/Rebel/NSColor+RBLCGColorAdditions.m"; sourceTree = SOURCE_ROOT; };
 		ABB0245A1707936300537A92 /* RBLClipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RBLClipView.h; path = external/Rebel/Rebel/RBLClipView.h; sourceTree = SOURCE_ROOT; };
@@ -103,9 +97,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB3C7216170CAADB004A91DB /* QuartzCore.framework in Frameworks */,
 				ABB0240B170791D300537A92 /* SenTestingKit.framework in Frameworks */,
 				ABB0240C170791D300537A92 /* Cocoa.framework in Frameworks */,
-				ABB0240F170791D300537A92 /* JNWTableView.framework in Frameworks */,
+				ABB0240F170791D300537A92 /* JNWCollectionView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,9 +110,8 @@
 		ABB023E7170791D300537A92 = {
 			isa = PBXGroup;
 			children = (
-				ABB024671707937F00537A92 /* QuartzCore.framework */,
 				ABB023FA170791D300537A92 /* JNWTableView */,
-				ABB02410170791D300537A92 /* JNWTableViewTests */,
+				ABB02410170791D300537A92 /* JNWCollectionViewTests */,
 				ABB023F3170791D300537A92 /* Frameworks */,
 				ABB023F2170791D300537A92 /* Products */,
 			);
@@ -126,8 +120,8 @@
 		ABB023F2170791D300537A92 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				ABB023F1170791D300537A92 /* JNWTableView.framework */,
-				ABB02409170791D300537A92 /* JNWTableViewTests.octest */,
+				ABB023F1170791D300537A92 /* JNWCollectionView.framework */,
+				ABB02409170791D300537A92 /* JNWCollectionViewTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -135,6 +129,7 @@
 		ABB023F3170791D300537A92 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				ABB024671707937F00537A92 /* QuartzCore.framework */,
 				ABB023F4170791D300537A92 /* Cocoa.framework */,
 				ABB0240A170791D300537A92 /* SenTestingKit.framework */,
 				ABB023F6170791D300537A92 /* Other Frameworks */,
@@ -155,19 +150,19 @@
 		ABB023FA170791D300537A92 /* JNWTableView */ = {
 			isa = PBXGroup;
 			children = (
+				AB3C71E8170CA8D3004A91DB /* JNWTableView.h */,
+				AB3C71E9170CA8D3004A91DB /* JNWTableView.m */,
+				AB3C71EA170CA8D3004A91DB /* JNWTableView+Private.h */,
+				AB3C71EB170CA8D3004A91DB /* JNWTableViewCell.h */,
+				AB3C71EC170CA8D3004A91DB /* JNWTableViewCell.m */,
+				AB3C71ED170CA8D3004A91DB /* JNWTableViewCell+Private.h */,
+				AB3C71EE170CA8D3004A91DB /* JNWTableViewHeaderFooterView.h */,
+				AB3C71EF170CA8D3004A91DB /* JNWTableViewHeaderFooterView.m */,
+				AB3C71F0170CA8D3004A91DB /* JNWTableViewSection.h */,
+				AB3C71F1170CA8D3004A91DB /* JNWTableViewSection.m */,
+				AB3C71F2170CA8D3004A91DB /* NSIndexPath+JNWAdditions.h */,
+				AB3C71F3170CA8D3004A91DB /* NSIndexPath+JNWAdditions.m */,
 				ABB024571707934300537A92 /* external */,
-				ABB024211707921B00537A92 /* JNWTableView.h */,
-				ABB024221707921B00537A92 /* JNWTableView.m */,
-				ABB024231707921B00537A92 /* JNWTableView+Private.h */,
-				ABB024241707921B00537A92 /* JNWTableViewCell.h */,
-				ABB024251707921B00537A92 /* JNWTableViewCell.m */,
-				ABB024261707921B00537A92 /* JNWTableViewCell+Private.h */,
-				ABB024271707921B00537A92 /* JNWTableViewHeaderFooterView.h */,
-				ABB024281707921B00537A92 /* JNWTableViewHeaderFooterView.m */,
-				ABB024291707921B00537A92 /* JNWTableViewSection.h */,
-				ABB0242A1707921B00537A92 /* JNWTableViewSection.m */,
-				ABB0242B1707921B00537A92 /* NSIndexPath+JNWAdditions.h */,
-				ABB0242C1707921B00537A92 /* NSIndexPath+JNWAdditions.m */,
 				ABB023FB170791D300537A92 /* Supporting Files */,
 			);
 			path = JNWTableView;
@@ -176,28 +171,29 @@
 		ABB023FB170791D300537A92 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				ABB023FC170791D300537A92 /* JNWTableView-Info.plist */,
-				ABB023FD170791D300537A92 /* InfoPlist.strings */,
-				ABB02400170791D300537A92 /* JNWTableView-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		ABB02410170791D300537A92 /* JNWTableViewTests */ = {
+		ABB02410170791D300537A92 /* JNWCollectionViewTests */ = {
 			isa = PBXGroup;
 			children = (
-				ABB02416170791D300537A92 /* JNWTableViewTests.h */,
-				ABB02417170791D300537A92 /* JNWTableViewTests.m */,
+				AB3C7214170CA990004A91DB /* JNWCollectionViewTests-Info.plist */,
+				AB3C720A170CA8F3004A91DB /* InfoPlist.strings */,
+				AB3C720E170CA965004A91DB /* JNWCollectionViewTests.h */,
+				AB3C720F170CA965004A91DB /* JNWCollectionViewTests.m */,
 				ABB02411170791D300537A92 /* Supporting Files */,
 			);
+			name = JNWCollectionViewTests;
 			path = JNWTableViewTests;
 			sourceTree = "<group>";
 		};
 		ABB02411170791D300537A92 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				ABB02412170791D300537A92 /* JNWTableViewTests-Info.plist */,
-				ABB02413170791D300537A92 /* InfoPlist.strings */,
+				AB3C7205170CA8EF004A91DB /* JNWCollectionView-Info.plist */,
+				AB3C7206170CA8EF004A91DB /* JNWCollectionView-Prefix.pch */,
+				AB3C7211170CA981004A91DB /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -222,25 +218,26 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ABB0242D1707921B00537A92 /* JNWTableView.h in Headers */,
-				ABB024311707921B00537A92 /* JNWTableViewCell.h in Headers */,
-				ABB024351707921B00537A92 /* JNWTableViewHeaderFooterView.h in Headers */,
-				ABB0243B1707921B00537A92 /* NSIndexPath+JNWAdditions.h in Headers */,
+				AB3C71F4170CA8D3004A91DB /* JNWTableView.h in Headers */,
+				AB3C71F8170CA8D3004A91DB /* JNWTableViewCell.h in Headers */,
+				AB3C71FC170CA8D3004A91DB /* JNWTableViewHeaderFooterView.h in Headers */,
+				AB3C7202170CA8D3004A91DB /* NSIndexPath+JNWAdditions.h in Headers */,
 				ABB024641707936300537A92 /* RBLScrollView.h in Headers */,
-				ABB024381707921B00537A92 /* JNWTableViewSection.h in Headers */,
-				ABB024301707921B00537A92 /* JNWTableView+Private.h in Headers */,
-				ABB024341707921B00537A92 /* JNWTableViewCell+Private.h in Headers */,
 				ABB0245E1707936300537A92 /* NSColor+RBLCGColorAdditions.h in Headers */,
 				ABB024611707936300537A92 /* RBLClipView.h in Headers */,
+				AB3C71F7170CA8D3004A91DB /* JNWTableView+Private.h in Headers */,
+				AB3C71FB170CA8D3004A91DB /* JNWTableViewCell+Private.h in Headers */,
+				AB3C71FF170CA8D3004A91DB /* JNWTableViewSection.h in Headers */,
+				AB3C7209170CA8EF004A91DB /* JNWCollectionView-Prefix.pch in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		ABB023F0170791D300537A92 /* JNWTableView */ = {
+		ABB023F0170791D300537A92 /* JNWCollectionView */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = ABB0241B170791D300537A92 /* Build configuration list for PBXNativeTarget "JNWTableView" */;
+			buildConfigurationList = ABB0241B170791D300537A92 /* Build configuration list for PBXNativeTarget "JNWCollectionView" */;
 			buildPhases = (
 				ABB023EC170791D300537A92 /* Sources */,
 				ABB023ED170791D300537A92 /* Frameworks */,
@@ -251,14 +248,14 @@
 			);
 			dependencies = (
 			);
-			name = JNWTableView;
+			name = JNWCollectionView;
 			productName = JNWTableView;
-			productReference = ABB023F1170791D300537A92 /* JNWTableView.framework */;
+			productReference = ABB023F1170791D300537A92 /* JNWCollectionView.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		ABB02408170791D300537A92 /* JNWTableViewTests */ = {
+		ABB02408170791D300537A92 /* JNWCollectionViewTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = ABB0241E170791D300537A92 /* Build configuration list for PBXNativeTarget "JNWTableViewTests" */;
+			buildConfigurationList = ABB0241E170791D300537A92 /* Build configuration list for PBXNativeTarget "JNWCollectionViewTests" */;
 			buildPhases = (
 				ABB02404170791D300537A92 /* Sources */,
 				ABB02405170791D300537A92 /* Frameworks */,
@@ -270,9 +267,9 @@
 			dependencies = (
 				ABB0240E170791D300537A92 /* PBXTargetDependency */,
 			);
-			name = JNWTableViewTests;
+			name = JNWCollectionViewTests;
 			productName = JNWTableViewTests;
-			productReference = ABB02409170791D300537A92 /* JNWTableViewTests.octest */;
+			productReference = ABB02409170791D300537A92 /* JNWCollectionViewTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -284,7 +281,7 @@
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = AppJon;
 			};
-			buildConfigurationList = ABB023EB170791D300537A92 /* Build configuration list for PBXProject "JNWTableView" */;
+			buildConfigurationList = ABB023EB170791D300537A92 /* Build configuration list for PBXProject "JNWCollectionView" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -296,8 +293,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				ABB023F0170791D300537A92 /* JNWTableView */,
-				ABB02408170791D300537A92 /* JNWTableViewTests */,
+				ABB023F0170791D300537A92 /* JNWCollectionView */,
+				ABB02408170791D300537A92 /* JNWCollectionViewTests */,
 			);
 		};
 /* End PBXProject section */
@@ -307,7 +304,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ABB023FF170791D300537A92 /* InfoPlist.strings in Resources */,
+				AB3C720C170CA8F3004A91DB /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,7 +312,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ABB02415170791D300537A92 /* InfoPlist.strings in Resources */,
+				AB3C7249170CAD13004A91DB /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,14 +339,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ABB0242E1707921B00537A92 /* JNWTableView.m in Sources */,
-				ABB024321707921B00537A92 /* JNWTableViewCell.m in Sources */,
-				ABB024361707921B00537A92 /* JNWTableViewHeaderFooterView.m in Sources */,
-				ABB024391707921B00537A92 /* JNWTableViewSection.m in Sources */,
-				ABB0243C1707921B00537A92 /* NSIndexPath+JNWAdditions.m in Sources */,
 				ABB0245F1707936300537A92 /* NSColor+RBLCGColorAdditions.m in Sources */,
 				ABB024621707936300537A92 /* RBLClipView.m in Sources */,
 				ABB024651707936300537A92 /* RBLScrollView.m in Sources */,
+				AB3C71F5170CA8D3004A91DB /* JNWTableView.m in Sources */,
+				AB3C71F9170CA8D3004A91DB /* JNWTableViewCell.m in Sources */,
+				AB3C71FD170CA8D3004A91DB /* JNWTableViewHeaderFooterView.m in Sources */,
+				AB3C7200170CA8D3004A91DB /* JNWTableViewSection.m in Sources */,
+				AB3C7203170CA8D3004A91DB /* NSIndexPath+JNWAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -357,15 +354,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ABB02418170791D300537A92 /* JNWTableViewTests.m in Sources */,
-				ABB0242F1707921B00537A92 /* JNWTableView.m in Sources */,
-				ABB024331707921B00537A92 /* JNWTableViewCell.m in Sources */,
-				ABB024371707921B00537A92 /* JNWTableViewHeaderFooterView.m in Sources */,
-				ABB0243A1707921B00537A92 /* JNWTableViewSection.m in Sources */,
-				ABB0243D1707921B00537A92 /* NSIndexPath+JNWAdditions.m in Sources */,
-				ABB024601707936300537A92 /* NSColor+RBLCGColorAdditions.m in Sources */,
-				ABB024631707936300537A92 /* RBLClipView.m in Sources */,
-				ABB024661707936300537A92 /* RBLScrollView.m in Sources */,
+				AB3C7210170CA965004A91DB /* JNWCollectionViewTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,24 +363,24 @@
 /* Begin PBXTargetDependency section */
 		ABB0240E170791D300537A92 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = ABB023F0170791D300537A92 /* JNWTableView */;
+			target = ABB023F0170791D300537A92 /* JNWCollectionView */;
 			targetProxy = ABB0240D170791D300537A92 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		ABB023FD170791D300537A92 /* InfoPlist.strings */ = {
+		AB3C720A170CA8F3004A91DB /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				ABB023FE170791D300537A92 /* en */,
+				AB3C720B170CA8F3004A91DB /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		ABB02413170791D300537A92 /* InfoPlist.strings */ = {
+		AB3C7211170CA981004A91DB /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				ABB02414170791D300537A92 /* en */,
+				AB3C7212170CA981004A91DB /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -466,12 +455,12 @@
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "JNWTableView/JNWTableView-Prefix.pch";
-				INFOPLIST_FILE = "JNWTableView/JNWTableView-Info.plist";
+				GCC_PREFIX_HEADER = "JNWCollectionView/JNWCollectionView-Prefix.pch";
+				INFOPLIST_FILE = "JNWCollectionView/JNWCollectionView-Info.plist";
 				INSTALL_PATH = "@rpath";
 				LD_DYLIB_INSTALL_NAME = "@rpath/$(PRODUCT_NAME).$(WRAPPER_EXTENSION)/$(PRODUCT_NAME)";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = JNWCollectionView;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -484,12 +473,12 @@
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "JNWTableView/JNWTableView-Prefix.pch";
-				INFOPLIST_FILE = "JNWTableView/JNWTableView-Info.plist";
+				GCC_PREFIX_HEADER = "JNWCollectionView/JNWCollectionView-Prefix.pch";
+				INFOPLIST_FILE = "JNWCollectionView/JNWCollectionView-Info.plist";
 				INSTALL_PATH = "@rpath";
 				LD_DYLIB_INSTALL_NAME = "@rpath/$(PRODUCT_NAME).$(WRAPPER_EXTENSION)/$(PRODUCT_NAME)";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = JNWCollectionView;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;
@@ -500,9 +489,9 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "JNWTableView/JNWTableView-Prefix.pch";
-				INFOPLIST_FILE = "JNWTableViewTests/JNWTableViewTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "JNWCollectionView/JNWCollectionView-Prefix.pch";
+				INFOPLIST_FILE = "JNWCollectionViewTests/JNWCollectionViewTests-Info.plist";
+				PRODUCT_NAME = JNWCollectionViewTests;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
@@ -513,9 +502,9 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "JNWTableView/JNWTableView-Prefix.pch";
-				INFOPLIST_FILE = "JNWTableViewTests/JNWTableViewTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "JNWCollectionView/JNWCollectionView-Prefix.pch";
+				INFOPLIST_FILE = "JNWCollectionViewTests/JNWCollectionViewTests-Info.plist";
+				PRODUCT_NAME = JNWCollectionViewTests;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
@@ -523,7 +512,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		ABB023EB170791D300537A92 /* Build configuration list for PBXProject "JNWTableView" */ = {
+		ABB023EB170791D300537A92 /* Build configuration list for PBXProject "JNWCollectionView" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				ABB02419170791D300537A92 /* Debug */,
@@ -532,7 +521,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		ABB0241B170791D300537A92 /* Build configuration list for PBXNativeTarget "JNWTableView" */ = {
+		ABB0241B170791D300537A92 /* Build configuration list for PBXNativeTarget "JNWCollectionView" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				ABB0241C170791D300537A92 /* Debug */,
@@ -541,7 +530,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		ABB0241E170791D300537A92 /* Build configuration list for PBXNativeTarget "JNWTableViewTests" */ = {
+		ABB0241E170791D300537A92 /* Build configuration list for PBXNativeTarget "JNWCollectionViewTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				ABB0241F170791D300537A92 /* Debug */,

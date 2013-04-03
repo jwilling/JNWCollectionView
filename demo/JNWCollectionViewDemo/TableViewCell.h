@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 AppJon. All rights reserved.
 //
 
-#import <JNWTableView/JNWTableViewCell.h>
+#import <JNWCollectionView/JNWTableViewCell.h>
 
 @interface TableViewCell : JNWTableViewCell
 

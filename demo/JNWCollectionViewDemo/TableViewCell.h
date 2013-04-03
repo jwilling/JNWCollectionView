@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 AppJon. All rights reserved.
 //
 
-#import <JNWCollectionView/JNWTableViewCell.h>
+#import <JNWCollectionView/JNWCollectionViewCell.h>
 
-@interface TableViewCell : JNWTableViewCell
+@interface TableViewCell : JNWCollectionViewCell
 
 @property (nonatomic, copy) NSString *cellLabelText;
 

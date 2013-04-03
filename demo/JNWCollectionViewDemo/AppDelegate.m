@@ -19,7 +19,7 @@
 	[self.tableView reloadData];
 }
 
-- (JNWTableViewCell *)tableView:(JNWTableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (JNWCollectionViewCell *)tableView:(JNWCollectionView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	static NSString * const identifier = @"CELL";
 	TableViewCell *cell = (TableViewCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
 	
@@ -32,7 +32,7 @@
 	return cell;
 }
 
-- (JNWTableViewHeaderFooterView *)tableView:(JNWTableView *)tableView viewForHeaderInSection:(NSInteger)section {
+- (JNWCollectionViewHeaderFooterView *)tableView:(JNWCollectionView *)tableView viewForHeaderInSection:(NSInteger)section {
 	static NSString * const identifier = @"HEADER";
 	TableViewHeader *header = (TableViewHeader *)[tableView dequeueReusableHeaderFooterViewWithIdentifer:identifier];
 	
@@ -58,19 +58,19 @@
 //	return footer;
 //}
 
-- (CGFloat)tableView:(JNWTableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(JNWCollectionView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return 44.f;
 }
 
-- (NSUInteger)tableView:(JNWTableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSUInteger)tableView:(JNWCollectionView *)tableView numberOfRowsInSection:(NSInteger)section {
 	return 100;
 }
 
--  (NSInteger)numberOfSectionsInTableView:(JNWTableView *)tableView {
+-  (NSInteger)numberOfSectionsInTableView:(JNWCollectionView *)tableView {
 	return 8;
 }
 
-- (CGFloat)tableView:(JNWTableView *)tableView heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)tableView:(JNWCollectionView *)tableView heightForHeaderInSection:(NSInteger)section {
 	return 24.f;
 }
 

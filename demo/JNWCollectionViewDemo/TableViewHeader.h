@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 AppJon. All rights reserved.
 //
 
-#import <JNWCollectionView/JNWTableViewHeaderFooterView.h>
+#import <JNWCollectionView/JNWCollectionViewHeaderFooterView.h>
 
-@interface TableViewHeader : JNWTableViewHeaderFooterView
+@interface TableViewHeader : JNWCollectionViewHeaderFooterView
 
 @property (nonatomic, copy) NSString *headerLabelText;
 

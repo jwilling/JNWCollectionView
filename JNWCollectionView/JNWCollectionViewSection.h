@@ -13,7 +13,7 @@ typedef struct {
 	CGFloat yOffset;
 } JNWTableViewRowInfo;
 
-@interface JNWTableViewSection : NSObject
+@interface JNWCollectionViewSection : NSObject
 
 - (instancetype)initWithNumberOfRows:(NSInteger)numberOfRows;
 - (CGFloat)heightForRowAtIndex:(NSInteger)index;

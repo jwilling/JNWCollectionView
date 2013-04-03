@@ -8,8 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class JNWTableViewCellBackgroundView, JNWTableView;
-@interface JNWTableViewCell : NSView
+@class JNWCollectionViewCellBackgroundView, JNWCollectionView;
+@interface JNWCollectionViewCell : NSView
 
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier;
 
@@ -17,7 +17,7 @@
 //- (void)setSelected:(BOOL)selected;
 
 
-@property (nonatomic, assign, readonly) JNWTableView *tableView;
+@property (nonatomic, assign, readonly) JNWCollectionView *tableView;
 
 @property (nonatomic, assign) BOOL selected;
 
@@ -28,7 +28,7 @@
 @property (nonatomic, strong) NSColor *backgroundColor;
 
 @property (nonatomic, strong, readonly) NSView *content;
-@property (nonatomic, strong, readonly) JNWTableViewCellBackgroundView *backgroundView;
+@property (nonatomic, strong, readonly) JNWCollectionViewCellBackgroundView *backgroundView;
 
 @property (nonatomic, copy, readonly) NSString *reuseIdentifier;
 

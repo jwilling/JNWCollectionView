@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 AppJon. All rights reserved.
 //
 
-#import "JNWTableView.h"
+#import "JNWCollectionView.h"
 
-@interface JNWTableViewCell ()
-@property (nonatomic, assign, readwrite) JNWTableView *tableView;
+@interface JNWCollectionViewCell ()
+@property (nonatomic, assign, readwrite) JNWCollectionView *tableView;
 @end

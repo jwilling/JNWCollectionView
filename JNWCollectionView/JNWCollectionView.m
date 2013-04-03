@@ -1,8 +1,8 @@
-#import "JNWTableView.h"
+#import "JNWCollectionView.h"
 #import "RBLClipView.h"
-#import "JNWTableViewSection.h"
-#import "JNWTableView+Private.h"
-#import "JNWTableViewCell+Private.h"
+#import "JNWCollectionViewSection.h"
+#import "JNWCollectionView+Private.h"
+#import "JNWCollectionViewCell+Private.h"
 #import <QuartzCore/QuartzCore.h>
 
 static const NSUInteger JNWTableViewMaximumNumberOfQueuedCells = 2;
@@ -14,7 +14,7 @@ typedef NS_ENUM(NSInteger, JNWTableViewSelectionType) {
 	JNWTableViewSelectionTypeMultiple
 };
 
-@interface JNWTableView() {
+@interface JNWCollectionView() {
 	struct {
 		unsigned int delegateHeightForRow;
 		unsigned int delegateHeightForHeader;
@@ -42,9 +42,9 @@ typedef NS_ENUM(NSInteger, JNWTableViewSelectionType) {
 
 @end
 
-@implementation JNWTableView
+@implementation JNWCollectionView
 
-static void JNWTableViewCommonInit(JNWTableView *_self) {
+static void JNWTableViewCommonInit(JNWCollectionView *_self) {
 	_self.sectionData = [NSMutableArray array];
 	_self.selectedIndexes = [NSMutableArray array];
 	_self.visibleCellsMap = [NSMutableDictionary dictionary];
@@ -139,21 +139,21 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 	[reusableCells addObject:item];
 }
 
-- (JNWTableViewHeaderFooterView *)dequeueReusableHeaderFooterViewWithIdentifer:(NSString *)identifier {
+- (JNWCollectionViewHeaderFooterView *)dequeueReusableHeaderFooterViewWithIdentifer:(NSString *)identifier {
 	return [self dequeueItemWithIdentifier:identifier inReusePool:self.reusableTableHeadersFooters];
 }
 
-- (void)enqueueReusableHeaderFooterView:(JNWTableViewHeaderFooterView *)view withIdentifier:(NSString *)identifier {
+- (void)enqueueReusableHeaderFooterView:(JNWCollectionViewHeaderFooterView *)view withIdentifier:(NSString *)identifier {
 	[self enqueueItem:view withIdentifier:identifier inReusePool:self.reusableTableHeadersFooters];
 }
 
-- (JNWTableViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier {
-	JNWTableViewCell *cell = [self dequeueItemWithIdentifier:identifier inReusePool:self.reusableTableCells];
+- (JNWCollectionViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier {
+	JNWCollectionViewCell *cell = [self dequeueItemWithIdentifier:identifier inReusePool:self.reusableTableCells];
 	[cell prepareForReuse];
 	return cell; 
 }
 
-- (void)enqueueReusableCell:(JNWTableViewCell *)cell withIdentifier:(NSString *)identifier {
+- (void)enqueueReusableCell:(JNWCollectionViewCell *)cell withIdentifier:(NSString *)identifier {
 	[self enqueueItem:cell withIdentifier:identifier inReusePool:self.reusableTableCells];
 }
 
@@ -182,7 +182,7 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 			NSInteger headerHeight = (_tableFlags.delegateHeightForHeader ? [self.delegate tableView:self heightForHeaderInSection:section] : 0);
 			NSInteger footerHeight = (_tableFlags.delegateHeightForFooter ? [self.delegate tableView:self heightForFooterInSection:section] : 0);
 			
-			JNWTableViewSection *sectionInfo = [[JNWTableViewSection alloc] initWithNumberOfRows:numberOfRows];
+			JNWCollectionViewSection *sectionInfo = [[JNWCollectionViewSection alloc] initWithNumberOfRows:numberOfRows];
 			sectionInfo.index = section;
 			sectionInfo.offset = tableViewHeight + headerHeight;
 			sectionInfo.height = 0;
@@ -224,7 +224,7 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 - (NSInteger)numberOfRowsInSection:(NSInteger)section {
 	if (self.sectionData.count < section)
 		return 0.f;
-	return [(JNWTableViewSection *)self.sectionData[section] numberOfRows];
+	return [(JNWCollectionViewSection *)self.sectionData[section] numberOfRows];
 }
 
 - (NSIndexPath *)indexPathForRowAtPoint:(CGPoint)point {
@@ -238,7 +238,7 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 
 - (NSArray *)allIndexPaths {
 	NSMutableArray *indexPaths = [NSMutableArray array];
-	for (JNWTableViewSection *section in self.sectionData) {
+	for (JNWCollectionViewSection *section in self.sectionData) {
 		for (NSInteger row = 0; row < section.numberOfRows; row++) {
 			[indexPaths addObject:[NSIndexPath jnw_indexPathForRow:row inSection:section.index]];
 		}
@@ -253,7 +253,7 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 	CGFloat top = rect.origin.y;
 	CGFloat bottom = rect.origin.y + rect.size.height;
 	
-	for (JNWTableViewSection *section in self.sectionData) {
+	for (JNWCollectionViewSection *section in self.sectionData) {
 		NSUInteger numberOfRows = section.numberOfRows;
 		if (section.offset + section.height < top || section.offset > bottom) {
 			continue;
@@ -279,11 +279,11 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 	return [self indexPathsForRowsInRect:self.documentVisibleRect];
 }
 
-- (JNWTableViewHeaderFooterView *)headerViewForSection:(NSInteger)section {
+- (JNWCollectionViewHeaderFooterView *)headerViewForSection:(NSInteger)section {
 	return self.visibleTableHeaders[@(section)];
 }
 
-- (JNWTableViewHeaderFooterView *)footerViewForSection:(NSInteger)section {
+- (JNWCollectionViewHeaderFooterView *)footerViewForSection:(NSInteger)section {
 	return self.visibleTableFooters[@(section)];
 }
 
@@ -327,29 +327,29 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 	if (indexPath == nil || indexPath.section >= self.sectionData.count)
 		return CGRectZero;
 	
-	JNWTableViewSection *section = self.sectionData[indexPath.section];
+	JNWCollectionViewSection *section = self.sectionData[indexPath.section];
 	CGFloat offset = [section realOffsetForRowAtIndex:indexPath.row];
 	CGFloat height = [section heightForRowAtIndex:indexPath.row];
 	return CGRectMake(0.f, offset, self.bounds.size.width, height);
 }
 
 - (CGRect)rectForHeaderInSection:(NSInteger)index {
-	JNWTableViewSection *section = self.sectionData[index];
+	JNWCollectionViewSection *section = self.sectionData[index];
 	return CGRectMake(0.f, section.offset - section.headerHeight, self.bounds.size.width, section.headerHeight);
 }
 
 - (CGRect)rectForFooterInSection:(NSInteger)index {
-	JNWTableViewSection *section = self.sectionData[index];
+	JNWCollectionViewSection *section = self.sectionData[index];
 	return CGRectMake(0.f, section.offset + section.height, self.bounds.size.width, section.footerHeight);
 }
 
-- (JNWTableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (JNWCollectionViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath == nil)
 		return nil;
 	return self.visibleCellsMap[indexPath];
 }
 
-- (NSIndexPath *)indexPathForCell:(JNWTableViewCell *)cell {
+- (NSIndexPath *)indexPathForCell:(JNWCollectionViewCell *)cell {
 	__block NSIndexPath *indexPath = nil;
 	
 	[self.visibleCellsMap enumerateKeysAndObjectsUsingBlock:^(id key, id visibleCell, BOOL *stop) {
@@ -369,7 +369,7 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 	
 	NSMutableIndexSet *visibleHeaders = [NSMutableIndexSet indexSet];
 	
-	for (JNWTableViewSection *section in self.sectionData) {
+	for (JNWCollectionViewSection *section in self.sectionData) {
 		CGFloat headerTopOffset = section.offset - section.headerHeight;
 		if (section.headerHeight > 0 && section.offset >= top && headerTopOffset <= bottom)
 			[visibleHeaders addIndex:section.index];
@@ -384,7 +384,7 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 	
 	NSMutableIndexSet *visibleFooters = [NSMutableIndexSet indexSet];
 	
-	for (JNWTableViewSection *section in self.sectionData) {
+	for (JNWCollectionViewSection *section in self.sectionData) {
 		CGFloat footerTopOffset = section.offset + section.height;
 		if (section.footerHeight > 0 && footerTopOffset + section.footerHeight >= top && footerTopOffset <= bottom)
 			[visibleFooters addIndex:section.index];
@@ -393,7 +393,7 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 	return visibleFooters;
 }
 
-- (JNWTableViewSection *)sectionForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (JNWCollectionViewSection *)sectionForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath == nil)
 		return nil;
 	
@@ -434,7 +434,7 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 	
 	if (needsVisibleRedraw) {
 		for (NSIndexPath *indexPath in self.visibleCellsMap.allKeys) {
-			JNWTableViewCell *cell = self.visibleCellsMap[indexPath];
+			JNWCollectionViewCell *cell = self.visibleCellsMap[indexPath];
 			cell.frame = [self rectForRowAtIndexPath:indexPath];
 			[cell setNeedsLayout:YES];
 		}
@@ -451,7 +451,7 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 		
 	// Remove old cells and put them in the reuse queue
 	for (NSIndexPath *indexPath in indexPathsToRemove) {
-		JNWTableViewCell *cell = [self cellForRowAtIndexPath:indexPath];
+		JNWCollectionViewCell *cell = [self cellForRowAtIndexPath:indexPath];
 		[self.visibleCellsMap removeObjectForKey:indexPath];
 
 		[self enqueueReusableCell:cell withIdentifier:cell.reuseIdentifier];
@@ -463,7 +463,7 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 	
 	// Add the new cells
 	for (NSIndexPath *indexPath in indexPathsToAdd) {
-		JNWTableViewCell *cell = [self.dataSource tableView:self cellForRowAtIndexPath:indexPath];
+		JNWCollectionViewCell *cell = [self.dataSource tableView:self cellForRowAtIndexPath:indexPath];
 		NSAssert(cell != nil, @"tableView:cellForRowAtIndexPath: must return a non-nil cell.");
 		
 		cell.tableView = self;
@@ -524,7 +524,7 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 	[footerIndexesToAdd removeIndexes:oldVisibleFooterIndexes];
 	
 	[headerIndexesToRemove enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-		JNWTableViewHeaderFooterView *header = [self headerViewForSection:idx];
+		JNWCollectionViewHeaderFooterView *header = [self headerViewForSection:idx];
 		[self.visibleTableHeaders removeObjectForKey:@(idx)];
 		[header removeFromSuperview];
 		
@@ -532,7 +532,7 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 	}];
 	
 	[footerIndexesToRemove enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-		JNWTableViewHeaderFooterView *footer = [self footerViewForSection:idx];
+		JNWCollectionViewHeaderFooterView *footer = [self footerViewForSection:idx];
 		[self.visibleTableFooters removeObjectForKey:@(idx)];
 		[footer removeFromSuperview];
 		
@@ -540,7 +540,7 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 	}];
 	
 	[headerIndexesToAdd enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-		JNWTableViewHeaderFooterView *header = [self.dataSource tableView:self viewForHeaderInSection:idx];
+		JNWCollectionViewHeaderFooterView *header = [self.dataSource tableView:self viewForHeaderInSection:idx];
 		if (header == nil) {
 			NSLog(@"header doesn't exist!");
 		} else {
@@ -552,7 +552,7 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 	}];
 	
 	[footerIndexesToAdd enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-		JNWTableViewHeaderFooterView *footer = [self.dataSource tableView:self viewForFooterInSection:idx];
+		JNWCollectionViewHeaderFooterView *footer = [self.dataSource tableView:self viewForFooterInSection:idx];
 		if (footer == nil) {
 			NSLog(@"footer doesn't exist!");
 		} else {
@@ -628,7 +628,7 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 
 - (void)deselectRowAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
 	// TODO animated
-	JNWTableViewCell *cell = [self cellForRowAtIndexPath:indexPath];
+	JNWCollectionViewCell *cell = [self cellForRowAtIndexPath:indexPath];
 	cell.selected = NO;
 	[self.selectedIndexes removeObject:indexPath];
 }
@@ -643,7 +643,7 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 
 - (void)selectRowAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
 	// TODO animated
-	JNWTableViewCell *cell = [self cellForRowAtIndexPath:indexPath];
+	JNWCollectionViewCell *cell = [self cellForRowAtIndexPath:indexPath];
 	cell.selected = YES;
 	[self.selectedIndexes addObject:indexPath];
 }
@@ -703,7 +703,7 @@ static void JNWTableViewCommonInit(JNWTableView *_self) {
 	[self scrollToRowAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated];
 }
 
-- (void)mouseDownInTableViewCell:(JNWTableViewCell *)cell withEvent:(NSEvent *)event {
+- (void)mouseDownInTableViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
 	NSIndexPath *indexPath = [self indexPathForCell:cell];
 	if (indexPath == nil) {
 		NSLog(@"***index path not found for selection.");

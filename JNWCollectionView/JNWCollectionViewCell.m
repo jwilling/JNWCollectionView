@@ -6,16 +6,16 @@
 //  Copyright (c) 2013 AppJon. All rights reserved.
 //
 
-#import "JNWTableViewCell.h"
-#import "JNWTableViewCell+Private.h"
-#import "JNWTableView+Private.h"
+#import "JNWCollectionViewCell.h"
+#import "JNWCollectionViewCell+Private.h"
+#import "JNWCollectionView+Private.h"
 
-@interface JNWTableViewCellBackgroundView : NSView
+@interface JNWCollectionViewCellBackgroundView : NSView
 @property (nonatomic, strong) NSColor *color;
 @property (nonatomic, strong) NSImage *image;
 @end
 
-@implementation JNWTableViewCellBackgroundView
+@implementation JNWCollectionViewCellBackgroundView
 
 - (id)initWithFrame:(NSRect)frameRect {
 	self = [super initWithFrame:frameRect];
@@ -52,12 +52,12 @@
 
 @end
 
-@interface JNWTableViewCell()
+@interface JNWCollectionViewCell()
 @property (nonatomic, strong, readwrite) NSView *content;
-@property (nonatomic, strong, readwrite) JNWTableViewCellBackgroundView *backgroundView;
+@property (nonatomic, strong, readwrite) JNWCollectionViewCellBackgroundView *backgroundView;
 @end
 
-@implementation JNWTableViewCell
+@implementation JNWCollectionViewCell
 
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
 	self = [super initWithFrame:CGRectZero];
@@ -67,7 +67,7 @@
 	_reuseIdentifier = reuseIdentifier.copy;
 	
 	self.content = [[NSView alloc] initWithFrame:self.bounds];
-	self.backgroundView = [[JNWTableViewCellBackgroundView alloc] initWithFrame:self.bounds];
+	self.backgroundView = [[JNWCollectionViewCellBackgroundView alloc] initWithFrame:self.bounds];
 	
 	self.content.wantsLayer = YES;
 	

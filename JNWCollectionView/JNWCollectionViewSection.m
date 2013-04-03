@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 AppJon. All rights reserved.
 //
 
-#import "JNWTableViewSection.h"
+#import "JNWCollectionViewSection.h"
 
-@implementation JNWTableViewSection
+@implementation JNWCollectionViewSection
 
 - (instancetype)initWithNumberOfRows:(NSInteger)numberOfRows {
 	self = [super init];

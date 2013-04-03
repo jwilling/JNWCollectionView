@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface JNWTableViewHeaderFooterView : NSView
+@interface JNWCollectionViewHeaderFooterView : NSView
 
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier;
 

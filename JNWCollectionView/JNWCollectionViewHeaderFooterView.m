@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 AppJon. All rights reserved.
 //
 
-#import "JNWTableViewHeaderFooterView.h"
+#import "JNWCollectionViewHeaderFooterView.h"
 
-@implementation JNWTableViewHeaderFooterView
+@implementation JNWCollectionViewHeaderFooterView
 
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
 	self = [super initWithFrame:CGRectZero];

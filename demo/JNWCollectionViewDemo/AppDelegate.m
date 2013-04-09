@@ -15,7 +15,6 @@
 - (void)awakeFromNib {
 	self.tableView.delegate = self;
 	self.tableView.dataSource = self;
-	
 	[self.tableView reloadData];
 }
 
@@ -58,9 +57,15 @@
 //	return footer;
 //}
 
+
 - (CGFloat)collectionView:(JNWCollectionView *)tableView heightForItemAtIndexPath:(NSIndexPath *)indexPath {
-	return 44.f;
+	return 88.f;
 }
+
+//- (CGFloat)collectionView:(JNWCollectionView *)collectionView widthForItemAtIndexPath:(NSIndexPath *)indexPath {
+//	return 88.f;
+//}
+
 
 - (NSUInteger)collectionView:(JNWCollectionView *)tableView numberOfItemsInSection:(NSInteger)section {
 	return 100;

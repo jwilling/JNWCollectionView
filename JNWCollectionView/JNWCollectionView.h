@@ -4,12 +4,17 @@
 #import "JNWCollectionViewHeaderFooterView.h"
 #import "NSIndexPath+JNWAdditions.h"
 
-typedef NS_ENUM(NSInteger, JNWTableViewScrollPosition) {
-	JNWTableViewScrollPositionNone, // does not scroll, only selects
-	JNWTableViewScrollPositionNearest,
-	JNWTableViewScrollPositionTop,
-	JNWTableViewScrollPositionMiddle,
-	JNWTableViewScrollPositionBottom
+typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
+	JNWCollectionViewScrollPositionNone, // does not scroll, only selects
+	JNWCollectionViewScrollPositionNearest,
+	JNWCollectionViewScrollPositionTop,
+	JNWCollectionViewScrollPositionMiddle,
+	JNWCollectionViewScrollPositionBottom
+};
+
+typedef NS_ENUM(NSInteger, JNWCollectionViewScrollDirection) {
+	JNWCollectionViewScrollDirectionVertical,
+	JNWCollectionViewScrollDirectionHorizontal
 };
 
 @class JNWCollectionView;
@@ -28,6 +33,17 @@ typedef NS_ENUM(NSInteger, JNWTableViewScrollPosition) {
 - (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForItemAtIndexPath:(NSIndexPath *)indexPath;
 - (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForHeaderInSection:(NSInteger)section;
 - (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForFooterInSection:(NSInteger)section;
+
+- (CGFloat)collectionView:(JNWCollectionView *)collectionView widthForItemAtIndexPath:(NSIndexPath *)indexPath;
+- (CGFloat)collectionView:(JNWCollectionView *)collectionView widthForHeaderInSection:(NSInteger)section;
+- (CGFloat)collectionView:(JNWCollectionView *)collectionView widthForFooterInSection:(NSInteger)section;
+
+// Implemented in place of -collectionView:heightForItemAtIndexPath, for when a width needs to be specified.
+//
+// If both are implemented, this will take priority over -collectionView:heightForItemAtIndexPath.
+//
+// If not implemented, the width defaults to the collection view's width.
+- (CGSize)collectionView:(JNWCollectionView *)collectionView sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
 
 - (BOOL)collectionView:(JNWCollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath; // TODO
 - (void)collectionView:(JNWCollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath; // TODO
@@ -49,7 +65,14 @@ typedef NS_ENUM(NSInteger, JNWTableViewScrollPosition) {
 // is implemented.
 //
 // Defaults to 44.
-@property (nonatomic, assign) CGFloat rowHeight;
+//@property (nonatomic, assign) CGFloat rowHeight;
+
+
+@property (nonatomic, assign) CGSize itemSize;
+@property (nonatomic, assign) CGFloat itemVerticalPadding;
+@property (nonatomic, assign) CGFloat itemHorizontalPadding;
+
+@property (nonatomic, assign) JNWCollectionViewScrollDirection scrollDirection;
 
 - (NSInteger)numberOfSections;
 - (NSInteger)numberOfItemsInSection:(NSInteger)section;
@@ -69,8 +92,8 @@ typedef NS_ENUM(NSInteger, JNWTableViewScrollPosition) {
 - (JNWCollectionViewHeaderFooterView *)headerViewForSection:(NSInteger)section;
 - (JNWCollectionViewHeaderFooterView *)footerViewForSection:(NSInteger)section;
 
-- (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWTableViewScrollPosition)scrollPosition animated:(BOOL)animated;
-- (void)selectItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWTableViewScrollPosition)scrollPosition animated:(BOOL)animated;
+- (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition animated:(BOOL)animated;
+- (void)selectItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition animated:(BOOL)animated;
 
 @property (nonatomic, weak) id<JNWCollectionViewDelegate> delegate;
 @property (nonatomic, weak) id<JNWCollectionViewDataSource> dataSource;

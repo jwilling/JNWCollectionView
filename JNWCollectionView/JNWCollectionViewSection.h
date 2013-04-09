@@ -9,26 +9,35 @@
 #import <Foundation/Foundation.h>
 
 typedef struct {
-	CGFloat rowHeight;
-	CGFloat yOffset;
-} JNWTableViewRowInfo;
+	CGSize size;
+	CGFloat yOffset; // offset from the top of the section
+	CGFloat xOffset; // offset from the left of the section
+} JNWCollectionViewItemInfo;
 
 @interface JNWCollectionViewSection : NSObject
 
-- (instancetype)initWithNumberOfRows:(NSInteger)numberOfRows;
-- (CGFloat)heightForRowAtIndex:(NSInteger)index;
-- (CGFloat)relativeOffsetForRowAtIndex:(NSInteger)index;
-- (CGFloat)realOffsetForRowAtIndex:(NSInteger)index;
+- (instancetype)initWithNumberOfItems:(NSInteger)numberOfItems;
 
-//- (NSInteger)indexForRowAtAbsoluteOffset:(CGFloat)offset;
+- (CGFloat)heightForItemAtIndex:(NSInteger)index;
+- (CGFloat)widthForItemAtIndex:(NSInteger)index;
+- (CGSize)sizeForItemAtIndex:(NSInteger)index;
 
-@property (nonatomic, assign) CGFloat headerHeight;
-@property (nonatomic, assign) CGFloat footerHeight;
+- (CGFloat)relativeVerticalOffsetForItemAtIndex:(NSInteger)index;
+- (CGFloat)relativeHorizontalOffsetForItemAtIndex:(NSInteger)index;
+- (CGFloat)verticalOffsetForItemAtIndex:(NSInteger)index;
+- (CGFloat)horizontalOffsetForItemAtIndex:(NSInteger)index;
+
+@property (nonatomic, assign) NSInteger index;
+@property (nonatomic, assign) NSUInteger numberOfItems;
+@property (nonatomic, readonly) JNWCollectionViewItemInfo *itemInfo;
 
 @property (nonatomic, assign) CGFloat height;
-@property (nonatomic, assign) CGFloat offset;
-@property (nonatomic, assign) NSInteger index;
-@property (nonatomic, assign) NSUInteger numberOfRows;
-@property (nonatomic, readonly) JNWTableViewRowInfo *rowInfo;
+@property (nonatomic, assign) CGFloat width;
+@property (nonatomic, assign) CGFloat headerHeight;
+@property (nonatomic, assign) CGFloat footerHeight;
+@property (nonatomic, assign) CGFloat verticalOffset;
+@property (nonatomic, assign) CGFloat horizontalOffset;
+
+
 
 @end

@@ -10,62 +10,58 @@
 
 @implementation JNWCollectionViewSection
 
-- (instancetype)initWithNumberOfRows:(NSInteger)numberOfRows {
+- (instancetype)initWithNumberOfItems:(NSInteger)numberOfItems {
 	self = [super init];
-	_numberOfRows = numberOfRows;
-	_rowInfo = calloc(numberOfRows, sizeof(JNWTableViewRowInfo));
+	_numberOfItems = numberOfItems;
+	_height = 0;
+	_width = 0;
+	_verticalOffset = 0;
+	_horizontalOffset = 0;
+	_itemInfo = calloc(numberOfItems, sizeof(JNWCollectionViewItemInfo));
 	return self;
 }
 
-//- (NSInteger)indexForRowAtAbsoluteOffset:(CGFloat)offset {
-//	CGFloat relativeOffset = offset - self.offset;
-//	NSInteger low = 0;
-//	NSInteger high = self.numberOfRows;
-//	
-//	if (offset < 0 || offset > self.height)
-//		return NSNotFound;
-//	
-//	return JNWRowInfoBinarySearch(self.rowInfo, low, high, self.numberOfRows, relativeOffset);
-//}
-
-- (CGFloat)heightForRowAtIndex:(NSInteger)index {
-	if (index < self.numberOfRows && index >= 0)
-		return self.rowInfo[index].rowHeight;
+- (CGFloat)heightForItemAtIndex:(NSInteger)index {
+	if (index < self.numberOfItems && index >= 0)
+		return self.itemInfo[index].size.height;
 	return 0.f;
 }
 
-- (CGFloat)relativeOffsetForRowAtIndex:(NSInteger)index {
-	if (index < self.numberOfRows && index >= 0)
-		return self.rowInfo[index].yOffset;
+- (CGFloat)widthForItemAtIndex:(NSInteger)index {
+	if (index < self.numberOfItems && index >= 0)
+		return self.itemInfo[index].size.width;
 	return 0.f;
 }
 
-- (CGFloat)realOffsetForRowAtIndex:(NSInteger)index {
-	return self.offset + [self relativeOffsetForRowAtIndex:index];
+- (CGSize)sizeForItemAtIndex:(NSInteger)index {
+	if (index < self.numberOfItems && index >= 0)
+		return self.itemInfo[index].size;
+	return CGSizeZero;
 }
 
-//NSInteger JNWRowInfoBinarySearch(JNWTableViewRowInfo info[], NSInteger low, NSInteger high, NSInteger numberOfRows, NSInteger offset) {
-//	// Perform a modified binary search to find the row with the specified offset.
-//	while (low <= high) {
-//		NSInteger mid = (low + high) / 2;
-//		JNWTableViewRowInfo midVal = info[mid];
-//		
-//		if (midVal.yOffset <= offset && mid <= numberOfRows - 1 && offset < info[mid + 1].yOffset)
-//			return mid;
-//		else if (midVal.yOffset < offset && mid == numberOfRows - 1 && offset <= midVal.yOffset + midVal.rowHeight)
-//			return mid;
-//		else if (midVal.yOffset < offset)
-//			low = mid + 1;
-//		else if (midVal.yOffset > offset)
-//			high = mid - 1;
-//	}
-//	
-//	return NSNotFound;
-//}
+- (CGFloat)relativeVerticalOffsetForItemAtIndex:(NSInteger)index {
+	if (index < self.numberOfItems && index >= 0)
+		return self.itemInfo[index].yOffset;
+	return 0.f;
+}
+
+- (CGFloat)relativeHorizontalOffsetForItemAtIndex:(NSInteger)index {
+	if (index < self.numberOfItems && index >= 0)
+		return self.itemInfo[index].xOffset;
+	return 0.f;
+}
+
+- (CGFloat)verticalOffsetForItemAtIndex:(NSInteger)index {
+	return self.verticalOffset + [self relativeVerticalOffsetForItemAtIndex:index];
+}
+
+- (CGFloat)horizontalOffsetForItemAtIndex:(NSInteger)index {
+	return self.horizontalOffset + [self relativeHorizontalOffsetForItemAtIndex:index];
+}
 
 - (void)dealloc {
-	if (_rowInfo != NULL)
-		free(_rowInfo);
+	if (_itemInfo != NULL)
+		free(_itemInfo);
 }
 
 @end

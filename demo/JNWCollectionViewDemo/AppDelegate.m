@@ -18,22 +18,22 @@
 	[self.tableView reloadData];
 }
 
-- (JNWCollectionViewCell *)collectionView:(JNWCollectionView *)tableView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (JNWCollectionViewCell *)collectionView:(JNWCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 	static NSString * const identifier = @"CELL";
-	TableViewCell *cell = (TableViewCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
+	TableViewCell *cell = (TableViewCell *)[collectionView dequeueReusableCellWithIdentifier:identifier];
 	
 	if (cell == nil) {
 		cell = [[TableViewCell alloc] initWithReuseIdentifier:identifier];
 	}
 
-	cell.cellLabelText = [NSString stringWithFormat:@"%ld", indexPath.row];
+	cell.cellLabelText = [NSString stringWithFormat:@"%ld", indexPath.item];
 	
 	return cell;
 }
 
-- (JNWCollectionViewHeaderFooterView *)collectionView:(JNWCollectionView *)tableView viewForHeaderInSection:(NSInteger)section {
+- (JNWCollectionViewHeaderFooterView *)collectionView:(JNWCollectionView *)collectionView viewForHeaderInSection:(NSInteger)section {
 	static NSString * const identifier = @"HEADER";
-	TableViewHeader *header = (TableViewHeader *)[tableView dequeueReusableHeaderFooterViewWithIdentifer:identifier];
+	TableViewHeader *header = (TableViewHeader *)[collectionView dequeueReusableHeaderFooterViewWithIdentifer:identifier];
 	
 	if (header == nil) {
 		header = [[TableViewHeader alloc] initWithReuseIdentifier:identifier];
@@ -44,43 +44,24 @@
 	return header;
 }
 
-//- (JNWTableViewHeaderFooterView *)tableView:(JNWTableView *)tableView viewForFooterInSection:(NSInteger)section {
-//	static NSString * const identifier = @"FOOTER";
-//	TableViewHeader *footer = (TableViewHeader *)[tableView dequeueReusableHeaderFooterViewWithIdentifer:identifier];
-//	
-//	if (footer == nil) {
-//		footer = [[TableViewHeader alloc] initWithReuseIdentifier:identifier];
-//	}
-//	
-//	footer.headerLabelText = [NSString stringWithFormat:@"Footer %ld", section];
-//	
-//	return footer;
-//}
 
-
-- (CGFloat)collectionView:(JNWCollectionView *)tableView heightForItemAtIndexPath:(NSIndexPath *)indexPath {
-	return 88.f;
-}
-
-//- (CGFloat)collectionView:(JNWCollectionView *)collectionView widthForItemAtIndexPath:(NSIndexPath *)indexPath {
-//	return 88.f;
-//}
-
-
-- (NSUInteger)collectionView:(JNWCollectionView *)tableView numberOfItemsInSection:(NSInteger)section {
-	return 100;
+- (NSUInteger)collectionView:(JNWCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+	return 200;
 }
 
 -  (NSInteger)numberOfSectionsInCollectionView:(JNWCollectionView *)tableView {
-	return 8;
+	return 3;
 }
 
-- (CGFloat)collectionView:(JNWCollectionView *)tableView heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForItemAtIndexPath:(NSIndexPath *)indexPath {
+	return 44.f;
+}
+- (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForHeaderInSection:(NSInteger)section {
 	return 24.f;
 }
 
-//- (CGFloat)tableView:(JNWTableView *)tableView heightForFooterInSection:(NSInteger)section {
-//	return 24.f;
-//}
+- (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForFooterInSection:(NSInteger)section {
+	return 0.f;
+}
 
 @end

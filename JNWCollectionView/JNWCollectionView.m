@@ -4,6 +4,7 @@
 #import "JNWCollectionView+Private.h"
 #import "JNWCollectionViewCell+Private.h"
 #import <QuartzCore/QuartzCore.h>
+#import "JNWCollectionViewListLayout.h"
 
 //static const NSUInteger JNWCollectionViewMaximumNumberOfQueuedCells = 2;
 //static const CGFloat JNWCollectionViewDefaultRowHeight = 44.f;
@@ -19,14 +20,6 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 
 @interface JNWCollectionView() {
 	struct {
-		unsigned int delegateHeightForItem;
-		unsigned int delegateHeightForHeader;
-		unsigned int delegateHeightForFooter;
-		unsigned int delegateWidthForItem;
-		unsigned int delegateWidthForHeader;
-		unsigned int delegateWidthForFooter;
-		unsigned int delegateSizeForItem;
-		
 		unsigned int dataSourceNumberOfSections;
 		unsigned int dataSourceViewForHeader;
 		unsigned int dataSourceViewForFooter;
@@ -69,6 +62,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	// By default we are layer-backed.
 	_self.wantsLayer = YES;
 	
+	_self.collectionViewLayout = [[JNWCollectionViewListLayout alloc] initWithCollectionView:_self];
+	
 	// Flip the document view since it's easier to lay out
 	// starting from the top, not the bottom.
 	[_self.documentView setFlipped:YES];
@@ -92,14 +87,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 
 - (void)setDelegate:(id<JNWCollectionViewDelegate>)delegate {	
 	_delegate = delegate;
-	_tableFlags.delegateHeightForItem = [delegate respondsToSelector:@selector(collectionView:heightForItemAtIndexPath:)];
-	_tableFlags.delegateHeightForHeader = [delegate respondsToSelector:@selector(collectionView:heightForHeaderInSection:)];
-	_tableFlags.delegateHeightForFooter = [delegate respondsToSelector:@selector(collectionView:heightForFooterInSection:)];
-	_tableFlags.delegateWidthForItem = [delegate respondsToSelector:@selector(collectionView:widthForItemAtIndexPath:)];
-	_tableFlags.delegateWidthForHeader = [delegate respondsToSelector:@selector(collectionView:widthForHeaderAtIndexPath:)];
-	_tableFlags.delegateWidthForFooter = [delegate respondsToSelector:@selector(collectionView:widthForFooterAtIndexPath:)];
-
-	_tableFlags.delegateSizeForItem = [delegate respondsToSelector:@selector(collectionView:sizeForItemAtIndexPath:)];
 }
 
 - (void)setDataSource:(id<JNWCollectionViewDataSource>)dataSource {
@@ -180,99 +167,92 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (void)recalculateItemInfo {
+	NSAssert(self.collectionViewLayout != nil, @"layout cannot be nil.");
+	
 	[self.sectionData removeAllObjects];
 	
-	CGFloat collectionViewHeight = 0.f;
-	CGFloat collectionViewWidth = 0.f;
-	BOOL verticalScroll = (self.scrollDirection == JNWCollectionViewScrollDirectionVertical);
+	
 	// Find how many sections we have in the collection view.
 	// We default to 1 if the data source doesn't implement the optional method.
 	NSUInteger numberOfSections = 1;
 	if (_tableFlags.dataSourceNumberOfSections)
 		numberOfSections = [self.dataSource numberOfSectionsInCollectionView:self];
 	
+	// We run an initial pass through the sections and create empty section data so that
+	// the layout can query for this information when it calculates the frames.
+	for (NSInteger section = 0; section < numberOfSections; section++) {
+		NSInteger numberOfItems = [self.dataSource collectionView:self numberOfItemsInSection:section];
+		JNWCollectionViewSection *sectionInfo = [[JNWCollectionViewSection alloc] initWithNumberOfItems:numberOfItems];
+		sectionInfo.index = section;
+		[self.sectionData addObject:sectionInfo];
+	}
+		
+	
+	// Tell our layout we are about to need new layout data.
+	[self.collectionViewLayout prepareLayout];
+	
+	
+	CGRect contentFrame = CGRectZero;
+
+	// Now we go through and fill in the frames from the layout.
+	for (NSInteger section = 0; section < numberOfSections; section++) {
+		JNWCollectionViewSection *sectionInfo = self.sectionData[section];
+		sectionInfo.headerFrame = [self.collectionViewLayout rectForHeaderAtIndex:section];
+		sectionInfo.footerFrame = [self.collectionViewLayout rectForFooterAtIndex:section];
+		
+		CGRect sectionFrame = CGRectZero;
+		CGRect previousRect = CGRectZero;
+		for (NSInteger item = 0; item < sectionInfo.numberOfItems; item++) {
+			NSIndexPath *indexPath = [NSIndexPath jnw_indexPathForItem:item inSection:section];
+			CGRect itemFrame = [self.collectionViewLayout rectForItemAtIndexPath:indexPath];
+			sectionInfo.itemInfo[item].frame = itemFrame;
+			previousRect = itemFrame;
+			
+			sectionFrame = CGRectUnion(sectionFrame, itemFrame);
+		}
+		
+		sectionFrame = CGRectUnion(sectionFrame, sectionInfo.headerFrame);
+		sectionFrame = CGRectUnion(sectionFrame, sectionInfo.footerFrame);
+		sectionInfo.sectionFrame = sectionFrame;
+		
+		contentFrame = CGRectUnion(contentFrame, sectionFrame);
+	}
+	
+	
+	/*
 	for (NSInteger section = 0; section < numberOfSections; section++) {
 		@autoreleasepool {
 			// Create a new section
 			NSInteger numberOfItems = [self.dataSource collectionView:self numberOfItemsInSection:section];
-			NSInteger headerHeight = (_tableFlags.delegateHeightForHeader ? [self.delegate collectionView:self heightForHeaderInSection:section] : 0);
-			NSInteger footerHeight = (_tableFlags.delegateHeightForFooter ? [self.delegate collectionView:self heightForFooterInSection:section] : 0);
 			
 			JNWCollectionViewSection *sectionInfo = [[JNWCollectionViewSection alloc] initWithNumberOfItems:numberOfItems];
 			sectionInfo.index = section;
-			sectionInfo.headerHeight = headerHeight;
-			sectionInfo.footerHeight = footerHeight;
+			sectionInfo.headerFrame = [self.collectionViewLayout rectForHeaderAtIndex:section];
+			sectionInfo.footerFrame = [self.collectionViewLayout rectForFooterAtIndex:section];
 			
-			if (verticalScroll) {
-				sectionInfo.verticalOffset = collectionViewHeight + headerHeight;
-			} else {
-				sectionInfo.horizontalOffset = collectionViewWidth + headerHeight;
-			}
-			
-			// Calculate the individual height of each row, and also
-			// keep track of the total height of the section.
+			CGRect sectionFrame = CGRectZero;
+			CGRect previousRect = CGRectZero;
 			for (NSInteger item = 0; item < numberOfItems; item++) {
-				CGSize itemSize = CGSizeZero;
-				NSIndexPath *indexPath = [NSIndexPath jnw_indexPathForRow:item inSection:section];
+				NSIndexPath *indexPath = [NSIndexPath jnw_indexPathForItem:item inSection:section];
+				CGRect itemFrame = [self.collectionViewLayout rectForItemAtIndexPath:indexPath];
+				sectionInfo.itemInfo[item].frame = itemFrame;
+				previousRect = itemFrame;
 				
-				if (_tableFlags.delegateSizeForItem) {
-					itemSize = [self.delegate collectionView:self sizeForItemAtIndexPath:indexPath];
-				} else {
-					if (_tableFlags.delegateHeightForItem)
-						itemSize.height = [self.delegate collectionView:self heightForItemAtIndexPath:indexPath];
-					else if (!_tableFlags.delegateWidthForItem) {
-						// when height and width aren't specified
-						itemSize = self.itemSize;
-					} else {
-						itemSize.height = CGRectGetHeight(self.documentVisibleRect) - 2*self.itemVerticalPadding;
-					}
-					
-					if (_tableFlags.delegateWidthForItem) {
-						itemSize.width = [self.delegate collectionView:self widthForItemAtIndexPath:indexPath];
-					} else if (_tableFlags.delegateHeightForItem) {
-						itemSize.width = CGRectGetWidth(self.documentVisibleRect) - 2*self.itemHorizontalPadding;
-					}
-				}
-				
-				// determine the position for the new item
-				CGPoint position = CGPointMake(sectionInfo.width, sectionInfo.height);
-				CGFloat deltaX = 0;
-				CGFloat deltaY = 0;
-				
-				if (self.scrollDirection == JNWCollectionViewScrollDirectionVertical) {
-					if (position.x + 2 * self.itemHorizontalPadding + itemSize.width > CGRectGetWidth(self.documentVisibleRect)) {
-						deltaY = itemSize.height + self.itemVerticalPadding;
-						position.x = self.itemHorizontalPadding;
-						position.y += deltaY;
-						sectionInfo.width = 0;
-						
-					} else {
-						deltaX = self.itemHorizontalPadding + itemSize.width;
-						position.x += self.itemHorizontalPadding;
-					}
-				}
-#warning implement horizontal
-				
-				sectionInfo.itemInfo[item].size = itemSize;
-				sectionInfo.itemInfo[item].xOffset = position.x;
-				sectionInfo.itemInfo[item].yOffset = position.y;
-				
-				sectionInfo.height += deltaY;
-				sectionInfo.width += deltaX;
+				sectionFrame = CGRectUnion(sectionFrame, itemFrame);
 			}
 			
-			collectionViewHeight += sectionInfo.height + headerHeight + footerHeight;
-			collectionViewWidth += sectionInfo.width + headerHeight + footerHeight;
+			sectionFrame = CGRectUnion(sectionFrame, sectionInfo.headerFrame);
+			sectionFrame = CGRectUnion(sectionFrame, sectionInfo.footerFrame);
+			sectionInfo.sectionFrame = sectionFrame;
+			
+			contentFrame = CGRectUnion(contentFrame, sectionFrame);
+	
 			[self.sectionData addObject:sectionInfo];
 		}
 	}
+	 */
 	
-	if (self.scrollDirection == JNWCollectionViewScrollDirectionVertical) {
-		self.contentSize = CGSizeMake(CGRectGetWidth(self.documentVisibleRect), collectionViewHeight);
-	} else {
-		self.contentSize = CGSizeMake(collectionViewWidth, CGRectGetHeight(self.documentVisibleRect));
-	}
-
+	self.contentSize = contentFrame.size;
 }
 
 
@@ -301,7 +281,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	NSMutableArray *indexPaths = [NSMutableArray array];
 	for (JNWCollectionViewSection *section in self.sectionData) {
 		for (NSInteger row = 0; row < section.numberOfItems; row++) {
-			[indexPaths addObject:[NSIndexPath jnw_indexPathForRow:row inSection:section.index]];
+			[indexPaths addObject:[NSIndexPath jnw_indexPathForItem:row inSection:section.index]];
 		}
 	}
 	
@@ -310,35 +290,42 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 
 - (NSArray *)indexPathsForItemsInRect:(CGRect)rect {
 	NSMutableArray *visibleRows = [NSMutableArray array];
-	BOOL verticalScroll = (self.scrollDirection == JNWCollectionViewScrollDirectionVertical);
-	
-	CGFloat side1 = (verticalScroll ? rect.origin.y : rect.origin.x);
-	CGFloat side2 = side1 + (verticalScroll ? rect.size.height : rect.size.width);
 	
 	for (JNWCollectionViewSection *section in self.sectionData) {
-		NSUInteger numberOfItems = section.numberOfItems;
-		if (verticalScroll && (section.verticalOffset + section.height < side1 || section.verticalOffset > side2)) {
+		if (!CGRectIntersectsRect(section.sectionFrame, rect))
 			continue;
-		} else if (!verticalScroll && (section.horizontalOffset + section.width < side1 || section.horizontalOffset > side2)) {
-			continue;
-		}
 		
+		NSUInteger numberOfItems = section.numberOfItems;
 		for (NSInteger item = 0; item < numberOfItems; item++) {
-			CGFloat absoluteItemOffset = (verticalScroll ? section.verticalOffset + section.itemInfo[item].yOffset
-										  : section.horizontalOffset + section.itemInfo[item].xOffset);
-			CGFloat absoluteItemTopOrSide = absoluteItemOffset + (verticalScroll ? section.itemInfo[item].size.height
-																  : section.itemInfo[item].size.width);
-			
-			if (absoluteItemTopOrSide < side1)
-				continue;
-			else if (absoluteItemOffset > side2)
-				break;
-			else if (absoluteItemTopOrSide >= side1 && absoluteItemOffset <= side2) {
-				[visibleRows addObject:[NSIndexPath jnw_indexPathForRow:item inSection:section.index]];
+			if (CGRectIntersectsRect(section.itemInfo[item].frame, rect)) {
+				[visibleRows addObject:[NSIndexPath jnw_indexPathForItem:item inSection:section.index]];
 			}
+			
 		}
 	}
 	return visibleRows;
+}
+
+- (NSIndexSet *)indexesForHeadersInRect:(CGRect)rect {
+	NSMutableIndexSet *visibleHeaders = [NSMutableIndexSet indexSet];
+	
+	for (JNWCollectionViewSection *section in self.sectionData) {
+		if (CGRectIntersectsRect(section.headerFrame, rect) && !CGRectIsEmpty(section.headerFrame))
+			[visibleHeaders addIndex:section.index];
+	}
+	
+	return visibleHeaders;
+}
+
+- (NSIndexSet *)indexesForFootersInRect:(CGRect)rect {
+	NSMutableIndexSet *visibleFooters = [NSMutableIndexSet indexSet];
+	
+	for (JNWCollectionViewSection *section in self.sectionData) {
+		if (CGRectIntersectsRect(section.footerFrame, rect) && !CGRectIsEmpty(section.footerFrame))
+			[visibleFooters addIndex:section.index];
+	}
+	
+	return visibleFooters;
 }
 
 - (NSArray *)indexPathsForVisibleItems {
@@ -354,7 +341,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (BOOL)validateIndexPath:(NSIndexPath *)indexPath {
-	return (indexPath.section < self.sectionData.count && indexPath.row < [self.sectionData[indexPath.section] numberOfItems]);
+	return (indexPath.section < self.sectionData.count && indexPath.item < [self.sectionData[indexPath.section] numberOfItems]);
 }
 
 - (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition animated:(BOOL)animated {
@@ -390,27 +377,36 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (CGRect)rectForItemAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath == nil || indexPath.section >= self.sectionData.count)
-		return CGRectZero;
+	if (indexPath == nil || indexPath.section < self.sectionData.count) {
+		JNWCollectionViewSection *section = self.sectionData[indexPath.section];
+		return section.itemInfo[indexPath.item].frame;
+	}
 	
-	JNWCollectionViewSection *section = self.sectionData[indexPath.section];
-	CGFloat horizontalOffset = [section horizontalOffsetForItemAtIndex:indexPath.row];
-	CGFloat verticalOffset = [section verticalOffsetForItemAtIndex:indexPath.row];
-	return (CGRect){ .size = [section sizeForItemAtIndex:indexPath.row], .origin = CGPointMake(horizontalOffset, verticalOffset)};
+	return CGRectZero;
 }
 
 - (CGRect)rectForHeaderInSection:(NSInteger)index {
-	JNWCollectionViewSection *section = self.sectionData[index];
-#warning implement this
+	if (index >= 0 && index < self.sectionData.count) {
+		JNWCollectionViewSection *section = self.sectionData[index];
+		return section.headerFrame;
+	}
 	return CGRectZero;
-	//return CGRectMake(0.f, section.offset - section.headerHeight, self.bounds.size.width, section.headerHeight);
 }
 
 - (CGRect)rectForFooterInSection:(NSInteger)index {
-	JNWCollectionViewSection *section = self.sectionData[index];
-#warning implement this
+	if (index >= 0 && index < self.sectionData.count) {
+		JNWCollectionViewSection *section = self.sectionData[index];
+		return section.footerFrame;
+	}
 	return CGRectZero;
-	//return CGRectMake(0.f, section.offset + section.height, self.bounds.size.width, section.footerHeight);
+}
+
+- (CGRect)rectForSection:(NSInteger)index {
+	if (index >= 0 && index < self.sectionData.count) {
+		JNWCollectionViewSection *section = self.sectionData[index];
+		return section.sectionFrame;
+	}
+	return CGRectZero;
 }
 
 - (JNWCollectionViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -432,45 +428,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	return indexPath;
 }
 
-
-- (NSIndexSet *)indexesForHeadersInRect:(CGRect)rect {
-#warning implement this
-	/*
-	CGFloat top = rect.origin.y;
-	CGFloat bottom = rect.origin.y + rect.size.height;
-	
-	NSMutableIndexSet *visibleHeaders = [NSMutableIndexSet indexSet];
-	
-	for (JNWCollectionViewSection *section in self.sectionData) {
-		CGFloat headerTopOffset = section.offset - section.headerHeight;
-		if (section.headerHeight > 0 && section.offset >= top && headerTopOffset <= bottom)
-			[visibleHeaders addIndex:section.index];
-	}
-	
-	return visibleHeaders;
-	 */
-	return nil;
-}
-
-- (NSIndexSet *)indexesForFootersInRect:(CGRect)rect {
-#warning implement this
-	/*
-	CGFloat top = rect.origin.y;
-	CGFloat bottom = rect.origin.y + rect.size.height;
-	
-	NSMutableIndexSet *visibleFooters = [NSMutableIndexSet indexSet];
-	
-	for (JNWCollectionViewSection *section in self.sectionData) {
-		CGFloat footerTopOffset = section.offset + section.height;
-		if (section.footerHeight > 0 && footerTopOffset + section.footerHeight >= top && footerTopOffset <= bottom)
-			[visibleFooters addIndex:section.index];
-	}
-	
-	return visibleFooters;
-	 */
-	return nil;
-}
-
 - (JNWCollectionViewSection *)sectionForItemAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath == nil)
 		return nil;
@@ -484,7 +441,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 - (void)layout {
 	[super layout];
 	
-	if (CGSizeEqualToSize([self.documentView frame].size, self.contentSize)) {
+	if (!CGSizeEqualToSize([self.documentView frame].size, self.contentSize)) {
 		[self layoutDocumentView];
 	}
 	
@@ -503,7 +460,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 
 - (void)layoutDocumentView {
 	NSView *documentView = self.documentView;
-	documentView.frameSize = self.contentSize;//CGSizeMake(self.bounds.size.width, self.contentHeight);
+	documentView.frameSize = self.contentSize;
 }
 
 - (void)layoutCells {
@@ -524,7 +481,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 
 	NSArray *oldVisibleIndexPaths = [self.visibleCellsMap allKeys];
 	NSArray *updatedVisibleIndexPaths = [self indexPathsForItemsInRect:self.documentVisibleRect];
-	
 	NSMutableArray *indexPathsToRemove = [NSMutableArray arrayWithArray:oldVisibleIndexPaths];
 	[indexPathsToRemove removeObjectsInArray:updatedVisibleIndexPaths];
 	
@@ -555,7 +511,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		else {
 			[cell setHidden:NO];
 		}
-		
+
 		if ([self.selectedIndexes containsObject:indexPath])
 			cell.selected = YES;
 		else

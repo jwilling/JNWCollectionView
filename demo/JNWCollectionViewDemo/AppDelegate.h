@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import <JNWCollectionView/JNWCollectionView.h>
 
-@interface AppDelegate : NSObject <NSApplicationDelegate, JNWCollectionViewDelegate, JNWCollectionViewDataSource>
+@interface AppDelegate : NSObject <NSApplicationDelegate, JNWCollectionViewDelegate, JNWCollectionViewDataSource, JNWCollectionViewListLayoutDelegate>
 
 @property (nonatomic, weak) IBOutlet JNWCollectionView *tableView;
 @property (assign) IBOutlet NSWindow *window;

@@ -13,9 +13,11 @@
 @implementation AppDelegate
 
 - (void)awakeFromNib {
-	self.tableView.delegate = self;
-	self.tableView.dataSource = self;
-	[self.tableView reloadData];
+	self.collectionView.delegate = self;
+	self.collectionView.dataSource = self;
+	self.collectionView.collectionViewLayout = [[JNWCollectionViewGridLayout alloc] initWithCollectionView:self.collectionView];
+	
+	[self.collectionView reloadData];
 }
 
 - (JNWCollectionViewCell *)collectionView:(JNWCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -56,6 +58,11 @@
 - (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForItemAtIndexPath:(NSIndexPath *)indexPath {
 	return 44.f;
 }
+
+- (CGSize)collectionView:(JNWCollectionView *)collectionView sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+	return CGSizeMake(129.f, 129.f);
+}
+
 - (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForHeaderInSection:(NSInteger)section {
 	return 24.f;
 }

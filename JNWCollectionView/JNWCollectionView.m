@@ -452,6 +452,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		[self layoutCellsWithRedraw:YES];
 		[self layoutHeaderFootersWithRedraw:YES];
 		_lastDrawnBounds = self.bounds;
+		NSLog(@"cache rect was different, cells redrawn.");
 	} else {
 		[self layoutCells];
 		[self layoutHeaderFooters];
@@ -472,6 +473,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		return;
 	
 	if (needsVisibleRedraw) {
+		NSLog(@"visible redraw");
 		for (NSIndexPath *indexPath in self.visibleCellsMap.allKeys) {
 			JNWCollectionViewCell *cell = self.visibleCellsMap[indexPath];
 			cell.frame = [self rectForItemAtIndexPath:indexPath];
@@ -479,14 +481,24 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		}
 	}
 
+	////////////////////
+    NSTimeInterval start = [NSDate timeIntervalSinceReferenceDate];
+	////////////////////
+	
 	NSArray *oldVisibleIndexPaths = [self.visibleCellsMap allKeys];
 	NSArray *updatedVisibleIndexPaths = [self indexPathsForItemsInRect:self.documentVisibleRect];
+
+
 	NSMutableArray *indexPathsToRemove = [NSMutableArray arrayWithArray:oldVisibleIndexPaths];
 	[indexPathsToRemove removeObjectsInArray:updatedVisibleIndexPaths];
 	
 	NSMutableArray *indexPathsToAdd = [NSMutableArray arrayWithArray:updatedVisibleIndexPaths];
 	[indexPathsToAdd removeObjectsInArray:oldVisibleIndexPaths];
-		
+	
+
+	
+	
+	
 	// Remove old cells and put them in the reuse queue
 	for (NSIndexPath *indexPath in indexPathsToRemove) {
 		JNWCollectionViewCell *cell = [self cellForRowAtIndexPath:indexPath];
@@ -506,9 +518,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		cell.tableView = self;
 		cell.frame = [self rectForItemAtIndexPath:indexPath];
 		
-		if (cell.superview == nil)
+		if (cell.superview == nil) {
 			[self.documentView addSubview:cell];
-		else {
+		} else {
 			[cell setHidden:NO];
 		}
 
@@ -519,6 +531,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		
 		self.visibleCellsMap[indexPath] = cell;
 	}
+	 
+	NSTimeInterval duration = [NSDate timeIntervalSinceReferenceDate] - start;
+	NSLog(@"layout duration: %f", duration);
 }
 
 - (void)layoutHeaderFooters {

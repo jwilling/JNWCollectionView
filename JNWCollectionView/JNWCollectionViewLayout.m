@@ -37,4 +37,12 @@
 	return CGRectZero;
 }
 
+- (BOOL)wantsIndexPathsForItemsInRect {
+	return NO;
+}
+
+- (NSArray *)indexPathsForItemsInRect:(CGRect)rect {
+	return nil;
+}
+
 @end

@@ -289,6 +289,10 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (NSArray *)indexPathsForItemsInRect:(CGRect)rect {
+	if ([self.collectionViewLayout wantsIndexPathsForItemsInRect]) {
+		return [self.collectionViewLayout indexPathsForItemsInRect:rect];
+	}
+		
 	NSMutableArray *visibleRows = [NSMutableArray array];
 	
 	for (JNWCollectionViewSection *section in self.sectionData) {

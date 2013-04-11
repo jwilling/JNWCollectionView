@@ -21,4 +21,8 @@
 - (CGRect)rectForHeaderAtIndex:(NSInteger)index;
 - (CGRect)rectForFooterAtIndex:(NSInteger)index;
 
+
+- (BOOL)wantsIndexPathsForItemsInRect;
+- (NSArray *)indexPathsForItemsInRect:(CGRect)rect;
+
 @end

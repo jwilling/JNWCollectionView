@@ -481,10 +481,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		}
 	}
 
-	////////////////////
-    NSTimeInterval start = [NSDate timeIntervalSinceReferenceDate];
-	////////////////////
-	
 	NSArray *oldVisibleIndexPaths = [self.visibleCellsMap allKeys];
 	NSArray *updatedVisibleIndexPaths = [self indexPathsForItemsInRect:self.documentVisibleRect];
 
@@ -494,10 +490,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	
 	NSMutableArray *indexPathsToAdd = [NSMutableArray arrayWithArray:updatedVisibleIndexPaths];
 	[indexPathsToAdd removeObjectsInArray:oldVisibleIndexPaths];
-	
-
-	
-	
 	
 	// Remove old cells and put them in the reuse queue
 	for (NSIndexPath *indexPath in indexPathsToRemove) {
@@ -531,9 +523,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		
 		self.visibleCellsMap[indexPath] = cell;
 	}
-	 
-	NSTimeInterval duration = [NSDate timeIntervalSinceReferenceDate] - start;
-	NSLog(@"layout duration: %f", duration);
 }
 
 - (void)layoutHeaderFooters {

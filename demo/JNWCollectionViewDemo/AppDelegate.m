@@ -59,8 +59,12 @@
 	return 44.f;
 }
 
-- (CGSize)collectionView:(JNWCollectionView *)collectionView sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-	return CGSizeMake(129.f, 129.f);
+//- (CGSize)collectionView:(JNWCollectionView *)collectionView sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+//	return CGSizeMake(129.f, 129.f);
+//}
+
+- (CGSize)sizeForItemInCollectionView:(JNWCollectionView *)collectionView {
+	return CGSizeMake(128.f, 128.f);
 }
 
 - (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForHeaderInSection:(NSInteger)section {

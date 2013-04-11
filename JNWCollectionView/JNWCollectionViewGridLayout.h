@@ -8,10 +8,9 @@
 
 #import <JNWCollectionView/JNWCollectionView.h>
 
-@class JNWCollectionView;
 @protocol JNWCollectionViewGridLayoutDelegate <NSObject>
 
-- (CGSize)collectionView:(JNWCollectionView *)collectionView sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
+- (CGSize)sizeForItemInCollectionView:(JNWCollectionView *)collectionView;
 - (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForHeaderInSection:(NSInteger)index;
 - (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForFooterInSection:(NSInteger)index;
 
@@ -19,7 +18,6 @@
 
 @interface JNWCollectionViewGridLayout : JNWCollectionViewLayout
 
-//@property (nonatomic, assign) CGFloat minimumItemVerticalSeparation;
-@property (nonatomic, assign) CGFloat minimumItemHorizontalSeparation;
+@property (nonatomic, assign) CGSize itemSize;
 
 @end

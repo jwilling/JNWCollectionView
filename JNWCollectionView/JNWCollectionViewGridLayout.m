@@ -10,7 +10,6 @@
 
 typedef struct {
 	CGPoint origin;
-	CGSize size;
 } JNWCollectionViewGridLayoutItemInfo;
 
 @interface JNWCollectionViewGridLayoutSection : NSObject
@@ -40,6 +39,8 @@ typedef struct {
 
 @end
 
+static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.f };
+
 @interface JNWCollectionViewGridLayout()
 @property (nonatomic, strong) NSMutableArray *sections;
 @property (nonatomic, weak) id<JNWCollectionViewGridLayoutDelegate> delegate;
@@ -50,7 +51,7 @@ typedef struct {
 - (instancetype)initWithCollectionView:(JNWCollectionView *)collectionView {
 	self = [super initWithCollectionView:collectionView];
 	if (self == nil) return nil;
-	_minimumItemHorizontalSeparation = 10.f;
+	self.itemSize = JNWCollectionViewGridLayoutDefaultSize;
 	return self;
 }
 
@@ -64,13 +65,21 @@ typedef struct {
 - (void)prepareLayout {
 	[self.sections removeAllObjects];
 	
-	if (![self.collectionView.delegate conformsToProtocol:@protocol(JNWCollectionViewListLayoutDelegate)]) {
-		NSLog(@"delegate does not conform to JNWCollectionViewListLayoutDelegate!");
+	if (![self.collectionView.delegate conformsToProtocol:@protocol(JNWCollectionViewGridLayoutDelegate)]) {
+		NSLog(@"delegate does not conform to JNWCollectionViewGridLayoutDelegate!");
 	}
 	self.delegate = (id<JNWCollectionViewGridLayoutDelegate>)self.collectionView.delegate;
 	
 	NSUInteger numberOfSections = [self.collectionView numberOfSections];
-	CGFloat totalHeight = 0;	
+	
+	CGSize itemSize = self.itemSize;
+	if ([self.delegate respondsToSelector:@selector(sizeForItemInCollectionView:)]) {
+		itemSize = [self.delegate sizeForItemInCollectionView:self.collectionView];
+		self.itemSize = itemSize;
+	}
+	
+	CGFloat totalHeight = 0;
+	NSInteger numberOfColumns = CGRectGetWidth(self.collectionView.documentVisibleRect) / itemSize.width;
 	
 	for (NSUInteger section = 0; section < numberOfSections; section++) {
 		NSInteger numberOfItems = [self.collectionView numberOfItemsInSection:section];
@@ -83,32 +92,15 @@ typedef struct {
 		sectionInfo.headerHeight = headerHeight;
 		sectionInfo.footerHeight = footerHeight;
 		
-		CGRect lastAddedItemFrame = CGRectZero;
 		for (NSInteger item = 0; item < numberOfItems; item++) {
-			NSIndexPath *indexPath = [NSIndexPath jnw_indexPathForItem:item inSection:section];
-			CGSize itemSize = [self.delegate collectionView:self.collectionView sizeForItemAtIndexPath:indexPath];
-			sectionInfo.itemInfo[item].size = itemSize;
-			
-			CGPoint itemOrigin = lastAddedItemFrame.origin;
-			itemOrigin.x += lastAddedItemFrame.size.width + self.minimumItemHorizontalSeparation;
-			
-			CGRect usableRect = CGRectMake(0, 0, CGRectGetWidth(self.collectionView.documentVisibleRect), sectionInfo.height);
-			
-#warning This will likely not work if the item size is bigger than the visible frame
-			if (CGRectIntersection(usableRect, (CGRect){ .size = itemSize, .origin = itemOrigin}).size.width != itemSize.width) {
-				// The item would be placed off the edge, so we bump to the next line.
-				itemOrigin.x = self.minimumItemHorizontalSeparation;
-				itemOrigin.y = sectionInfo.height;
-				
-#warning This will fail horribly when the item size used for height is smalller than the rest in the row
-				sectionInfo.height += itemSize.height;
-			}
-			
-			sectionInfo.itemInfo[item].origin = itemOrigin;
-			sectionInfo.itemInfo[item].size = itemSize;
-			lastAddedItemFrame = (CGRect){ .origin = itemOrigin, .size = itemSize };
+			CGPoint origin = CGPointZero;
+			// TODO: This does not provide padding
+			origin.x = (item % numberOfColumns) * itemSize.width;
+			origin.y = ((item - (item % numberOfColumns)) / numberOfColumns) * itemSize.height;
+			sectionInfo.itemInfo[item].origin = origin;
 		}
 		
+		sectionInfo.height = itemSize.height * ceilf((float)numberOfItems / (float)numberOfColumns);
 		totalHeight += sectionInfo.height + footerHeight + headerHeight;
 		[self.sections addObject:sectionInfo];
 	}
@@ -118,7 +110,7 @@ typedef struct {
 	JNWCollectionViewGridLayoutSection *section = self.sections[indexPath.section];
 	JNWCollectionViewGridLayoutItemInfo itemInfo = section.itemInfo[indexPath.item];
 	CGFloat offset = section.offset;
-	return CGRectMake(itemInfo.origin.x, itemInfo.origin.y + offset, itemInfo.size.width, itemInfo.size.height);
+	return CGRectMake(itemInfo.origin.x, itemInfo.origin.y + offset, self.itemSize.width, self.itemSize.height);
 }
 
 @end

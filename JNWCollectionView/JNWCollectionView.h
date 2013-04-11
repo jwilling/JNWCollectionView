@@ -4,8 +4,6 @@
 #import "JNWCollectionViewHeaderFooterView.h"
 #import "NSIndexPath+JNWAdditions.h"
 #import "JNWCollectionViewLayout.h"
-#import "JNWCollectionViewListLayout.h"
-#import "JNWCollectionViewGridLayout.h"
 
 typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 	JNWCollectionViewScrollPositionNone, // does not scroll, only selects

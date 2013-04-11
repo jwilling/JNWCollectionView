@@ -1,0 +1,578 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AB15146F1714C90800871248 /* JNWCollectionViewLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = AB15146D1714C90800871248 /* JNWCollectionViewLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AB1514701714C90800871248 /* JNWCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = AB15146E1714C90800871248 /* JNWCollectionViewLayout.m */; };
+		AB1514741714D39600871248 /* JNWCollectionViewListLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = AB1514721714D39600871248 /* JNWCollectionViewListLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AB1514751714D39600871248 /* JNWCollectionViewListLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = AB1514731714D39600871248 /* JNWCollectionViewListLayout.m */; };
+		AB1514821715361E00871248 /* JNWCollectionViewGridLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = AB1514801715361D00871248 /* JNWCollectionViewGridLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AB1514831715361E00871248 /* JNWCollectionViewGridLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = AB1514811715361D00871248 /* JNWCollectionViewGridLayout.m */; };
+		AB3C71F4170CA8D3004A91DB /* JNWCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = AB3C71E8170CA8D3004A91DB /* JNWCollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AB3C71F5170CA8D3004A91DB /* JNWCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C71E9170CA8D3004A91DB /* JNWCollectionView.m */; };
+		AB3C71F7170CA8D3004A91DB /* JNWCollectionView+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = AB3C71EA170CA8D3004A91DB /* JNWCollectionView+Private.h */; };
+		AB3C71F8170CA8D3004A91DB /* JNWCollectionViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = AB3C71EB170CA8D3004A91DB /* JNWCollectionViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AB3C71F9170CA8D3004A91DB /* JNWCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C71EC170CA8D3004A91DB /* JNWCollectionViewCell.m */; };
+		AB3C71FB170CA8D3004A91DB /* JNWCollectionViewCell+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = AB3C71ED170CA8D3004A91DB /* JNWCollectionViewCell+Private.h */; };
+		AB3C71FC170CA8D3004A91DB /* JNWCollectionViewHeaderFooterView.h in Headers */ = {isa = PBXBuildFile; fileRef = AB3C71EE170CA8D3004A91DB /* JNWCollectionViewHeaderFooterView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AB3C71FD170CA8D3004A91DB /* JNWCollectionViewHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C71EF170CA8D3004A91DB /* JNWCollectionViewHeaderFooterView.m */; };
+		AB3C71FF170CA8D3004A91DB /* JNWCollectionViewSection.h in Headers */ = {isa = PBXBuildFile; fileRef = AB3C71F0170CA8D3004A91DB /* JNWCollectionViewSection.h */; };
+		AB3C7200170CA8D3004A91DB /* JNWCollectionViewSection.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C71F1170CA8D3004A91DB /* JNWCollectionViewSection.m */; };
+		AB3C7202170CA8D3004A91DB /* NSIndexPath+JNWAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = AB3C71F2170CA8D3004A91DB /* NSIndexPath+JNWAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AB3C7203170CA8D3004A91DB /* NSIndexPath+JNWAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C71F3170CA8D3004A91DB /* NSIndexPath+JNWAdditions.m */; };
+		AB3C7209170CA8EF004A91DB /* JNWCollectionView-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AB3C7206170CA8EF004A91DB /* JNWCollectionView-Prefix.pch */; };
+		AB3C720C170CA8F3004A91DB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB3C720A170CA8F3004A91DB /* InfoPlist.strings */; };
+		AB3C7210170CA965004A91DB /* JNWCollectionViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C720F170CA965004A91DB /* JNWCollectionViewTests.m */; };
+		AB3C7216170CAADB004A91DB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB024671707937F00537A92 /* QuartzCore.framework */; };
+		AB3C7249170CAD13004A91DB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB3C7211170CA981004A91DB /* InfoPlist.strings */; };
+		ABB023F5170791D300537A92 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB023F4170791D300537A92 /* Cocoa.framework */; };
+		ABB0240B170791D300537A92 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB0240A170791D300537A92 /* SenTestingKit.framework */; };
+		ABB0240C170791D300537A92 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB023F4170791D300537A92 /* Cocoa.framework */; };
+		ABB0240F170791D300537A92 /* JNWCollectionView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB023F1170791D300537A92 /* JNWCollectionView.framework */; };
+		ABB0245E1707936300537A92 /* NSColor+RBLCGColorAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB024581707936300537A92 /* NSColor+RBLCGColorAdditions.h */; };
+		ABB0245F1707936300537A92 /* NSColor+RBLCGColorAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB024591707936300537A92 /* NSColor+RBLCGColorAdditions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		ABB024611707936300537A92 /* RBLClipView.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB0245A1707936300537A92 /* RBLClipView.h */; };
+		ABB024621707936300537A92 /* RBLClipView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB0245B1707936300537A92 /* RBLClipView.m */; };
+		ABB024641707936300537A92 /* RBLScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB0245C1707936300537A92 /* RBLScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ABB024651707936300537A92 /* RBLScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB0245D1707936300537A92 /* RBLScrollView.m */; };
+		ABB024681707937F00537A92 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB024671707937F00537A92 /* QuartzCore.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		ABB0240D170791D300537A92 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ABB023E8170791D300537A92 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ABB023F0170791D300537A92;
+			remoteInfo = JNWTableView;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		AB15146D1714C90800871248 /* JNWCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewLayout.h; path = JNWCollectionView/JNWCollectionViewLayout.h; sourceTree = SOURCE_ROOT; };
+		AB15146E1714C90800871248 /* JNWCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewLayout.m; path = JNWCollectionView/JNWCollectionViewLayout.m; sourceTree = SOURCE_ROOT; };
+		AB1514721714D39600871248 /* JNWCollectionViewListLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewListLayout.h; path = JNWCollectionView/JNWCollectionViewListLayout.h; sourceTree = SOURCE_ROOT; };
+		AB1514731714D39600871248 /* JNWCollectionViewListLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewListLayout.m; path = JNWCollectionView/JNWCollectionViewListLayout.m; sourceTree = SOURCE_ROOT; };
+		AB1514801715361D00871248 /* JNWCollectionViewGridLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewGridLayout.h; path = JNWCollectionView/JNWCollectionViewGridLayout.h; sourceTree = SOURCE_ROOT; };
+		AB1514811715361D00871248 /* JNWCollectionViewGridLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewGridLayout.m; path = JNWCollectionView/JNWCollectionViewGridLayout.m; sourceTree = SOURCE_ROOT; };
+		AB3C71E8170CA8D3004A91DB /* JNWCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionView.h; path = JNWCollectionView/JNWCollectionView.h; sourceTree = SOURCE_ROOT; };
+		AB3C71E9170CA8D3004A91DB /* JNWCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionView.m; path = JNWCollectionView/JNWCollectionView.m; sourceTree = SOURCE_ROOT; };
+		AB3C71EA170CA8D3004A91DB /* JNWCollectionView+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JNWCollectionView+Private.h"; path = "JNWCollectionView/JNWCollectionView+Private.h"; sourceTree = SOURCE_ROOT; };
+		AB3C71EB170CA8D3004A91DB /* JNWCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewCell.h; path = JNWCollectionView/JNWCollectionViewCell.h; sourceTree = SOURCE_ROOT; };
+		AB3C71EC170CA8D3004A91DB /* JNWCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewCell.m; path = JNWCollectionView/JNWCollectionViewCell.m; sourceTree = SOURCE_ROOT; };
+		AB3C71ED170CA8D3004A91DB /* JNWCollectionViewCell+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JNWCollectionViewCell+Private.h"; path = "JNWCollectionView/JNWCollectionViewCell+Private.h"; sourceTree = SOURCE_ROOT; };
+		AB3C71EE170CA8D3004A91DB /* JNWCollectionViewHeaderFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewHeaderFooterView.h; path = JNWCollectionView/JNWCollectionViewHeaderFooterView.h; sourceTree = SOURCE_ROOT; };
+		AB3C71EF170CA8D3004A91DB /* JNWCollectionViewHeaderFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewHeaderFooterView.m; path = JNWCollectionView/JNWCollectionViewHeaderFooterView.m; sourceTree = SOURCE_ROOT; };
+		AB3C71F0170CA8D3004A91DB /* JNWCollectionViewSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewSection.h; path = JNWCollectionView/JNWCollectionViewSection.h; sourceTree = SOURCE_ROOT; };
+		AB3C71F1170CA8D3004A91DB /* JNWCollectionViewSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewSection.m; path = JNWCollectionView/JNWCollectionViewSection.m; sourceTree = SOURCE_ROOT; };
+		AB3C71F2170CA8D3004A91DB /* NSIndexPath+JNWAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSIndexPath+JNWAdditions.h"; path = "JNWCollectionView/NSIndexPath+JNWAdditions.h"; sourceTree = SOURCE_ROOT; };
+		AB3C71F3170CA8D3004A91DB /* NSIndexPath+JNWAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSIndexPath+JNWAdditions.m"; path = "JNWCollectionView/NSIndexPath+JNWAdditions.m"; sourceTree = SOURCE_ROOT; };
+		AB3C7205170CA8EF004A91DB /* JNWCollectionView-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "JNWCollectionView-Info.plist"; path = "JNWCollectionView/JNWCollectionView-Info.plist"; sourceTree = SOURCE_ROOT; };
+		AB3C7206170CA8EF004A91DB /* JNWCollectionView-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JNWCollectionView-Prefix.pch"; path = "JNWCollectionView/JNWCollectionView-Prefix.pch"; sourceTree = SOURCE_ROOT; };
+		AB3C720B170CA8F3004A91DB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = JNWCollectionView/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
+		AB3C720E170CA965004A91DB /* JNWCollectionViewTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewTests.h; path = JNWCollectionViewTests/JNWCollectionViewTests.h; sourceTree = SOURCE_ROOT; };
+		AB3C720F170CA965004A91DB /* JNWCollectionViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewTests.m; path = JNWCollectionViewTests/JNWCollectionViewTests.m; sourceTree = SOURCE_ROOT; };
+		AB3C7212170CA981004A91DB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = JNWCollectionViewTests/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
+		AB3C7214170CA990004A91DB /* JNWCollectionViewTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "JNWCollectionViewTests-Info.plist"; path = "JNWCollectionViewTests/JNWCollectionViewTests-Info.plist"; sourceTree = SOURCE_ROOT; };
+		ABB023F1170791D300537A92 /* JNWCollectionView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JNWCollectionView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		ABB023F4170791D300537A92 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		ABB023F7170791D300537A92 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		ABB023F8170791D300537A92 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		ABB023F9170791D300537A92 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		ABB02409170791D300537A92 /* JNWCollectionViewTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JNWCollectionViewTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		ABB0240A170791D300537A92 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		ABB024581707936300537A92 /* NSColor+RBLCGColorAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSColor+RBLCGColorAdditions.h"; path = "external/Rebel/Rebel/NSColor+RBLCGColorAdditions.h"; sourceTree = SOURCE_ROOT; };
+		ABB024591707936300537A92 /* NSColor+RBLCGColorAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSColor+RBLCGColorAdditions.m"; path = "external/Rebel/Rebel/NSColor+RBLCGColorAdditions.m"; sourceTree = SOURCE_ROOT; };
+		ABB0245A1707936300537A92 /* RBLClipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RBLClipView.h; path = external/Rebel/Rebel/RBLClipView.h; sourceTree = SOURCE_ROOT; };
+		ABB0245B1707936300537A92 /* RBLClipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RBLClipView.m; path = external/Rebel/Rebel/RBLClipView.m; sourceTree = SOURCE_ROOT; };
+		ABB0245C1707936300537A92 /* RBLScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RBLScrollView.h; path = external/Rebel/Rebel/RBLScrollView.h; sourceTree = SOURCE_ROOT; };
+		ABB0245D1707936300537A92 /* RBLScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RBLScrollView.m; path = external/Rebel/Rebel/RBLScrollView.m; sourceTree = SOURCE_ROOT; };
+		ABB024671707937F00537A92 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		ABB023ED170791D300537A92 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ABB024681707937F00537A92 /* QuartzCore.framework in Frameworks */,
+				ABB023F5170791D300537A92 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ABB02405170791D300537A92 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AB3C7216170CAADB004A91DB /* QuartzCore.framework in Frameworks */,
+				ABB0240B170791D300537A92 /* SenTestingKit.framework in Frameworks */,
+				ABB0240C170791D300537A92 /* Cocoa.framework in Frameworks */,
+				ABB0240F170791D300537A92 /* JNWCollectionView.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AB1514711714D36200871248 /* Layouts */ = {
+			isa = PBXGroup;
+			children = (
+				AB15146D1714C90800871248 /* JNWCollectionViewLayout.h */,
+				AB15146E1714C90800871248 /* JNWCollectionViewLayout.m */,
+				AB1514721714D39600871248 /* JNWCollectionViewListLayout.h */,
+				AB1514731714D39600871248 /* JNWCollectionViewListLayout.m */,
+				AB1514801715361D00871248 /* JNWCollectionViewGridLayout.h */,
+				AB1514811715361D00871248 /* JNWCollectionViewGridLayout.m */,
+			);
+			name = Layouts;
+			sourceTree = "<group>";
+		};
+		ABB023E7170791D300537A92 = {
+			isa = PBXGroup;
+			children = (
+				ABB023FA170791D300537A92 /* JNWCollectionView */,
+				ABB02410170791D300537A92 /* JNWCollectionViewTests */,
+				ABB023F3170791D300537A92 /* Frameworks */,
+				ABB023F2170791D300537A92 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		ABB023F2170791D300537A92 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				ABB023F1170791D300537A92 /* JNWCollectionView.framework */,
+				ABB02409170791D300537A92 /* JNWCollectionViewTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		ABB023F3170791D300537A92 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ABB024671707937F00537A92 /* QuartzCore.framework */,
+				ABB023F4170791D300537A92 /* Cocoa.framework */,
+				ABB0240A170791D300537A92 /* SenTestingKit.framework */,
+				ABB023F6170791D300537A92 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		ABB023F6170791D300537A92 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ABB023F7170791D300537A92 /* AppKit.framework */,
+				ABB023F8170791D300537A92 /* CoreData.framework */,
+				ABB023F9170791D300537A92 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		ABB023FA170791D300537A92 /* JNWCollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				AB1514711714D36200871248 /* Layouts */,
+				AB3C71E8170CA8D3004A91DB /* JNWCollectionView.h */,
+				AB3C71E9170CA8D3004A91DB /* JNWCollectionView.m */,
+				AB3C71EA170CA8D3004A91DB /* JNWCollectionView+Private.h */,
+				AB3C71EB170CA8D3004A91DB /* JNWCollectionViewCell.h */,
+				AB3C71EC170CA8D3004A91DB /* JNWCollectionViewCell.m */,
+				AB3C71ED170CA8D3004A91DB /* JNWCollectionViewCell+Private.h */,
+				AB3C71EE170CA8D3004A91DB /* JNWCollectionViewHeaderFooterView.h */,
+				AB3C71EF170CA8D3004A91DB /* JNWCollectionViewHeaderFooterView.m */,
+				AB3C71F0170CA8D3004A91DB /* JNWCollectionViewSection.h */,
+				AB3C71F1170CA8D3004A91DB /* JNWCollectionViewSection.m */,
+				AB3C71F2170CA8D3004A91DB /* NSIndexPath+JNWAdditions.h */,
+				AB3C71F3170CA8D3004A91DB /* NSIndexPath+JNWAdditions.m */,
+				ABB024571707934300537A92 /* external */,
+				ABB023FB170791D300537A92 /* Supporting Files */,
+			);
+			name = JNWCollectionView;
+			path = JNWTableView;
+			sourceTree = "<group>";
+		};
+		ABB023FB170791D300537A92 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		ABB02410170791D300537A92 /* JNWCollectionViewTests */ = {
+			isa = PBXGroup;
+			children = (
+				AB3C7214170CA990004A91DB /* JNWCollectionViewTests-Info.plist */,
+				AB3C720A170CA8F3004A91DB /* InfoPlist.strings */,
+				AB3C720E170CA965004A91DB /* JNWCollectionViewTests.h */,
+				AB3C720F170CA965004A91DB /* JNWCollectionViewTests.m */,
+				ABB02411170791D300537A92 /* Supporting Files */,
+			);
+			name = JNWCollectionViewTests;
+			path = JNWTableViewTests;
+			sourceTree = "<group>";
+		};
+		ABB02411170791D300537A92 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				AB3C7205170CA8EF004A91DB /* JNWCollectionView-Info.plist */,
+				AB3C7206170CA8EF004A91DB /* JNWCollectionView-Prefix.pch */,
+				AB3C7211170CA981004A91DB /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		ABB024571707934300537A92 /* external */ = {
+			isa = PBXGroup;
+			children = (
+				ABB024581707936300537A92 /* NSColor+RBLCGColorAdditions.h */,
+				ABB024591707936300537A92 /* NSColor+RBLCGColorAdditions.m */,
+				ABB0245A1707936300537A92 /* RBLClipView.h */,
+				ABB0245B1707936300537A92 /* RBLClipView.m */,
+				ABB0245C1707936300537A92 /* RBLScrollView.h */,
+				ABB0245D1707936300537A92 /* RBLScrollView.m */,
+			);
+			name = external;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		ABB023EE170791D300537A92 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AB3C71F4170CA8D3004A91DB /* JNWCollectionView.h in Headers */,
+				AB3C71F8170CA8D3004A91DB /* JNWCollectionViewCell.h in Headers */,
+				AB15146F1714C90800871248 /* JNWCollectionViewLayout.h in Headers */,
+				AB3C71FC170CA8D3004A91DB /* JNWCollectionViewHeaderFooterView.h in Headers */,
+				AB1514821715361E00871248 /* JNWCollectionViewGridLayout.h in Headers */,
+				AB1514741714D39600871248 /* JNWCollectionViewListLayout.h in Headers */,
+				AB3C7202170CA8D3004A91DB /* NSIndexPath+JNWAdditions.h in Headers */,
+				ABB024641707936300537A92 /* RBLScrollView.h in Headers */,
+				ABB0245E1707936300537A92 /* NSColor+RBLCGColorAdditions.h in Headers */,
+				ABB024611707936300537A92 /* RBLClipView.h in Headers */,
+				AB3C71F7170CA8D3004A91DB /* JNWCollectionView+Private.h in Headers */,
+				AB3C71FB170CA8D3004A91DB /* JNWCollectionViewCell+Private.h in Headers */,
+				AB3C71FF170CA8D3004A91DB /* JNWCollectionViewSection.h in Headers */,
+				AB3C7209170CA8EF004A91DB /* JNWCollectionView-Prefix.pch in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		ABB023F0170791D300537A92 /* JNWCollectionView */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ABB0241B170791D300537A92 /* Build configuration list for PBXNativeTarget "JNWCollectionView" */;
+			buildPhases = (
+				ABB023EC170791D300537A92 /* Sources */,
+				ABB023ED170791D300537A92 /* Frameworks */,
+				ABB023EE170791D300537A92 /* Headers */,
+				ABB023EF170791D300537A92 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JNWCollectionView;
+			productName = JNWTableView;
+			productReference = ABB023F1170791D300537A92 /* JNWCollectionView.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		ABB02408170791D300537A92 /* JNWCollectionViewTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ABB0241E170791D300537A92 /* Build configuration list for PBXNativeTarget "JNWCollectionViewTests" */;
+			buildPhases = (
+				ABB02404170791D300537A92 /* Sources */,
+				ABB02405170791D300537A92 /* Frameworks */,
+				ABB02406170791D300537A92 /* Resources */,
+				ABB02407170791D300537A92 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				ABB0240E170791D300537A92 /* PBXTargetDependency */,
+			);
+			name = JNWCollectionViewTests;
+			productName = JNWTableViewTests;
+			productReference = ABB02409170791D300537A92 /* JNWCollectionViewTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		ABB023E8170791D300537A92 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = AppJon;
+			};
+			buildConfigurationList = ABB023EB170791D300537A92 /* Build configuration list for PBXProject "JNWCollectionView" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = ABB023E7170791D300537A92;
+			productRefGroup = ABB023F2170791D300537A92 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				ABB023F0170791D300537A92 /* JNWCollectionView */,
+				ABB02408170791D300537A92 /* JNWCollectionViewTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		ABB023EF170791D300537A92 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AB3C720C170CA8F3004A91DB /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ABB02406170791D300537A92 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AB3C7249170CAD13004A91DB /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		ABB02407170791D300537A92 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		ABB023EC170791D300537A92 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ABB0245F1707936300537A92 /* NSColor+RBLCGColorAdditions.m in Sources */,
+				ABB024621707936300537A92 /* RBLClipView.m in Sources */,
+				ABB024651707936300537A92 /* RBLScrollView.m in Sources */,
+				AB3C71F5170CA8D3004A91DB /* JNWCollectionView.m in Sources */,
+				AB3C71F9170CA8D3004A91DB /* JNWCollectionViewCell.m in Sources */,
+				AB3C71FD170CA8D3004A91DB /* JNWCollectionViewHeaderFooterView.m in Sources */,
+				AB3C7200170CA8D3004A91DB /* JNWCollectionViewSection.m in Sources */,
+				AB3C7203170CA8D3004A91DB /* NSIndexPath+JNWAdditions.m in Sources */,
+				AB1514701714C90800871248 /* JNWCollectionViewLayout.m in Sources */,
+				AB1514751714D39600871248 /* JNWCollectionViewListLayout.m in Sources */,
+				AB1514831715361E00871248 /* JNWCollectionViewGridLayout.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ABB02404170791D300537A92 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AB3C7210170CA965004A91DB /* JNWCollectionViewTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		ABB0240E170791D300537A92 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ABB023F0170791D300537A92 /* JNWCollectionView */;
+			targetProxy = ABB0240D170791D300537A92 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		AB3C720A170CA8F3004A91DB /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AB3C720B170CA8F3004A91DB /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		AB3C7211170CA981004A91DB /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AB3C7212170CA981004A91DB /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		ABB02419170791D300537A92 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		ABB0241A170791D300537A92 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		ABB0241C170791D300537A92 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "JNWCollectionView/JNWCollectionView-Prefix.pch";
+				INFOPLIST_FILE = "JNWCollectionView/JNWCollectionView-Info.plist";
+				INSTALL_PATH = "@rpath";
+				LD_DYLIB_INSTALL_NAME = "@rpath/$(PRODUCT_NAME).$(WRAPPER_EXTENSION)/$(PRODUCT_NAME)";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/Frameworks";
+				PRODUCT_NAME = JNWCollectionView;
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		ABB0241D170791D300537A92 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "JNWCollectionView/JNWCollectionView-Prefix.pch";
+				INFOPLIST_FILE = "JNWCollectionView/JNWCollectionView-Info.plist";
+				INSTALL_PATH = "@rpath";
+				LD_DYLIB_INSTALL_NAME = "@rpath/$(PRODUCT_NAME).$(WRAPPER_EXTENSION)/$(PRODUCT_NAME)";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/Frameworks";
+				PRODUCT_NAME = JNWCollectionView;
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
+		ABB0241F170791D300537A92 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "JNWCollectionView/JNWCollectionView-Prefix.pch";
+				INFOPLIST_FILE = "JNWCollectionViewTests/JNWCollectionViewTests-Info.plist";
+				PRODUCT_NAME = JNWCollectionViewTests;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		ABB02420170791D300537A92 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "JNWCollectionView/JNWCollectionView-Prefix.pch";
+				INFOPLIST_FILE = "JNWCollectionViewTests/JNWCollectionViewTests-Info.plist";
+				PRODUCT_NAME = JNWCollectionViewTests;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		ABB023EB170791D300537A92 /* Build configuration list for PBXProject "JNWCollectionView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ABB02419170791D300537A92 /* Debug */,
+				ABB0241A170791D300537A92 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ABB0241B170791D300537A92 /* Build configuration list for PBXNativeTarget "JNWCollectionView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ABB0241C170791D300537A92 /* Debug */,
+				ABB0241D170791D300537A92 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ABB0241E170791D300537A92 /* Build configuration list for PBXNativeTarget "JNWCollectionViewTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ABB0241F170791D300537A92 /* Debug */,
+				ABB02420170791D300537A92 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = ABB023E8170791D300537A92 /* Project object */;
+}

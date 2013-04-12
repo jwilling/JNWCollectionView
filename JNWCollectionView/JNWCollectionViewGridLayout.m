@@ -18,6 +18,7 @@ typedef struct {
 @property (nonatomic, assign) CGFloat height;
 @property (nonatomic, assign) CGFloat headerHeight;
 @property (nonatomic, assign) CGFloat footerHeight;
+@property (nonatomic, assign) NSInteger index;
 @property (nonatomic, assign) NSInteger numberOfItems;
 @property (nonatomic, assign) JNWCollectionViewGridLayoutItemInfo *itemInfo;
 @end
@@ -89,6 +90,7 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 		JNWCollectionViewGridLayoutSection *sectionInfo = [[JNWCollectionViewGridLayoutSection alloc] initWithNumberOfItems:numberOfItems];
 		sectionInfo.offset = totalHeight + headerHeight;
 		sectionInfo.height = 0;
+		sectionInfo.index = section;
 		sectionInfo.headerHeight = headerHeight;
 		sectionInfo.footerHeight = footerHeight;
 		
@@ -111,6 +113,33 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	JNWCollectionViewGridLayoutItemInfo itemInfo = section.itemInfo[indexPath.item];
 	CGFloat offset = section.offset;
 	return CGRectMake(itemInfo.origin.x, itemInfo.origin.y + offset, self.itemSize.width, self.itemSize.height);
+}
+
+- (BOOL)wantsIndexPathsForItemsInRect {
+	return YES;
+}
+
+- (NSArray *)indexPathsForItemsInRect:(CGRect)rect {
+	NSMutableArray *visibleRows = [NSMutableArray array];
+
+	for (JNWCollectionViewGridLayoutSection *section in self.sections) {
+		if (section.offset + section.height < rect.origin.y || section.offset > rect.origin.y + rect.size.height) {
+			continue;
+		}
+		
+		NSInteger numberOfColumns = CGRectGetWidth(self.collectionView.documentVisibleRect) / self.itemSize.width;
+		CGFloat relativeRectTop = rect.origin.y - section.offset;
+		CGFloat relativeRectBottom = rect.origin.y + rect.size.height - section.offset;
+		NSInteger rowBegin = relativeRectTop / self.itemSize.height;
+		NSInteger rowEnd = ceilf(relativeRectBottom / self.itemSize.height);
+		NSInteger lastItem = MIN(section.numberOfItems, rowEnd*numberOfColumns);
+		NSInteger firstItem = MAX(0, rowBegin*numberOfColumns);
+		for (NSInteger item = firstItem; item < lastItem; item++) {
+			[visibleRows addObject:[NSIndexPath jnw_indexPathForItem:item inSection:section.index]];
+		}
+	}
+		
+	return visibleRows;
 }
 
 @end

@@ -14,16 +14,6 @@
 
 @implementation TableViewCell
 
-
-typedef void(^NSGraphicsStateBlock)();
-static void NSGraphicsContextState(CGContextRef ctx, NSGraphicsStateBlock block) {
-	[NSGraphicsContext saveGraphicsState];
-	NSGraphicsContext *context = [NSGraphicsContext graphicsContextWithGraphicsPort:ctx flipped:NO];
-	[NSGraphicsContext setCurrentContext:context];
-	block();
-	[NSGraphicsContext restoreGraphicsState];
-}
-
 - (void)drawBackgroundInRect:(CGRect)dstRect selected:(BOOL)selected {
 	CGRect b = dstRect;
 	CGFloat top = selected ? .82 : 0.81;

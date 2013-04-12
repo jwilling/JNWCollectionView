@@ -28,7 +28,9 @@
 		cell = [[TableViewCell alloc] initWithReuseIdentifier:identifier];
 	}
 
-	cell.cellLabelText = [NSString stringWithFormat:@"%ld", indexPath.item];
+	char cString[20];
+	sprintf(cString, "%ld", (long)indexPath.item);
+	cell.cellLabelText = [[NSString alloc] initWithCString:cString encoding:NSUTF8StringEncoding];
 	
 	return cell;
 }
@@ -48,7 +50,7 @@
 
 
 - (NSUInteger)collectionView:(JNWCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-	return 200;
+	return 500;
 }
 
 -  (NSInteger)numberOfSectionsInCollectionView:(JNWCollectionView *)tableView {

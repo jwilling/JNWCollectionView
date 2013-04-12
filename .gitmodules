@@ -1,3 +1,6 @@
 [submodule "external/Rebel"]
 	path = external/Rebel
 	url = https://github.com/jwilling/Rebel.git
+[submodule "demo/external/JNWLabel"]
+	path = demo/external/JNWLabel
+	url = https://github.com/jwilling/JNWLabel.git

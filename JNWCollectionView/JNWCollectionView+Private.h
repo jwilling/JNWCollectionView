@@ -11,6 +11,6 @@
 @class JNWCollectionViewCell;
 @interface JNWCollectionView ()
 
-- (void)mouseDownInTableViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event;
+- (void)mouseDownInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event;
 
 @end

@@ -52,7 +52,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	_self.visibleTableFooters = [NSMutableDictionary dictionary];
 	_self.visibleTableHeaders = [NSMutableDictionary dictionary];
 	_self.scrollDirection = JNWCollectionViewScrollDirectionVertical;
-	//_self.rowHeight = JNWTableViewDefaultRowHeight;
 	_self.itemVerticalPadding = JNWCollectionViewDefaultVerticalPadding;
 	_self.itemHorizontalPadding = JNWCollectionViewDefaultHorizontalPadding;
 	
@@ -511,7 +510,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		JNWCollectionViewCell *cell = [self.dataSource collectionView:self cellForItemAtIndexPath:indexPath];
 		NSAssert(cell != nil, @"collectionView:cellForItemAtIndexPath: must return a non-nil cell.");
 		
-		cell.tableView = self;
+		cell.indexPath = indexPath;
+		cell.collectionView = self;
 		cell.frame = [self rectForItemAtIndexPath:indexPath];
 		
 		if (cell.superview == nil) {
@@ -747,7 +747,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	[self scrollToItemAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated];
 }
 
-- (void)mouseDownInTableViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
+- (void)mouseDownInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
 	NSIndexPath *indexPath = [self indexPathForCell:cell];
 	if (indexPath == nil) {
 		NSLog(@"***index path not found for selection.");

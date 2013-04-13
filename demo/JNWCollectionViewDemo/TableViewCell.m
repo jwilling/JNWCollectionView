@@ -7,9 +7,10 @@
 //
 
 #import "TableViewCell.h"
+#import "JNWLabel.h"
 
 @interface TableViewCell()
-@property (nonatomic, strong) NSTextField *cellLabel;
+@property (nonatomic, strong) JNWLabel *cellLabel;
 @end
 
 @implementation TableViewCell
@@ -33,7 +34,7 @@
 	static NSImage *backgroundImage = nil;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		backgroundImage = [NSImage imageWithSize:CGSizeMake(2, 44) flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
+		backgroundImage = [NSImage imageWithSize:CGSizeMake(1, 44) flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
 			[self drawBackgroundInRect:dstRect selected:NO];
 			return YES;
 		}];
@@ -46,7 +47,7 @@
 	static NSImage *backgroundImage = nil;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		backgroundImage = [NSImage imageWithSize:CGSizeMake(2, 44) flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
+		backgroundImage = [NSImage imageWithSize:CGSizeMake(1, 44) flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
 			[self drawBackgroundInRect:dstRect selected:YES];
 			return YES;
 		}];
@@ -59,12 +60,9 @@
 	self = [super initWithReuseIdentifier:reuseIdentifier];
 	if (self == nil) return nil;
 	
-	self.cellLabel = [[NSTextField alloc] initWithFrame:CGRectZero];
-	self.cellLabel.bezeled = NO;
-	self.cellLabel.drawsBackground = NO;
-	self.cellLabel.selectable = NO;
+	self.cellLabel = [[JNWLabel alloc] initWithFrame:CGRectZero];
 	
-	[self.content addSubview:self.cellLabel];
+	[self.contentView addSubview:self.cellLabel];
 	self.backgroundImage = self.sharedBackgroundImage;
 	
 	return self;
@@ -80,7 +78,7 @@
 
 - (void)setCellLabelText:(NSString *)cellLabelText {
 	_cellLabelText = cellLabelText;
-	self.cellLabel.stringValue = cellLabelText;
+	self.cellLabel.text = cellLabelText;
 }
 
 - (void)setSelected:(BOOL)selected {

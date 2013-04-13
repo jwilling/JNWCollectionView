@@ -8,29 +8,31 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class JNWCollectionViewCellBackgroundView, JNWCollectionView;
+@class JNWCollectionView;
 @interface JNWCollectionViewCell : NSView
 
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier;
 
+// Called when the cell is about to exit the reuse pool and be dequeued.
 - (void)prepareForReuse;
-//- (void)setSelected:(BOOL)selected;
 
-
-@property (nonatomic, assign, readonly) JNWCollectionView *tableView;
+@property (nonatomic, assign, readonly) JNWCollectionView *collectionView;
 
 @property (nonatomic, assign) BOOL selected;
 
-// Convenience setters for common customizations.
-@property (nonatomic, strong) NSImage *backgroundImage;
-//@property (nonatomic, assign) CGSize contents
+// Any content added to the cell should be added as a subview of
+// the content view. The content view is guaranteed to be in front
+// of the background color or image.
+@property (nonatomic, strong, readonly) NSView *contentView;
 
+// Sets the background image or background color on a dedicated
+// background view that is always beneath the content view.
+//
+// If both are set, the image takes precedence over the color.
+@property (nonatomic, strong) NSImage *backgroundImage;
 @property (nonatomic, strong) NSColor *backgroundColor;
 
-@property (nonatomic, strong, readonly) NSView *content;
-@property (nonatomic, strong, readonly) JNWCollectionViewCellBackgroundView *backgroundView;
-
 @property (nonatomic, copy, readonly) NSString *reuseIdentifier;
-
+@property (nonatomic, strong, readonly) NSIndexPath *indexPath;
 
 @end

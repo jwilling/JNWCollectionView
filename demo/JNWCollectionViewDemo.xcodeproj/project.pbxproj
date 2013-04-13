@@ -17,6 +17,8 @@
 		AB3C7241170CAC2C004A91DB /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = AB3C723D170CAC2C004A91DB /* Credits.rtf */; };
 		AB3C7242170CAC2C004A91DB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB3C723F170CAC2C004A91DB /* InfoPlist.strings */; };
 		AB3C7244170CAC32004A91DB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C7243170CAC32004A91DB /* main.m */; };
+		ABAF155B1718C39C00658A1D /* JNWLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = ABAF15581718C39C00658A1D /* JNWLabel.m */; };
+		ABAF155C1718C39C00658A1D /* JNWLabel+Accessibility.m in Sources */ = {isa = PBXBuildFile; fileRef = ABAF155A1718C39C00658A1D /* JNWLabel+Accessibility.m */; };
 		ABB0F2F716FD7D19002004F5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB0F2F616FD7D19002004F5 /* Cocoa.framework */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +75,10 @@
 		AB3C723E170CAC2C004A91DB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = JNWCollectionViewDemo/en.lproj/Credits.rtf; sourceTree = SOURCE_ROOT; };
 		AB3C7240170CAC2C004A91DB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = JNWCollectionViewDemo/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		AB3C7243170CAC32004A91DB /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = JNWCollectionViewDemo/main.m; sourceTree = SOURCE_ROOT; };
+		ABAF15571718C39C00658A1D /* JNWLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWLabel.h; path = external/JNWLabel/JNWLabel.h; sourceTree = SOURCE_ROOT; };
+		ABAF15581718C39C00658A1D /* JNWLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWLabel.m; path = external/JNWLabel/JNWLabel.m; sourceTree = SOURCE_ROOT; };
+		ABAF15591718C39C00658A1D /* JNWLabel+Accessibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JNWLabel+Accessibility.h"; path = "external/JNWLabel/JNWLabel+Accessibility.h"; sourceTree = SOURCE_ROOT; };
+		ABAF155A1718C39C00658A1D /* JNWLabel+Accessibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "JNWLabel+Accessibility.m"; path = "external/JNWLabel/JNWLabel+Accessibility.m"; sourceTree = SOURCE_ROOT; };
 		ABB0F2F316FD7D19002004F5 /* JNWCollectionViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JNWCollectionViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABB0F2F616FD7D19002004F5 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		ABB0F2F916FD7D19002004F5 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -101,6 +107,17 @@
 				AB2E9605170CB107004678DC /* JNWCollectionViewTests.octest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		ABAF15551718C39300658A1D /* JNWLabel */ = {
+			isa = PBXGroup;
+			children = (
+				ABAF15571718C39C00658A1D /* JNWLabel.h */,
+				ABAF15581718C39C00658A1D /* JNWLabel.m */,
+				ABAF15591718C39C00658A1D /* JNWLabel+Accessibility.h */,
+				ABAF155A1718C39C00658A1D /* JNWLabel+Accessibility.m */,
+			);
+			name = JNWLabel;
 			sourceTree = "<group>";
 		};
 		ABB0F2EA16FD7D19002004F5 = {
@@ -144,6 +161,7 @@
 		ABB0F2FC16FD7D19002004F5 /* JNWTableViewDemo */ = {
 			isa = PBXGroup;
 			children = (
+				ABAF15551718C39300658A1D /* JNWLabel */,
 				AB3C722F170CABFF004A91DB /* AppDelegate.h */,
 				AB3C7230170CABFF004A91DB /* AppDelegate.m */,
 				AB3C7232170CABFF004A91DB /* TableViewCell.h */,
@@ -261,6 +279,8 @@
 				AB3C7238170CABFF004A91DB /* TableViewCell.m in Sources */,
 				AB3C7239170CABFF004A91DB /* TableViewHeader.m in Sources */,
 				AB3C7244170CAC32004A91DB /* main.m in Sources */,
+				ABAF155B1718C39C00658A1D /* JNWLabel.m in Sources */,
+				ABAF155C1718C39C00658A1D /* JNWLabel+Accessibility.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

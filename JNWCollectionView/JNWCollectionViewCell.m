@@ -53,7 +53,7 @@
 @end
 
 @interface JNWCollectionViewCell()
-@property (nonatomic, strong, readwrite) NSView *content;
+@property (nonatomic, strong, readwrite) NSView *contentView;
 @property (nonatomic, strong, readwrite) JNWCollectionViewCellBackgroundView *backgroundView;
 @end
 
@@ -64,17 +64,18 @@
 	if (self == nil) return nil;
 	
 	self.wantsLayer = YES;
+	self.layerContentsRedrawPolicy = NSViewLayerContentsRedrawOnSetNeedsDisplay;
+
 	_reuseIdentifier = reuseIdentifier.copy;
 	
-	self.content = [[NSView alloc] initWithFrame:self.bounds];
-	self.backgroundView = [[JNWCollectionViewCellBackgroundView alloc] initWithFrame:self.bounds];
+	_contentView = [[NSView alloc] initWithFrame:self.bounds];
+	_contentView.wantsLayer = YES;
+
+	_backgroundView = [[JNWCollectionViewCellBackgroundView alloc] initWithFrame:self.bounds];
 	
-	self.content.wantsLayer = YES;
+	[self addSubview:_contentView];
+	[self addSubview:_backgroundView positioned:NSWindowBelow relativeTo:_contentView];
 	
-	[self addSubview:self.content];
-	[self addSubview:self.backgroundView positioned:NSWindowBelow relativeTo:self.content];
-	
-	self.layerContentsRedrawPolicy = NSViewLayerContentsRedrawOnSetNeedsDisplay;
 	
 	return self;
 }
@@ -82,7 +83,7 @@
 - (void)layout {
 	[super layout];
 	
-	self.content.frame = self.bounds;
+	self.contentView.frame = self.bounds;
 	self.backgroundView.frame = self.bounds;
 }
 
@@ -91,17 +92,17 @@
 }
 
 - (void)setBackgroundColor:(NSColor *)backgroundColor {
-	self.backgroundView.color = backgroundColor;
+	[(JNWCollectionViewCellBackgroundView *)self.backgroundView setColor:backgroundColor];
 }
 
 - (void)setBackgroundImage:(NSImage *)backgroundImage {
-	self.backgroundView.image = backgroundImage;
+	[(JNWCollectionViewCellBackgroundView *)self.backgroundView setImage:backgroundImage];
 }
 
 - (void)mouseDown:(NSEvent *)theEvent {
 	[super mouseDown:theEvent];
 	
-	[self.tableView mouseDownInTableViewCell:self withEvent:theEvent];
+	[self.collectionView mouseDownInCollectionViewCell:self withEvent:theEvent];
 }
 
 @end

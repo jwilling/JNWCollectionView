@@ -9,5 +9,6 @@
 #import "JNWCollectionView.h"
 
 @interface JNWCollectionViewCell ()
-@property (nonatomic, assign, readwrite) JNWCollectionView *tableView;
+@property (nonatomic, assign, readwrite) JNWCollectionView *collectionView;
+@property (nonatomic, strong, readwrite) NSIndexPath *indexPath;
 @end

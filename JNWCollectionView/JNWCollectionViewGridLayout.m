@@ -69,20 +69,29 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 		NSLog(@"delegate does not conform to JNWCollectionViewGridLayoutDelegate!");
 	}
 	
-	NSUInteger numberOfSections = [self.collectionView numberOfSections];
-	
 	CGSize itemSize = self.itemSize;
 	if ([self.delegate respondsToSelector:@selector(sizeForItemInCollectionView:)]) {
 		itemSize = [self.delegate sizeForItemInCollectionView:self.collectionView];
 		self.itemSize = itemSize;
 	}
 	
-	CGFloat totalHeight = 0;
-	NSInteger numberOfColumns = CGRectGetWidth(self.collectionView.documentVisibleRect) / itemSize.width;
-	
 	BOOL delegateHeightForHeader = [self.delegate respondsToSelector:@selector(collectionView:heightForHeaderInSection:)];
 	BOOL delegateHeightForFooter = [self.delegate respondsToSelector:@selector(collectionView:heightForFooterInSection:)];
 	
+	CGFloat totalWidth = CGRectGetWidth(self.collectionView.documentVisibleRect);
+	NSUInteger numberOfColumns = totalWidth / itemSize.width;
+	NSUInteger numberOfSections = [self.collectionView numberOfSections];
+	
+	CGFloat itemPadding = 0;
+	if (numberOfColumns > 0) {
+		CGFloat totalPadding = totalWidth - (numberOfColumns * itemSize.width);
+		itemPadding = floorf(totalPadding / (numberOfColumns + 1));
+	}
+	else {
+		numberOfColumns = 1;
+	}
+	
+	CGFloat totalHeight = 0;
 	for (NSUInteger section = 0; section < numberOfSections; section++) {
 		NSInteger numberOfItems = [self.collectionView numberOfItemsInSection:section];
 		NSInteger headerHeight = delegateHeightForHeader ? [self.delegate collectionView:self.collectionView heightForHeaderInSection:section] : 0;
@@ -97,8 +106,7 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 		
 		for (NSInteger item = 0; item < numberOfItems; item++) {
 			CGPoint origin = CGPointZero;
-			// TODO: This does not provide padding
-			origin.x = (item % numberOfColumns) * itemSize.width;
+			origin.x = itemPadding + (item % numberOfColumns) * (itemSize.width + itemPadding);
 			origin.y = ((item - (item % numberOfColumns)) / numberOfColumns) * itemSize.height;
 			sectionInfo.itemInfo[item].origin = origin;
 		}

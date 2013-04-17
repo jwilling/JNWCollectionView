@@ -10,12 +10,15 @@
 
 @protocol JNWCollectionViewListLayoutDelegate <NSObject>
 
-- (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForItemAtIndexPath:(NSIndexPath *)indexPath;
+- (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForHeaderInSection:(NSInteger)index;
 - (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForFooterInSection:(NSInteger)index;
 
 @end
 
 @interface JNWCollectionViewListLayout : JNWCollectionViewLayout
+
+@property (nonatomic, assign) id<JNWCollectionViewListLayoutDelegate> delegate;
+@property (nonatomic, assign) CGFloat rowHeight;
 
 @end

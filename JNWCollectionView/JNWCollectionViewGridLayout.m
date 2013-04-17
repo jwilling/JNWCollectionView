@@ -44,7 +44,6 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 
 @interface JNWCollectionViewGridLayout()
 @property (nonatomic, strong) NSMutableArray *sections;
-@property (nonatomic, weak) id<JNWCollectionViewGridLayoutDelegate> delegate;
 @end
 
 @implementation JNWCollectionViewGridLayout
@@ -66,10 +65,9 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 - (void)prepareLayout {
 	[self.sections removeAllObjects];
 	
-	if (![self.collectionView.delegate conformsToProtocol:@protocol(JNWCollectionViewGridLayoutDelegate)]) {
+	if (![self.delegate conformsToProtocol:@protocol(JNWCollectionViewGridLayoutDelegate)]) {
 		NSLog(@"delegate does not conform to JNWCollectionViewGridLayoutDelegate!");
 	}
-	self.delegate = (id<JNWCollectionViewGridLayoutDelegate>)self.collectionView.delegate;
 	
 	NSUInteger numberOfSections = [self.collectionView numberOfSections];
 	
@@ -82,10 +80,13 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	CGFloat totalHeight = 0;
 	NSInteger numberOfColumns = CGRectGetWidth(self.collectionView.documentVisibleRect) / itemSize.width;
 	
+	BOOL delegateHeightForHeader = [self.delegate respondsToSelector:@selector(collectionView:heightForHeaderInSection:)];
+	BOOL delegateHeightForFooter = [self.delegate respondsToSelector:@selector(collectionView:heightForFooterInSection:)];
+	
 	for (NSUInteger section = 0; section < numberOfSections; section++) {
 		NSInteger numberOfItems = [self.collectionView numberOfItemsInSection:section];
-		NSInteger headerHeight = [self.delegate collectionView:self.collectionView heightForHeaderInSection:section];
-		NSInteger footerHeight = [self.delegate collectionView:self.collectionView heightForFooterInSection:section];
+		NSInteger headerHeight = delegateHeightForHeader ? [self.delegate collectionView:self.collectionView heightForHeaderInSection:section] : 0;
+		NSInteger footerHeight = delegateHeightForFooter ? [self.delegate collectionView:self.collectionView heightForFooterInSection:section] : 0;
 		
 		JNWCollectionViewGridLayoutSection *sectionInfo = [[JNWCollectionViewGridLayoutSection alloc] initWithNumberOfItems:numberOfItems];
 		sectionInfo.offset = totalHeight + headerHeight;

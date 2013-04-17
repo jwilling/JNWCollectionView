@@ -42,10 +42,16 @@ typedef struct {
 
 @interface JNWCollectionViewListLayout()
 @property (nonatomic, strong) NSMutableArray *sections;
-@property (nonatomic, weak) id<JNWCollectionViewListLayoutDelegate> delegate;
 @end
 
 @implementation JNWCollectionViewListLayout
+
+- (instancetype)initWithCollectionView:(JNWCollectionView *)collectionView {
+	self = [super initWithCollectionView:collectionView];
+	if (self == nil) return nil;
+	self.rowHeight = 44.f;
+	return self;
+}
 
 - (NSMutableArray *)sections {
 	if (_sections == nil) {
@@ -57,18 +63,21 @@ typedef struct {
 - (void)prepareLayout {
 	[self.sections removeAllObjects];
 	
-	if (![self.collectionView.delegate conformsToProtocol:@protocol(JNWCollectionViewListLayoutDelegate)]) {
+	if (![self.delegate conformsToProtocol:@protocol(JNWCollectionViewListLayoutDelegate)]) {
 		NSLog(@"delegate does not conform to JNWCollectionViewListLayoutDelegate!");
-	}	
-	self.delegate = (id<JNWCollectionViewListLayoutDelegate>)self.collectionView.delegate;
+	}
+	
+	BOOL delegateHeightForRow = [self.delegate respondsToSelector:@selector(collectionView:heightForRowAtIndexPath:)];
+	BOOL delegateHeightForHeader = [self.delegate respondsToSelector:@selector(collectionView:heightForHeaderInSection:)];
+	BOOL delegateHeightForFooter = [self.delegate respondsToSelector:@selector(collectionView:heightForFooterInSection:)];
 	
 	NSUInteger numberOfSections = [self.collectionView numberOfSections];
 	CGFloat totalHeight = 0;
 	
 	for (NSUInteger section = 0; section < numberOfSections; section++) {
 		NSInteger numberOfRows = [self.collectionView numberOfItemsInSection:section];
-		NSInteger headerHeight = [self.delegate collectionView:self.collectionView heightForHeaderInSection:section];
-		NSInteger footerHeight = [self.delegate collectionView:self.collectionView heightForFooterInSection:section];
+		NSInteger headerHeight = delegateHeightForHeader ? [self.delegate collectionView:self.collectionView heightForHeaderInSection:section] : 0;
+		NSInteger footerHeight = delegateHeightForFooter ? [self.delegate collectionView:self.collectionView heightForFooterInSection:section] : 0;
 		
 		JNWCollectionViewListLayoutSection *sectionInfo = [[JNWCollectionViewListLayoutSection alloc] initWithNumberOfRows:numberOfRows];
 		sectionInfo.offset = totalHeight + headerHeight;
@@ -77,10 +86,10 @@ typedef struct {
 		sectionInfo.footerHeight = footerHeight;
 		
 		for (NSInteger row = 0; row < numberOfRows; row++) {
-			CGFloat rowHeight = 0;
-			// TODO: See if delegate responds to the height
+			CGFloat rowHeight = self.rowHeight;
 			NSIndexPath *indexPath = [NSIndexPath jnw_indexPathForItem:row inSection:section];
-			rowHeight = [self.delegate collectionView:self.collectionView heightForItemAtIndexPath:indexPath];
+			if (delegateHeightForRow)
+				rowHeight = [self.delegate collectionView:self.collectionView heightForRowAtIndexPath:indexPath];
 			
 			sectionInfo.rowInfo[row].height = rowHeight;
 			sectionInfo.rowInfo[row].yOffset = sectionInfo.height;

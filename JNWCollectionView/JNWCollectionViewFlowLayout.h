@@ -18,6 +18,7 @@
 
 @interface JNWCollectionViewFlowLayout : JNWCollectionViewLayout
 
+@property (nonatomic, weak) id<JNWCollectionViewFlowLayoutDelegate> delegate;
 //@property (nonatomic, assign) CGFloat minimumItemVerticalSeparation;
 @property (nonatomic, assign) CGFloat minimumItemHorizontalSeparation;
 

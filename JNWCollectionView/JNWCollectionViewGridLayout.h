@@ -18,6 +18,7 @@
 
 @interface JNWCollectionViewGridLayout : JNWCollectionViewLayout
 
+@property (nonatomic, weak) id<JNWCollectionViewGridLayoutDelegate> delegate;
 @property (nonatomic, assign) CGSize itemSize;
 
 @end

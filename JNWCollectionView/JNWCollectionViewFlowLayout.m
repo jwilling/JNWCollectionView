@@ -42,7 +42,6 @@ typedef struct {
 
 @interface JNWCollectionViewFlowLayout()
 @property (nonatomic, strong) NSMutableArray *sections;
-@property (nonatomic, weak) id<JNWCollectionViewFlowLayoutDelegate> delegate;
 @end
 
 @implementation JNWCollectionViewFlowLayout
@@ -64,10 +63,9 @@ typedef struct {
 - (void)prepareLayout {
 	[self.sections removeAllObjects];
 	
-	if (![self.collectionView.delegate conformsToProtocol:@protocol(JNWCollectionViewFlowLayoutDelegate)]) {
+	if (![self.delegate conformsToProtocol:@protocol(JNWCollectionViewFlowLayoutDelegate)]) {
 		NSLog(@"delegate does not conform to JNWCollectionViewFlowLayoutDelegate!");
 	}
-	self.delegate = (id<JNWCollectionViewFlowLayoutDelegate>)self.collectionView.delegate;
 	
 	NSUInteger numberOfSections = [self.collectionView numberOfSections];
 	CGFloat totalHeight = 0;

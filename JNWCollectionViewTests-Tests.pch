@@ -1,0 +1,16 @@
+//
+//  JNWCollectionViewTests-Tests.pch
+//  JNWCollectionView
+//
+//  Created by Robert Widmann on 4/16/13.
+//  Copyright (c) 2013 AppJon. All rights reserved.
+//
+
+#ifdef __OBJC__
+#import <Cocoa/Cocoa.h>
+#import <JNWCollectionView/JNWCollectionView.h>
+
+#import "Specta.h"
+#define EXP_SHORTHAND
+#import "Expecta.h"
+#endif

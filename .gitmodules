@@ -7,3 +7,6 @@
 [submodule "external/Expecta"]
 	path = external/Expecta
 	url = https://github.com/petejkim/expecta.git
+[submodule "external/Specta"]
+	path = external/Specta
+	url = https://github.com/petejkim/specta.git

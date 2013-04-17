@@ -7,9 +7,7 @@
 #import "JNWCollectionViewListLayout.h"
 
 //static const NSUInteger JNWCollectionViewMaximumNumberOfQueuedCells = 2;
-//static const CGFloat JNWCollectionViewDefaultRowHeight = 44.f;
 static const CGSize JNWCollectionViewDefaultSize = (CGSize){ 44.f, 44.f };
-static const CGFloat JNWCollectionViewDefaultHorizontalPadding = 0.f;
 static const CGFloat JNWCollectionViewDefaultVerticalPadding = 0.f;
 
 typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
@@ -52,8 +50,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	_self.visibleTableFooters = [NSMutableDictionary dictionary];
 	_self.visibleTableHeaders = [NSMutableDictionary dictionary];
 	_self.scrollDirection = JNWCollectionViewScrollDirectionVertical;
-	_self.itemVerticalPadding = JNWCollectionViewDefaultVerticalPadding;
-	_self.itemHorizontalPadding = JNWCollectionViewDefaultHorizontalPadding;
 	
 	_self.reusableTableCells = [NSMutableDictionary dictionary];
 	_self.reusableTableHeadersFooters = [NSMutableDictionary dictionary];
@@ -216,40 +212,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		
 		contentFrame = CGRectUnion(contentFrame, sectionFrame);
 	}
-	
-	
-	/*
-	for (NSInteger section = 0; section < numberOfSections; section++) {
-		@autoreleasepool {
-			// Create a new section
-			NSInteger numberOfItems = [self.dataSource collectionView:self numberOfItemsInSection:section];
-			
-			JNWCollectionViewSection *sectionInfo = [[JNWCollectionViewSection alloc] initWithNumberOfItems:numberOfItems];
-			sectionInfo.index = section;
-			sectionInfo.headerFrame = [self.collectionViewLayout rectForHeaderAtIndex:section];
-			sectionInfo.footerFrame = [self.collectionViewLayout rectForFooterAtIndex:section];
-			
-			CGRect sectionFrame = CGRectZero;
-			CGRect previousRect = CGRectZero;
-			for (NSInteger item = 0; item < numberOfItems; item++) {
-				NSIndexPath *indexPath = [NSIndexPath jnw_indexPathForItem:item inSection:section];
-				CGRect itemFrame = [self.collectionViewLayout rectForItemAtIndexPath:indexPath];
-				sectionInfo.itemInfo[item].frame = itemFrame;
-				previousRect = itemFrame;
-				
-				sectionFrame = CGRectUnion(sectionFrame, itemFrame);
-			}
-			
-			sectionFrame = CGRectUnion(sectionFrame, sectionInfo.headerFrame);
-			sectionFrame = CGRectUnion(sectionFrame, sectionInfo.footerFrame);
-			sectionInfo.sectionFrame = sectionFrame;
-			
-			contentFrame = CGRectUnion(contentFrame, sectionFrame);
-	
-			[self.sectionData addObject:sectionInfo];
-		}
-	}
-	 */
 	
 	self.contentSize = contentFrame.size;
 }

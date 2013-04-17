@@ -45,10 +45,6 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollDirection) {
 
 @property (nonatomic, strong) JNWCollectionViewLayout *collectionViewLayout;
 
-@property (nonatomic, assign) CGSize itemSize;
-@property (nonatomic, assign) CGFloat itemVerticalPadding;
-@property (nonatomic, assign) CGFloat itemHorizontalPadding;
-
 @property (nonatomic, assign) JNWCollectionViewScrollDirection scrollDirection;
 
 - (NSInteger)numberOfSections;

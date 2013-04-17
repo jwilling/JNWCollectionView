@@ -8,7 +8,7 @@
 
 #import <JNWCollectionView/JNWCollectionViewHeaderFooterView.h>
 
-@interface TableViewHeader : JNWCollectionViewHeaderFooterView
+@interface ListHeader : JNWCollectionViewHeaderFooterView
 
 @property (nonatomic, copy) NSString *headerLabelText;
 

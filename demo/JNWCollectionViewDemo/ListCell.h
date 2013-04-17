@@ -8,7 +8,7 @@
 
 #import <JNWCollectionView/JNWCollectionViewCell.h>
 
-@interface TableViewCell : JNWCollectionViewCell
+@interface ListCell : JNWCollectionViewCell
 
 @property (nonatomic, copy) NSString *cellLabelText;
 

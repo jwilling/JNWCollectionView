@@ -32,6 +32,8 @@
 		AB3C7210170CA965004A91DB /* JNWCollectionViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C720F170CA965004A91DB /* JNWCollectionViewTests.m */; };
 		AB3C7216170CAADB004A91DB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB024671707937F00537A92 /* QuartzCore.framework */; };
 		AB3C7249170CAD13004A91DB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB3C7211170CA981004A91DB /* InfoPlist.strings */; };
+		ABA276B2171D1C4B005C8E56 /* JNWCollectionViewDocumentView.h in Headers */ = {isa = PBXBuildFile; fileRef = ABA276B0171D1C4B005C8E56 /* JNWCollectionViewDocumentView.h */; };
+		ABA276B3171D1C4B005C8E56 /* JNWCollectionViewDocumentView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA276B1171D1C4B005C8E56 /* JNWCollectionViewDocumentView.m */; };
 		ABB023F5170791D300537A92 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB023F4170791D300537A92 /* Cocoa.framework */; };
 		ABB0240B170791D300537A92 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB0240A170791D300537A92 /* SenTestingKit.framework */; };
 		ABB0240C170791D300537A92 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB023F4170791D300537A92 /* Cocoa.framework */; };
@@ -83,6 +85,8 @@
 		AB3C720F170CA965004A91DB /* JNWCollectionViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewTests.m; path = JNWCollectionViewTests/JNWCollectionViewTests.m; sourceTree = SOURCE_ROOT; };
 		AB3C7212170CA981004A91DB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = JNWCollectionViewTests/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		AB3C7214170CA990004A91DB /* JNWCollectionViewTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "JNWCollectionViewTests-Info.plist"; path = "JNWCollectionViewTests/JNWCollectionViewTests-Info.plist"; sourceTree = SOURCE_ROOT; };
+		ABA276B0171D1C4B005C8E56 /* JNWCollectionViewDocumentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewDocumentView.h; path = JNWCollectionView/JNWCollectionViewDocumentView.h; sourceTree = SOURCE_ROOT; };
+		ABA276B1171D1C4B005C8E56 /* JNWCollectionViewDocumentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewDocumentView.m; path = JNWCollectionView/JNWCollectionViewDocumentView.m; sourceTree = SOURCE_ROOT; };
 		ABB023F1170791D300537A92 /* JNWCollectionView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JNWCollectionView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABB023F4170791D300537A92 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		ABB023F7170791D300537A92 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -184,6 +188,8 @@
 				AB1514711714D36200871248 /* Layouts */,
 				AB3C71E8170CA8D3004A91DB /* JNWCollectionView.h */,
 				AB3C71E9170CA8D3004A91DB /* JNWCollectionView.m */,
+				ABA276B0171D1C4B005C8E56 /* JNWCollectionViewDocumentView.h */,
+				ABA276B1171D1C4B005C8E56 /* JNWCollectionViewDocumentView.m */,
 				AB3C71EA170CA8D3004A91DB /* JNWCollectionView+Private.h */,
 				AB3C71EB170CA8D3004A91DB /* JNWCollectionViewCell.h */,
 				AB3C71EC170CA8D3004A91DB /* JNWCollectionViewCell.m */,
@@ -266,6 +272,7 @@
 				AB3C71FB170CA8D3004A91DB /* JNWCollectionViewCell+Private.h in Headers */,
 				AB3C71FF170CA8D3004A91DB /* JNWCollectionViewSection.h in Headers */,
 				AB3C7209170CA8EF004A91DB /* JNWCollectionView-Prefix.pch in Headers */,
+				ABA276B2171D1C4B005C8E56 /* JNWCollectionViewDocumentView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,6 +395,7 @@
 				AB1514751714D39600871248 /* JNWCollectionViewListLayout.m in Sources */,
 				AB1514831715361E00871248 /* JNWCollectionViewGridLayout.m in Sources */,
 				AB1514961717443F00871248 /* JNWCollectionViewFlowLayout.m in Sources */,
+				ABA276B3171D1C4B005C8E56 /* JNWCollectionViewDocumentView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

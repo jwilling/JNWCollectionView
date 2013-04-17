@@ -47,6 +47,7 @@
 		ABB024641707936300537A92 /* RBLScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB0245C1707936300537A92 /* RBLScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		ABB024651707936300537A92 /* RBLScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB0245D1707936300537A92 /* RBLScrollView.m */; };
 		ABB024681707937F00537A92 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB024671707937F00537A92 /* QuartzCore.framework */; };
+		ABBEA58B171E7D7A00A6F03D /* JNWCollectionViewSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = ABBEA58A171E7D7A00A6F03D /* JNWCollectionViewSpec.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -175,6 +176,7 @@
 		ABB0245C1707936300537A92 /* RBLScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RBLScrollView.h; path = external/Rebel/Rebel/RBLScrollView.h; sourceTree = SOURCE_ROOT; };
 		ABB0245D1707936300537A92 /* RBLScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RBLScrollView.m; path = external/Rebel/Rebel/RBLScrollView.m; sourceTree = SOURCE_ROOT; };
 		ABB024671707937F00537A92 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		ABBEA58A171E7D7A00A6F03D /* JNWCollectionViewSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewSpec.m; path = JNWCollectionViewTests/JNWCollectionViewSpec.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -329,6 +331,7 @@
 			isa = PBXGroup;
 			children = (
 				8467C6D6171E587F00A1F343 /* JNWCollectionViewHeaderFooterViewSpec.m */,
+				ABBEA58A171E7D7A00A6F03D /* JNWCollectionViewSpec.m */,
 				8467C6D3171E581300A1F343 /* Supporting Files */,
 			);
 			name = JNWCollectionViewTests;
@@ -575,6 +578,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8467C6D7171E587F00A1F343 /* JNWCollectionViewHeaderFooterViewSpec.m in Sources */,
+				ABBEA58B171E7D7A00A6F03D /* JNWCollectionViewSpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

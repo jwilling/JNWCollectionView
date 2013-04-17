@@ -5,10 +5,9 @@
 #import "JNWCollectionViewCell+Private.h"
 #import <QuartzCore/QuartzCore.h>
 #import "JNWCollectionViewListLayout.h"
+#import "JNWCollectionViewDocumentView.h"
 
 //static const NSUInteger JNWCollectionViewMaximumNumberOfQueuedCells = 2;
-static const CGSize JNWCollectionViewDefaultSize = (CGSize){ 44.f, 44.f };
-static const CGFloat JNWCollectionViewDefaultVerticalPadding = 0.f;
 
 typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 	JNWCollectionViewSelectionTypeSingle,
@@ -57,11 +56,14 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	// By default we are layer-backed.
 	_self.wantsLayer = YES;
 	
-	_self.collectionViewLayout = [[JNWCollectionViewListLayout alloc] initWithCollectionView:_self];
+	_self.documentView = [[JNWCollectionViewDocumentView alloc] initWithFrame:CGRectZero];
 	
 	// Flip the document view since it's easier to lay out
 	// starting from the top, not the bottom.
 	[_self.documentView setFlipped:YES];
+	
+	_self.collectionViewLayout = [[JNWCollectionViewListLayout alloc] initWithCollectionView:_self];
+
 }
 
 - (id)initWithFrame:(NSRect)frameRect {
@@ -216,6 +218,17 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	self.contentSize = contentFrame.size;
 }
 
+- (void)setScrollDirection:(JNWCollectionViewScrollDirection)scrollDirection {
+	if (scrollDirection == JNWCollectionViewScrollDirectionHorizontal) {
+		self.hasVerticalScroller = NO;
+		self.hasHorizontalScroller = YES;
+	} else {
+		self.hasHorizontalScroller = NO;
+		self.hasVerticalScroller = YES;
+	}
+	
+	//TODO: Fully implement this.
+}
 
 #pragma mark Cell Information
 
@@ -330,10 +343,11 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 			rect.size.height = visibleRect.size.height;
 			rect.origin.y -= visibleRect.size.height;
 			break;
+		case JNWCollectionViewScrollPositionNearest:
+			
+			break;
 		case JNWCollectionViewScrollPositionNone:
 			// no scroll needed
-			break;
-		case JNWCollectionViewScrollPositionNearest:
 		default:
 			break;
 	}
@@ -417,7 +431,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		[self layoutCellsWithRedraw:YES];
 		[self layoutHeaderFootersWithRedraw:YES];
 		_lastDrawnBounds = self.bounds;
-		NSLog(@"cache rect was different, cells redrawn.");
 	} else {
 		[self layoutCells];
 		[self layoutHeaderFooters];
@@ -438,7 +451,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		return;
 	
 	if (needsVisibleRedraw) {
-		NSLog(@"visible redraw");
 		for (NSIndexPath *indexPath in self.visibleCellsMap.allKeys) {
 			JNWCollectionViewCell *cell = self.visibleCellsMap[indexPath];
 			cell.frame = [self rectForItemAtIndexPath:indexPath];

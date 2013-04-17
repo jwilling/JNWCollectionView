@@ -10,6 +10,7 @@
 
 @protocol JNWCollectionViewGridLayoutDelegate <NSObject>
 
+@optional
 - (CGSize)sizeForItemInCollectionView:(JNWCollectionView *)collectionView;
 - (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForHeaderInSection:(NSInteger)index;
 - (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForFooterInSection:(NSInteger)index;

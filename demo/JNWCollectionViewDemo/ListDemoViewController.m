@@ -60,6 +60,13 @@
 	return header;
 }
 
+// Can be used in place of setting the collective height of the layout, as seen above in `-loadView`, if
+// a variable-row height list view is wanted.
+
+//- (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//	return 44.f;
+//}
+
 - (NSUInteger)collectionView:(JNWCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
 	return 300;
 }

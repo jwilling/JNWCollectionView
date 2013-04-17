@@ -63,7 +63,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	[_self.documentView setFlipped:YES];
 	
 	_self.collectionViewLayout = [[JNWCollectionViewListLayout alloc] initWithCollectionView:_self];
-
 }
 
 - (id)initWithFrame:(NSRect)frameRect {
@@ -425,13 +424,13 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	}
 	
 	if (!CGRectEqualToRect(self.bounds, _lastDrawnBounds)) {
-#warning TODO: Determine whether item recalculation is needed.
+		// TODO: Do we need to recalculate everything?
 		[self recalculateItemInfo];
 		
 		[self layoutCellsWithRedraw:YES];
 		[self layoutHeaderFootersWithRedraw:YES];
 		_lastDrawnBounds = self.bounds;
-		NSLog(@"cached rects invalid, redrawing.");
+		NSLog(@"%@ cached rects invalid, redrawing.", self);
 	} else {
 		[self layoutCells];
 		[self layoutHeaderFooters];
@@ -750,7 +749,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	[self selectItemAtIndexPath:[self indexPathForPreviousSelectableRow] atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];}
 
 - (void)moveUpAndModifySelection:(id)sender {
-#warning This, along with the corresponding moveDown* method, do not function properly.
+#warning This, along with the corresponding moveDown* method, does not function properly.
 	[self selectRowAtIndexPath:[self indexPathForPreviousSelectableRow] atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES selectionType:JNWCollectionViewSelectionTypeExtending];
 }
 

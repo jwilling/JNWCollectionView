@@ -48,7 +48,6 @@
 }
 
 - (void)updateLayer {
-	NSLog(@"%@",self.image);
 	if (self.image != nil) {
 		self.layer.contents = self.image;
 	} else if (self.color != nil) {
@@ -122,6 +121,10 @@
 	[super mouseDown:theEvent];
 	
 	[self.collectionView mouseDownInCollectionViewCell:self withEvent:theEvent];
+}
+
+- (NSString *)description {
+	return [NSString stringWithFormat:@"<%@: %p>{ frame = %@, layer = <%@: %p> }", self.class, self, NSStringFromRect(self.frame), self.layer, self.layer.class];
 }
 
 @end

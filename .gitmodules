@@ -4,3 +4,9 @@
 [submodule "demo/external/JNWLabel"]
 	path = demo/external/JNWLabel
 	url = https://github.com/jwilling/JNWLabel.git
+[submodule "external/Specta"]
+	path = external/Specta
+	url = git@github.com:petejkim/specta.git
+[submodule "external/Expecta"]
+	path = external/Expecta
+	url = git@github.com:petejkim/expecta.git

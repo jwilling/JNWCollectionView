@@ -30,6 +30,11 @@
 	[self setNeedsDisplay:YES];
 }
 
+- (void)setColor:(NSColor *)color {
+	_color = color;
+	[self setNeedsDisplay:YES];
+}
+
 - (void)setFrame:(NSRect)frameRect {
 	if (CGRectEqualToRect(self.frame, frameRect))
 		return;

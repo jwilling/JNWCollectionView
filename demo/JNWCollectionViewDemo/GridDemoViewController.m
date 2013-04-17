@@ -32,8 +32,8 @@
 	if (cell == nil) {
 		cell = [[GridCell alloc] initWithReuseIdentifier:identifier];
 		cell.backgroundColor = [NSColor blueColor];
-		cell.labelText = [NSString stringWithFormat:@"%ld",indexPath.item];
 	}
+	cell.labelText = [NSString stringWithFormat:@"%ld",indexPath.item];
 	return cell;
 }
 

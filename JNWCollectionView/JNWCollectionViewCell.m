@@ -85,6 +85,11 @@
 	return self;
 }
 
+- (id)initWithFrame:(NSRect)frameRect {
+	NSAssert(NO, @"-initWithFrame: should not be called on JNWCollectionViewCell. Use the dedicated initializer -initWithReuseIdentifier:");
+	return nil;
+}
+
 - (void)layout {
 	[super layout];
 	

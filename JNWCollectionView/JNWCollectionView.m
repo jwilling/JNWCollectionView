@@ -431,6 +431,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		[self layoutCellsWithRedraw:YES];
 		[self layoutHeaderFootersWithRedraw:YES];
 		_lastDrawnBounds = self.bounds;
+		NSLog(@"cached rects invalid, redrawing.");
 	} else {
 		[self layoutCells];
 		[self layoutHeaderFooters];
@@ -722,6 +723,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (void)mouseDownInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
+	[self.window makeFirstResponder:self];
+	
 	NSIndexPath *indexPath = [self indexPathForCell:cell];
 	if (indexPath == nil) {
 		NSLog(@"***index path not found for selection.");

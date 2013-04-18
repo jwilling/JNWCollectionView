@@ -255,6 +255,15 @@
 			name = Layouts;
 			sourceTree = "<group>";
 		};
+		AB46B0AF171F900100F727C7 /* external */ = {
+			isa = PBXGroup;
+			children = (
+				8467C6E7171E589500A1F343 /* Specta.xcodeproj */,
+				8467C6D8171E589200A1F343 /* Expecta.xcodeproj */,
+			);
+			name = external;
+			sourceTree = "<group>";
+		};
 		ABB023E7170791D300537A92 = {
 			isa = PBXGroup;
 			children = (
@@ -333,6 +342,7 @@
 		ABB02410170791D300537A92 /* JNWCollectionViewTests */ = {
 			isa = PBXGroup;
 			children = (
+				AB46B0AF171F900100F727C7 /* external */,
 				8467C6D6171E587F00A1F343 /* JNWCollectionViewHeaderFooterViewSpec.m */,
 				ABBEA58A171E7D7A00A6F03D /* JNWCollectionViewSpec.m */,
 				8467C711171F7DC500A1F343 /* JNWTestObject.h */,
@@ -346,8 +356,6 @@
 		ABB024571707934300537A92 /* external */ = {
 			isa = PBXGroup;
 			children = (
-				8467C6E7171E589500A1F343 /* Specta.xcodeproj */,
-				8467C6D8171E589200A1F343 /* Expecta.xcodeproj */,
 				ABB024581707936300537A92 /* NSColor+RBLCGColorAdditions.h */,
 				ABB024591707936300537A92 /* NSColor+RBLCGColorAdditions.m */,
 				ABB0245A1707936300537A92 /* RBLClipView.h */,

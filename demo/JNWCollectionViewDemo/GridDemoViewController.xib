@@ -49,14 +49,16 @@
 									<object class="NSView" id="246119227">
 										<reference key="NSNextResponder" ref="562719054"/>
 										<int key="NSvFlags">274</int>
-										<string key="NSFrameSize">{527, 301}</string>
+										<string key="NSFrameSize">{529, 303}</string>
 										<reference key="NSSuperview" ref="562719054"/>
+										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="953113625"/>
 										<string key="NSReuseIdentifierKey">_NS:13</string>
 									</object>
 								</array>
-								<string key="NSFrame">{{1, 1}, {527, 301}}</string>
+								<string key="NSFrameSize">{529, 303}</string>
 								<reference key="NSSuperview" ref="369046426"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="246119227"/>
 								<string key="NSReuseIdentifierKey">_NS:11</string>
 								<reference key="NSDocView" ref="246119227"/>
@@ -74,8 +76,9 @@
 							<object class="NSScroller" id="16722118">
 								<reference key="NSNextResponder" ref="369046426"/>
 								<int key="NSvFlags">256</int>
-								<string key="NSFrame">{{512, 1}, {16, 301}}</string>
+								<string key="NSFrame">{{513, 0}, {16, 303}}</string>
 								<reference key="NSSuperview" ref="369046426"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:15</string>
 								<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -87,8 +90,9 @@
 							<object class="NSScroller" id="953113625">
 								<reference key="NSNextResponder" ref="369046426"/>
 								<int key="NSvFlags">256</int>
-								<string key="NSFrame">{{1, 286}, {527, 16}}</string>
+								<string key="NSFrame">{{0, 287}, {529, 16}}</string>
 								<reference key="NSSuperview" ref="369046426"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="16722118"/>
 								<string key="NSReuseIdentifierKey">_NS:26</string>
 								<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -100,9 +104,10 @@
 						</array>
 						<string key="NSFrameSize">{529, 303}</string>
 						<reference key="NSSuperview" ref="1005"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="562719054"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<int key="NSsFlags">133170</int>
+						<int key="NSsFlags">133168</int>
 						<reference key="NSVScroller" ref="16722118"/>
 						<reference key="NSHScroller" ref="953113625"/>
 						<reference key="NSContentView" ref="562719054"/>
@@ -113,6 +118,7 @@
 				</array>
 				<string key="NSFrameSize">{529, 303}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="369046426"/>
 				<string key="NSClassName">NSView</string>
 			</object>
@@ -214,7 +220,45 @@
 			<nil key="sourceID"/>
 			<int key="maxID">11</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">GridDemoViewController</string>
+					<string key="superclassName">NSViewController</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">collectionView</string>
+						<string key="NS.object.0">JNWCollectionView</string>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<string key="NS.key.0">collectionView</string>
+						<object class="IBToOneOutletInfo" key="NS.object.0">
+							<string key="name">collectionView</string>
+							<string key="candidateClassName">JNWCollectionView</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/GridDemoViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">JNWCollectionView</string>
+					<string key="superclassName">RBLScrollView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/JNWCollectionView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">RBLScrollView</string>
+					<string key="superclassName">NSScrollView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/RBLScrollView.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencies">

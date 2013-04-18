@@ -59,7 +59,7 @@
 
 @interface JNWCollectionViewCell()
 @property (nonatomic, strong, readwrite) NSView *contentView;
-@property (nonatomic, strong, readwrite) JNWCollectionViewCellBackgroundView *backgroundView;
+@property (nonatomic, strong) JNWCollectionViewCellBackgroundView *backgroundView;
 @end
 
 @implementation JNWCollectionViewCell
@@ -102,17 +102,29 @@
 }
 
 - (void)setBackgroundColor:(NSColor *)backgroundColor {
-	[(JNWCollectionViewCellBackgroundView *)self.backgroundView setColor:backgroundColor];
+	self.backgroundView.color = backgroundColor;
+}
+
+- (NSColor *)backgroundColor {
+	return self.backgroundView.color;
 }
 
 - (void)setBackgroundImage:(NSImage *)backgroundImage {
-	[(JNWCollectionViewCellBackgroundView *)self.backgroundView setImage:backgroundImage];
+	self.backgroundView.image = backgroundImage;
+}
+
+- (NSImage *)backgroundImage {
+	return self.backgroundView.image;
 }
 
 - (void)mouseDown:(NSEvent *)theEvent {
 	[super mouseDown:theEvent];
 	
 	[self.collectionView mouseDownInCollectionViewCell:self withEvent:theEvent];
+}
+
+- (NSString *)description {
+	return [NSString stringWithFormat:@"<%@: %p>{ frame = %@, layer = <%@: %p> }", self.class, self, NSStringFromRect(self.frame), self.layer, self.layer.class];
 }
 
 @end

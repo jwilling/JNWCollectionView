@@ -20,10 +20,6 @@ beforeEach(^{
 });
 
 describe(@"documentView property", ^{
-	it(@"should exist", ^{
-		expect(collectionView.documentView).notTo.beNil();
-	});
-	
 	it(@"should be of class JNWCollectionViewDocumentView", ^{
 		expect(collectionView.documentView).to.beKindOf(JNWCollectionViewDocumentView.class);
 	});
@@ -31,7 +27,7 @@ describe(@"documentView property", ^{
 
 describe(@"data source", ^{
 	beforeAll(^{
-		validDataSource = [[JNWDatasourceTestObject alloc]init];
+		validDataSource = [[JNWDatasourceTestObject alloc] init];
 	});
 	
 	it(@"should have a nil datasource", ^{

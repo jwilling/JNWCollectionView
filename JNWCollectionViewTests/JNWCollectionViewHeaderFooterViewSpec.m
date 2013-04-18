@@ -8,10 +8,18 @@
 
 SpecBegin(JNWCollectionViewHeaderFooterView)
 
+__block JNWCollectionViewHeaderFooterView *headerFooterView = nil;
+
 describe(@"-reuseIdentifier", ^{
-	JNWCollectionViewHeaderFooterView *headerFooterView = [[JNWCollectionViewHeaderFooterView alloc]initWithReuseIdentifier:@"Identifier"];
+	beforeAll(^{
+		headerFooterView = [[JNWCollectionViewHeaderFooterView alloc] initWithReuseIdentifier:@"Identifier"];
+	});
 	
-	it(@"Should return the same reuse identifier it was initialized with", ^{
+	it(@"should exist", ^{
+		expect(headerFooterView).notTo.beNil();
+	});
+	
+	it(@"should return the same reuse identifier it was initialized with", ^{
 		expect(headerFooterView.reuseIdentifier).to.equal(@"Identifier");
 	});
 });

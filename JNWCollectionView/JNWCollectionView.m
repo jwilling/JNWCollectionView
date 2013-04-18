@@ -429,6 +429,12 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		// TODO: Do we need to recalculate everything?
 		[self recalculateItemInfo];
 		
+		// Check once more whether or not the document view needs to be resized.
+		// If there are a different number of items, `contentSize` might have changed.
+		if (!CGSizeEqualToSize([self.documentView frame].size, self.contentSize)) {
+			[self layoutDocumentView];
+		}
+		
 		[self layoutCellsWithRedraw:YES];
 		[self layoutHeaderFootersWithRedraw:YES];
 		_lastDrawnBounds = self.bounds;

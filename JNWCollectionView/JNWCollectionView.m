@@ -92,7 +92,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	_tableFlags.dataSourceViewForFooter = [dataSource respondsToSelector:@selector(collectionView:viewForFooterInSection:)];
 	NSAssert([dataSource respondsToSelector:@selector(collectionView:numberOfItemsInSection:)],
 			 @"data source must implement collectionView:numberOfItemsInSection");
-	NSAssert([dataSource respondsToSelector:@selector(collectionView:cellForItemAtIndexPath::)],
+	NSAssert([dataSource respondsToSelector:@selector(collectionView:cellForItemAtIndexPath:)],
 			 @"data source must implement collectionView:cellForItemAtIndexPath:");
 }
 

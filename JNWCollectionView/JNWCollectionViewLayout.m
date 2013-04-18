@@ -45,4 +45,8 @@
 	return nil;
 }
 
+- (NSIndexPath *)indexPathForItemAfterMove:(JNWCollectionViewMoveDirection)move withCurrentIndexPath:(NSIndexPath *)currentIndexPath {
+	return currentIndexPath;
+}
+
 @end

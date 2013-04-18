@@ -8,6 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, JNWCollectionViewMoveDirection) {
+	JNWCollectionViewMoveDirectionLeft,
+	JNWCollectionViewMoveDirectionRight,
+	JNWCollectionViewMoveDirectionUp,
+	JNWCollectionViewMoveDirectionDown
+};
+
 @class JNWCollectionView;
 @interface JNWCollectionViewLayout : NSObject
 
@@ -24,5 +31,7 @@
 
 - (BOOL)wantsIndexPathsForItemsInRect;
 - (NSArray *)indexPathsForItemsInRect:(CGRect)rect;
+
+- (NSIndexPath *)indexPathForItemAfterMove:(JNWCollectionViewMoveDirection)move withCurrentIndexPath:(NSIndexPath *)currentIndexPath;
 
 @end

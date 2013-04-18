@@ -608,6 +608,10 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	return self.selectedIndexes.lastObject;
 }
 
+- (NSArray *)indexPathsForSelectedItems {
+	return self.selectedIndexes.copy;
+}
+
 // Both of these methods may return nil if there is no selection, or might
 // return the same index path if there is no possible next/previous selection.
 - (NSIndexPath *)indexPathForNextSelectableRowFromIndex:(NSIndexPath *)indexPath withOrder:(NSComparisonResult)order {

@@ -63,6 +63,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollDirection) {
 - (JNWCollectionViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (NSArray *)visibleCells;
 - (NSArray *)indexPathsForVisibleItems;
+- (NSArray *)indexPathsForSelectedItems;
 - (JNWCollectionViewHeaderFooterView *)headerViewForSection:(NSInteger)section;
 - (JNWCollectionViewHeaderFooterView *)footerViewForSection:(NSInteger)section;
 

@@ -32,6 +32,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewDirection) {
 - (BOOL)wantsIndexPathsForItemsInRect;
 - (NSArray *)indexPathsForItemsInRect:(CGRect)rect;
 
+// Subclasses must implement this method for arrowed selection to work.
 - (NSIndexPath *)indexPathForNextItemInDirection:(JNWCollectionViewDirection)direction currentIndexPath:(NSIndexPath *)currentIndexPath;
 
 @end

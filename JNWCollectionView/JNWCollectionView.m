@@ -691,7 +691,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 			atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition
 					animated:(BOOL)animated
 			   selectionType:(JNWCollectionViewSelectionType)selectionType {
-#warning implement extending selection
+	if (indexPath == nil)
+		return;
+	
 	NSMutableSet *indexesToSelect = [NSMutableSet set];
 	
 	if (selectionType == JNWCollectionViewSelectionTypeSingle) {
@@ -711,11 +713,19 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		if (firstIndex != nil) {
 			[indexesToSelect addObject:firstIndex];
 			
-			NSComparisonResult order = [firstIndex compare:indexPath];
-			NSIndexPath *nextIndex = [self indexPathForNextSelectableRowFromIndex:firstIndex withOrder:order];
-			while (nextIndex != nil && ![nextIndex isEqual:indexPath]) {
-				[indexesToSelect addObject:nextIndex];
-				nextIndex = [self indexPathForNextSelectableRowFromIndex:nextIndex withOrder:order];
+			if (![firstIndex isEqual:indexPath]) {
+				NSComparisonResult order = [firstIndex compare:indexPath];
+				NSIndexPath *nextIndex = firstIndex;
+				
+				while (nextIndex != nil && ![nextIndex isEqual:indexPath]) {
+					[indexesToSelect addObject:nextIndex];
+					
+					if (order == NSOrderedAscending) {
+						nextIndex = [self indexPathForNextSelectableItemAfterIndexPath:nextIndex];
+					} else if (order == NSOrderedDescending) {
+						nextIndex = [self indexPathForNextSelectableItemBeforeIndexPath:nextIndex];
+					}
+				}
 			}
 		}
 		

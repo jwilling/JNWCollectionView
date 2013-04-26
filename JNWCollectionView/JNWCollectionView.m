@@ -244,7 +244,19 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (NSIndexPath *)indexPathForItemAtPoint:(CGPoint)point {
-#warning implement
+	// TODO: Optimize, and perhaps have an option to defer this to the layout class.
+	for (JNWCollectionViewSection *section in self.sectionData) {
+		if (!CGRectContainsPoint(section.sectionFrame, point))
+			continue;
+		
+		NSUInteger numberOfItems = section.numberOfItems;
+		for (NSInteger item = 0; item < numberOfItems; item++) {
+			if (CGRectContainsPoint(section.itemInfo[item].frame, point)) {
+				return [NSIndexPath jnw_indexPathForItem:item inSection:section.index];
+			}
+		}
+	}
+	
 	return nil;
 }
 

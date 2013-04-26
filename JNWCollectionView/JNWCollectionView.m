@@ -765,7 +765,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (void)moveUp:(id)sender {
-	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionDown currentIndexPath:[self indexPathForSelectedRow]];
+	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionUp currentIndexPath:[self indexPathForSelectedRow]];
 	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];}
 
 - (void)moveUpAndModifySelection:(id)sender {
@@ -786,6 +786,21 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 - (void)moveRight:(id)sender {
 	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionRight currentIndexPath:[self indexPathForSelectedRow]];
 	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];
+}
+
+- (void)moveRightAndModifySelection:(id)sender {
+	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionRight currentIndexPath:[self indexPathForSelectedRow]];
+	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES selectionType:JNWCollectionViewSelectionTypeExtending];
+}
+
+- (void)moveLeft:(id)sender {
+	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionLeft currentIndexPath:[self indexPathForSelectedRow]];
+	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];
+}
+
+- (void)moveLeftAndModifySelection:(id)sender {
+	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionLeft currentIndexPath:[self indexPathForSelectedRow]];
+	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES selectionType:JNWCollectionViewSelectionTypeExtending];
 }
 
 - (void)selectAll:(id)sender {

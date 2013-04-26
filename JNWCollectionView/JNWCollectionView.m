@@ -335,10 +335,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	return self.visibleTableFooters[@(section)];
 }
 
-- (BOOL)validateIndexPath:(NSIndexPath *)indexPath {
-	return (indexPath.section < self.sectionData.count && indexPath.item < [self.sectionData[indexPath.section] numberOfItems]);
-}
-
 - (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition animated:(BOOL)animated {
 	CGRect rect = [self rectForItemAtIndexPath:indexPath];
 	CGRect visibleRect = self.documentVisibleRect;
@@ -500,7 +496,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		[self enqueueReusableCell:cell withIdentifier:cell.reuseIdentifier];
 		
 		[cell setHidden:YES];
-		// TODO: Ensure setting views hidden will not be detrimental to performance.
 	}
 	
 	// Add the new cells
@@ -632,36 +627,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 
 - (NSArray *)indexPathsForSelectedItems {
 	return self.selectedIndexes.copy;
-}
-
-// Both of these methods may return nil if there is no selection, or might
-// return the same index path if there is no possible next/previous selection.
-- (NSIndexPath *)indexPathForNextSelectableRowFromIndex:(NSIndexPath *)indexPath withOrder:(NSComparisonResult)order {
-	if (indexPath == nil) return nil;
-	
-	NSInteger section = indexPath.section;
-	NSIndexPath *attemptedIndexPath = nil;
-	switch (order) {
-		case NSOrderedAscending: {
-			NSInteger numberOfItems = [self.sectionData[section] numberOfItems];
-			attemptedIndexPath = [NSIndexPath jnw_indexPathByIncrementingRow:indexPath withCurrentSectionNumberOfRows:numberOfItems];
-			break;
-		}
-		case NSOrderedDescending: {
-			NSInteger previousNumberOfItems = 0;
-			if (section - 1 >= 0)
-				previousNumberOfItems = [self.sectionData[section - 1] numberOfItems];
-			attemptedIndexPath = [NSIndexPath jnw_indexPathByDecrementingRow:indexPath withPreviousSectionNumberOfRows:previousNumberOfItems];
-			break;
-		}
-		default:
-			break;
-	}
-	
-	if ([self validateIndexPath:attemptedIndexPath]) {
-		return attemptedIndexPath;
-	}
-	return indexPath;
 }
 
 - (void)deselectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {

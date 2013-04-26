@@ -121,4 +121,16 @@ typedef struct {
 	return CGRectMake(0, section.offset + section.height, width, section.footerHeight);
 }
 
+- (NSIndexPath *)indexPathForNextItemInDirection:(JNWCollectionViewDirection)direction currentIndexPath:(NSIndexPath *)currentIndexPath {
+	NSIndexPath *newIndexPath = currentIndexPath;
+	
+	if (direction == JNWCollectionViewDirectionUp) {
+		newIndexPath  = [self.collectionView indexPathForNextSelectableItemBeforeIndexPath:currentIndexPath];
+	} else if (direction == JNWCollectionViewDirectionDown) {
+		newIndexPath = [self.collectionView indexPathForNextSelectableItemAfterIndexPath:currentIndexPath];
+	}
+	
+	return newIndexPath;
+}
+
 @end

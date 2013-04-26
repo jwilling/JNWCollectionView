@@ -143,4 +143,27 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	return visibleRows;
 }
 
+- (NSIndexPath *)indexPathForNextItemInDirection:(JNWCollectionViewDirection)direction currentIndexPath:(NSIndexPath *)currentIndexPath {
+	NSIndexPath *newIndexPath = currentIndexPath;
+	
+	if (direction == JNWCollectionViewDirectionRight) {
+		newIndexPath = [self.collectionView indexPathForNextSelectableItemAfterIndexPath:currentIndexPath];
+	} else if (direction == JNWCollectionViewDirectionLeft) {
+		newIndexPath = [self.collectionView indexPathForNextSelectableItemBeforeIndexPath:currentIndexPath];
+	} else if (direction == JNWCollectionViewDirectionUp) {
+		CGPoint origin = [self.collectionView rectForItemAtIndexPath:currentIndexPath].origin;
+		// Bump the origin up to the cell directly above this one.
+		origin.y -= 1; // TODO: Use padding here when implemented.
+		newIndexPath = [self.collectionView indexPathForItemAtPoint:origin];
+	} else if (direction == JNWCollectionViewDirectionDown) {
+		CGRect frame = [self.collectionView rectForItemAtIndexPath:currentIndexPath];
+		CGPoint origin = frame.origin;
+		// Bump the origin down to the cell directly below this one.
+		origin.y += frame.size.height + 1; // TODO: Use padding here when implemented.
+		newIndexPath = [self.collectionView indexPathForItemAtPoint:origin];
+	}
+	
+	return newIndexPath;
+}
+
 @end

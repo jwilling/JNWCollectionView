@@ -70,6 +70,10 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollDirection) {
 - (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition animated:(BOOL)animated;
 - (void)selectItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition animated:(BOOL)animated;
 
+- (BOOL)validateIndexPath:(NSIndexPath *)indexPath;
+- (NSIndexPath *)indexPathForNextSelectableItemAfterIndexPath:(NSIndexPath *)indexPath;
+- (NSIndexPath *)indexPathForNextSelectableItemBeforeIndexPath:(NSIndexPath *)indexPath;
+
 @property (nonatomic, weak) id<JNWCollectionViewDelegate> delegate;
 @property (nonatomic, weak) id<JNWCollectionViewDataSource> dataSource;
 

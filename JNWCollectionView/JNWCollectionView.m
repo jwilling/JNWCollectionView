@@ -252,6 +252,10 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	return self.visibleCellsMap.allValues;
 }
 
+- (BOOL)validateIndexPath:(NSIndexPath *)indexPath {
+	return (indexPath.section < self.sectionData.count && indexPath.item < [self.sectionData[indexPath.section] numberOfItems]);
+}
+
 - (NSArray *)allIndexPaths {
 	NSMutableArray *indexPaths = [NSMutableArray array];
 	for (JNWCollectionViewSection *section in self.sectionData) {
@@ -680,6 +684,30 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 			atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition
 					animated:(BOOL)animated {
 	[self selectItemAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated selectionType:JNWCollectionViewSelectionTypeSingle];
+}
+
+- (NSIndexPath *)indexPathForNextSelectableItemAfterIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.item + 1 >= [self.sectionData[indexPath.section] numberOfItems]) {
+		// Jump up to the next section
+		NSIndexPath *newIndexPath = [NSIndexPath jnw_indexPathForItem:0 inSection:indexPath.section + 1];
+		if ([self validateIndexPath:newIndexPath])
+			return newIndexPath;
+	} else {
+		return [NSIndexPath jnw_indexPathForItem:indexPath.item + 1 inSection:indexPath.section];
+	}
+	return nil;
+}
+
+- (NSIndexPath *)indexPathForNextSelectableItemBeforeIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.item - 1 >= 0) {
+		return [NSIndexPath jnw_indexPathForItem:indexPath.item - 1 inSection:indexPath.section];
+	} else if(indexPath.section - 1 >= 0 && self.sectionData.count) {
+		NSInteger numberOfItems = [self.sectionData[indexPath.section - 1] numberOfItems];
+		NSIndexPath *newIndexPath = [NSIndexPath jnw_indexPathForItem:numberOfItems - 1 inSection:indexPath.section - 1];
+		if ([self validateIndexPath:newIndexPath])
+			return newIndexPath;
+	}
+	return nil;
 }
 
 - (void)selectItemAtIndexPath:(NSIndexPath *)indexPath

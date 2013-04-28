@@ -8,11 +8,12 @@
 
 SpecBegin(JNWCollectionViewHeaderFooterView)
 
-__block JNWCollectionViewHeaderFooterView *headerFooterView = nil;
-
 describe(@"-reuseIdentifier", ^{
+	__block JNWCollectionViewHeaderFooterView *headerFooterView = nil;
+	__block NSString *identifier = @"identifier";
+	
 	beforeAll(^{
-		headerFooterView = [[JNWCollectionViewHeaderFooterView alloc] initWithReuseIdentifier:@"Identifier"];
+		headerFooterView = [[JNWCollectionViewHeaderFooterView alloc] initWithReuseIdentifier:identifier];
 	});
 	
 	it(@"should exist", ^{
@@ -20,7 +21,7 @@ describe(@"-reuseIdentifier", ^{
 	});
 	
 	it(@"should return the same reuse identifier it was initialized with", ^{
-		expect(headerFooterView.reuseIdentifier).to.equal(@"Identifier");
+		expect(headerFooterView.reuseIdentifier).to.equal(identifier);
 	});
 });
 

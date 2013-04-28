@@ -20,6 +20,13 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 		unsigned int dataSourceNumberOfSections;
 		unsigned int dataSourceViewForHeader;
 		unsigned int dataSourceViewForFooter;
+		
+		unsigned int delegateMouseDown;
+		unsigned int delegateMouseUp;
+		unsigned int delegateShouldSelect;
+		unsigned int delegateDidSelect;
+		unsigned int delegateShouldDeselect;
+		unsigned int delegateDidDeselect;
 	} _tableFlags;
 	
 	CGRect _lastDrawnBounds;
@@ -83,6 +90,12 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 
 - (void)setDelegate:(id<JNWCollectionViewDelegate>)delegate {	
 	_delegate = delegate;
+	_tableFlags.delegateMouseUp = [delegate respondsToSelector:@selector(collectionView:mouseUpInItemAtIndexPath:)];
+	_tableFlags.delegateMouseDown = [delegate respondsToSelector:@selector(collectionView:mouseDownInItemAtIndexPath:)];
+	_tableFlags.delegateShouldSelect = [delegate respondsToSelector:@selector(collectionView:shouldSelectItemAtIndexPath:)];
+	_tableFlags.delegateDidSelect = [delegate respondsToSelector:@selector(collectionView:didSelectItemAtIndexPath:)];
+	_tableFlags.delegateShouldDeselect = [delegate respondsToSelector:@selector(collectionView:shouldDeselectItemAtIndexPath:)];
+	_tableFlags.delegateDidDeselect = [delegate respondsToSelector:@selector(collectionView:didDeselectItemAtIndexPath:)];
 }
 
 - (void)setDataSource:(id<JNWCollectionViewDataSource>)dataSource {
@@ -618,10 +631,16 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (void)deselectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
+	if (_tableFlags.delegateShouldDeselect && ![self.delegate collectionView:self shouldDeselectItemAtIndexPath:indexPath])
+		return;
+	
 	// TODO animated
 	JNWCollectionViewCell *cell = [self cellForRowAtIndexPath:indexPath];
 	cell.selected = NO;
 	[self.selectedIndexes removeObject:indexPath];
+	
+	if (_tableFlags.delegateDidDeselect)
+		[self.delegate collectionView:self didDeselectItemAtIndexPath:indexPath];
 }
 
 - (void)deselectRowsAtIndexPaths:(NSArray *)indexes animated:(BOOL)animated {
@@ -633,6 +652,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (void)selectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
+	if (_tableFlags.delegateShouldSelect && ![self.delegate collectionView:self shouldSelectItemAtIndexPath:indexPath])
+		return;
+	
 	// TODO animated
 	JNWCollectionViewCell *cell = [self cellForRowAtIndexPath:indexPath];
 	cell.selected = YES;
@@ -643,6 +665,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	for (NSIndexPath *indexPath in indexPaths) {
 		[self selectItemAtIndexPath:indexPath animated:animated];
 	}
+	
+	if (_tableFlags.delegateDidSelect)
+		[self.delegate collectionView:self didSelectItemAtIndexPath:indexPath];
 }
 
 - (void)selectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -734,6 +759,10 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	NSIndexPath *indexPath = [self indexPathForCell:cell];
 	if (indexPath == nil) {
 		NSLog(@"***index path not found for selection.");
+	}
+	
+	if (_tableFlags.delegateMouseDown) {
+		[self.delegate collectionView:self mouseDownInItemAtIndexPath:indexPath];
 	}
 	
 	// Detect if modifier flags are held down.

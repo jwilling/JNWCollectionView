@@ -640,6 +640,18 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	return self.selectedIndexes.copy;
 }
 
+- (void)deselectItemsAtIndexPaths:(NSArray *)indexPaths animated:(BOOL)animated {
+	for (NSIndexPath *indexPath in indexPaths) {
+		[self deselectItemAtIndexPath:indexPath animated:animated];
+	}
+}
+
+- (void)selectItemsAtIndexPaths:(NSArray *)indexPaths animated:(BOOL)animated {
+	for (NSIndexPath *indexPath in indexPaths) {
+		[self selectItemAtIndexPath:indexPath animated:animated];
+	}
+}
+
 - (void)deselectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
 	if (_tableFlags.delegateShouldDeselect && ![self.delegate collectionView:self shouldDeselectItemAtIndexPath:indexPath])
 		return;
@@ -653,13 +665,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		[self.delegate collectionView:self didDeselectItemAtIndexPath:indexPath];
 }
 
-- (void)deselectRowsAtIndexPaths:(NSArray *)indexes animated:(BOOL)animated {
-	// TODO animated
-	NSArray *indexPaths = indexes.copy;
-	for (NSIndexPath *indexPath in indexPaths) {
-		[self deselectItemAtIndexPath:indexPath animated:animated];
-	}
-}
+
 
 - (void)selectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
 	if (_tableFlags.delegateShouldSelect && ![self.delegate collectionView:self shouldSelectItemAtIndexPath:indexPath])
@@ -669,12 +675,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	JNWCollectionViewCell *cell = [self cellForRowAtIndexPath:indexPath];
 	cell.selected = YES;
 	[self.selectedIndexes addObject:indexPath];
-}
-
-- (void)selectItemsAtIndexPaths:(NSArray *)indexPaths animated:(BOOL)animated {
-	for (NSIndexPath *indexPath in indexPaths) {
-		[self selectItemAtIndexPath:indexPath animated:animated];
-	}
 	
 	if (_tableFlags.delegateDidSelect)
 		[self.delegate collectionView:self didSelectItemAtIndexPath:indexPath];
@@ -759,7 +759,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	[indexesToDeselect minusSet:indexesToSelect];
 	
 	[self selectItemsAtIndexPaths:indexesToSelect.allObjects animated:animated];
-	[self deselectRowsAtIndexPaths:indexesToDeselect.allObjects animated:animated];
+	[self deselectItemsAtIndexPaths:indexesToDeselect.allObjects animated:animated];
 	[self scrollToItemAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated];
 }
 

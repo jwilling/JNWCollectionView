@@ -14,12 +14,32 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 };
 
 @class JNWCollectionView;
+
+// The data source is the protocol which defines a set of methods for both information about the data model
+// and the views needed for creating the collection view.
+//
+// The object that conforms to the data source must implement both `-collectionView:numberOfItemsInSection:`
+// and `-collectionView:cellForItemAtIndexPath:`, otherwise an exception will be thrown.
 @protocol JNWCollectionViewDataSource <NSObject>
+// Asks the data source how many items are in the section index specified. The first section begins at 0.
+//
+// Required.
 - (NSUInteger)collectionView:(JNWCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section;
+
+// Asks the data source for the view that should be used for the cell at the specified index path. The returned
+// view must be non-nil, and it must be a subclass of JNWCollectionViewCell, otherwise an exception will be thrown.
+//
+// Required.
 - (JNWCollectionViewCell *)collectionView:(JNWCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
 
 @optional
+// Asks the data source for the number of sections in the collection view.
+//
+// If this method is not implemented, the collection view will default to 1 section.
 - (NSInteger)numberOfSectionsInCollectionView:(JNWCollectionView *)collectionView;
+
+// Asks the data source for the view used for the header or footer for the specified section. The returned
+// view must be a subclass of JNWCollectionViewHeaderFooterView, otherwise an exception will be thrown.
 - (JNWCollectionViewHeaderFooterView *)collectionView:(JNWCollectionView *)collectionView viewForHeaderInSection:(NSInteger)section;
 - (JNWCollectionViewHeaderFooterView *)collectionView:(JNWCollectionView *)collectionView viewForFooterInSection:(NSInteger)section;
 @end

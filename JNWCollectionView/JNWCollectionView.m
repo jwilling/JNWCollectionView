@@ -512,8 +512,15 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	// Add the new cells
 	for (NSIndexPath *indexPath in indexPathsToAdd) {
 		JNWCollectionViewCell *cell = [self.dataSource collectionView:self cellForItemAtIndexPath:indexPath];
-		NSAssert(cell != nil, @"collectionView:cellForItemAtIndexPath: must return a non-nil cell.");
 		
+		// If any of these are true this cell isn't valid, and we'll be forced to skip it and throw the relevant exceptions.
+		if (cell == nil || ![cell isKindOfClass:JNWCollectionViewCell.class]) {
+			NSAssert(cell != nil, @"collectionView:cellForItemAtIndexPath: must return a non-nil cell.");
+			NSAssert([cell isKindOfClass:JNWCollectionViewCell.class],
+					 @"collectionView:cellForItemAtIndexPath: must return an instance or subclass of JNWCollectionViewCell.");
+			continue;
+		}
+				   
 		cell.indexPath = indexPath;
 		cell.collectionView = self;
 		cell.frame = [self rectForItemAtIndexPath:indexPath];
@@ -590,24 +597,33 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	[headerIndexesToAdd enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
 		JNWCollectionViewHeaderFooterView *header = [self.dataSource collectionView:self viewForHeaderInSection:idx];
 		if (header == nil) {
-			NSLog(@"header doesn't exist!");
+			NSLog(@"nil view returned for %@", NSStringFromSelector(@selector(collectionView:viewForHeaderInSection:)));
 		} else {
-			header.frame = [self rectForHeaderInSection:idx];
-			[self.documentView addSubview:header];
-			
-			self.visibleTableHeaders[@(idx)] = header;
+			if ([header isKindOfClass:JNWCollectionViewHeaderFooterView.class]) {
+				header.frame = [self rectForHeaderInSection:idx];
+				[self.documentView addSubview:header];
+				
+				self.visibleTableHeaders[@(idx)] = header;
+			} else {
+				NSAssert(NO, @"view returned from %@ should be a subclass of %@", NSStringFromSelector(@selector(collectionView:viewForHeaderInSection:)), NSStringFromClass(JNWCollectionViewHeaderFooterView.class));
+			}
 		}
 	}];
 	
 	[footerIndexesToAdd enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
 		JNWCollectionViewHeaderFooterView *footer = [self.dataSource collectionView:self viewForFooterInSection:idx];
 		if (footer == nil) {
-			NSLog(@"footer doesn't exist!");
+			NSLog(@"nil view returned for %@", NSStringFromSelector(@selector(collectionView:viewForFooterInSection:)));
 		} else {
-			footer.frame = [self rectForFooterInSection:idx];
-			[self.documentView addSubview:footer];
-			
-			self.visibleTableFooters[@(idx)] = footer;
+			if ([footer isKindOfClass:JNWCollectionViewHeaderFooterView.class]) {
+				
+				footer.frame = [self rectForFooterInSection:idx];
+				[self.documentView addSubview:footer];
+				
+				self.visibleTableFooters[@(idx)] = footer;
+			} else {
+				NSAssert(NO, @"view returned from %@ should be a subclass of %@", NSStringFromSelector(@selector(collectionView:viewForFooterInSection:)), NSStringFromClass(JNWCollectionViewHeaderFooterView.class));
+			}
 		}
 	}];
 }

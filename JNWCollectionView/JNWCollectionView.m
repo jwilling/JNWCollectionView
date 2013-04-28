@@ -174,6 +174,13 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (void)reloadData {
+	// Remove any selected indexes we've been tracking.
+	[self.selectedIndexes removeAllObjects];
+	
+	// Remove any queued views.
+	[self.reusableTableCells removeAllObjects];
+	[self.reusableTableHeadersFooters removeAllObjects];
+	
 	[self recalculateItemInfo];	
 	[self layoutDocumentView];
 	[self layoutCells];

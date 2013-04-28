@@ -69,6 +69,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	// starting from the top, not the bottom.
 	[_self.documentView setFlipped:YES];
 	
+	_self.hasHorizontalScroller = NO;
+	_self.hasVerticalScroller = YES;
+	
 	_self.collectionViewLayout = [[JNWCollectionViewListLayout alloc] initWithCollectionView:_self];
 }
 

@@ -44,14 +44,31 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 - (JNWCollectionViewHeaderFooterView *)collectionView:(JNWCollectionView *)collectionView viewForFooterInSection:(NSInteger)section;
 @end
 
+
+// The delegate is the protocol which defines a set of methods with information about mouse clicks and selection.
+//
+// All delegate methods are optional.
 @protocol JNWCollectionViewDelegate <NSObject>
 @optional
-- (BOOL)collectionView:(JNWCollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath; // TODO
-- (void)collectionView:(JNWCollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath; // TODO
-- (void)collectionView:(JNWCollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath; // TODO
+// Tells the delegate that the mouse is down inside of the item at the specified index path.
+- (void)collectionView:(JNWCollectionView *)collectionView mouseDownInItemAtIndexPath:(NSIndexPath *)indexPath;
 
-- (void)collectionView:(JNWCollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath; // TODO
-- (void)collectionView:(JNWCollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath; // TODO
+// Tells the delegate that the mouse click originating from the item at the specified index path is now up.
+//
+// The mouse up event can occur outside of the originating cell.
+- (void)collectionView:(JNWCollectionView *)collectionView mouseUpInItemAtIndexPath:(NSIndexPath *)indexPath;
+
+// Asks the delegate if the item at the specified index should be selected.
+- (BOOL)collectionView:(JNWCollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath;
+
+// Tells the delegate that the item at the specified index has been selected.
+- (void)collectionView:(JNWCollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
+
+// Asks the delegate if the item at the specified index should be deselected.
+- (BOOL)collectionView:(JNWCollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath;
+
+// Tells the delegate that the item at the specified index has been deselected.
+- (void)collectionView:(JNWCollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath;
 @end
 
 

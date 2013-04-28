@@ -63,6 +63,9 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 
 - (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition animated:(BOOL)animated;
 - (void)selectItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition animated:(BOOL)animated;
+- (void)selectAllItems;
+- (void)deselectAllItems;
+
 
 - (BOOL)validateIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)indexPathForNextSelectableItemAfterIndexPath:(NSIndexPath *)indexPath;

@@ -800,6 +800,13 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 - (void)selectAll:(id)sender {
 	// TODO animate
 	[self selectItemsAtIndexPaths:[self allIndexPaths] animated:YES];
+
+- (void)deselectAllItems {
+	[self deselectItemsAtIndexPaths:[self allIndexPaths] animated:self.animatesSelection];
+}
+
+- (void)selectAllItems {
+	[self selectAll:nil];
 }
 
 @end

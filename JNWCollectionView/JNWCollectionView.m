@@ -219,18 +219,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	self.contentSize = contentFrame.size;
 }
 
-- (void)setScrollDirection:(JNWCollectionViewScrollDirection)scrollDirection {
-	if (scrollDirection == JNWCollectionViewScrollDirectionHorizontal) {
-		self.hasVerticalScroller = NO;
-		self.hasHorizontalScroller = YES;
-	} else {
-		self.hasHorizontalScroller = NO;
-		self.hasVerticalScroller = YES;
-	}
-	
-	//TODO: Fully implement this.
-}
-
 #pragma mark Cell Information
 
 - (NSInteger)numberOfSections {

@@ -13,11 +13,6 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 	JNWCollectionViewScrollPositionBottom
 };
 
-typedef NS_ENUM(NSInteger, JNWCollectionViewScrollDirection) {
-	JNWCollectionViewScrollDirectionVertical,
-	JNWCollectionViewScrollDirectionHorizontal
-};
-
 @class JNWCollectionView;
 @protocol JNWCollectionViewDataSource <NSObject>
 - (NSUInteger)collectionView:(JNWCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section;
@@ -45,7 +40,6 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollDirection) {
 
 @property (nonatomic, strong) JNWCollectionViewLayout *collectionViewLayout;
 
-@property (nonatomic, assign) JNWCollectionViewScrollDirection scrollDirection;
 
 - (NSInteger)numberOfSections;
 - (NSInteger)numberOfItemsInSection:(NSInteger)section;

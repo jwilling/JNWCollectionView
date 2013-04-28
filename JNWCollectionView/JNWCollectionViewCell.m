@@ -123,6 +123,12 @@
 	[self.collectionView mouseDownInCollectionViewCell:self withEvent:theEvent];
 }
 
+- (void)mouseUp:(NSEvent *)theEvent {
+	[super mouseUp:theEvent];
+	
+	[self.collectionView mouseUpInCollectionViewCell:self withEvent:theEvent];
+}
+
 - (NSString *)description {
 	return [NSString stringWithFormat:@"<%@: %p>{ frame = %@, layer = <%@: %p> }", self.class, self, NSStringFromRect(self.frame), self.layer, self.layer.class];
 }

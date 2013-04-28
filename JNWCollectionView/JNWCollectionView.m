@@ -745,6 +745,12 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES selectionType:JNWCollectionViewSelectionTypeExtending];
 	} else {
 		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];
+
+- (void)mouseUpInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
+	if (_tableFlags.delegateMouseUp) {
+		NSIndexPath *indexPath = [self indexPathForCell:cell];
+		
+		[self.delegate collectionView:self mouseUpInItemAtIndexPath:indexPath];
 	}
 }
 

@@ -40,6 +40,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 
 @property (nonatomic, strong) JNWCollectionViewLayout *collectionViewLayout;
 
+@property (nonatomic, assign) BOOL animatesSelection; // TODO
 
 - (NSInteger)numberOfSections;
 - (NSInteger)numberOfItemsInSection:(NSInteger)section;

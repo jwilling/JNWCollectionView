@@ -123,6 +123,8 @@
 	[self.collectionView mouseDownInCollectionViewCell:self withEvent:theEvent];
 }
 
+#pragma mark NSObject
+
 - (NSString *)description {
 	return [NSString stringWithFormat:@"<%@: %p; frame = %@; layer = <%@: %p>>", self.class, self, NSStringFromRect(self.frame), self.layer.class, self.layer];
 }

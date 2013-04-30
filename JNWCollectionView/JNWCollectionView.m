@@ -808,4 +808,12 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	[self selectItemsAtIndexPaths:[self allIndexPaths] animated:YES];
 }
 
+#pragma mark NSObject
+
+- (NSString *)description {
+	return [NSString stringWithFormat:@"<%@: %p; frame = %@; clipsToBounds = %@; layer = <%@: %p>; contentOffset: %@> collection view layout: %@",
+			self.class, self, NSStringFromRect(self.frame), (self.layer.masksToBounds ? @"YES" : @"NO"),
+			self.layer.class, self.layer, NSStringFromPoint(self.documentVisibleRect.origin), self.collectionViewLayout];
+}
+
 @end

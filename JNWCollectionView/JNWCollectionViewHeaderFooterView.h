@@ -10,7 +10,7 @@
 
 @interface JNWCollectionViewHeaderFooterView : NSView
 
-- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier;
+- (instancetype)initWithFrame:(NSRect)frameRect;
 
 @property (nonatomic, copy, readonly) NSString *reuseIdentifier;
 

@@ -18,6 +18,7 @@
 		AB1514831715361E00871248 /* JNWCollectionViewGridLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = AB1514811715361D00871248 /* JNWCollectionViewGridLayout.m */; };
 		AB1514951717443F00871248 /* JNWCollectionViewFlowLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = AB1514931717443F00871248 /* JNWCollectionViewFlowLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AB1514961717443F00871248 /* JNWCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = AB1514941717443F00871248 /* JNWCollectionViewFlowLayout.m */; };
+		AB39819D1731A1B50062B2E0 /* JNWCollectionViewHeaderFooterView+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = AB39819C1731A1B50062B2E0 /* JNWCollectionViewHeaderFooterView+Private.h */; };
 		AB3C71F4170CA8D3004A91DB /* JNWCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = AB3C71E8170CA8D3004A91DB /* JNWCollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AB3C71F5170CA8D3004A91DB /* JNWCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C71E9170CA8D3004A91DB /* JNWCollectionView.m */; };
 		AB3C71F7170CA8D3004A91DB /* JNWCollectionView+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = AB3C71EA170CA8D3004A91DB /* JNWCollectionView+Private.h */; };
@@ -144,6 +145,7 @@
 		AB1514811715361D00871248 /* JNWCollectionViewGridLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewGridLayout.m; path = JNWCollectionView/JNWCollectionViewGridLayout.m; sourceTree = SOURCE_ROOT; };
 		AB1514931717443F00871248 /* JNWCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewFlowLayout.h; path = JNWCollectionView/JNWCollectionViewFlowLayout.h; sourceTree = SOURCE_ROOT; };
 		AB1514941717443F00871248 /* JNWCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewFlowLayout.m; path = JNWCollectionView/JNWCollectionViewFlowLayout.m; sourceTree = SOURCE_ROOT; };
+		AB39819C1731A1B50062B2E0 /* JNWCollectionViewHeaderFooterView+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JNWCollectionViewHeaderFooterView+Private.h"; path = "JNWCollectionView/JNWCollectionViewHeaderFooterView+Private.h"; sourceTree = SOURCE_ROOT; };
 		AB3C71E8170CA8D3004A91DB /* JNWCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionView.h; path = JNWCollectionView/JNWCollectionView.h; sourceTree = SOURCE_ROOT; };
 		AB3C71E9170CA8D3004A91DB /* JNWCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionView.m; path = JNWCollectionView/JNWCollectionView.m; sourceTree = SOURCE_ROOT; };
 		AB3C71EA170CA8D3004A91DB /* JNWCollectionView+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JNWCollectionView+Private.h"; path = "JNWCollectionView/JNWCollectionView+Private.h"; sourceTree = SOURCE_ROOT; };
@@ -318,6 +320,7 @@
 				AB3C71ED170CA8D3004A91DB /* JNWCollectionViewCell+Private.h */,
 				AB3C71EE170CA8D3004A91DB /* JNWCollectionViewHeaderFooterView.h */,
 				AB3C71EF170CA8D3004A91DB /* JNWCollectionViewHeaderFooterView.m */,
+				AB39819C1731A1B50062B2E0 /* JNWCollectionViewHeaderFooterView+Private.h */,
 				AB3C71F0170CA8D3004A91DB /* JNWCollectionViewSection.h */,
 				AB3C71F1170CA8D3004A91DB /* JNWCollectionViewSection.m */,
 				AB3C71F2170CA8D3004A91DB /* NSIndexPath+JNWAdditions.h */,
@@ -389,6 +392,7 @@
 				AB3C71FF170CA8D3004A91DB /* JNWCollectionViewSection.h in Headers */,
 				AB3C7209170CA8EF004A91DB /* JNWCollectionView-Prefix.pch in Headers */,
 				ABA276B2171D1C4B005C8E56 /* JNWCollectionViewDocumentView.h in Headers */,
+				AB39819D1731A1B50062B2E0 /* JNWCollectionViewHeaderFooterView+Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

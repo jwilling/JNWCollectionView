@@ -75,6 +75,13 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 @interface JNWCollectionView : RBLScrollView
 
 
+@property (nonatomic, weak) id<JNWCollectionViewDelegate> delegate;
+@property (nonatomic, weak) id<JNWCollectionViewDataSource> dataSource;
+
+- (void)registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)reuseIdentifier;
+- (void)registerClass:(Class)headerFooterClass forHeaderFooterWithReuseIdentifier:(NSString *)reuseIdentifier;
+
+
 @property (nonatomic, strong) JNWCollectionViewLayout *collectionViewLayout;
 
 @property (nonatomic, assign) BOOL animatesSelection; // TODO
@@ -109,8 +116,6 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 - (NSIndexPath *)indexPathForNextSelectableItemAfterIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)indexPathForNextSelectableItemBeforeIndexPath:(NSIndexPath *)indexPath;
 
-@property (nonatomic, weak) id<JNWCollectionViewDelegate> delegate;
-@property (nonatomic, weak) id<JNWCollectionViewDataSource> dataSource;
 
 - (void)reloadData;
 

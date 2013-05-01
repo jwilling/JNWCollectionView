@@ -38,12 +38,16 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 // Cells
 @property (nonatomic, strong) NSMutableDictionary *reusableTableCells;
 @property (nonatomic, strong) NSMutableDictionary *visibleCellsMap;
+@property (nonatomic, strong) NSMutableDictionary *cellClassMap;
+
+// Selection
 @property (nonatomic, strong) NSMutableArray *selectedIndexes;
 
 // Headers and footers
 @property (nonatomic, strong) NSMutableDictionary *visibleTableHeaders;
 @property (nonatomic, strong) NSMutableDictionary *visibleTableFooters;
 @property (nonatomic, strong) NSMutableDictionary *reusableTableHeadersFooters;
+@property (nonatomic, strong) NSMutableDictionary *headerFooterClassMap;
 
 @end
 
@@ -52,11 +56,11 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	_self.sectionData = [NSMutableArray array];
 	_self.selectedIndexes = [NSMutableArray array];
+	_self.cellClassMap = [NSMutableDictionary dictionary];
+	_self.headerFooterClassMap = [NSMutableDictionary dictionary];
 	_self.visibleCellsMap = [NSMutableDictionary dictionary];
 	_self.visibleTableFooters = [NSMutableDictionary dictionary];
-	_self.visibleTableHeaders = [NSMutableDictionary dictionary];
-	_self.scrollDirection = JNWCollectionViewScrollDirectionVertical;
-	
+	_self.visibleTableHeaders = [NSMutableDictionary dictionary];	
 	_self.reusableTableCells = [NSMutableDictionary dictionary];
 	_self.reusableTableHeadersFooters = [NSMutableDictionary dictionary];
 	
@@ -115,6 +119,21 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 
 #pragma mark Queueing and dequeuing
 
+- (void)registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)reuseIdentifier {
+	NSParameterAssert(cellClass);
+	NSParameterAssert(reuseIdentifier);
+	NSAssert([cellClass isSubclassOfClass:JNWCollectionViewCell.class], @"registered cell class must be a subclass of JNWCollectionViewCell");
+	self.cellClassMap[reuseIdentifier] = cellClass;
+}
+
+- (void)registerClass:(Class)headerFooterClass forHeaderFooterWithReuseIdentifier:(NSString *)reuseIdentifier {
+	NSParameterAssert(headerFooterClass);
+	NSParameterAssert(reuseIdentifier);
+	NSAssert([headerFooterClass isSubclassOfClass:JNWCollectionViewHeaderFooterView.class],
+			 @"registered header/footer class must be a subclass of JNWCollectionViewHeaderFooterView");
+	self.headerFooterClassMap[reuseIdentifier] = headerFooterClass;
+}
+
 - (id)dequeueItemWithIdentifier:(NSString *)identifier inReusePool:(NSDictionary *)reuse {
 	if (identifier == nil)
 		return nil;
@@ -155,18 +174,45 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	[reusableCells addObject:item];
 }
 
+- (JNWCollectionViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier {
+	NSParameterAssert(identifier);
+	JNWCollectionViewCell *cell = [self dequeueItemWithIdentifier:identifier inReusePool:self.reusableTableCells];
+
+	// If the view doesn't exist, we go ahead and create one. If we have a class registered
+	// for this identifier, we use it, otherwise we just create an instance of JNWCollectionViewCell.
+	if (cell == nil) {
+		Class cellClass = self.cellClassMap[identifier];
+
+		if (cellClass == nil) {
+			cellClass = JNWCollectionViewCell.class;
+		}
+		
+		cell = [[cellClass alloc] initWithFrame:CGRectZero];
+	}
+	
+	cell.reuseIdentifier = identifier;
+	[cell prepareForReuse];
+	return cell;
+}
+
 - (JNWCollectionViewHeaderFooterView *)dequeueReusableHeaderFooterViewWithIdentifer:(NSString *)identifier {
-	return [self dequeueItemWithIdentifier:identifier inReusePool:self.reusableTableHeadersFooters];
+	NSParameterAssert(identifier);
+	JNWCollectionViewHeaderFooterView *headerFooter = [self dequeueItemWithIdentifier:identifier inReusePool:self.reusableTableHeadersFooters];
+
+	if (headerFooter == nil) {
+		Class headerFooterClass = self.headerFooterClassMap[identifier];
+		if (headerFooterClass == nil) {
+			headerFooterClass = JNWCollectionViewHeaderFooterView.class;
+		}
+		
+		headerFooter = [[headerFooterClass alloc] initWithFrame:CGRectZero];
+	}
+	
+	return headerFooter;
 }
 
 - (void)enqueueReusableHeaderFooterView:(JNWCollectionViewHeaderFooterView *)view withIdentifier:(NSString *)identifier {
 	[self enqueueItem:view withIdentifier:identifier inReusePool:self.reusableTableHeadersFooters];
-}
-
-- (JNWCollectionViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier {
-	JNWCollectionViewCell *cell = [self dequeueItemWithIdentifier:identifier inReusePool:self.reusableTableCells];
-	[cell prepareForReuse];
-	return cell; 
 }
 
 - (void)enqueueReusableCell:(JNWCollectionViewCell *)cell withIdentifier:(NSString *)identifier {

@@ -3,6 +3,7 @@
 #import "JNWCollectionViewSection.h"
 #import "JNWCollectionView+Private.h"
 #import "JNWCollectionViewCell+Private.h"
+#import "JNWCollectionViewHeaderFooterView+Private.h"
 #import <QuartzCore/QuartzCore.h>
 #import "JNWCollectionViewListLayout.h"
 #import "JNWCollectionViewDocumentView.h"
@@ -30,6 +31,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 	} _tableFlags;
 	
 	CGRect _lastDrawnBounds;
+	BOOL _wantsLayout;
 }
 
 @property (nonatomic, strong) NSMutableArray *sectionData;
@@ -67,16 +69,16 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	// By default we are layer-backed.
 	_self.wantsLayer = YES;
 	
+	// Set the document view to a custom class that returns YES to -isFlipped.
 	_self.documentView = [[JNWCollectionViewDocumentView alloc] initWithFrame:CGRectZero];
-	
-	// Flip the document view since it's easier to lay out
-	// starting from the top, not the bottom.
-	[_self.documentView setFlipped:YES];
-	
+
 	_self.hasHorizontalScroller = NO;
 	_self.hasVerticalScroller = YES;
 	
 	_self.collectionViewLayout = [[JNWCollectionViewListLayout alloc] initWithCollectionView:_self];
+	
+	// We don't want to perform an initial layout pass until the user has called -reloadData.
+	_self->_wantsLayout = NO;
 }
 
 - (id)initWithFrame:(NSRect)frameRect {
@@ -220,13 +222,15 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (void)reloadData {
+	_wantsLayout = YES;
+	
 	// Remove any selected indexes we've been tracking.
 	[self.selectedIndexes removeAllObjects];
 	
 	// Remove any queued views.
 	[self.reusableTableCells removeAllObjects];
 	[self.reusableTableHeadersFooters removeAllObjects];
-	
+		
 	[self recalculateItemInfo];	
 	[self layoutDocumentView];
 	[self layoutCells];
@@ -515,6 +519,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (void)layoutDocumentView {
+	if (!_wantsLayout)
+		return;
+	
 	NSView *documentView = self.documentView;
 	documentView.frameSize = self.contentSize;
 }
@@ -524,7 +531,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (void)layoutCellsWithRedraw:(BOOL)needsVisibleRedraw {
-	if (self.dataSource == nil)
+	if (self.dataSource == nil || !_wantsLayout)
 		return;
 	
 	if (needsVisibleRedraw) {
@@ -562,11 +569,15 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		// If any of these are true this cell isn't valid, and we'll be forced to skip it and throw the relevant exceptions.
 		if (cell == nil || ![cell isKindOfClass:JNWCollectionViewCell.class]) {
 			NSAssert(cell != nil, @"collectionView:cellForItemAtIndexPath: must return a non-nil cell.");
+			// Although we have checked to ensure the class registered for the cell is a subclass
+			// of JNWCollectionViewCell earlier, there's always the chance that the user has
+			// not used the dedicated dequeuing method to retrieve their newly created cell and
+			// instead have just created it themselves. There's not much we can do to prevent this,
+			// so it's probably worth it to double check this one more time.
 			NSAssert([cell isKindOfClass:JNWCollectionViewCell.class],
 					 @"collectionView:cellForItemAtIndexPath: must return an instance or subclass of JNWCollectionViewCell.");
 			continue;
 		}
-				   
 		cell.indexPath = indexPath;
 		cell.collectionView = self;
 		cell.frame = [self rectForItemAtIndexPath:indexPath];
@@ -591,7 +602,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (void)layoutHeaderFootersWithRedraw:(BOOL)needsVisibleRedraw {
-	if (!_tableFlags.dataSourceViewForHeader && !_tableFlags.dataSourceViewForFooter)
+	if ((!_tableFlags.dataSourceViewForHeader && !_tableFlags.dataSourceViewForFooter) || !_wantsLayout)
 		return;
 	
 	NSMutableIndexSet *oldVisibleHeaderIndexes = [NSMutableIndexSet indexSet];

@@ -16,8 +16,8 @@
 
 @implementation GridCell
 
-- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
-	self = [super initWithReuseIdentifier:reuseIdentifier];
+- (instancetype)initWithFrame:(NSRect)frameRect {
+	self = [super initWithFrame:frameRect];
 	if (self == nil) return nil;
 	
 	self.label = [[JNWLabel alloc] initWithFrame:CGRectZero];

@@ -9,9 +9,7 @@
 #import "GridDemoViewController.h"
 #import "GridCell.h"
 
-@interface GridDemoViewController ()
-
-@end
+static NSString * const identifier = @"CELL";
 
 @implementation GridDemoViewController
 
@@ -24,15 +22,13 @@
 	gridLayout.delegate = self;
 	self.collectionView.collectionViewLayout = gridLayout;
 	self.collectionView.dataSource = self;
+	[self.collectionView registerClass:GridCell.class forCellWithReuseIdentifier:@"CELL"];
+	
+	[self.collectionView reloadData];
 }
 
 - (JNWCollectionViewCell *)collectionView:(JNWCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-	static NSString * const identifier = @"CELL";
 	GridCell *cell = (GridCell *)[collectionView dequeueReusableCellWithIdentifier:identifier];
-	if (cell == nil) {
-		cell = [[GridCell alloc] initWithReuseIdentifier:identifier];
-		cell.backgroundColor = [NSColor blueColor];
-	}
 	cell.labelText = [NSString stringWithFormat:@"%ld",indexPath.item];
 	return cell;
 }

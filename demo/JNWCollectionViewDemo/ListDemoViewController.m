@@ -14,6 +14,9 @@
 @property (nonatomic, strong) JNWCollectionView *collectionView;
 @end
 
+static NSString * const cellIdentifier = @"CELL";
+static NSString * const headerIdentifier = @"HEADER";
+
 @implementation ListDemoViewController
 
 - (id)init {
@@ -33,29 +36,21 @@
 	layout.rowHeight = 44.f;
 	layout.delegate = self;
 	self.collectionView.collectionViewLayout = layout;
+	
+	[self.collectionView registerClass:ListCell.class forCellWithReuseIdentifier:cellIdentifier];
+	[self.collectionView registerClass:ListHeader.class forHeaderFooterWithReuseIdentifier:headerIdentifier];
+	
+	[self.collectionView reloadData];
 }
 
 - (JNWCollectionViewCell *)collectionView:(JNWCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-	static NSString * const cellIdentifier = @"CELL";
 	ListCell *cell = (ListCell *)[collectionView dequeueReusableCellWithIdentifier:cellIdentifier];
-	
-	if (cell == nil) {
-		cell = [[ListCell alloc] initWithReuseIdentifier:cellIdentifier];
-		cell.backgroundColor = [NSColor redColor];
-	}
-	
 	cell.cellLabelText = [NSString stringWithFormat:@"%ld", (long)indexPath.item];
 	return cell;
 }
 
 - (JNWCollectionViewHeaderFooterView *)collectionView:(JNWCollectionView *)collectionView viewForHeaderInSection:(NSInteger)section {
-	static NSString * const identifier = @"HEADER";
-	ListHeader *header = (ListHeader *)[collectionView dequeueReusableHeaderFooterViewWithIdentifer:identifier];
-	
-	if (header == nil) {
-		header = [[ListHeader alloc] initWithReuseIdentifier:identifier];
-	}
-	
+	ListHeader *header = (ListHeader *)[collectionView dequeueReusableHeaderFooterViewWithIdentifer:headerIdentifier];
 	header.headerLabelText = [NSString stringWithFormat:@"Header %ld", section];
 	return header;
 }

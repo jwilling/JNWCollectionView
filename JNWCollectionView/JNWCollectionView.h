@@ -74,17 +74,37 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 
 @interface JNWCollectionView : RBLScrollView
 
-
 @property (nonatomic, weak) id<JNWCollectionViewDelegate> delegate;
 @property (nonatomic, weak) id<JNWCollectionViewDataSource> dataSource;
 
+// Calling this method will cause the collection view to clean up all the views and
+// recalculate item info. It will then perform a layout pass.
+//
+// This method should be called after the data source has been set and initial setup on the collection
+// view has been completed.
+- (void)reloadData;
+
+// In order for cell/header/footer dequeuing to occur, a class must be registered with the appropriate
+// registration method.
+//
+// The class passed in will be used to initialize a new instance of the view, as needed. The class
+// must be a subclass of JNWCollectionViewCell for the cell class, and JNWCollectionViewHeaderFooterView
+// for the header/footer class, otherwise an exception will be thrown.
 - (void)registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)reuseIdentifier;
 - (void)registerClass:(Class)headerFooterClass forHeaderFooterWithReuseIdentifier:(NSString *)reuseIdentifier;
 
+// These methods are used to create or reuse a new view. Cells should not be created manually. Instead,
+// these methods should be called with a reuse identifier previously registered using
+// -registerClass:forCellWithReuseIdentifier: or -registerClass:forHeaderFooterWithReuseIdentifier:.
+//
+// If a class was not previously registered, the base cell/header/footer class will be used to create the view.
+//
+// The identifer must not be nil, otherwise an exception will be thrown.
+- (JNWCollectionViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier;
+- (JNWCollectionViewHeaderFooterView *)dequeueReusableHeaderFooterViewWithIdentifer:(NSString *)identifier;
+
 
 @property (nonatomic, strong) JNWCollectionViewLayout *collectionViewLayout;
-
-@property (nonatomic, assign) BOOL animatesSelection; // TODO
 
 - (NSInteger)numberOfSections;
 - (NSInteger)numberOfItemsInSection:(NSInteger)section;
@@ -106,6 +126,9 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 - (JNWCollectionViewHeaderFooterView *)headerViewForSection:(NSInteger)section;
 - (JNWCollectionViewHeaderFooterView *)footerViewForSection:(NSInteger)section;
 
+
+@property (nonatomic, assign) BOOL animatesSelection; // TODO
+
 - (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition animated:(BOOL)animated;
 - (void)selectItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition animated:(BOOL)animated;
 - (void)selectAllItems;
@@ -115,11 +138,5 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 - (BOOL)validateIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)indexPathForNextSelectableItemAfterIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)indexPathForNextSelectableItemBeforeIndexPath:(NSIndexPath *)indexPath;
-
-
-- (void)reloadData;
-
-- (JNWCollectionViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier;
-- (JNWCollectionViewHeaderFooterView *)dequeueReusableHeaderFooterViewWithIdentifer:(NSString *)identifier;
 
 @end

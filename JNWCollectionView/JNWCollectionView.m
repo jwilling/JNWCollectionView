@@ -28,6 +28,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 		unsigned int delegateDidSelect;
 		unsigned int delegateShouldDeselect;
 		unsigned int delegateDidDeselect;
+		unsigned int delegateDidScroll;
 	} _tableFlags;
 	
 	CGRect _lastDrawnBounds;
@@ -112,6 +113,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	_tableFlags.dataSourceNumberOfSections = [dataSource respondsToSelector:@selector(numberOfSectionsInCollectionView:)];
 	_tableFlags.dataSourceViewForHeader = [dataSource respondsToSelector:@selector(collectionView:viewForHeaderInSection:)];
 	_tableFlags.dataSourceViewForFooter = [dataSource respondsToSelector:@selector(collectionView:viewForFooterInSection:)];
+	_tableFlags.delegateDidScroll = [dataSource respondsToSelector:@selector(collectionView:didScrollToItemAtIndexPath:)];
 	NSAssert([dataSource respondsToSelector:@selector(collectionView:numberOfItemsInSection:)],
 			 @"data source must implement collectionView:numberOfItemsInSection");
 	NSAssert([dataSource respondsToSelector:@selector(collectionView:cellForItemAtIndexPath:)],
@@ -427,6 +429,10 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	}
 	
 	[(RBLClipView *)self.contentView scrollRectToVisible:rect animated:animated];
+	
+	if (_tableFlags.delegateDidScroll) {
+		[self.delegate collectionView:self didScrollToItemAtIndexPath:indexPath];
+	}
 }
 
 - (CGRect)rectForItemAtIndexPath:(NSIndexPath *)indexPath {

@@ -42,6 +42,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 // view must be a subclass of JNWCollectionViewHeaderFooterView, otherwise an exception will be thrown.
 - (JNWCollectionViewHeaderFooterView *)collectionView:(JNWCollectionView *)collectionView viewForHeaderInSection:(NSInteger)section;
 - (JNWCollectionViewHeaderFooterView *)collectionView:(JNWCollectionView *)collectionView viewForFooterInSection:(NSInteger)section;
+
 @end
 
 
@@ -69,6 +70,10 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 
 // Tells the delegate that the item at the specified index has been deselected.
 - (void)collectionView:(JNWCollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath;
+
+// Tells the delegate that the specified index path has been scrolled to.
+- (void)collectionView:(JNWCollectionView *)collectionView didScrollToItemAtIndexPath:(NSIndexPath *)indexPath;
+
 @end
 
 

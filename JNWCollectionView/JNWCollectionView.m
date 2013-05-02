@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 		unsigned int delegateShouldDeselect;
 		unsigned int delegateDidDeselect;
 		unsigned int delegateDidScroll;
-	} _tableFlags;
+	} _collectionViewFlags;
 	
 	CGRect _lastDrawnBounds;
 	BOOL _wantsLayout;
@@ -100,20 +100,20 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 
 - (void)setDelegate:(id<JNWCollectionViewDelegate>)delegate {	
 	_delegate = delegate;
-	_tableFlags.delegateMouseUp = [delegate respondsToSelector:@selector(collectionView:mouseUpInItemAtIndexPath:)];
-	_tableFlags.delegateMouseDown = [delegate respondsToSelector:@selector(collectionView:mouseDownInItemAtIndexPath:)];
-	_tableFlags.delegateShouldSelect = [delegate respondsToSelector:@selector(collectionView:shouldSelectItemAtIndexPath:)];
-	_tableFlags.delegateDidSelect = [delegate respondsToSelector:@selector(collectionView:didSelectItemAtIndexPath:)];
-	_tableFlags.delegateShouldDeselect = [delegate respondsToSelector:@selector(collectionView:shouldDeselectItemAtIndexPath:)];
-	_tableFlags.delegateDidDeselect = [delegate respondsToSelector:@selector(collectionView:didDeselectItemAtIndexPath:)];
+	_collectionViewFlags.delegateMouseUp = [delegate respondsToSelector:@selector(collectionView:mouseUpInItemAtIndexPath:)];
+	_collectionViewFlags.delegateMouseDown = [delegate respondsToSelector:@selector(collectionView:mouseDownInItemAtIndexPath:)];
+	_collectionViewFlags.delegateShouldSelect = [delegate respondsToSelector:@selector(collectionView:shouldSelectItemAtIndexPath:)];
+	_collectionViewFlags.delegateDidSelect = [delegate respondsToSelector:@selector(collectionView:didSelectItemAtIndexPath:)];
+	_collectionViewFlags.delegateShouldDeselect = [delegate respondsToSelector:@selector(collectionView:shouldDeselectItemAtIndexPath:)];
+	_collectionViewFlags.delegateDidDeselect = [delegate respondsToSelector:@selector(collectionView:didDeselectItemAtIndexPath:)];
 }
 
 - (void)setDataSource:(id<JNWCollectionViewDataSource>)dataSource {
 	_dataSource = dataSource;
-	_tableFlags.dataSourceNumberOfSections = [dataSource respondsToSelector:@selector(numberOfSectionsInCollectionView:)];
-	_tableFlags.dataSourceViewForHeader = [dataSource respondsToSelector:@selector(collectionView:viewForHeaderInSection:)];
-	_tableFlags.dataSourceViewForFooter = [dataSource respondsToSelector:@selector(collectionView:viewForFooterInSection:)];
-	_tableFlags.delegateDidScroll = [dataSource respondsToSelector:@selector(collectionView:didScrollToItemAtIndexPath:)];
+	_collectionViewFlags.dataSourceNumberOfSections = [dataSource respondsToSelector:@selector(numberOfSectionsInCollectionView:)];
+	_collectionViewFlags.dataSourceViewForHeader = [dataSource respondsToSelector:@selector(collectionView:viewForHeaderInSection:)];
+	_collectionViewFlags.dataSourceViewForFooter = [dataSource respondsToSelector:@selector(collectionView:viewForFooterInSection:)];
+	_collectionViewFlags.delegateDidScroll = [dataSource respondsToSelector:@selector(collectionView:didScrollToItemAtIndexPath:)];
 	NSAssert([dataSource respondsToSelector:@selector(collectionView:numberOfItemsInSection:)],
 			 @"data source must implement collectionView:numberOfItemsInSection");
 	NSAssert([dataSource respondsToSelector:@selector(collectionView:cellForItemAtIndexPath:)],
@@ -248,7 +248,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	// Find how many sections we have in the collection view.
 	// We default to 1 if the data source doesn't implement the optional method.
 	NSUInteger numberOfSections = 1;
-	if (_tableFlags.dataSourceNumberOfSections)
+	if (_collectionViewFlags.dataSourceNumberOfSections)
 		numberOfSections = [self.dataSource numberOfSectionsInCollectionView:self];
 	
 	// We run an initial pass through the sections and create empty section data so that
@@ -430,7 +430,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	
 	[(RBLClipView *)self.contentView scrollRectToVisible:rect animated:animated];
 	
-	if (_tableFlags.delegateDidScroll) {
+	if (_collectionViewFlags.delegateDidScroll) {
 		[self.delegate collectionView:self didScrollToItemAtIndexPath:indexPath];
 	}
 }
@@ -608,7 +608,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (void)layoutHeaderFootersWithRedraw:(BOOL)needsVisibleRedraw {
-	if ((!_tableFlags.dataSourceViewForHeader && !_tableFlags.dataSourceViewForFooter) || !_wantsLayout)
+	if ((!_collectionViewFlags.dataSourceViewForHeader && !_collectionViewFlags.dataSourceViewForFooter) || !_wantsLayout)
 		return;
 	
 	NSMutableIndexSet *oldVisibleHeaderIndexes = [NSMutableIndexSet indexSet];
@@ -732,7 +732,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (void)deselectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
-	if (_tableFlags.delegateShouldDeselect && ![self.delegate collectionView:self shouldDeselectItemAtIndexPath:indexPath])
+	if (_collectionViewFlags.delegateShouldDeselect && ![self.delegate collectionView:self shouldDeselectItemAtIndexPath:indexPath])
 		return;
 	
 	// TODO animated
@@ -740,14 +740,14 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	cell.selected = NO;
 	[self.selectedIndexes removeObject:indexPath];
 	
-	if (_tableFlags.delegateDidDeselect)
+	if (_collectionViewFlags.delegateDidDeselect)
 		[self.delegate collectionView:self didDeselectItemAtIndexPath:indexPath];
 }
 
 
 
 - (void)selectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
-	if (_tableFlags.delegateShouldSelect && ![self.delegate collectionView:self shouldSelectItemAtIndexPath:indexPath])
+	if (_collectionViewFlags.delegateShouldSelect && ![self.delegate collectionView:self shouldSelectItemAtIndexPath:indexPath])
 		return;
 	
 	// TODO animated
@@ -755,7 +755,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	cell.selected = YES;
 	[self.selectedIndexes addObject:indexPath];
 	
-	if (_tableFlags.delegateDidSelect)
+	if (_collectionViewFlags.delegateDidSelect)
 		[self.delegate collectionView:self didSelectItemAtIndexPath:indexPath];
 }
 
@@ -850,7 +850,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		NSLog(@"***index path not found for selection.");
 	}
 	
-	if (_tableFlags.delegateMouseDown) {
+	if (_collectionViewFlags.delegateMouseDown) {
 		[self.delegate collectionView:self mouseDownInItemAtIndexPath:indexPath];
 	}
 	
@@ -866,7 +866,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (void)mouseUpInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
-	if (_tableFlags.delegateMouseUp) {
+	if (_collectionViewFlags.delegateMouseUp) {
 		NSIndexPath *indexPath = [self indexPathForCell:cell];
 		
 		[self.delegate collectionView:self mouseUpInItemAtIndexPath:indexPath];

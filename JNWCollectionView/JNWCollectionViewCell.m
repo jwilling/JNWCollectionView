@@ -64,14 +64,13 @@
 
 @implementation JNWCollectionViewCell
 
-- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
-	self = [super initWithFrame:CGRectZero];
+- (instancetype)initWithFrame:(NSRect)frameRect {
+	self = [super initWithFrame:frameRect];
 	if (self == nil) return nil;
 	
 	self.wantsLayer = YES;
 	self.layerContentsRedrawPolicy = NSViewLayerContentsRedrawOnSetNeedsDisplay;
 
-	_reuseIdentifier = reuseIdentifier.copy;
 	
 	_contentView = [[NSView alloc] initWithFrame:self.bounds];
 	_contentView.wantsLayer = YES;
@@ -83,11 +82,6 @@
 	
 	
 	return self;
-}
-
-- (id)initWithFrame:(NSRect)frameRect {
-	NSAssert(NO, @"-initWithFrame: should not be called on JNWCollectionViewCell. Use the dedicated initializer -initWithReuseIdentifier:");
-	return nil;
 }
 
 - (void)layout {
@@ -123,7 +117,15 @@
 	[self.collectionView mouseDownInCollectionViewCell:self withEvent:theEvent];
 }
 
+<<<<<<< HEAD
 #pragma mark NSObject
+=======
+- (void)mouseUp:(NSEvent *)theEvent {
+	[super mouseUp:theEvent];
+	
+	[self.collectionView mouseUpInCollectionViewCell:self withEvent:theEvent];
+}
+>>>>>>> master
 
 - (NSString *)description {
 	return [NSString stringWithFormat:@"<%@: %p; frame = %@; layer = <%@: %p>>", self.class, self, NSStringFromRect(self.frame), self.layer.class, self.layer];

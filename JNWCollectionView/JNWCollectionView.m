@@ -3,6 +3,7 @@
 #import "JNWCollectionViewSection.h"
 #import "JNWCollectionView+Private.h"
 #import "JNWCollectionViewCell+Private.h"
+#import "JNWCollectionViewHeaderFooterView+Private.h"
 #import <QuartzCore/QuartzCore.h>
 #import "JNWCollectionViewListLayout.h"
 #import "JNWCollectionViewDocumentView.h"
@@ -20,9 +21,18 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 		unsigned int dataSourceNumberOfSections;
 		unsigned int dataSourceViewForHeader;
 		unsigned int dataSourceViewForFooter;
-	} _tableFlags;
+		
+		unsigned int delegateMouseDown;
+		unsigned int delegateMouseUp;
+		unsigned int delegateShouldSelect;
+		unsigned int delegateDidSelect;
+		unsigned int delegateShouldDeselect;
+		unsigned int delegateDidDeselect;
+		unsigned int delegateDidScroll;
+	} _collectionViewFlags;
 	
 	CGRect _lastDrawnBounds;
+	BOOL _wantsLayout;
 }
 
 @property (nonatomic, strong) NSMutableArray *sectionData;
@@ -31,12 +41,16 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 // Cells
 @property (nonatomic, strong) NSMutableDictionary *reusableTableCells;
 @property (nonatomic, strong) NSMutableDictionary *visibleCellsMap;
+@property (nonatomic, strong) NSMutableDictionary *cellClassMap;
+
+// Selection
 @property (nonatomic, strong) NSMutableArray *selectedIndexes;
 
 // Headers and footers
 @property (nonatomic, strong) NSMutableDictionary *visibleTableHeaders;
 @property (nonatomic, strong) NSMutableDictionary *visibleTableFooters;
 @property (nonatomic, strong) NSMutableDictionary *reusableTableHeadersFooters;
+@property (nonatomic, strong) NSMutableDictionary *headerFooterClassMap;
 
 @end
 
@@ -45,24 +59,27 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	_self.sectionData = [NSMutableArray array];
 	_self.selectedIndexes = [NSMutableArray array];
+	_self.cellClassMap = [NSMutableDictionary dictionary];
+	_self.headerFooterClassMap = [NSMutableDictionary dictionary];
 	_self.visibleCellsMap = [NSMutableDictionary dictionary];
 	_self.visibleTableFooters = [NSMutableDictionary dictionary];
-	_self.visibleTableHeaders = [NSMutableDictionary dictionary];
-	_self.scrollDirection = JNWCollectionViewScrollDirectionVertical;
-	
+	_self.visibleTableHeaders = [NSMutableDictionary dictionary];	
 	_self.reusableTableCells = [NSMutableDictionary dictionary];
 	_self.reusableTableHeadersFooters = [NSMutableDictionary dictionary];
 	
 	// By default we are layer-backed.
 	_self.wantsLayer = YES;
 	
+	// Set the document view to a custom class that returns YES to -isFlipped.
 	_self.documentView = [[JNWCollectionViewDocumentView alloc] initWithFrame:CGRectZero];
-	
-	// Flip the document view since it's easier to lay out
-	// starting from the top, not the bottom.
-	[_self.documentView setFlipped:YES];
+
+	_self.hasHorizontalScroller = NO;
+	_self.hasVerticalScroller = YES;
 	
 	_self.collectionViewLayout = [[JNWCollectionViewListLayout alloc] initWithCollectionView:_self];
+	
+	// We don't want to perform an initial layout pass until the user has called -reloadData.
+	_self->_wantsLayout = NO;
 }
 
 - (id)initWithFrame:(NSRect)frameRect {
@@ -83,13 +100,20 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 
 - (void)setDelegate:(id<JNWCollectionViewDelegate>)delegate {	
 	_delegate = delegate;
+	_collectionViewFlags.delegateMouseUp = [delegate respondsToSelector:@selector(collectionView:mouseUpInItemAtIndexPath:)];
+	_collectionViewFlags.delegateMouseDown = [delegate respondsToSelector:@selector(collectionView:mouseDownInItemAtIndexPath:)];
+	_collectionViewFlags.delegateShouldSelect = [delegate respondsToSelector:@selector(collectionView:shouldSelectItemAtIndexPath:)];
+	_collectionViewFlags.delegateDidSelect = [delegate respondsToSelector:@selector(collectionView:didSelectItemAtIndexPath:)];
+	_collectionViewFlags.delegateShouldDeselect = [delegate respondsToSelector:@selector(collectionView:shouldDeselectItemAtIndexPath:)];
+	_collectionViewFlags.delegateDidDeselect = [delegate respondsToSelector:@selector(collectionView:didDeselectItemAtIndexPath:)];
 }
 
 - (void)setDataSource:(id<JNWCollectionViewDataSource>)dataSource {
 	_dataSource = dataSource;
-	_tableFlags.dataSourceNumberOfSections = [dataSource respondsToSelector:@selector(numberOfSectionsInCollectionView:)];
-	_tableFlags.dataSourceViewForHeader = [dataSource respondsToSelector:@selector(collectionView:viewForHeaderInSection:)];
-	_tableFlags.dataSourceViewForFooter = [dataSource respondsToSelector:@selector(collectionView:viewForFooterInSection:)];
+	_collectionViewFlags.dataSourceNumberOfSections = [dataSource respondsToSelector:@selector(numberOfSectionsInCollectionView:)];
+	_collectionViewFlags.dataSourceViewForHeader = [dataSource respondsToSelector:@selector(collectionView:viewForHeaderInSection:)];
+	_collectionViewFlags.dataSourceViewForFooter = [dataSource respondsToSelector:@selector(collectionView:viewForFooterInSection:)];
+	_collectionViewFlags.delegateDidScroll = [dataSource respondsToSelector:@selector(collectionView:didScrollToItemAtIndexPath:)];
 	NSAssert([dataSource respondsToSelector:@selector(collectionView:numberOfItemsInSection:)],
 			 @"data source must implement collectionView:numberOfItemsInSection");
 	NSAssert([dataSource respondsToSelector:@selector(collectionView:cellForItemAtIndexPath:)],
@@ -98,6 +122,21 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 
 
 #pragma mark Queueing and dequeuing
+
+- (void)registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)reuseIdentifier {
+	NSParameterAssert(cellClass);
+	NSParameterAssert(reuseIdentifier);
+	NSAssert([cellClass isSubclassOfClass:JNWCollectionViewCell.class], @"registered cell class must be a subclass of JNWCollectionViewCell");
+	self.cellClassMap[reuseIdentifier] = cellClass;
+}
+
+- (void)registerClass:(Class)headerFooterClass forHeaderFooterWithReuseIdentifier:(NSString *)reuseIdentifier {
+	NSParameterAssert(headerFooterClass);
+	NSParameterAssert(reuseIdentifier);
+	NSAssert([headerFooterClass isSubclassOfClass:JNWCollectionViewHeaderFooterView.class],
+			 @"registered header/footer class must be a subclass of JNWCollectionViewHeaderFooterView");
+	self.headerFooterClassMap[reuseIdentifier] = headerFooterClass;
+}
 
 - (id)dequeueItemWithIdentifier:(NSString *)identifier inReusePool:(NSDictionary *)reuse {
 	if (identifier == nil)
@@ -139,18 +178,45 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	[reusableCells addObject:item];
 }
 
+- (JNWCollectionViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier {
+	NSParameterAssert(identifier);
+	JNWCollectionViewCell *cell = [self dequeueItemWithIdentifier:identifier inReusePool:self.reusableTableCells];
+
+	// If the view doesn't exist, we go ahead and create one. If we have a class registered
+	// for this identifier, we use it, otherwise we just create an instance of JNWCollectionViewCell.
+	if (cell == nil) {
+		Class cellClass = self.cellClassMap[identifier];
+
+		if (cellClass == nil) {
+			cellClass = JNWCollectionViewCell.class;
+		}
+		
+		cell = [[cellClass alloc] initWithFrame:CGRectZero];
+	}
+	
+	cell.reuseIdentifier = identifier;
+	[cell prepareForReuse];
+	return cell;
+}
+
 - (JNWCollectionViewHeaderFooterView *)dequeueReusableHeaderFooterViewWithIdentifer:(NSString *)identifier {
-	return [self dequeueItemWithIdentifier:identifier inReusePool:self.reusableTableHeadersFooters];
+	NSParameterAssert(identifier);
+	JNWCollectionViewHeaderFooterView *headerFooter = [self dequeueItemWithIdentifier:identifier inReusePool:self.reusableTableHeadersFooters];
+
+	if (headerFooter == nil) {
+		Class headerFooterClass = self.headerFooterClassMap[identifier];
+		if (headerFooterClass == nil) {
+			headerFooterClass = JNWCollectionViewHeaderFooterView.class;
+		}
+		
+		headerFooter = [[headerFooterClass alloc] initWithFrame:CGRectZero];
+	}
+	
+	return headerFooter;
 }
 
 - (void)enqueueReusableHeaderFooterView:(JNWCollectionViewHeaderFooterView *)view withIdentifier:(NSString *)identifier {
 	[self enqueueItem:view withIdentifier:identifier inReusePool:self.reusableTableHeadersFooters];
-}
-
-- (JNWCollectionViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier {
-	JNWCollectionViewCell *cell = [self dequeueItemWithIdentifier:identifier inReusePool:self.reusableTableCells];
-	[cell prepareForReuse];
-	return cell; 
 }
 
 - (void)enqueueReusableCell:(JNWCollectionViewCell *)cell withIdentifier:(NSString *)identifier {
@@ -158,6 +224,15 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (void)reloadData {
+	_wantsLayout = YES;
+	
+	// Remove any selected indexes we've been tracking.
+	[self.selectedIndexes removeAllObjects];
+	
+	// Remove any queued views.
+	[self.reusableTableCells removeAllObjects];
+	[self.reusableTableHeadersFooters removeAllObjects];
+		
 	[self recalculateItemInfo];	
 	[self layoutDocumentView];
 	[self layoutCells];
@@ -173,7 +248,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	// Find how many sections we have in the collection view.
 	// We default to 1 if the data source doesn't implement the optional method.
 	NSUInteger numberOfSections = 1;
-	if (_tableFlags.dataSourceNumberOfSections)
+	if (_collectionViewFlags.dataSourceNumberOfSections)
 		numberOfSections = [self.dataSource numberOfSectionsInCollectionView:self];
 	
 	// We run an initial pass through the sections and create empty section data so that
@@ -217,18 +292,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	}
 	
 	self.contentSize = contentFrame.size;
-}
-
-- (void)setScrollDirection:(JNWCollectionViewScrollDirection)scrollDirection {
-	if (scrollDirection == JNWCollectionViewScrollDirectionHorizontal) {
-		self.hasVerticalScroller = NO;
-		self.hasHorizontalScroller = YES;
-	} else {
-		self.hasHorizontalScroller = NO;
-		self.hasVerticalScroller = YES;
-	}
-	
-	//TODO: Fully implement this.
 }
 
 #pragma mark Cell Information
@@ -366,6 +429,10 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	}
 	
 	[(RBLClipView *)self.contentView scrollRectToVisible:rect animated:animated];
+	
+	if (_collectionViewFlags.delegateDidScroll) {
+		[self.delegate collectionView:self didScrollToItemAtIndexPath:indexPath];
+	}
 }
 
 - (CGRect)rectForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -458,6 +525,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (void)layoutDocumentView {
+	if (!_wantsLayout)
+		return;
+	
 	NSView *documentView = self.documentView;
 	documentView.frameSize = self.contentSize;
 }
@@ -467,7 +537,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (void)layoutCellsWithRedraw:(BOOL)needsVisibleRedraw {
-	if (self.dataSource == nil)
+	if (self.dataSource == nil || !_wantsLayout)
 		return;
 	
 	if (needsVisibleRedraw) {
@@ -501,8 +571,19 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	// Add the new cells
 	for (NSIndexPath *indexPath in indexPathsToAdd) {
 		JNWCollectionViewCell *cell = [self.dataSource collectionView:self cellForItemAtIndexPath:indexPath];
-		NSAssert(cell != nil, @"collectionView:cellForItemAtIndexPath: must return a non-nil cell.");
 		
+		// If any of these are true this cell isn't valid, and we'll be forced to skip it and throw the relevant exceptions.
+		if (cell == nil || ![cell isKindOfClass:JNWCollectionViewCell.class]) {
+			NSAssert(cell != nil, @"collectionView:cellForItemAtIndexPath: must return a non-nil cell.");
+			// Although we have checked to ensure the class registered for the cell is a subclass
+			// of JNWCollectionViewCell earlier, there's always the chance that the user has
+			// not used the dedicated dequeuing method to retrieve their newly created cell and
+			// instead have just created it themselves. There's not much we can do to prevent this,
+			// so it's probably worth it to double check this one more time.
+			NSAssert([cell isKindOfClass:JNWCollectionViewCell.class],
+					 @"collectionView:cellForItemAtIndexPath: must return an instance or subclass of JNWCollectionViewCell.");
+			continue;
+		}
 		cell.indexPath = indexPath;
 		cell.collectionView = self;
 		cell.frame = [self rectForItemAtIndexPath:indexPath];
@@ -527,7 +608,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (void)layoutHeaderFootersWithRedraw:(BOOL)needsVisibleRedraw {
-	if (!_tableFlags.dataSourceViewForHeader && !_tableFlags.dataSourceViewForFooter)
+	if ((!_collectionViewFlags.dataSourceViewForHeader && !_collectionViewFlags.dataSourceViewForFooter) || !_wantsLayout)
 		return;
 	
 	NSMutableIndexSet *oldVisibleHeaderIndexes = [NSMutableIndexSet indexSet];
@@ -579,24 +660,33 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	[headerIndexesToAdd enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
 		JNWCollectionViewHeaderFooterView *header = [self.dataSource collectionView:self viewForHeaderInSection:idx];
 		if (header == nil) {
-			NSLog(@"header doesn't exist!");
+			NSLog(@"nil view returned for %@", NSStringFromSelector(@selector(collectionView:viewForHeaderInSection:)));
 		} else {
-			header.frame = [self rectForHeaderInSection:idx];
-			[self.documentView addSubview:header];
-			
-			self.visibleTableHeaders[@(idx)] = header;
+			if ([header isKindOfClass:JNWCollectionViewHeaderFooterView.class]) {
+				header.frame = [self rectForHeaderInSection:idx];
+				[self.documentView addSubview:header];
+				
+				self.visibleTableHeaders[@(idx)] = header;
+			} else {
+				NSAssert(NO, @"view returned from %@ should be a subclass of %@", NSStringFromSelector(@selector(collectionView:viewForHeaderInSection:)), NSStringFromClass(JNWCollectionViewHeaderFooterView.class));
+			}
 		}
 	}];
 	
 	[footerIndexesToAdd enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
 		JNWCollectionViewHeaderFooterView *footer = [self.dataSource collectionView:self viewForFooterInSection:idx];
 		if (footer == nil) {
-			NSLog(@"footer doesn't exist!");
+			NSLog(@"nil view returned for %@", NSStringFromSelector(@selector(collectionView:viewForFooterInSection:)));
 		} else {
-			footer.frame = [self rectForFooterInSection:idx];
-			[self.documentView addSubview:footer];
-			
-			self.visibleTableFooters[@(idx)] = footer;
+			if ([footer isKindOfClass:JNWCollectionViewHeaderFooterView.class]) {
+				
+				footer.frame = [self rectForFooterInSection:idx];
+				[self.documentView addSubview:footer];
+				
+				self.visibleTableFooters[@(idx)] = footer;
+			} else {
+				NSAssert(NO, @"view returned from %@ should be a subclass of %@", NSStringFromSelector(@selector(collectionView:viewForFooterInSection:)), NSStringFromClass(JNWCollectionViewHeaderFooterView.class));
+			}
 		}
 	}];
 }
@@ -629,32 +719,44 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	return self.selectedIndexes.copy;
 }
 
-- (void)deselectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
-	// TODO animated
-	JNWCollectionViewCell *cell = [self cellForRowAtIndexPath:indexPath];
-	cell.selected = NO;
-	[self.selectedIndexes removeObject:indexPath];
-}
-
-- (void)deselectRowsAtIndexPaths:(NSArray *)indexes animated:(BOOL)animated {
-	// TODO animated
-	NSArray *indexPaths = indexes.copy;
+- (void)deselectItemsAtIndexPaths:(NSArray *)indexPaths animated:(BOOL)animated {
 	for (NSIndexPath *indexPath in indexPaths) {
 		[self deselectItemAtIndexPath:indexPath animated:animated];
 	}
-}
-
-- (void)selectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
-	// TODO animated
-	JNWCollectionViewCell *cell = [self cellForRowAtIndexPath:indexPath];
-	cell.selected = YES;
-	[self.selectedIndexes addObject:indexPath];
 }
 
 - (void)selectItemsAtIndexPaths:(NSArray *)indexPaths animated:(BOOL)animated {
 	for (NSIndexPath *indexPath in indexPaths) {
 		[self selectItemAtIndexPath:indexPath animated:animated];
 	}
+}
+
+- (void)deselectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
+	if (_collectionViewFlags.delegateShouldDeselect && ![self.delegate collectionView:self shouldDeselectItemAtIndexPath:indexPath])
+		return;
+	
+	// TODO animated
+	JNWCollectionViewCell *cell = [self cellForRowAtIndexPath:indexPath];
+	cell.selected = NO;
+	[self.selectedIndexes removeObject:indexPath];
+	
+	if (_collectionViewFlags.delegateDidDeselect)
+		[self.delegate collectionView:self didDeselectItemAtIndexPath:indexPath];
+}
+
+
+
+- (void)selectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
+	if (_collectionViewFlags.delegateShouldSelect && ![self.delegate collectionView:self shouldSelectItemAtIndexPath:indexPath])
+		return;
+	
+	// TODO animated
+	JNWCollectionViewCell *cell = [self cellForRowAtIndexPath:indexPath];
+	cell.selected = YES;
+	[self.selectedIndexes addObject:indexPath];
+	
+	if (_collectionViewFlags.delegateDidSelect)
+		[self.delegate collectionView:self didSelectItemAtIndexPath:indexPath];
 }
 
 - (void)selectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -736,7 +838,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	[indexesToDeselect minusSet:indexesToSelect];
 	
 	[self selectItemsAtIndexPaths:indexesToSelect.allObjects animated:animated];
-	[self deselectRowsAtIndexPaths:indexesToDeselect.allObjects animated:animated];
+	[self deselectItemsAtIndexPaths:indexesToDeselect.allObjects animated:animated];
 	[self scrollToItemAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated];
 }
 
@@ -748,15 +850,26 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		NSLog(@"***index path not found for selection.");
 	}
 	
+	if (_collectionViewFlags.delegateMouseDown) {
+		[self.delegate collectionView:self mouseDownInItemAtIndexPath:indexPath];
+	}
+	
 	// Detect if modifier flags are held down.
 	// We prioritize the command key over the shift key.
 	if (event.modifierFlags & NSCommandKeyMask) {
-#warning TODO: animated flag should be a property
-		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES selectionType:JNWCollectionViewSelectionTypeMultiple];
+		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest animated:self.animatesSelection selectionType:JNWCollectionViewSelectionTypeMultiple];
 	} else if (event.modifierFlags & NSShiftKeyMask) {
-		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES selectionType:JNWCollectionViewSelectionTypeExtending];
+		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest animated:self.animatesSelection selectionType:JNWCollectionViewSelectionTypeExtending];
 	} else {
-		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];
+		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest animated:self.animatesSelection];
+	}
+}
+
+- (void)mouseUpInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
+	if (_collectionViewFlags.delegateMouseUp) {
+		NSIndexPath *indexPath = [self indexPathForCell:cell];
+		
+		[self.delegate collectionView:self mouseUpInItemAtIndexPath:indexPath];
 	}
 }
 
@@ -766,46 +879,53 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 
 - (void)moveUp:(id)sender {
 	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionUp currentIndexPath:[self indexPathForSelectedRow]];
-	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];}
+	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:self.animatesSelection];}
 
 - (void)moveUpAndModifySelection:(id)sender {
 	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionUp currentIndexPath:[self indexPathForSelectedRow]];
-	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES selectionType:JNWCollectionViewSelectionTypeExtending];
+	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:self.animatesSelection selectionType:JNWCollectionViewSelectionTypeExtending];
 }
 
 - (void)moveDown:(id)sender {
 	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionDown currentIndexPath:[self indexPathForSelectedRow]];
-	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];
+	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:self.animatesSelection];
 }
 
 - (void)moveDownAndModifySelection:(id)sender {
 	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionDown currentIndexPath:[self indexPathForSelectedRow]];
-	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES selectionType:JNWCollectionViewSelectionTypeExtending];
+	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:self.animatesSelection selectionType:JNWCollectionViewSelectionTypeExtending];
 }
 
 - (void)moveRight:(id)sender {
 	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionRight currentIndexPath:[self indexPathForSelectedRow]];
-	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];
+	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:self.animatesSelection];
 }
 
 - (void)moveRightAndModifySelection:(id)sender {
 	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionRight currentIndexPath:[self indexPathForSelectedRow]];
-	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES selectionType:JNWCollectionViewSelectionTypeExtending];
+	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:self.animatesSelection selectionType:JNWCollectionViewSelectionTypeExtending];
 }
 
 - (void)moveLeft:(id)sender {
 	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionLeft currentIndexPath:[self indexPathForSelectedRow]];
-	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];
+	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:self.animatesSelection];
 }
 
 - (void)moveLeftAndModifySelection:(id)sender {
 	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionLeft currentIndexPath:[self indexPathForSelectedRow]];
-	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES selectionType:JNWCollectionViewSelectionTypeExtending];
+	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:self.animatesSelection selectionType:JNWCollectionViewSelectionTypeExtending];
 }
 
 - (void)selectAll:(id)sender {
-	// TODO animate
-	[self selectItemsAtIndexPaths:[self allIndexPaths] animated:YES];
+	[self selectItemsAtIndexPaths:[self allIndexPaths] animated:self.animatesSelection];
+}
+
+- (void)deselectAllItems {
+	[self deselectItemsAtIndexPaths:[self allIndexPaths] animated:self.animatesSelection];
+}
+
+- (void)selectAllItems {
+	[self selectAll:nil];
 }
 
 #pragma mark NSObject

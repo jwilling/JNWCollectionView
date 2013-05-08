@@ -10,7 +10,6 @@
 		8467C6D7171E587F00A1F343 /* JNWCollectionViewHeaderFooterViewSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8467C6D6171E587F00A1F343 /* JNWCollectionViewHeaderFooterViewSpec.m */; };
 		8467C6FA171E58F700A1F343 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8467C6E0171E589200A1F343 /* libExpecta.a */; };
 		8467C6FB171E58F700A1F343 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8467C6EF171E589500A1F343 /* libSpecta.a */; };
-		8467C713171F7DC500A1F343 /* JNWTestObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 8467C712171F7DC500A1F343 /* JNWTestObject.m */; };
 		AB15146F1714C90800871248 /* JNWCollectionViewLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = AB15146D1714C90800871248 /* JNWCollectionViewLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AB1514701714C90800871248 /* JNWCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = AB15146E1714C90800871248 /* JNWCollectionViewLayout.m */; };
 		AB1514741714D39600871248 /* JNWCollectionViewListLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = AB1514721714D39600871248 /* JNWCollectionViewListLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -19,6 +18,7 @@
 		AB1514831715361E00871248 /* JNWCollectionViewGridLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = AB1514811715361D00871248 /* JNWCollectionViewGridLayout.m */; };
 		AB1514951717443F00871248 /* JNWCollectionViewFlowLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = AB1514931717443F00871248 /* JNWCollectionViewFlowLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AB1514961717443F00871248 /* JNWCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = AB1514941717443F00871248 /* JNWCollectionViewFlowLayout.m */; };
+		AB39819D1731A1B50062B2E0 /* JNWCollectionViewHeaderFooterView+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = AB39819C1731A1B50062B2E0 /* JNWCollectionViewHeaderFooterView+Private.h */; };
 		AB3C71F4170CA8D3004A91DB /* JNWCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = AB3C71E8170CA8D3004A91DB /* JNWCollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AB3C71F5170CA8D3004A91DB /* JNWCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C71E9170CA8D3004A91DB /* JNWCollectionView.m */; };
 		AB3C71F7170CA8D3004A91DB /* JNWCollectionView+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = AB3C71EA170CA8D3004A91DB /* JNWCollectionView+Private.h */; };
@@ -49,6 +49,7 @@
 		ABB024651707936300537A92 /* RBLScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB0245D1707936300537A92 /* RBLScrollView.m */; };
 		ABB024681707937F00537A92 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB024671707937F00537A92 /* QuartzCore.framework */; };
 		ABBEA58B171E7D7A00A6F03D /* JNWCollectionViewSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = ABBEA58A171E7D7A00A6F03D /* JNWCollectionViewSpec.m */; };
+		ABDE2699172BD9B100F8924F /* JNWTestImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = ABDE2698172BD9B100F8924F /* JNWTestImplementation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,8 +137,6 @@
 		8467C6D8171E589200A1F343 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = external/Expecta/Expecta.xcodeproj; sourceTree = SOURCE_ROOT; };
 		8467C6E7171E589500A1F343 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = external/Specta/Specta.xcodeproj; sourceTree = SOURCE_ROOT; };
 		8467C704171E5C9B00A1F343 /* JNWCollectionViewTests-Tests.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JNWCollectionViewTests-Tests.pch"; path = "JNWCollectionViewTests/JNWCollectionViewTests-Tests.pch"; sourceTree = SOURCE_ROOT; };
-		8467C711171F7DC500A1F343 /* JNWTestObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWTestObject.h; path = JNWCollectionViewTests/JNWTestObject.h; sourceTree = SOURCE_ROOT; };
-		8467C712171F7DC500A1F343 /* JNWTestObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWTestObject.m; path = JNWCollectionViewTests/JNWTestObject.m; sourceTree = SOURCE_ROOT; };
 		AB15146D1714C90800871248 /* JNWCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewLayout.h; path = JNWCollectionView/JNWCollectionViewLayout.h; sourceTree = SOURCE_ROOT; };
 		AB15146E1714C90800871248 /* JNWCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewLayout.m; path = JNWCollectionView/JNWCollectionViewLayout.m; sourceTree = SOURCE_ROOT; };
 		AB1514721714D39600871248 /* JNWCollectionViewListLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewListLayout.h; path = JNWCollectionView/JNWCollectionViewListLayout.h; sourceTree = SOURCE_ROOT; };
@@ -146,6 +145,7 @@
 		AB1514811715361D00871248 /* JNWCollectionViewGridLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewGridLayout.m; path = JNWCollectionView/JNWCollectionViewGridLayout.m; sourceTree = SOURCE_ROOT; };
 		AB1514931717443F00871248 /* JNWCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewFlowLayout.h; path = JNWCollectionView/JNWCollectionViewFlowLayout.h; sourceTree = SOURCE_ROOT; };
 		AB1514941717443F00871248 /* JNWCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewFlowLayout.m; path = JNWCollectionView/JNWCollectionViewFlowLayout.m; sourceTree = SOURCE_ROOT; };
+		AB39819C1731A1B50062B2E0 /* JNWCollectionViewHeaderFooterView+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JNWCollectionViewHeaderFooterView+Private.h"; path = "JNWCollectionView/JNWCollectionViewHeaderFooterView+Private.h"; sourceTree = SOURCE_ROOT; };
 		AB3C71E8170CA8D3004A91DB /* JNWCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionView.h; path = JNWCollectionView/JNWCollectionView.h; sourceTree = SOURCE_ROOT; };
 		AB3C71E9170CA8D3004A91DB /* JNWCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionView.m; path = JNWCollectionView/JNWCollectionView.m; sourceTree = SOURCE_ROOT; };
 		AB3C71EA170CA8D3004A91DB /* JNWCollectionView+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JNWCollectionView+Private.h"; path = "JNWCollectionView/JNWCollectionView+Private.h"; sourceTree = SOURCE_ROOT; };
@@ -180,6 +180,8 @@
 		ABB0245D1707936300537A92 /* RBLScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RBLScrollView.m; path = external/Rebel/Rebel/RBLScrollView.m; sourceTree = SOURCE_ROOT; };
 		ABB024671707937F00537A92 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		ABBEA58A171E7D7A00A6F03D /* JNWCollectionViewSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewSpec.m; path = JNWCollectionViewTests/JNWCollectionViewSpec.m; sourceTree = SOURCE_ROOT; };
+		ABDE2697172BD9B100F8924F /* JNWTestImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWTestImplementation.h; path = JNWCollectionViewTests/JNWTestImplementation.h; sourceTree = SOURCE_ROOT; };
+		ABDE2698172BD9B100F8924F /* JNWTestImplementation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWTestImplementation.m; path = JNWCollectionViewTests/JNWTestImplementation.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -318,6 +320,7 @@
 				AB3C71ED170CA8D3004A91DB /* JNWCollectionViewCell+Private.h */,
 				AB3C71EE170CA8D3004A91DB /* JNWCollectionViewHeaderFooterView.h */,
 				AB3C71EF170CA8D3004A91DB /* JNWCollectionViewHeaderFooterView.m */,
+				AB39819C1731A1B50062B2E0 /* JNWCollectionViewHeaderFooterView+Private.h */,
 				AB3C71F0170CA8D3004A91DB /* JNWCollectionViewSection.h */,
 				AB3C71F1170CA8D3004A91DB /* JNWCollectionViewSection.m */,
 				AB3C71F2170CA8D3004A91DB /* NSIndexPath+JNWAdditions.h */,
@@ -345,8 +348,8 @@
 				AB46B0AF171F900100F727C7 /* external */,
 				8467C6D6171E587F00A1F343 /* JNWCollectionViewHeaderFooterViewSpec.m */,
 				ABBEA58A171E7D7A00A6F03D /* JNWCollectionViewSpec.m */,
-				8467C711171F7DC500A1F343 /* JNWTestObject.h */,
-				8467C712171F7DC500A1F343 /* JNWTestObject.m */,
+				ABDE2697172BD9B100F8924F /* JNWTestImplementation.h */,
+				ABDE2698172BD9B100F8924F /* JNWTestImplementation.m */,
 				8467C6D3171E581300A1F343 /* Supporting Files */,
 			);
 			name = JNWCollectionViewTests;
@@ -389,6 +392,7 @@
 				AB3C71FF170CA8D3004A91DB /* JNWCollectionViewSection.h in Headers */,
 				AB3C7209170CA8EF004A91DB /* JNWCollectionView-Prefix.pch in Headers */,
 				ABA276B2171D1C4B005C8E56 /* JNWCollectionViewDocumentView.h in Headers */,
+				AB39819D1731A1B50062B2E0 /* JNWCollectionViewHeaderFooterView+Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -592,7 +596,7 @@
 			files = (
 				8467C6D7171E587F00A1F343 /* JNWCollectionViewHeaderFooterViewSpec.m in Sources */,
 				ABBEA58B171E7D7A00A6F03D /* JNWCollectionViewSpec.m in Sources */,
-				8467C713171F7DC500A1F343 /* JNWTestObject.m in Sources */,
+				ABDE2699172BD9B100F8924F /* JNWTestImplementation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,8 +14,8 @@
 
 @implementation ListHeader
 
-- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
-	self = [super initWithReuseIdentifier:reuseIdentifier];
+- (instancetype)initWithFrame:(NSRect)frameRect {
+	self = [super initWithFrame:frameRect];
 	
 	self.headerLabel = [[NSTextField alloc] initWithFrame:CGRectZero];
 	self.headerLabel.bezeled = NO;

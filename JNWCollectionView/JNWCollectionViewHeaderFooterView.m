@@ -10,10 +10,9 @@
 
 @implementation JNWCollectionViewHeaderFooterView
 
-- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
-	self = [super initWithFrame:CGRectZero];
+- (instancetype)initWithFrame:(NSRect)frameRect {
+	self = [super initWithFrame:frameRect];
 	if (self == nil) return nil;
-	_reuseIdentifier = reuseIdentifier;
 	self.wantsLayer = YES;
 	self.layerContentsRedrawPolicy = NSViewLayerContentsRedrawOnSetNeedsDisplay;
 	return self;

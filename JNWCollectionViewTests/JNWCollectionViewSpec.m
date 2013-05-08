@@ -7,53 +7,86 @@
 //
 
 #import "JNWCollectionViewDocumentView.h"
-#import "JNWTestObject.h"
+#import "JNWTestImplementation.h"
 
 SpecBegin(JNWCollectionView)
 
-__block JNWCollectionView *collectionView = nil;
-__block JNWDatasourceTestObject *validDataSource = nil;
-
-beforeEach(^{
-	collectionView = [[JNWCollectionView alloc] initWithFrame:CGRectZero];
-	
-});
-
 describe(@"documentView property", ^{
+	__block JNWCollectionView *collectionView = nil;
+	
+	beforeEach(^{
+		collectionView = [[JNWCollectionView alloc] initWithFrame:CGRectZero];
+	});
+	
 	it(@"should be of class JNWCollectionViewDocumentView", ^{
 		expect(collectionView.documentView).to.beKindOf(JNWCollectionViewDocumentView.class);
 	});
 });
 
 describe(@"data source", ^{
+	__block JNWCollectionView *collectionView = nil;
+	__block JNWTestDataSource *testDataSource = nil;
+		
 	beforeAll(^{
-		validDataSource = [[JNWDatasourceTestObject alloc] init];
-	});
-	
-	it(@"should have a nil datasource", ^{
-		expect(collectionView.dataSource).to.beNil();
+		collectionView = [[JNWCollectionView alloc] initWithFrame:CGRectMake(0, 0, 400, 400)];
+		testDataSource = [[JNWTestDataSource alloc] init];
+		collectionView.dataSource = testDataSource;
+		[collectionView reloadData];
 	});
 	
 	it(@"should not throw an exception with a valid datasource", ^{
 		expect(^{
-			collectionView.dataSource = validDataSource;
+			collectionView.dataSource = testDataSource;
 		}).notTo.raise(@"NSInternalInconsistencyException");
+	});
+	
+	it(@"should use the correct number of sections", ^{
+		expect(collectionView.numberOfSections).to.equal(kTestDataSourceNumberOfSections);
+	});
+	
+	it(@"should use the correct number of rows in each section", ^{
+		expect([collectionView numberOfItemsInSection:1]).to.equal(kTestDataSourceNumberOfItems);
+	});
+	
+	it(@"should not be using nil cells", ^{
+		expect([collectionView cellForRowAtIndexPath:[NSIndexPath jnw_indexPathForItem:0 inSection:0]]).notTo.beNil();
+	});
+	
+	it(@"should use the cell created in collectionView:cellForItemAtIndexPath:", ^{
+		JNWCollectionViewCell *cell = [collectionView cellForRowAtIndexPath:[NSIndexPath jnw_indexPathForItem:0 inSection:0]];
+		expect(cell.reuseIdentifier).to.equal(kTestDataSourceCellIdentifier);
 	});
 });
 
-describe(@"selection", ^{
+describe(@"-selectItemAtIndexPath:atScrollPosition:animated:", ^{
 	__block JNWCollectionView *collectionView = nil;
+	__block JNWTestDataSource *dataSource = nil;
 	
 	beforeAll(^{
 		collectionView = [[JNWCollectionView alloc] initWithFrame:CGRectMake(0, 0, 300, 500)];
+		dataSource = [[JNWTestDataSource alloc] init];
+		collectionView.dataSource = dataSource;
+		[collectionView reloadData];
 	});
 	
-	it(@"should select and return the same selection", ^{
+	beforeEach(^{
+		[collectionView deselectAllItems];
+	});
+	
+	it(@"should add the correct index path to the selection array", ^{
 		NSIndexPath *expected = [NSIndexPath jnw_indexPathForItem:1 inSection:0];
 		NSIndexPath *wrong = [NSIndexPath jnw_indexPathForItem:0 inSection:0];
 		[collectionView selectItemAtIndexPath:expected atScrollPosition:JNWCollectionViewScrollPositionNone animated:NO];
 		expect([collectionView indexPathsForSelectedItems][0]).to.equal(expected);
 		expect([collectionView indexPathsForSelectedItems][0]).notTo.equal(wrong);
+	});
+	
+	it(@"should select the cell", ^{
+		NSIndexPath *toSelect = [NSIndexPath jnw_indexPathForItem:1 inSection:0];
+		[collectionView selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNone animated:NO];
+		JNWCollectionViewCell *cell = [collectionView cellForRowAtIndexPath:toSelect];
+		expect(cell).notTo.beNil();
+		expect(cell.selected).to.beTruthy();
 	});
 });
 

@@ -11,7 +11,8 @@
 @class JNWCollectionView;
 @interface JNWCollectionViewCell : NSView
 
-- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier;
+// The dedicated initializer for all subclasses to override.
+- (instancetype)initWithFrame:(NSRect)frameRect;
 
 // Called when the cell is about to exit the reuse pool and be dequeued.
 - (void)prepareForReuse;

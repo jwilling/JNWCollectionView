@@ -16,8 +16,8 @@
 
 @implementation ListCell
 
-- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
-	self = [super initWithReuseIdentifier:reuseIdentifier];
+- (instancetype)initWithFrame:(NSRect)frameRect {
+	self = [super initWithFrame:frameRect];
 	if (self == nil) return nil;
 	
 	self.cellLabel = [[JNWLabel alloc] initWithFrame:CGRectZero];

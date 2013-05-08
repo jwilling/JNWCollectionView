@@ -117,15 +117,13 @@
 	[self.collectionView mouseDownInCollectionViewCell:self withEvent:theEvent];
 }
 
-<<<<<<< HEAD
-#pragma mark NSObject
-=======
 - (void)mouseUp:(NSEvent *)theEvent {
 	[super mouseUp:theEvent];
 	
 	[self.collectionView mouseUpInCollectionViewCell:self withEvent:theEvent];
 }
->>>>>>> master
+
+#pragma mark NSObject
 
 - (NSString *)description {
 	return [NSString stringWithFormat:@"<%@: %p; frame = %@; layer = <%@: %p>>", self.class, self, NSStringFromRect(self.frame), self.layer.class, self.layer];

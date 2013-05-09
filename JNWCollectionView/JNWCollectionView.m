@@ -928,4 +928,12 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	[self selectAll:nil];
 }
 
+#pragma mark NSObject
+
+- (NSString *)description {
+	return [NSString stringWithFormat:@"<%@: %p; frame = %@; layer = <%@: %p>; content offset: %@> collection view layout: %@",
+			self.class, self, NSStringFromRect(self.frame), self.layer.class, self.layer,
+			NSStringFromPoint(self.documentVisibleRect.origin), self.collectionViewLayout];
+}
+
 @end

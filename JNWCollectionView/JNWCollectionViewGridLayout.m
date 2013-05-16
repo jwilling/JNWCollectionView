@@ -12,6 +12,9 @@ typedef struct {
 	CGPoint origin;
 } JNWCollectionViewGridLayoutItemInfo;
 
+NSString * const JNWCollectionViewGridLayoutHeaderIdentifier = @"JNWCollectionViewGridLayoutHeader";
+NSString * const JNWCollectionViewGridLayoutFooterIdentifier = @"JNWCollectionViewGridLayoutFooter";
+
 @interface JNWCollectionViewGridLayoutSection : NSObject
 - (instancetype)initWithNumberOfItems:(NSInteger)numberOfItems;
 @property (nonatomic, assign) CGFloat offset;
@@ -125,6 +128,20 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	JNWCollectionViewGridLayoutItemInfo itemInfo = section.itemInfo[indexPath.item];
 	CGFloat offset = section.offset;
 	return CGRectMake(itemInfo.origin.x, itemInfo.origin.y + offset, self.itemSize.width, self.itemSize.height);
+}
+
+- (CGRect)rectForSupplementaryItemInSection:(NSInteger)idx identifier:(NSString *)identifier {
+	JNWCollectionViewGridLayoutSection *section = self.sections[idx];
+	
+	CGFloat width = CGRectGetWidth(self.collectionView.documentVisibleRect);
+	
+	if ([identifier isEqualToString:JNWCollectionViewGridLayoutHeaderIdentifier]) {
+		return CGRectMake(0, section.offset - section.headerHeight, width, section.headerHeight);
+	} else if ([identifier isEqualToString:JNWCollectionViewGridLayoutFooterIdentifier]) {
+		return CGRectMake(0, section.offset + section.height, width, section.footerHeight);
+	}
+	
+	return CGRectZero;
 }
 
 - (BOOL)wantsIndexPathsForItemsInRect {

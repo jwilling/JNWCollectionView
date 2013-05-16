@@ -1,13 +1,14 @@
 //
-//  JNWCollectionViewHeaderFooterView_Private.h
+//  JNWCollectionViewReusableView+Private.h
 //  JNWCollectionView
 //
 //  Created by Jonathan Willing on 5/1/13.
 //  Copyright (c) 2013 AppJon. All rights reserved.
 //
 
-#import <JNWCollectionView/JNWCollectionView.h>
+#import "JNWCollectionView.h"
 
-@interface JNWCollectionViewHeaderFooterView ()
+@interface JNWCollectionViewReusableView ()
 @property (nonatomic, copy, readwrite) NSString *reuseIdentifier;
+@property (nonatomic, copy, readwrite) NSString *kind;
 @end

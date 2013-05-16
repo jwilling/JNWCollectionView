@@ -136,7 +136,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		ABA276A0171D00FF005C8E56 /* Grid Layout */ = {
+		ABA276A0171D00FF005C8E56 /* Grid Layout Demo */ = {
 			isa = PBXGroup;
 			children = (
 				ABA2769A171CFC80005C8E56 /* GridDemoViewController.h */,
@@ -145,10 +145,10 @@
 				ABA276A1171D0130005C8E56 /* GridCell.h */,
 				ABA276A2171D0130005C8E56 /* GridCell.m */,
 			);
-			name = "Grid Layout";
+			name = "Grid Layout Demo";
 			sourceTree = "<group>";
 		};
-		ABA276A7171D144B005C8E56 /* NSTableView */ = {
+		ABA276A7171D144B005C8E56 /* NSTableView (Comparison) Demo */ = {
 			isa = PBXGroup;
 			children = (
 				ABA276A8171D146D005C8E56 /* NSTableViewDemoViewController.h */,
@@ -157,7 +157,7 @@
 				ABA276AD171D14E8005C8E56 /* DemoTableCellView.h */,
 				ABA276AE171D14E8005C8E56 /* DemoTableCellView.m */,
 			);
-			name = NSTableView;
+			name = "NSTableView (Comparison) Demo";
 			sourceTree = "<group>";
 		};
 		ABAF15551718C39300658A1D /* JNWLabel */ = {
@@ -174,7 +174,7 @@
 		ABB0F2EA16FD7D19002004F5 = {
 			isa = PBXGroup;
 			children = (
-				ABB0F2FC16FD7D19002004F5 /* JNWTableViewDemo */,
+				ABB0F2FC16FD7D19002004F5 /* JNWCollectionViewDemo */,
 				AB2E95FD170CB107004678DC /* JNWCollectionView.xcodeproj */,
 				ABB0F2F516FD7D19002004F5 /* Frameworks */,
 				ABB0F2F416FD7D19002004F5 /* Products */,
@@ -209,7 +209,7 @@
 			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
-		ABB0F2FC16FD7D19002004F5 /* JNWTableViewDemo */ = {
+		ABB0F2FC16FD7D19002004F5 /* JNWCollectionViewDemo */ = {
 			isa = PBXGroup;
 			children = (
 				ABAF15551718C39300658A1D /* JNWLabel */,
@@ -219,13 +219,14 @@
 				ABAF15661718E67C00658A1D /* DemoWindowController.h */,
 				ABAF15671718E67C00658A1D /* DemoWindowController.m */,
 				ABAF15681718E67C00658A1D /* DemoWindowController.xib */,
-				ABB1B203171E068E009B9270 /* List Layout */,
-				ABA276A0171D00FF005C8E56 /* Grid Layout */,
-				ABA276A7171D144B005C8E56 /* NSTableView */,
+				ABB1B203171E068E009B9270 /* List Layout Demo */,
+				ABA276A0171D00FF005C8E56 /* Grid Layout Demo */,
+				ABA276A7171D144B005C8E56 /* NSTableView (Comparison) Demo */,
 				ABB0F2FD16FD7D19002004F5 /* Supporting Files */,
 				ABB1B205171E095B009B9270 /* NSImage+DemoAdditions.h */,
 				ABB1B206171E095B009B9270 /* NSImage+DemoAdditions.m */,
 			);
+			name = JNWCollectionViewDemo;
 			path = JNWTableViewDemo;
 			sourceTree = "<group>";
 		};
@@ -241,7 +242,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		ABB1B203171E068E009B9270 /* List Layout */ = {
+		ABB1B203171E068E009B9270 /* List Layout Demo */ = {
 			isa = PBXGroup;
 			children = (
 				AB3C7232170CABFF004A91DB /* ListCell.h */,
@@ -251,7 +252,7 @@
 				ABAF156B1718F6D000658A1D /* ListDemoViewController.h */,
 				ABAF156C1718F6D000658A1D /* ListDemoViewController.m */,
 			);
-			name = "List Layout";
+			name = "List Layout Demo";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

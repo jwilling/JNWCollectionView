@@ -11,6 +11,9 @@
 NSInteger const kTestDataSourceNumberOfItems = 20;
 NSInteger const kTestDataSourceNumberOfSections = 3;
 NSString * const kTestDataSourceCellIdentifier = @"cell";
+NSString * const kTestDataSourceHeaderIdentifier = @"header";
+NSString * const kTestDataSourceFooterIdentifier = @"footer";
+
 
 @implementation JNWTestDataSource
 
@@ -20,9 +23,6 @@ NSString * const kTestDataSourceCellIdentifier = @"cell";
 
 - (JNWCollectionViewCell *)collectionView:(JNWCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 	JNWCollectionViewCell *cell = [collectionView dequeueReusableCellWithIdentifier:kTestDataSourceCellIdentifier];
-	if (cell == nil) {
-		cell = [[JNWCollectionViewCell alloc] initWithReuseIdentifier:kTestDataSourceCellIdentifier];
-	}
 	return cell;
 }
 
@@ -30,22 +30,14 @@ NSString * const kTestDataSourceCellIdentifier = @"cell";
 	return kTestDataSourceNumberOfSections;
 }
 
-- (JNWCollectionViewHeaderFooterView *)collectionView:(JNWCollectionView *)collectionView viewForHeaderInSection:(NSInteger)section {
-	static NSString * const identifier = @"header";
-	JNWCollectionViewHeaderFooterView *header = [collectionView dequeueReusableHeaderFooterViewWithIdentifer:identifier];
-	if (header == nil) {
-		header = [[JNWCollectionViewHeaderFooterView alloc] initWithReuseIdentifier:identifier];
+- (JNWCollectionViewReusableView *)collectionView:(JNWCollectionView *)collectionView viewForSupplementaryViewOfKind:(NSString *)kind inSection:(NSInteger)section {
+	if ([kind isEqualToString:JNWCollectionViewListLayoutHeaderIdentifier]) {
+		JNWCollectionViewReusableView *header = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifer:kTestDataSourceHeaderIdentifier];
+		return header;
+	} else {
+		JNWCollectionViewReusableView *footer = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifer:kTestDataSourceFooterIdentifier];
+		return footer;
 	}
-	return header;
-}
-
-- (JNWCollectionViewHeaderFooterView *)collectionView:(JNWCollectionView *)collectionView viewForFooterInSection:(NSInteger)section {
-	static NSString * const identifier = @"footer";
-	JNWCollectionViewHeaderFooterView *footer = [collectionView dequeueReusableHeaderFooterViewWithIdentifer:identifier];
-	if (footer == nil) {
-		footer = [[JNWCollectionViewHeaderFooterView alloc] initWithReuseIdentifier:identifier];
-	}
-	return footer;
 }
 
 @end

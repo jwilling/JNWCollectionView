@@ -13,6 +13,9 @@ typedef struct {
 	CGFloat yOffset;
 } JNWCollectionViewListLayoutRowInfo;
 
+NSString * const JNWCollectionViewListLayoutHeaderIdentifier = @"JNWCollectionViewListLayoutHeader";
+NSString * const JNWCollectionViewListLayoutFooterIdentifier = @"JNWCollectionViewListLayoutFooter";
+
 @interface JNWCollectionViewListLayoutSection : NSObject
 - (instancetype)initWithNumberOfRows:(NSInteger)numberOfRows;
 @property (nonatomic, assign) CGFloat offset;
@@ -34,7 +37,7 @@ typedef struct {
 }
 
 - (void)dealloc {
-	if (_rowInfo != NULL)
+	if (_rowInfo != nil)
 		free(_rowInfo);
 }
 
@@ -109,16 +112,18 @@ typedef struct {
 	return CGRectMake(0, offset, width, height);
 }
 
-- (CGRect)rectForHeaderAtIndex:(NSInteger)index {
-	JNWCollectionViewListLayoutSection *section = self.sections[index];
+- (CGRect)rectForSupplementaryItemInSection:(NSInteger)idx kind:(NSString *)kind {
+	JNWCollectionViewListLayoutSection *section = self.sections[idx];
+	
 	CGFloat width = CGRectGetWidth(self.collectionView.documentVisibleRect);
-	return CGRectMake(0, section.offset - section.headerHeight, width, section.headerHeight);
-}
 
-- (CGRect)rectForFooterAtIndex:(NSInteger)index {
-	JNWCollectionViewListLayoutSection *section = self.sections[index];
-	CGFloat width = CGRectGetWidth(self.collectionView.documentVisibleRect);
-	return CGRectMake(0, section.offset + section.height, width, section.footerHeight);
+	if ([kind isEqualToString:JNWCollectionViewListLayoutHeaderIdentifier]) {
+		return CGRectMake(0, section.offset - section.headerHeight, width, section.headerHeight);
+	} else if ([kind isEqualToString:JNWCollectionViewListLayoutFooterIdentifier]) {
+		return CGRectMake(0, section.offset + section.height, width, section.footerHeight);
+	}
+	
+	return CGRectZero;
 }
 
 - (NSIndexPath *)indexPathForNextItemInDirection:(JNWCollectionViewDirection)direction currentIndexPath:(NSIndexPath *)currentIndexPath {

@@ -38,7 +38,7 @@ static NSString * const headerIdentifier = @"HEADER";
 	self.collectionView.collectionViewLayout = layout;
 	
 	[self.collectionView registerClass:ListCell.class forCellWithReuseIdentifier:cellIdentifier];
-	[self.collectionView registerClass:ListHeader.class forHeaderFooterWithReuseIdentifier:headerIdentifier];
+	[self.collectionView registerClass:ListHeader.class forSupplementaryViewOfKind:JNWCollectionViewListLayoutHeaderIdentifier withReuseIdentifier:headerIdentifier];
 	
 	[self.collectionView reloadData];
 }
@@ -49,8 +49,8 @@ static NSString * const headerIdentifier = @"HEADER";
 	return cell;
 }
 
-- (JNWCollectionViewHeaderFooterView *)collectionView:(JNWCollectionView *)collectionView viewForHeaderInSection:(NSInteger)section {
-	ListHeader *header = (ListHeader *)[collectionView dequeueReusableHeaderFooterViewWithIdentifer:headerIdentifier];
+- (JNWCollectionViewReusableView *)collectionView:(JNWCollectionView *)collectionView viewForSupplementaryViewOfKind:(NSString *)kind inSection:(NSInteger)section {
+	ListHeader *header = (ListHeader *)[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifer:headerIdentifier];
 	header.headerLabelText = [NSString stringWithFormat:@"Header %ld", section];
 	return header;
 }

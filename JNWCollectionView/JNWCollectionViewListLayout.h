@@ -8,6 +8,9 @@
 
 #import <JNWCollectionView/JNWCollectionView.h>
 
+extern NSString * const JNWCollectionViewListLayoutHeaderIdentifier;
+extern NSString * const JNWCollectionViewListLayoutFooterIdentifier;
+
 @protocol JNWCollectionViewListLayoutDelegate <NSObject>
 
 @optional

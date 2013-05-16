@@ -1,14 +1,15 @@
 //
-//  JNWTableViewHeaderFooterView.m
-//  JNWTableViewDemo
+//  JNWCollectionViewReusableView.m
+//  JNWCollectionView
 //
 //  Created by Jonathan Willing on 3/26/13.
 //  Copyright (c) 2013 AppJon. All rights reserved.
 //
 
-#import "JNWCollectionViewHeaderFooterView.h"
+#import "JNWCollectionViewReusableView.h"
+#import "JNWCollectionViewReusableView+Private.h"
 
-@implementation JNWCollectionViewHeaderFooterView
+@implementation JNWCollectionViewReusableView
 
 - (instancetype)initWithFrame:(NSRect)frameRect {
 	self = [super initWithFrame:frameRect];

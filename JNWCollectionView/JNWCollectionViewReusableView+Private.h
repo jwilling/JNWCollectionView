@@ -1,5 +1,5 @@
 //
-//  JNWCollectionViewHeaderFooterView_Private.h
+//  JNWCollectionViewReusableView+Private.h
 //  JNWCollectionView
 //
 //  Created by Jonathan Willing on 5/1/13.

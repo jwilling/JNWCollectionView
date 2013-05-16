@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8467C6D7171E587F00A1F343 /* JNWCollectionViewHeaderFooterViewSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8467C6D6171E587F00A1F343 /* JNWCollectionViewHeaderFooterViewSpec.m */; };
+		8467C6D7171E587F00A1F343 /* JNWCollectionViewReusableViewSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8467C6D6171E587F00A1F343 /* JNWCollectionViewReusableViewSpec.m */; };
 		8467C6FA171E58F700A1F343 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8467C6E0171E589200A1F343 /* libExpecta.a */; };
 		8467C6FB171E58F700A1F343 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8467C6EF171E589500A1F343 /* libSpecta.a */; };
 		AB15146F1714C90800871248 /* JNWCollectionViewLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = AB15146D1714C90800871248 /* JNWCollectionViewLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -133,7 +133,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		8467C6D6171E587F00A1F343 /* JNWCollectionViewHeaderFooterViewSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewHeaderFooterViewSpec.m; path = JNWCollectionViewTests/JNWCollectionViewHeaderFooterViewSpec.m; sourceTree = SOURCE_ROOT; };
+		8467C6D6171E587F00A1F343 /* JNWCollectionViewReusableViewSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewReusableViewSpec.m; path = JNWCollectionViewTests/JNWCollectionViewReusableViewSpec.m; sourceTree = SOURCE_ROOT; };
 		8467C6D8171E589200A1F343 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = external/Expecta/Expecta.xcodeproj; sourceTree = SOURCE_ROOT; };
 		8467C6E7171E589500A1F343 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = external/Specta/Specta.xcodeproj; sourceTree = SOURCE_ROOT; };
 		8467C704171E5C9B00A1F343 /* JNWCollectionViewTests-Tests.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JNWCollectionViewTests-Tests.pch"; path = "JNWCollectionViewTests/JNWCollectionViewTests-Tests.pch"; sourceTree = SOURCE_ROOT; };
@@ -346,7 +346,7 @@
 			isa = PBXGroup;
 			children = (
 				AB46B0AF171F900100F727C7 /* external */,
-				8467C6D6171E587F00A1F343 /* JNWCollectionViewHeaderFooterViewSpec.m */,
+				8467C6D6171E587F00A1F343 /* JNWCollectionViewReusableViewSpec.m */,
 				ABBEA58A171E7D7A00A6F03D /* JNWCollectionViewSpec.m */,
 				ABDE2697172BD9B100F8924F /* JNWTestImplementation.h */,
 				ABDE2698172BD9B100F8924F /* JNWTestImplementation.m */,
@@ -594,7 +594,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8467C6D7171E587F00A1F343 /* JNWCollectionViewHeaderFooterViewSpec.m in Sources */,
+				8467C6D7171E587F00A1F343 /* JNWCollectionViewReusableViewSpec.m in Sources */,
 				ABBEA58B171E7D7A00A6F03D /* JNWCollectionViewSpec.m in Sources */,
 				ABDE2699172BD9B100F8924F /* JNWTestImplementation.m in Sources */,
 			);

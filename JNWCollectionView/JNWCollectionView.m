@@ -182,7 +182,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	
 	//NSLog(@"%ld", reusableCells.count);
 
-//	if (reusableCells.count > JNWTableViewMaximumNumberOfQueuedCells) {
+//	if (reusableCells.count > JNWCollectionViewMaximumNumberOfQueuedCells) {
 //		if ([item isKindOfClass:NSView.class] && [item superview] != nil)
 //			[(NSView *)item removeFromSuperview];
 //		return;

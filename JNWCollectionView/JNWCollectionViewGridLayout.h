@@ -8,6 +8,9 @@
 
 #import <JNWCollectionView/JNWCollectionView.h>
 
+extern NSString * const JNWCollectionViewGridLayoutHeaderIdentifier;
+extern NSString * const JNWCollectionViewGridLayoutFooterIdentifier;
+
 @protocol JNWCollectionViewGridLayoutDelegate <NSObject>
 
 @optional

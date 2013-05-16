@@ -92,13 +92,13 @@ typedef struct {
 			
 			CGRect usableRect = CGRectMake(0, 0, CGRectGetWidth(self.collectionView.documentVisibleRect), sectionInfo.height);
 			
-#warning This will likely not work if the item size is bigger than the visible frame
+			// TODO: This will likely not work if the item size is bigger than the visible frame
 			if (CGRectIntersection(usableRect, (CGRect){ .size = itemSize, .origin = itemOrigin}).size.width != itemSize.width) {
 				// The item would be placed off the edge, so we bump to the next line.
 				itemOrigin.x = self.minimumItemHorizontalSeparation;
 				itemOrigin.y = sectionInfo.height;
 				
-#warning This will fail horribly when the item size used for height is smalller than the rest in the row
+				//TODO: This will fail horribly when the item size used for height is smalller than the rest in the row
 				sectionInfo.height += itemSize.height;
 			}
 			

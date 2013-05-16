@@ -15,8 +15,6 @@ typedef struct {
 @interface JNWCollectionViewSection : NSObject
 
 @property (nonatomic, assign) CGRect sectionFrame;
-@property (nonatomic, assign) CGRect headerFrame;
-@property (nonatomic, assign) CGRect footerFrame;
 
 @property (nonatomic, assign) NSInteger index;
 @property (nonatomic, assign) NSUInteger numberOfItems;

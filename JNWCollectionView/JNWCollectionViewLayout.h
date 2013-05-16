@@ -25,9 +25,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewDirection) {
 - (void)prepareLayout;
 
 - (CGRect)rectForItemAtIndexPath:(NSIndexPath *)indexPath;
-- (CGRect)rectForHeaderAtIndex:(NSInteger)index;
-- (CGRect)rectForFooterAtIndex:(NSInteger)index;
-
+- (CGRect)rectForSupplementaryItemInSection:(NSInteger)section kind:(NSString *)kind;
 
 - (BOOL)wantsIndexPathsForItemsInRect;
 - (NSArray *)indexPathsForItemsInRect:(CGRect)rect;

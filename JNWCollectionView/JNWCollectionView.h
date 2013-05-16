@@ -1,7 +1,7 @@
 #import <Cocoa/Cocoa.h>
 #import "JNWCollectionViewCell.h"
 #import "RBLScrollView.h"
-#import "JNWCollectionViewHeaderFooterView.h"
+#import "JNWCollectionViewReusableView.h"
 #import "NSIndexPath+JNWAdditions.h"
 #import "JNWCollectionViewLayout.h"
 
@@ -38,10 +38,9 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 // If this method is not implemented, the collection view will default to 1 section.
 - (NSInteger)numberOfSectionsInCollectionView:(JNWCollectionView *)collectionView;
 
-// Asks the data source for the view used for the header or footer for the specified section. The returned
-// view must be a subclass of JNWCollectionViewHeaderFooterView, otherwise an exception will be thrown.
-- (JNWCollectionViewHeaderFooterView *)collectionView:(JNWCollectionView *)collectionView viewForHeaderInSection:(NSInteger)section;
-- (JNWCollectionViewHeaderFooterView *)collectionView:(JNWCollectionView *)collectionView viewForFooterInSection:(NSInteger)section;
+// Asks the data source for the view used for the supplementary view for the specified section. The returned
+// view must be a subclass of JNWCollectionViewReusableView, otherwise an exception will be thrown.
+- (JNWCollectionViewReusableView *)collectionView:(JNWCollectionView *)collectionView viewForSupplementaryViewOfKind:(NSString *)kind inSection:(NSInteger)section;
 
 @end
 
@@ -89,25 +88,24 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 // view has been completed.
 - (void)reloadData;
 
-// In order for cell/header/footer dequeuing to occur, a class must be registered with the appropriate
+// In order for cell or supplementary view dequeueing to occur, a class must be registered with the appropriate
 // registration method.
 //
 // The class passed in will be used to initialize a new instance of the view, as needed. The class
-// must be a subclass of JNWCollectionViewCell for the cell class, and JNWCollectionViewHeaderFooterView
-// for the header/footer class, otherwise an exception will be thrown.
+// must be a subclass of JNWCollectionViewCell for the cell class, and JNWCollectionViewReusableView
+// for the supplementary view class, otherwise an exception will be thrown.
 - (void)registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)reuseIdentifier;
-- (void)registerClass:(Class)headerFooterClass forHeaderFooterWithReuseIdentifier:(NSString *)reuseIdentifier;
+- (void)registerClass:(Class)supplementaryViewClass forSupplementaryViewOfKind:(NSString *)kind withReuseIdentifier:(NSString *)reuseIdentifier;
 
 // These methods are used to create or reuse a new view. Cells should not be created manually. Instead,
 // these methods should be called with a reuse identifier previously registered using
-// -registerClass:forCellWithReuseIdentifier: or -registerClass:forHeaderFooterWithReuseIdentifier:.
+// -registerClass:forCellWithReuseIdentifier: or -registerClass:forSupplementaryViewOfKind:withReuseIdentifier:.
 //
-// If a class was not previously registered, the base cell/header/footer class will be used to create the view.
+// If a class was not previously registered, the base cell or supplementary view class will be used to create the view.
 //
 // The identifer must not be nil, otherwise an exception will be thrown.
 - (JNWCollectionViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier;
-- (JNWCollectionViewHeaderFooterView *)dequeueReusableHeaderFooterViewWithIdentifer:(NSString *)identifier;
-
+- (JNWCollectionViewReusableView *)dequeueReusableSupplementaryViewOfKind:(NSString *)kind withReuseIdentifer:(NSString *)identifier;
 
 @property (nonatomic, strong) JNWCollectionViewLayout *collectionViewLayout;
 
@@ -115,8 +113,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 - (NSInteger)numberOfItemsInSection:(NSInteger)section;
 
 // These will be provided in flipped coordinates.
-- (CGRect)rectForHeaderInSection:(NSInteger)section;
-- (CGRect)rectForFooterInSection:(NSInteger)section;
+- (CGRect)rectForSupplementaryViewWithKind:(NSString *)kind inSection:(NSInteger)section;
 - (CGRect)rectForItemAtIndexPath:(NSIndexPath *)indexPath;
 - (CGRect)rectForSection:(NSInteger)section;
 
@@ -125,12 +122,10 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 - (NSArray *)indexPathsForItemsInRect:(CGRect)rect;
 
 - (JNWCollectionViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (JNWCollectionViewReusableView *)supplementaryViewForKind:(NSString *)kind inSection:(NSInteger)section;
 - (NSArray *)visibleCells;
 - (NSArray *)indexPathsForVisibleItems;
 - (NSArray *)indexPathsForSelectedItems;
-- (JNWCollectionViewHeaderFooterView *)headerViewForSection:(NSInteger)section;
-- (JNWCollectionViewHeaderFooterView *)footerViewForSection:(NSInteger)section;
-
 
 @property (nonatomic, assign) BOOL animatesSelection; // TODO
 
@@ -138,7 +133,6 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 - (void)selectItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition animated:(BOOL)animated;
 - (void)selectAllItems;
 - (void)deselectAllItems;
-
 
 - (BOOL)validateIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)indexPathForNextSelectableItemAfterIndexPath:(NSIndexPath *)indexPath;

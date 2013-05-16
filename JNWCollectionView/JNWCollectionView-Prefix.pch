@@ -1,5 +1,5 @@
 //
-// Prefix header for all source files of the 'JNWTableView' target in the 'JNWTableView' project
+// Prefix header for all source files of the 'JNWCollectionView' target in the 'JNWCollectionView' project
 //
 
 #ifdef __OBJC__

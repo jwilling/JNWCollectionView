@@ -31,6 +31,9 @@ describe(@"data source", ^{
 		collectionView = [[JNWCollectionView alloc] initWithFrame:CGRectMake(0, 0, 400, 400)];
 		testDataSource = [[JNWTestDataSource alloc] init];
 		collectionView.dataSource = testDataSource;
+		
+		[collectionView registerClass:JNWCollectionViewCell.class forCellWithReuseIdentifier:kTestDataSourceCellIdentifier];
+		
 		[collectionView reloadData];
 	});
 	

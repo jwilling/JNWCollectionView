@@ -14,12 +14,13 @@
 extern const NSInteger kTestDataSourceNumberOfItems;
 extern const NSInteger kTestDataSourceNumberOfSections;
 extern NSString * const kTestDataSourceCellIdentifier;
+extern NSString * const kTestDataSourceHeaderIdentifier;
+extern NSString * const kTestDataSourceFooterIdentifier;
+
 
 @interface JNWTestDataSource : NSObject <JNWCollectionViewDataSource>
 
 @end
-
-
 
 @interface JNWTestDelegate : NSObject <JNWCollectionViewDelegate>
 

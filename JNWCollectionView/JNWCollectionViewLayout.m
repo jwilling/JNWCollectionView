@@ -29,11 +29,7 @@
 	return CGRectZero;
 }
 
-- (CGRect)rectForHeaderAtIndex:(NSInteger)index {
-	return CGRectZero;
-}
-
-- (CGRect)rectForFooterAtIndex:(NSInteger)index {
+- (CGRect)rectForSupplementaryItemInSection:(NSInteger)section kind:(NSString *)kind {
 	return CGRectZero;
 }
 

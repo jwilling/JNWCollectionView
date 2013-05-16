@@ -8,6 +8,7 @@
 
 #import <JNWCollectionView/JNWCollectionView.h>
 
-@interface JNWCollectionViewHeaderFooterView ()
+@interface JNWCollectionViewReusableView ()
 @property (nonatomic, copy, readwrite) NSString *reuseIdentifier;
+@property (nonatomic, copy, readwrite) NSString *kind;
 @end

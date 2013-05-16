@@ -8,10 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface JNWCollectionViewHeaderFooterView : NSView
+@interface JNWCollectionViewReusableView : NSView
 
 - (instancetype)initWithFrame:(NSRect)frameRect;
 
 @property (nonatomic, copy, readonly) NSString *reuseIdentifier;
+@property (nonatomic, copy, readonly) NSString *kind;
 
 @end

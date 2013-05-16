@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 AppJon. All rights reserved.
 //
 
-#import "JNWCollectionViewHeaderFooterView.h"
+#import "JNWCollectionViewReusableView.h"
 
-@implementation JNWCollectionViewHeaderFooterView
+@implementation JNWCollectionViewReusableView
 
 - (instancetype)initWithFrame:(NSRect)frameRect {
 	self = [super initWithFrame:frameRect];

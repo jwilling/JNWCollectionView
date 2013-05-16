@@ -9,11 +9,11 @@
 SpecBegin(JNWCollectionViewHeaderFooterView)
 
 describe(@"-reuseIdentifier", ^{
-	__block JNWCollectionViewHeaderFooterView *headerFooterView = nil;
+	__block JNWCollectionViewReusableView *headerFooterView = nil;
 	__block NSString *identifier = @"identifier";
 	
 	beforeAll(^{
-		headerFooterView = [[JNWCollectionViewHeaderFooterView alloc] initWithReuseIdentifier:identifier];
+		headerFooterView = [[JNWCollectionViewReusableView alloc] initWithReuseIdentifier:identifier];
 	});
 	
 	it(@"should exist", ^{

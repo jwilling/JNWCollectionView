@@ -30,20 +30,20 @@ NSString * const kTestDataSourceCellIdentifier = @"cell";
 	return kTestDataSourceNumberOfSections;
 }
 
-- (JNWCollectionViewHeaderFooterView *)collectionView:(JNWCollectionView *)collectionView viewForHeaderInSection:(NSInteger)section {
+- (JNWCollectionViewReusableView *)collectionView:(JNWCollectionView *)collectionView viewForHeaderInSection:(NSInteger)section {
 	static NSString * const identifier = @"header";
-	JNWCollectionViewHeaderFooterView *header = [collectionView dequeueReusableHeaderFooterViewWithIdentifer:identifier];
+	JNWCollectionViewReusableView *header = [collectionView dequeueReusableHeaderFooterViewWithIdentifer:identifier];
 	if (header == nil) {
-		header = [[JNWCollectionViewHeaderFooterView alloc] initWithReuseIdentifier:identifier];
+		header = [[JNWCollectionViewReusableView alloc] initWithReuseIdentifier:identifier];
 	}
 	return header;
 }
 
-- (JNWCollectionViewHeaderFooterView *)collectionView:(JNWCollectionView *)collectionView viewForFooterInSection:(NSInteger)section {
+- (JNWCollectionViewReusableView *)collectionView:(JNWCollectionView *)collectionView viewForFooterInSection:(NSInteger)section {
 	static NSString * const identifier = @"footer";
-	JNWCollectionViewHeaderFooterView *footer = [collectionView dequeueReusableHeaderFooterViewWithIdentifer:identifier];
+	JNWCollectionViewReusableView *footer = [collectionView dequeueReusableHeaderFooterViewWithIdentifer:identifier];
 	if (footer == nil) {
-		footer = [[JNWCollectionViewHeaderFooterView alloc] initWithReuseIdentifier:identifier];
+		footer = [[JNWCollectionViewReusableView alloc] initWithReuseIdentifier:identifier];
 	}
 	return footer;
 }

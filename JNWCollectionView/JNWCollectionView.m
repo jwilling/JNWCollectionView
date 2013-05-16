@@ -139,20 +139,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	self.supplementaryViewClassMap[identifier] = supplementaryViewClass;
 }
 
-- (NSString *)supplementaryViewIdentifierWithKind:(NSString *)kind reuseIdentifier:(NSString *)reuseIdentifier {
-	return [NSString stringWithFormat:@"%@/%@", kind, reuseIdentifier];
-}
-
-- (NSString *)kindFromSupplementaryViewIdentifier:(NSString *)identifier {
-	NSArray *components = [identifier componentsSeparatedByString:@"/"];
-	if (components.count == 2) {
-		return components[0];
-	}
-	
-	NSLog(@"kind could not be extracted from the supplementary view identifier!");
-	return nil;
-}
-
 - (id)dequeueItemWithIdentifier:(NSString *)identifier inReusePool:(NSDictionary *)reuse {
 	if (identifier == nil)
 		return nil;
@@ -306,7 +292,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		}
 		
 		[self.supplementaryViewClassMap enumerateKeysAndObjectsUsingBlock:^(NSString *identifier, Class class, BOOL *stop) {
-			NSString *kind = [self kindFromSupplementaryViewIdentifier:identifier];
+			NSString *kind = [self kindForSupplementaryViewIdentifier:identifier];
 			CGRect supplementaryViewFrame = [self.collectionViewLayout rectForSupplementaryItemInSection:section kind:kind];
 			sectionFrame = CGRectUnion(sectionFrame, supplementaryViewFrame);
 		}];
@@ -400,7 +386,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	
 	for (JNWCollectionViewSection *section in self.sectionData) {
 		for (NSString *identifier in allIdentifiers) {
-			NSString *kind = [self kindFromSupplementaryViewIdentifier:identifier];
+			NSString *kind = [self kindForSupplementaryViewIdentifier:identifier];
 			CGRect viewRect = [self.collectionViewLayout rectForSupplementaryItemInSection:section.index kind:kind];
 			if (CGRectIntersectsRect(viewRect, rect)) {
 				[visibleIdentifiers addObject:[self layoutIdentifierForSupplementaryViewIdentifier:identifier inSection:section.index]];
@@ -634,6 +620,22 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	}
 }
 
+#pragma mark Supplementary Views
+
+- (NSString *)supplementaryViewIdentifierWithKind:(NSString *)kind reuseIdentifier:(NSString *)reuseIdentifier {
+	return [NSString stringWithFormat:@"%@/%@", kind, reuseIdentifier];
+}
+
+- (NSString *)kindForSupplementaryViewIdentifier:(NSString *)identifier {
+	NSArray *components = [identifier componentsSeparatedByString:@"/"];
+	return components[0];
+}
+
+- (NSString *)reuseIdentifierForSupplementaryViewIdentifier:(NSString *)identifier {
+	NSArray *components = [identifier componentsSeparatedByString:@"/"];
+	return components[1];
+}
+
 - (NSString *)layoutIdentifierForSupplementaryViewIdentifier:(NSString *)identifier inSection:(NSInteger)section {
 	return [NSString stringWithFormat:@"%li/%@", section, identifier];
 }
@@ -655,6 +657,20 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 - (void)layoutSupplementaryViewsWithRedraw:(BOOL)needsVisibleRedraw {
 	if (!_collectionViewFlags.dataSourceViewForSupplementaryView || !_wantsLayout)
 		return;
+	
+	if (needsVisibleRedraw) {
+		NSArray *allVisibleIdentifiers = self.visibleSupplementaryViewsMap.allKeys;
+		for (NSString *layoutIdentifier in allVisibleIdentifiers) {
+			NSString *identifier = [self supplementaryViewIdentifierForLayoutIdentifier:layoutIdentifier];
+			NSString *reuseIdentifier = [self reuseIdentifierForSupplementaryViewIdentifier:identifier];
+			NSString *kind = [self kindForSupplementaryViewIdentifier:identifier];
+			NSInteger section = [self sectionForSupplementaryLayoutIdentifier:layoutIdentifier];
+			JNWCollectionViewReusableView *view = [self supplementaryViewForKind:kind reuseIdentifier:reuseIdentifier inSection:section];
+			
+			view.frame = [self.collectionViewLayout rectForSupplementaryItemInSection:section kind:kind];
+			[view setNeedsLayout:YES];
+		}
+	}
 	
 	// Here's the strategy. There can only be one supplementary view for each kind in every section. Now this supplementary view
 	// might not be of the same type in each section, due to the fact that the user might have registered multiple classes/identifiers
@@ -685,7 +701,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	for (NSString *layoutIdentifier in viewsToAddIdentifiers) {
 		NSInteger section = [self sectionForSupplementaryLayoutIdentifier:layoutIdentifier];
 		NSString *identifier = [self supplementaryViewIdentifierForLayoutIdentifier:layoutIdentifier];
-		NSString *kind = [self kindFromSupplementaryViewIdentifier:identifier];
+		NSString *kind = [self kindForSupplementaryViewIdentifier:identifier];
 		
 		JNWCollectionViewReusableView *view = [self.dataSource collectionView:self viewForSupplementaryViewOfKind:kind inSection:section];
 		NSAssert([view isKindOfClass:JNWCollectionViewReusableView.class], @"view returned from %@ should be a subclass of %@",

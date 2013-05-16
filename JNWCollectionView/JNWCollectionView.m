@@ -41,14 +41,14 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 @property (nonatomic, strong) NSMutableArray *selectedIndexes;
 
 // Cells
-@property (nonatomic, strong) NSMutableDictionary *reusableCells;
-@property (nonatomic, strong) NSMutableDictionary *visibleCellsMap;
-@property (nonatomic, strong) NSMutableDictionary *cellClassMap; // { reuse identifier : class }
+@property (nonatomic, strong) NSMutableDictionary *cellClassMap; // { identifier : class }
+@property (nonatomic, strong) NSMutableDictionary *reusableCells; // { identifier : (cells) }
+@property (nonatomic, strong) NSMutableDictionary *visibleCellsMap; // { index path : cell }
 
 // Supplementary views
-@property (nonatomic, strong) NSMutableDictionary *visibleSupplementaryViews; // { section index : { kind : view } }
-@property (nonatomic, strong) NSMutableDictionary *supplementaryViewClassMap; // {kind : ({ reuse identifier : class }) }
-@property (nonatomic, strong) NSMutableDictionary *reusableSupplementaryViews; // {kind : ({ reuse identifier : (views)) }
+@property (nonatomic, strong) NSMutableDictionary *supplementaryViewClassMap; // { "kind/identifier" : class }
+@property (nonatomic, strong) NSMutableDictionary *reusableSupplementaryViews; // { "kind/identifier" : (views) }
+@property (nonatomic, strong) NSMutableDictionary *visibleSupplementaryViewsMap; // { index : { "kind/identifier" : view } }
 
 @end
 
@@ -60,8 +60,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	_self.cellClassMap = [NSMutableDictionary dictionary];
 	_self.visibleCellsMap = [NSMutableDictionary dictionary];
 	_self.reusableCells = [NSMutableDictionary dictionary];
-	_self.visibleSupplementaryViews = [NSMutableDictionary dictionary];
 	_self.supplementaryViewClassMap = [NSMutableDictionary dictionary];
+	_self.visibleSupplementaryViewsMap = [NSMutableDictionary dictionary];
 	_self.reusableSupplementaryViews = [NSMutableDictionary dictionary];
 	
 	// By default we are layer-backed.
@@ -132,22 +132,25 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	NSParameterAssert(reuseIdentifier);
 	NSAssert([supplementaryViewClass isSubclassOfClass:JNWCollectionViewReusableView.class],
 			 @"registered supplementary view class must be a subclass of JNWCollectionViewReusableView");
-	if (self.supplementaryViewClassMap[kind] == nil)
-		self.supplementaryViewClassMap[kind] = [NSMutableArray array];
 	
-	NSMutableArray *mappings = self.supplementaryViewClassMap[kind];
-	NSUInteger potentialDuplicate = [mappings indexOfObjectPassingTest:^BOOL(NSDictionary *map, NSUInteger idx, BOOL *stop) {
-		if (map[reuseIdentifier] != nil)
-			return YES;
-		return NO;
-	}];
-	
-	if (potentialDuplicate != NSNotFound) {
-		// we dont want duplicate reuse identifiers, so we update the class with the newly passed in class
-		self.supplementaryViewClassMap[kind][potentialDuplicate][reuseIdentifier] = supplementaryViewClass;
-	} else {
-		[self.supplementaryViewClassMap[kind] addObject:@{ reuseIdentifier: supplementaryViewClass }];
+	// Thanks to PSTCollectionView for the original idea of using the key and reuse identfier to
+	// form the key for the supplementary views.
+	NSString *identifier = [self supplementaryViewIdentifierWithKind:kind reuseIdentifier:reuseIdentifier];
+	self.supplementaryViewClassMap[identifier] = supplementaryViewClass;
+}
+
+- (NSString *)supplementaryViewIdentifierWithKind:(NSString *)kind reuseIdentifier:(NSString *)reuseIdentifier {
+	return [NSString stringWithFormat:@"%@/%@", kind, reuseIdentifier];
+}
+
+- (NSString *)kindFromSupplementaryViewIdentifier:(NSString *)identifier {
+	NSArray *components = [identifier componentsSeparatedByString:@"/"];
+	if (components.count == 2) {
+		return components[0];
 	}
+	
+	NSLog(@"kind could not be extracted from the supplementary view identifier!");
+	return nil;
 }
 
 - (id)dequeueItemWithIdentifier:(NSString *)identifier inReusePool:(NSDictionary *)reuse {
@@ -211,51 +214,26 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	return cell;
 }
 
-- (JNWCollectionViewReusableView *)dequeueReusableSupplementaryViewOfKind:(NSString *)kind withReuseIdentifer:(NSString *)identifier {
-	NSParameterAssert(identifier);
+- (JNWCollectionViewReusableView *)dequeueReusableSupplementaryViewOfKind:(NSString *)kind withReuseIdentifer:(NSString *)reuseIdentifier {
+	NSParameterAssert(reuseIdentifier);
 	NSParameterAssert(kind);
 	
-	// {kind : ({ reuse identifier : class }) }
-	
-	NSArray *classMappings = self.supplementaryViewClassMap[kind];
-	Class viewClass = JNWCollectionViewReusableView.class;
-	
-	if (classMappings != nil) {
-		for (NSDictionary *map in classMappings) {
-			if (map[identifier] != nil) {
-				viewClass = map[identifier];
-				break;
-			}
-		}
-	}
-	
-	JNWCollectionViewReusableView *view = nil;
-	
-	// {kind : ({ reuse identifier : (views)) }
-	NSMutableArray *reusableViewMappings = self.reusableSupplementaryViews[kind];
-	
-	if (reusableViewMappings == nil) {
-		reusableViewMappings = [NSMutableArray array];
-		self.reusableSupplementaryViews[kind] = reusableViewMappings;
-	}
-	
-	NSDictionary *reusableViewMap = nil;
-	
-	for (NSDictionary *map in reusableViewMappings) {
-		if (map[identifier] != nil) {
-			reusableViewMap = map;
-			break;
-		}
-	}
-	
-	if (reusableViewMap != nil) {
-		view = [self dequeueItemWithIdentifier:identifier inReusePool:reusableViewMap];
-	}
+	NSString *identifier = [self supplementaryViewIdentifierWithKind:kind reuseIdentifier:reuseIdentifier];
+	JNWCollectionViewReusableView *view = [self dequeueItemWithIdentifier:identifier inReusePool:self.reusableSupplementaryViews];
 	
 	if (view == nil) {
+		Class viewClass = self.supplementaryViewClassMap[identifier];
+		
+		if (viewClass == nil) {
+			viewClass = JNWCollectionViewReusableView.class;
+		}
+		
 		view = [[viewClass alloc] initWithFrame:CGRectZero];
 	}
 	
+	view.reuseIdentifier = reuseIdentifier;
+	view.kind = kind;
+
 	return view;
 }
 
@@ -263,24 +241,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	[self enqueueItem:cell withIdentifier:identifier inReusePool:self.reusableCells];
 }
 
-- (void)enqueueReusableSupplementaryView:(JNWCollectionViewReusableView *)view ofKind:(NSString *)kind withReuseIdentifier:(NSString *)identifier {
-	// {kind : ({ reuse identifier : (views)) }
-	NSMutableArray *reusableViewMappings = self.reusableSupplementaryViews[kind];
-	NSMutableDictionary *reusableViewMap = nil;
-	
-	for (NSMutableDictionary *map in reusableViewMappings) {
-		if (map[identifier] != nil) {
-			reusableViewMap = map;
-			break;
-		}
-	}
-	
-	if (reusableViewMap == nil) {
-		reusableViewMap = [NSMutableDictionary dictionary];
-		[reusableViewMappings addObject:reusableViewMap];
-	}
-	
-	[self enqueueItem:view withIdentifier:identifier inReusePool:reusableViewMap];
+- (void)enqueueReusableSupplementaryView:(JNWCollectionViewReusableView *)view ofKind:(NSString *)kind withReuseIdentifier:(NSString *)reuseIdentifier {
+	NSString *identifier = [self supplementaryViewIdentifierWithKind:kind reuseIdentifier:reuseIdentifier];
+	[self enqueueItem:view withIdentifier:identifier inReusePool:self.reusableSupplementaryViews];
 }
 
 - (void)reloadData {
@@ -342,7 +305,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 			sectionFrame = CGRectUnion(sectionFrame, itemFrame);
 		}
 		
-		[self.supplementaryViewClassMap enumerateKeysAndObjectsUsingBlock:^(NSArray *maps, NSString *kind, BOOL *stop) {
+		[self.supplementaryViewClassMap enumerateKeysAndObjectsUsingBlock:^(NSString *identifier, Class class, BOOL *stop) {
+			NSString *kind = [self kindFromSupplementaryViewIdentifier:identifier];
 			CGRect supplementaryViewFrame = [self.collectionViewLayout rectForSupplementaryItemInSection:section kind:kind];
 			sectionFrame = CGRectUnion(sectionFrame, supplementaryViewFrame);
 		}];
@@ -424,7 +388,24 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	return visibleRows;
 }
 
-- (NSIndexSet *)sectionIndexesForSectionsInRect:(CGRect)rect {
+- (NSArray *)identifiersForSupplementaryViewsInRect:(CGRect)rect {
+	NSMutableArray *visibleIdentifiers = [NSMutableArray array];
+	NSArray *allIdentifiers = self.supplementaryViewClassMap.allKeys;
+	
+	for (JNWCollectionViewSection *section in self.sectionData) {
+		for (NSString *identifier in allIdentifiers) {
+			NSString *kind = [self kindFromSupplementaryViewIdentifier:identifier];
+			CGRect viewRect = [self.collectionViewLayout rectForSupplementaryItemInSection:section.index kind:kind];
+			if (CGRectIntersectsRect(viewRect, rect)) {
+				[visibleIdentifiers addObject:identifier];
+			}
+		}		
+	}
+	
+	return visibleIdentifiers.copy;
+}
+
+- (NSIndexSet *)indexesForSectionsInRect:(CGRect)rect {
 	NSMutableIndexSet *indexes = [NSMutableIndexSet indexSet];
 	
 	for (JNWCollectionViewSection *section in self.sectionData) {
@@ -508,11 +489,12 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	return self.visibleCellsMap[indexPath];
 }
 
-- (JNWCollectionViewReusableView *)supplementaryViewForKind:(NSString *)kind inSection:(NSInteger)section {	
-	// { section index : { kind : view } }
-	NSDictionary *sectionSupplementaryViews = self.visibleSupplementaryViews[@(section)];
+- (JNWCollectionViewReusableView *)supplementaryViewForKind:(NSString *)kind reuseIdentifier:(NSString *)reuseIdentifier inSection:(NSInteger)section {
+	// { index : { "kind/identifier" : view } }
+	NSDictionary *sectionSupplementaryViewsMap = self.visibleSupplementaryViewsMap[@(section)];
+	NSString *identifer = [self supplementaryViewIdentifierWithKind:kind reuseIdentifier:reuseIdentifier];
 	
-	return sectionSupplementaryViews[kind];
+	return sectionSupplementaryViewsMap[identifer];
 }
 
 - (NSIndexPath *)indexPathForCell:(JNWCollectionViewCell *)cell {
@@ -558,7 +540,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		[self layoutCellsWithRedraw:YES];
 		[self layoutSupplementaryViewsWithRedraw:YES];
 		_lastDrawnBounds = self.bounds;
-		NSLog(@"%@ cached rects invalid, redrawing.", self);
 	} else {
 		[self layoutCells];
 		[self layoutSupplementaryViews];
@@ -653,9 +634,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		return;
 	/*
 	 
-	 @property (nonatomic, strong) NSMutableDictionary *visibleSupplementaryViews; // { section index : { kind : view } }
-	 @property (nonatomic, strong) NSMutableDictionary *supplementaryViewClassMap; // {kind : ({ reuse identifier : class }) }
-	 @property (nonatomic, strong) NSMutableDictionary *reusableSupplementaryViews; // {kind : ({ reuse identifier : (views)) }
+	 @property (nonatomic, strong) NSMutableDictionary *supplementaryViewClassMap; // { "kind/identifier" : class }
+	 @property (nonatomic, strong) NSMutableDictionary *reusableSupplementaryViews; // { "kind/identifier" : (views) }
+	 @property (nonatomic, strong) NSMutableDictionary *visibleSupplementaryViewsMap; // { index : { "kind/identifier" : view } }
 	 
 	 */
 	
@@ -664,19 +645,41 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	// for the same kind. So what we're wanting to do is just loop through the kinds and ask the data source for the supplementary view
 	// for each section/kind.
 	
-	__block NSMutableArray *kinds = [NSMutableArray array];
-	[self.supplementaryViewClassMap enumerateKeysAndObjectsUsingBlock:^(NSString *kind, id map, BOOL *stop) {
-		[kinds addObject:kind];
-		// todo
-	}];
 	
-	NSIndexSet *visibleSections = [self sectionIndexesForSectionsInRect:self.documentVisibleRect];
+	NSArray *oldVisibleViewsIdentifiers = [self.visibleSupplementaryViewsMap allKeys];
+	NSArray *updatedVisibleViewsIdentifiers = [self identifiersForSupplementaryViewsInRect:self.documentVisibleRect];
 	
-	NSMutableArray *updatedVisibleIndexPaths = [NSMutableArray array];
+	NSMutableArray *viewsToRemoveIdentifers = [NSMutableArray arrayWithArray:oldVisibleViewsIdentifiers];
+	[viewsToRemoveIdentifers removeObjectsInArray:updatedVisibleViewsIdentifiers];
 	
-	[visibleSections enumerateIndexesUsingBlock:^(NSUInteger sectionIdx, BOOL *stop) {
+	NSMutableArray *viewsToAddIdentifiers = [NSMutableArray arrayWithArray:updatedVisibleViewsIdentifiers];
+	[viewsToAddIdentifiers removeObjectsInArray:oldVisibleViewsIdentifiers];
+	
+	// Remove views
+	for (NSString *identifier in viewsToRemoveIdentifers) {
+		JNWCollectionViewReusableView *view = self.visibleSupplementaryViewsMap[identifier];
+		[self.visibleSupplementaryViewsMap removeObjectForKey:identifier];
 		
-	}];
+		[view removeFromSuperview];
+		
+		[self enqueueReusableSupplementaryView:view ofKind:view.kind withReuseIdentifier:view.reuseIdentifier];
+	}
+	
+	NSIndexSet *visibleSections = [self indexesForSectionsInRect:self.documentVisibleRect];
+	
+	for (NSString *identifier in viewsToAddIdentifiers) {
+		[visibleSections enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+			NSString *kind = [self kindFromSupplementaryViewIdentifier:identifier];
+			JNWCollectionViewReusableView *view = [self.dataSource collectionView:self viewForSupplementaryViewOfKind:kind inSection:idx];
+			NSAssert([view isKindOfClass:JNWCollectionViewReusableView.class], @"view returned from %@ should be a subclass of %@",
+					 NSStringFromSelector(@selector(collectionView:viewForSupplementaryViewOfKind:inSection:)), NSStringFromClass(JNWCollectionViewReusableView.class));
+			
+			view.frame = [self.collectionViewLayout rectForSupplementaryItemInSection:idx kind:kind];
+			[self.documentView addSubview:view];
+			
+			self.visibleSupplementaryViewsMap[identifier] = view;
+		}];
+	}
 }
 
 

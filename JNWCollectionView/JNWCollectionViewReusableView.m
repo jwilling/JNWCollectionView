@@ -7,6 +7,7 @@
 //
 
 #import "JNWCollectionViewReusableView.h"
+#import "JNWCollectionViewReusableView+Private.h"
 
 @implementation JNWCollectionViewReusableView
 

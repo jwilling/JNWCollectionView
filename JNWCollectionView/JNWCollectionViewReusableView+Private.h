@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 AppJon. All rights reserved.
 //
 
-#import <JNWCollectionView/JNWCollectionView.h>
+#import "JNWCollectionView.h"
 
 @interface JNWCollectionViewReusableView ()
 @property (nonatomic, copy, readwrite) NSString *reuseIdentifier;

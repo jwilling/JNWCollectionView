@@ -40,6 +40,10 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 
 // Asks the data source for the view used for the supplementary view for the specified section. The returned
 // view must be a subclass of JNWCollectionViewReusableView, otherwise an exception will be thrown.
+//
+// Note that this data source method will *not* be called unless a class has been registered for a supplementary
+// view kind. So if you wish to use supplementary views, you must register at least one class using
+// -registerClass:forSupplementaryViewOfKind:withReuseIdentifier:.
 - (JNWCollectionViewReusableView *)collectionView:(JNWCollectionView *)collectionView viewForSupplementaryViewOfKind:(NSString *)kind inSection:(NSInteger)section;
 
 @end
@@ -120,9 +124,10 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 - (NSIndexPath *)indexPathForItemAtPoint:(CGPoint)point;
 - (NSIndexPath *)indexPathForCell:(JNWCollectionViewCell *)cell;
 - (NSArray *)indexPathsForItemsInRect:(CGRect)rect;
+- (NSIndexSet *)indexesForSectionsInRect:(CGRect)rect;
 
 - (JNWCollectionViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath;
-- (JNWCollectionViewReusableView *)supplementaryViewForKind:(NSString *)kind inSection:(NSInteger)section;
+- (JNWCollectionViewReusableView *)supplementaryViewForKind:(NSString *)kind reuseIdentifier:(NSString *)reuseIdentifier inSection:(NSInteger)section;
 - (NSArray *)visibleCells;
 - (NSArray *)indexPathsForVisibleItems;
 - (NSArray *)indexPathsForSelectedItems;

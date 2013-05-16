@@ -3,7 +3,7 @@
 #import "JNWCollectionViewSection.h"
 #import "JNWCollectionView+Private.h"
 #import "JNWCollectionViewCell+Private.h"
-#import "JNWCollectionViewHeaderFooterView+Private.h"
+#import "JNWCollectionViewReusableView+Private.h"
 #import <QuartzCore/QuartzCore.h>
 #import "JNWCollectionViewListLayout.h"
 #import "JNWCollectionViewDocumentView.h"
@@ -19,8 +19,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 @interface JNWCollectionView() {
 	struct {
 		unsigned int dataSourceNumberOfSections;
-		unsigned int dataSourceViewForHeader;
-		unsigned int dataSourceViewForFooter;
+		unsigned int dataSourceViewForSupplementaryView;
 		
 		unsigned int delegateMouseDown;
 		unsigned int delegateMouseUp;
@@ -38,19 +37,18 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 @property (nonatomic, strong) NSMutableArray *sectionData;
 @property (nonatomic, assign) CGSize contentSize;
 
-// Cells
-@property (nonatomic, strong) NSMutableDictionary *reusableTableCells;
-@property (nonatomic, strong) NSMutableDictionary *visibleCellsMap;
-@property (nonatomic, strong) NSMutableDictionary *cellClassMap;
-
 // Selection
 @property (nonatomic, strong) NSMutableArray *selectedIndexes;
 
-// Headers and footers
-@property (nonatomic, strong) NSMutableDictionary *visibleTableHeaders;
-@property (nonatomic, strong) NSMutableDictionary *visibleTableFooters;
-@property (nonatomic, strong) NSMutableDictionary *reusableTableHeadersFooters;
-@property (nonatomic, strong) NSMutableDictionary *headerFooterClassMap;
+// Cells
+@property (nonatomic, strong) NSMutableDictionary *reusableCells;
+@property (nonatomic, strong) NSMutableDictionary *visibleCellsMap;
+@property (nonatomic, strong) NSMutableDictionary *cellClassMap; // { reuse identifier : class }
+
+// Supplementary views
+@property (nonatomic, strong) NSMutableDictionary *visibleSupplementaryViews; // { section index : { kind : view } }
+@property (nonatomic, strong) NSMutableDictionary *supplementaryViewClassMap; // {kind : ({ reuse identifier : class }) }
+@property (nonatomic, strong) NSMutableDictionary *reusableSupplementaryViews; // {kind : ({ reuse identifier : (views)) }
 
 @end
 
@@ -60,12 +58,11 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	_self.sectionData = [NSMutableArray array];
 	_self.selectedIndexes = [NSMutableArray array];
 	_self.cellClassMap = [NSMutableDictionary dictionary];
-	_self.headerFooterClassMap = [NSMutableDictionary dictionary];
 	_self.visibleCellsMap = [NSMutableDictionary dictionary];
-	_self.visibleTableFooters = [NSMutableDictionary dictionary];
-	_self.visibleTableHeaders = [NSMutableDictionary dictionary];	
-	_self.reusableTableCells = [NSMutableDictionary dictionary];
-	_self.reusableTableHeadersFooters = [NSMutableDictionary dictionary];
+	_self.reusableCells = [NSMutableDictionary dictionary];
+	_self.visibleSupplementaryViews = [NSMutableDictionary dictionary];
+	_self.supplementaryViewClassMap = [NSMutableDictionary dictionary];
+	_self.reusableSupplementaryViews = [NSMutableDictionary dictionary];
 	
 	// By default we are layer-backed.
 	_self.wantsLayer = YES;
@@ -111,9 +108,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 - (void)setDataSource:(id<JNWCollectionViewDataSource>)dataSource {
 	_dataSource = dataSource;
 	_collectionViewFlags.dataSourceNumberOfSections = [dataSource respondsToSelector:@selector(numberOfSectionsInCollectionView:)];
-	_collectionViewFlags.dataSourceViewForHeader = [dataSource respondsToSelector:@selector(collectionView:viewForHeaderInSection:)];
-	_collectionViewFlags.dataSourceViewForFooter = [dataSource respondsToSelector:@selector(collectionView:viewForFooterInSection:)];
 	_collectionViewFlags.delegateDidScroll = [dataSource respondsToSelector:@selector(collectionView:didScrollToItemAtIndexPath:)];
+	_collectionViewFlags.dataSourceViewForSupplementaryView = [dataSource respondsToSelector:@selector(collectionView:viewForSupplementaryViewOfKind:inSection:)];
 	NSAssert([dataSource respondsToSelector:@selector(collectionView:numberOfItemsInSection:)],
 			 @"data source must implement collectionView:numberOfItemsInSection");
 	NSAssert([dataSource respondsToSelector:@selector(collectionView:cellForItemAtIndexPath:)],
@@ -130,12 +126,28 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	self.cellClassMap[reuseIdentifier] = cellClass;
 }
 
-- (void)registerClass:(Class)headerFooterClass forHeaderFooterWithReuseIdentifier:(NSString *)reuseIdentifier {
-	NSParameterAssert(headerFooterClass);
+- (void)registerClass:(Class)supplementaryViewClass forSupplementaryViewOfKind:(NSString *)kind withReuseIdentifier:(NSString *)reuseIdentifier {
+	NSParameterAssert(supplementaryViewClass);
+	NSParameterAssert(kind);
 	NSParameterAssert(reuseIdentifier);
-	NSAssert([headerFooterClass isSubclassOfClass:JNWCollectionViewHeaderFooterView.class],
-			 @"registered header/footer class must be a subclass of JNWCollectionViewHeaderFooterView");
-	self.headerFooterClassMap[reuseIdentifier] = headerFooterClass;
+	NSAssert([supplementaryViewClass isSubclassOfClass:JNWCollectionViewReusableView.class],
+			 @"registered supplementary view class must be a subclass of JNWCollectionViewReusableView");
+	if (self.supplementaryViewClassMap[kind] == nil)
+		self.supplementaryViewClassMap[kind] = [NSMutableArray array];
+	
+	NSMutableArray *mappings = self.supplementaryViewClassMap[kind];
+	NSUInteger potentialDuplicate = [mappings indexOfObjectPassingTest:^BOOL(NSDictionary *map, NSUInteger idx, BOOL *stop) {
+		if (map[reuseIdentifier] != nil)
+			return YES;
+		return NO;
+	}];
+	
+	if (potentialDuplicate != NSNotFound) {
+		// we dont want duplicate reuse identifiers, so we update the class with the newly passed in class
+		self.supplementaryViewClassMap[kind][potentialDuplicate][reuseIdentifier] = supplementaryViewClass;
+	} else {
+		[self.supplementaryViewClassMap[kind] addObject:@{ reuseIdentifier: supplementaryViewClass }];
+	}
 }
 
 - (id)dequeueItemWithIdentifier:(NSString *)identifier inReusePool:(NSDictionary *)reuse {
@@ -180,7 +192,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 
 - (JNWCollectionViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier {
 	NSParameterAssert(identifier);
-	JNWCollectionViewCell *cell = [self dequeueItemWithIdentifier:identifier inReusePool:self.reusableTableCells];
+	JNWCollectionViewCell *cell = [self dequeueItemWithIdentifier:identifier inReusePool:self.reusableCells];
 
 	// If the view doesn't exist, we go ahead and create one. If we have a class registered
 	// for this identifier, we use it, otherwise we just create an instance of JNWCollectionViewCell.
@@ -199,28 +211,76 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	return cell;
 }
 
-- (JNWCollectionViewHeaderFooterView *)dequeueReusableHeaderFooterViewWithIdentifer:(NSString *)identifier {
+- (JNWCollectionViewReusableView *)dequeueReusableSupplementaryViewOfKind:(NSString *)kind withReuseIdentifer:(NSString *)identifier {
 	NSParameterAssert(identifier);
-	JNWCollectionViewHeaderFooterView *headerFooter = [self dequeueItemWithIdentifier:identifier inReusePool:self.reusableTableHeadersFooters];
-
-	if (headerFooter == nil) {
-		Class headerFooterClass = self.headerFooterClassMap[identifier];
-		if (headerFooterClass == nil) {
-			headerFooterClass = JNWCollectionViewHeaderFooterView.class;
+	NSParameterAssert(kind);
+	
+	// {kind : ({ reuse identifier : class }) }
+	
+	NSArray *classMappings = self.supplementaryViewClassMap[kind];
+	Class viewClass = JNWCollectionViewReusableView.class;
+	
+	if (classMappings != nil) {
+		for (NSDictionary *map in classMappings) {
+			if (map[identifier] != nil) {
+				viewClass = map[identifier];
+				break;
+			}
 		}
-		
-		headerFooter = [[headerFooterClass alloc] initWithFrame:CGRectZero];
 	}
 	
-	return headerFooter;
-}
-
-- (void)enqueueReusableHeaderFooterView:(JNWCollectionViewHeaderFooterView *)view withIdentifier:(NSString *)identifier {
-	[self enqueueItem:view withIdentifier:identifier inReusePool:self.reusableTableHeadersFooters];
+	JNWCollectionViewReusableView *view = nil;
+	
+	// {kind : ({ reuse identifier : (views)) }
+	NSMutableArray *reusableViewMappings = self.reusableSupplementaryViews[kind];
+	
+	if (reusableViewMappings == nil) {
+		reusableViewMappings = [NSMutableArray array];
+		self.reusableSupplementaryViews[kind] = reusableViewMappings;
+	}
+	
+	NSDictionary *reusableViewMap = nil;
+	
+	for (NSDictionary *map in reusableViewMappings) {
+		if (map[identifier] != nil) {
+			reusableViewMap = map;
+			break;
+		}
+	}
+	
+	if (reusableViewMap != nil) {
+		view = [self dequeueItemWithIdentifier:identifier inReusePool:reusableViewMap];
+	}
+	
+	if (view == nil) {
+		view = [[viewClass alloc] initWithFrame:CGRectZero];
+	}
+	
+	return view;
 }
 
 - (void)enqueueReusableCell:(JNWCollectionViewCell *)cell withIdentifier:(NSString *)identifier {
-	[self enqueueItem:cell withIdentifier:identifier inReusePool:self.reusableTableCells];
+	[self enqueueItem:cell withIdentifier:identifier inReusePool:self.reusableCells];
+}
+
+- (void)enqueueReusableSupplementaryView:(JNWCollectionViewReusableView *)view ofKind:(NSString *)kind withReuseIdentifier:(NSString *)identifier {
+	// {kind : ({ reuse identifier : (views)) }
+	NSMutableArray *reusableViewMappings = self.reusableSupplementaryViews[kind];
+	NSMutableDictionary *reusableViewMap = nil;
+	
+	for (NSMutableDictionary *map in reusableViewMappings) {
+		if (map[identifier] != nil) {
+			reusableViewMap = map;
+			break;
+		}
+	}
+	
+	if (reusableViewMap == nil) {
+		reusableViewMap = [NSMutableDictionary dictionary];
+		[reusableViewMappings addObject:reusableViewMap];
+	}
+	
+	[self enqueueItem:view withIdentifier:identifier inReusePool:reusableViewMap];
 }
 
 - (void)reloadData {
@@ -230,13 +290,13 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	[self.selectedIndexes removeAllObjects];
 	
 	// Remove any queued views.
-	[self.reusableTableCells removeAllObjects];
-	[self.reusableTableHeadersFooters removeAllObjects];
+	[self.reusableCells removeAllObjects];
+	[self.reusableSupplementaryViews removeAllObjects];
 		
 	[self recalculateItemInfo];	
 	[self layoutDocumentView];
 	[self layoutCells];
-	[self layoutHeaderFooters];
+	[self layoutSupplementaryViews];
 }
 
 - (void)recalculateItemInfo {
@@ -270,10 +330,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	// Now we go through and fill in the frames from the layout.
 	for (NSInteger section = 0; section < numberOfSections; section++) {
 		JNWCollectionViewSection *sectionInfo = self.sectionData[section];
-		sectionInfo.headerFrame = [self.collectionViewLayout rectForHeaderAtIndex:section];
-		sectionInfo.footerFrame = [self.collectionViewLayout rectForFooterAtIndex:section];
 		
-		CGRect sectionFrame = CGRectZero;
+		__block CGRect sectionFrame = CGRectZero;
 		CGRect previousRect = CGRectZero;
 		for (NSInteger item = 0; item < sectionInfo.numberOfItems; item++) {
 			NSIndexPath *indexPath = [NSIndexPath jnw_indexPathForItem:item inSection:section];
@@ -284,8 +342,11 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 			sectionFrame = CGRectUnion(sectionFrame, itemFrame);
 		}
 		
-		sectionFrame = CGRectUnion(sectionFrame, sectionInfo.headerFrame);
-		sectionFrame = CGRectUnion(sectionFrame, sectionInfo.footerFrame);
+		[self.supplementaryViewClassMap enumerateKeysAndObjectsUsingBlock:^(NSArray *maps, NSString *kind, BOOL *stop) {
+			CGRect supplementaryViewFrame = [self.collectionViewLayout rectForSupplementaryItemInSection:section kind:kind];
+			sectionFrame = CGRectUnion(sectionFrame, supplementaryViewFrame);
+		}];
+
 		sectionInfo.sectionFrame = sectionFrame;
 		
 		contentFrame = CGRectUnion(contentFrame, sectionFrame);
@@ -358,44 +419,25 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 			if (CGRectIntersectsRect(section.itemInfo[item].frame, rect)) {
 				[visibleRows addObject:[NSIndexPath jnw_indexPathForItem:item inSection:section.index]];
 			}
-			
 		}
 	}
 	return visibleRows;
 }
 
-- (NSIndexSet *)indexesForHeadersInRect:(CGRect)rect {
-	NSMutableIndexSet *visibleHeaders = [NSMutableIndexSet indexSet];
+- (NSIndexSet *)sectionIndexesForSectionsInRect:(CGRect)rect {
+	NSMutableIndexSet *indexes = [NSMutableIndexSet indexSet];
 	
 	for (JNWCollectionViewSection *section in self.sectionData) {
-		if (CGRectIntersectsRect(section.headerFrame, rect) && !CGRectIsEmpty(section.headerFrame))
-			[visibleHeaders addIndex:section.index];
+		if (CGRectIntersectsRect(rect, section.sectionFrame)) {
+			[indexes addIndex:section.index];
+		}
 	}
 	
-	return visibleHeaders;
-}
-
-- (NSIndexSet *)indexesForFootersInRect:(CGRect)rect {
-	NSMutableIndexSet *visibleFooters = [NSMutableIndexSet indexSet];
-	
-	for (JNWCollectionViewSection *section in self.sectionData) {
-		if (CGRectIntersectsRect(section.footerFrame, rect) && !CGRectIsEmpty(section.footerFrame))
-			[visibleFooters addIndex:section.index];
-	}
-	
-	return visibleFooters;
+	return indexes.copy;
 }
 
 - (NSArray *)indexPathsForVisibleItems {
 	return [self indexPathsForItemsInRect:self.documentVisibleRect];
-}
-
-- (JNWCollectionViewHeaderFooterView *)headerViewForSection:(NSInteger)section {
-	return self.visibleTableHeaders[@(section)];
-}
-
-- (JNWCollectionViewHeaderFooterView *)footerViewForSection:(NSInteger)section {
-	return self.visibleTableFooters[@(section)];
 }
 
 - (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition animated:(BOOL)animated {
@@ -444,19 +486,11 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	return CGRectZero;
 }
 
-- (CGRect)rectForHeaderInSection:(NSInteger)index {
-	if (index >= 0 && index < self.sectionData.count) {
-		JNWCollectionViewSection *section = self.sectionData[index];
-		return section.headerFrame;
+- (CGRect)rectForSupplementaryViewWithKind:(NSString *)kind inSection:(NSInteger)section {
+	if (section >= 0 && section < self.sectionData.count) {
+		return [self.collectionViewLayout rectForSupplementaryItemInSection:section kind:kind];
 	}
-	return CGRectZero;
-}
-
-- (CGRect)rectForFooterInSection:(NSInteger)index {
-	if (index >= 0 && index < self.sectionData.count) {
-		JNWCollectionViewSection *section = self.sectionData[index];
-		return section.footerFrame;
-	}
+	
 	return CGRectZero;
 }
 
@@ -472,6 +506,13 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	if (indexPath == nil)
 		return nil;
 	return self.visibleCellsMap[indexPath];
+}
+
+- (JNWCollectionViewReusableView *)supplementaryViewForKind:(NSString *)kind inSection:(NSInteger)section {	
+	// { section index : { kind : view } }
+	NSDictionary *sectionSupplementaryViews = self.visibleSupplementaryViews[@(section)];
+	
+	return sectionSupplementaryViews[kind];
 }
 
 - (NSIndexPath *)indexPathForCell:(JNWCollectionViewCell *)cell {
@@ -515,12 +556,12 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		}
 		
 		[self layoutCellsWithRedraw:YES];
-		[self layoutHeaderFootersWithRedraw:YES];
+		[self layoutSupplementaryViewsWithRedraw:YES];
 		_lastDrawnBounds = self.bounds;
 		NSLog(@"%@ cached rects invalid, redrawing.", self);
 	} else {
 		[self layoutCells];
-		[self layoutHeaderFooters];
+		[self layoutSupplementaryViews];
 	}
 }
 
@@ -603,91 +644,38 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	}
 }
 
-- (void)layoutHeaderFooters {
-	[self layoutHeaderFootersWithRedraw:NO];
+- (void)layoutSupplementaryViews {
+	[self layoutSupplementaryViewsWithRedraw:NO];
 }
 
-- (void)layoutHeaderFootersWithRedraw:(BOOL)needsVisibleRedraw {
-	if ((!_collectionViewFlags.dataSourceViewForHeader && !_collectionViewFlags.dataSourceViewForFooter) || !_wantsLayout)
+- (void)layoutSupplementaryViewsWithRedraw:(BOOL)needsVisibleRedraw {
+	if (!_collectionViewFlags.dataSourceViewForSupplementaryView || !_wantsLayout)
 		return;
+	/*
+	 
+	 @property (nonatomic, strong) NSMutableDictionary *visibleSupplementaryViews; // { section index : { kind : view } }
+	 @property (nonatomic, strong) NSMutableDictionary *supplementaryViewClassMap; // {kind : ({ reuse identifier : class }) }
+	 @property (nonatomic, strong) NSMutableDictionary *reusableSupplementaryViews; // {kind : ({ reuse identifier : (views)) }
+	 
+	 */
 	
-	NSMutableIndexSet *oldVisibleHeaderIndexes = [NSMutableIndexSet indexSet];
-	NSMutableIndexSet *oldVisibleFooterIndexes = [NSMutableIndexSet indexSet];
-
-	for (NSNumber *index in self.visibleTableHeaders.allKeys) {
-		[oldVisibleHeaderIndexes addIndex:index.unsignedIntegerValue];
-		if (needsVisibleRedraw) {
-			[self.visibleTableHeaders[index] setFrame:[self rectForHeaderInSection:index.unsignedIntegerValue]];
-		}
-	}
+	// Here's the strategy. There can only be one supplementary view for each kind in every section. Now this supplementary view
+	// might not be of the same type in each section, due to the fact that the user might have registered multiple classes/identifiers
+	// for the same kind. So what we're wanting to do is just loop through the kinds and ask the data source for the supplementary view
+	// for each section/kind.
 	
-	for (NSNumber *index in self.visibleTableFooters.allKeys) {
-		[oldVisibleFooterIndexes addIndex:index.unsignedIntegerValue];
-		if (needsVisibleRedraw) {
-			[self.visibleTableFooters[index] setFrame:[self rectForFooterInSection:index.unsignedIntegerValue]];
-		}
-	}
+	__block NSMutableArray *kinds = [NSMutableArray array];
+	[self.supplementaryViewClassMap enumerateKeysAndObjectsUsingBlock:^(NSString *kind, id map, BOOL *stop) {
+		[kinds addObject:kind];
+		// todo
+	}];
 	
-	NSIndexSet *updatedVisibleHeaderIndexes = [self indexesForHeadersInRect:self.documentVisibleRect];
-	NSIndexSet *updatedVisibleFooterIndexes = [self indexesForFootersInRect:self.documentVisibleRect];
+	NSIndexSet *visibleSections = [self sectionIndexesForSectionsInRect:self.documentVisibleRect];
 	
-	NSMutableIndexSet *headerIndexesToRemove = oldVisibleHeaderIndexes.mutableCopy;
-	NSMutableIndexSet *footerIndexesToRemove = oldVisibleFooterIndexes.mutableCopy;
-	[headerIndexesToRemove removeIndexes:updatedVisibleHeaderIndexes];
-	[footerIndexesToRemove removeIndexes:updatedVisibleFooterIndexes];
+	NSMutableArray *updatedVisibleIndexPaths = [NSMutableArray array];
 	
-	NSMutableIndexSet *headerIndexesToAdd = updatedVisibleHeaderIndexes.mutableCopy;
-	NSMutableIndexSet *footerIndexesToAdd = updatedVisibleFooterIndexes.mutableCopy;
-	[headerIndexesToAdd removeIndexes:oldVisibleHeaderIndexes];
-	[footerIndexesToAdd removeIndexes:oldVisibleFooterIndexes];
-	
-	[headerIndexesToRemove enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-		JNWCollectionViewHeaderFooterView *header = [self headerViewForSection:idx];
-		[self.visibleTableHeaders removeObjectForKey:@(idx)];
-		[header removeFromSuperview];
+	[visibleSections enumerateIndexesUsingBlock:^(NSUInteger sectionIdx, BOOL *stop) {
 		
-		[self enqueueReusableHeaderFooterView:header withIdentifier:header.reuseIdentifier];
-	}];
-	
-	[footerIndexesToRemove enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-		JNWCollectionViewHeaderFooterView *footer = [self footerViewForSection:idx];
-		[self.visibleTableFooters removeObjectForKey:@(idx)];
-		[footer removeFromSuperview];
-		
-		[self enqueueReusableHeaderFooterView:footer withIdentifier:footer.reuseIdentifier];
-	}];
-	
-	[headerIndexesToAdd enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-		JNWCollectionViewHeaderFooterView *header = [self.dataSource collectionView:self viewForHeaderInSection:idx];
-		if (header == nil) {
-			NSLog(@"nil view returned for %@", NSStringFromSelector(@selector(collectionView:viewForHeaderInSection:)));
-		} else {
-			if ([header isKindOfClass:JNWCollectionViewHeaderFooterView.class]) {
-				header.frame = [self rectForHeaderInSection:idx];
-				[self.documentView addSubview:header];
-				
-				self.visibleTableHeaders[@(idx)] = header;
-			} else {
-				NSAssert(NO, @"view returned from %@ should be a subclass of %@", NSStringFromSelector(@selector(collectionView:viewForHeaderInSection:)), NSStringFromClass(JNWCollectionViewHeaderFooterView.class));
-			}
-		}
-	}];
-	
-	[footerIndexesToAdd enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-		JNWCollectionViewHeaderFooterView *footer = [self.dataSource collectionView:self viewForFooterInSection:idx];
-		if (footer == nil) {
-			NSLog(@"nil view returned for %@", NSStringFromSelector(@selector(collectionView:viewForFooterInSection:)));
-		} else {
-			if ([footer isKindOfClass:JNWCollectionViewHeaderFooterView.class]) {
-				
-				footer.frame = [self rectForFooterInSection:idx];
-				[self.documentView addSubview:footer];
-				
-				self.visibleTableFooters[@(idx)] = footer;
-			} else {
-				NSAssert(NO, @"view returned from %@ should be a subclass of %@", NSStringFromSelector(@selector(collectionView:viewForFooterInSection:)), NSStringFromClass(JNWCollectionViewHeaderFooterView.class));
-			}
-		}
 	}];
 }
 

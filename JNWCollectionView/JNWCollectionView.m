@@ -48,7 +48,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 // Supplementary views
 @property (nonatomic, strong) NSMutableDictionary *supplementaryViewClassMap; // { "kind/identifier" : class }
 @property (nonatomic, strong) NSMutableDictionary *reusableSupplementaryViews; // { "kind/identifier" : (views) }
-@property (nonatomic, strong) NSMutableDictionary *visibleSupplementaryViewsMap; // { index : { "kind/identifier" : view } }
+@property (nonatomic, strong) NSMutableDictionary *visibleSupplementaryViewsMap; // { "index/kind/identifier" : view } }
 
 @end
 
@@ -294,7 +294,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	for (NSInteger section = 0; section < numberOfSections; section++) {
 		JNWCollectionViewSection *sectionInfo = self.sectionData[section];
 		
-		__block CGRect sectionFrame = CGRectZero;
+		__block CGRect sectionFrame = CGRectNull;
 		CGRect previousRect = CGRectZero;
 		for (NSInteger item = 0; item < sectionInfo.numberOfItems; item++) {
 			NSIndexPath *indexPath = [NSIndexPath jnw_indexPathForItem:item inSection:section];
@@ -368,6 +368,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (NSArray *)indexPathsForItemsInRect:(CGRect)rect {
+	if (CGRectEqualToRect(rect, CGRectZero))
+		return [NSArray array];
+	
 	if ([self.collectionViewLayout wantsIndexPathsForItemsInRect]) {
 		return [self.collectionViewLayout indexPathsForItemsInRect:rect];
 	}
@@ -388,16 +391,19 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	return visibleRows;
 }
 
-- (NSArray *)identifiersForSupplementaryViewsInRect:(CGRect)rect {
+- (NSArray *)layoutIdentifiersForSupplementaryViewsInRect:(CGRect)rect {
 	NSMutableArray *visibleIdentifiers = [NSMutableArray array];
 	NSArray *allIdentifiers = self.supplementaryViewClassMap.allKeys;
+	
+	if (CGRectEqualToRect(rect, CGRectZero))
+		return visibleIdentifiers;
 	
 	for (JNWCollectionViewSection *section in self.sectionData) {
 		for (NSString *identifier in allIdentifiers) {
 			NSString *kind = [self kindFromSupplementaryViewIdentifier:identifier];
 			CGRect viewRect = [self.collectionViewLayout rectForSupplementaryItemInSection:section.index kind:kind];
 			if (CGRectIntersectsRect(viewRect, rect)) {
-				[visibleIdentifiers addObject:identifier];
+				[visibleIdentifiers addObject:[self layoutIdentifierForSupplementaryViewIdentifier:identifier inSection:section.index]];
 			}
 		}		
 	}
@@ -405,8 +411,11 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	return visibleIdentifiers.copy;
 }
 
-- (NSIndexSet *)indexesForSectionsInRect:(CGRect)rect {
+- (NSIndexSet *)indexesForSectionsInRect:(CGRect)rect {	
 	NSMutableIndexSet *indexes = [NSMutableIndexSet indexSet];
+	
+	if (CGRectEqualToRect(rect, CGRectZero))
+		return indexes;
 	
 	for (JNWCollectionViewSection *section in self.sectionData) {
 		if (CGRectIntersectsRect(rect, section.sectionFrame)) {
@@ -490,11 +499,10 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (JNWCollectionViewReusableView *)supplementaryViewForKind:(NSString *)kind reuseIdentifier:(NSString *)reuseIdentifier inSection:(NSInteger)section {
-	// { index : { "kind/identifier" : view } }
-	NSDictionary *sectionSupplementaryViewsMap = self.visibleSupplementaryViewsMap[@(section)];
 	NSString *identifer = [self supplementaryViewIdentifierWithKind:kind reuseIdentifier:reuseIdentifier];
+	NSString *layoutIdentifier = [self layoutIdentifierForSupplementaryViewIdentifier:identifer inSection:section];
 	
-	return sectionSupplementaryViewsMap[identifer];
+	return self.visibleSupplementaryViewsMap[layoutIdentifier];
 }
 
 - (NSIndexPath *)indexPathForCell:(JNWCollectionViewCell *)cell {
@@ -529,7 +537,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	
 	if (!CGRectEqualToRect(self.bounds, _lastDrawnBounds)) {
 		// TODO: Do we need to recalculate everything?
-		[self recalculateItemInfo];
+		if (_wantsLayout)
+			[self recalculateItemInfo];
 		
 		// Check once more whether or not the document view needs to be resized.
 		// If there are a different number of items, `contentSize` might have changed.
@@ -625,6 +634,20 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	}
 }
 
+- (NSString *)layoutIdentifierForSupplementaryViewIdentifier:(NSString *)identifier inSection:(NSInteger)section {
+	return [NSString stringWithFormat:@"%li/%@", section, identifier];
+}
+
+- (NSString *)supplementaryViewIdentifierForLayoutIdentifier:(NSString *)identifier {
+	NSArray *comps = [identifier componentsSeparatedByString:@"/"];
+	return [NSString stringWithFormat:@"%@/%@", comps[1], comps[2]];
+}
+
+- (NSInteger)sectionForSupplementaryLayoutIdentifier:(NSString *)identifier {
+	NSArray *comps = [identifier componentsSeparatedByString:@"/"];
+	return [comps[0] integerValue];
+}
+
 - (void)layoutSupplementaryViews {
 	[self layoutSupplementaryViewsWithRedraw:NO];
 }
@@ -632,22 +655,15 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 - (void)layoutSupplementaryViewsWithRedraw:(BOOL)needsVisibleRedraw {
 	if (!_collectionViewFlags.dataSourceViewForSupplementaryView || !_wantsLayout)
 		return;
-	/*
-	 
-	 @property (nonatomic, strong) NSMutableDictionary *supplementaryViewClassMap; // { "kind/identifier" : class }
-	 @property (nonatomic, strong) NSMutableDictionary *reusableSupplementaryViews; // { "kind/identifier" : (views) }
-	 @property (nonatomic, strong) NSMutableDictionary *visibleSupplementaryViewsMap; // { index : { "kind/identifier" : view } }
-	 
-	 */
 	
 	// Here's the strategy. There can only be one supplementary view for each kind in every section. Now this supplementary view
 	// might not be of the same type in each section, due to the fact that the user might have registered multiple classes/identifiers
 	// for the same kind. So what we're wanting to do is just loop through the kinds and ask the data source for the supplementary view
 	// for each section/kind.
-	
-	
-	NSArray *oldVisibleViewsIdentifiers = [self.visibleSupplementaryViewsMap allKeys];
-	NSArray *updatedVisibleViewsIdentifiers = [self identifiersForSupplementaryViewsInRect:self.documentVisibleRect];
+			
+	// { "index/kind/identifier" : view }
+	NSArray *oldVisibleViewsIdentifiers = self.visibleSupplementaryViewsMap.allKeys;
+	NSArray *updatedVisibleViewsIdentifiers = [self layoutIdentifiersForSupplementaryViewsInRect:self.documentVisibleRect];	
 	
 	NSMutableArray *viewsToRemoveIdentifers = [NSMutableArray arrayWithArray:oldVisibleViewsIdentifiers];
 	[viewsToRemoveIdentifers removeObjectsInArray:updatedVisibleViewsIdentifiers];
@@ -655,30 +671,30 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	NSMutableArray *viewsToAddIdentifiers = [NSMutableArray arrayWithArray:updatedVisibleViewsIdentifiers];
 	[viewsToAddIdentifiers removeObjectsInArray:oldVisibleViewsIdentifiers];
 	
-	// Remove views
-	for (NSString *identifier in viewsToRemoveIdentifers) {
-		JNWCollectionViewReusableView *view = self.visibleSupplementaryViewsMap[identifier];
-		[self.visibleSupplementaryViewsMap removeObjectForKey:identifier];
+	// Remove old views
+	for (NSString *layoutIdentifier in viewsToRemoveIdentifers) {
+		JNWCollectionViewReusableView *view = self.visibleSupplementaryViewsMap[layoutIdentifier];
+		[self.visibleSupplementaryViewsMap removeObjectForKey:layoutIdentifier];
 		
 		[view removeFromSuperview];
 		
 		[self enqueueReusableSupplementaryView:view ofKind:view.kind withReuseIdentifier:view.reuseIdentifier];
 	}
-	
-	NSIndexSet *visibleSections = [self indexesForSectionsInRect:self.documentVisibleRect];
-	
-	for (NSString *identifier in viewsToAddIdentifiers) {
-		[visibleSections enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-			NSString *kind = [self kindFromSupplementaryViewIdentifier:identifier];
-			JNWCollectionViewReusableView *view = [self.dataSource collectionView:self viewForSupplementaryViewOfKind:kind inSection:idx];
-			NSAssert([view isKindOfClass:JNWCollectionViewReusableView.class], @"view returned from %@ should be a subclass of %@",
-					 NSStringFromSelector(@selector(collectionView:viewForSupplementaryViewOfKind:inSection:)), NSStringFromClass(JNWCollectionViewReusableView.class));
-			
-			view.frame = [self.collectionViewLayout rectForSupplementaryItemInSection:idx kind:kind];
-			[self.documentView addSubview:view];
-			
-			self.visibleSupplementaryViewsMap[identifier] = view;
-		}];
+		
+	// Add new views
+	for (NSString *layoutIdentifier in viewsToAddIdentifiers) {
+		NSInteger section = [self sectionForSupplementaryLayoutIdentifier:layoutIdentifier];
+		NSString *identifier = [self supplementaryViewIdentifierForLayoutIdentifier:layoutIdentifier];
+		NSString *kind = [self kindFromSupplementaryViewIdentifier:identifier];
+		
+		JNWCollectionViewReusableView *view = [self.dataSource collectionView:self viewForSupplementaryViewOfKind:kind inSection:section];
+		NSAssert([view isKindOfClass:JNWCollectionViewReusableView.class], @"view returned from %@ should be a subclass of %@",
+				 NSStringFromSelector(@selector(collectionView:viewForSupplementaryViewOfKind:inSection:)), NSStringFromClass(JNWCollectionViewReusableView.class));
+		
+		view.frame = [self.collectionViewLayout rectForSupplementaryItemInSection:section kind:kind];
+		[self.documentView addSubview:view];
+		
+		self.visibleSupplementaryViewsMap[layoutIdentifier] = view;
 	}
 }
 

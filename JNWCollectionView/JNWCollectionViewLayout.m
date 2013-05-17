@@ -12,6 +12,10 @@
 @property (nonatomic, weak, readwrite) JNWCollectionView *collectionView;
 @end
 
+@implementation JNWCollectionViewLayoutAttributes
+
+@end
+
 @implementation JNWCollectionViewLayout
 
 - (void)prepareLayout {
@@ -25,12 +29,12 @@
 	return self;
 }
 
-- (CGRect)rectForItemAtIndexPath:(NSIndexPath *)indexPath {
-	return CGRectZero;
+- (JNWCollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
+	return nil;
 }
 
-- (CGRect)rectForSupplementaryItemInSection:(NSInteger)section kind:(NSString *)kind {
-	return CGRectZero;
+- (JNWCollectionViewLayoutAttributes *)layoutAttributesForSupplementaryItemInSection:(NSInteger)section kind:(NSString *)kind {
+	return nil;
 }
 
 - (BOOL)wantsIndexPathsForItemsInRect {

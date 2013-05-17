@@ -15,6 +15,11 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewDirection) {
 	JNWCollectionViewDirectionDown
 };
 
+@interface JNWCollectionViewLayoutAttributes : NSObject
+@property (nonatomic, assign) CGRect frame;
+@property (nonatomic, assign) CGFloat alpha;
+@end
+
 @class JNWCollectionView;
 @interface JNWCollectionViewLayout : NSObject
 
@@ -24,8 +29,8 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewDirection) {
 
 - (void)prepareLayout;
 
-- (CGRect)rectForItemAtIndexPath:(NSIndexPath *)indexPath;
-- (CGRect)rectForSupplementaryItemInSection:(NSInteger)section kind:(NSString *)kind;
+- (JNWCollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath;
+- (JNWCollectionViewLayoutAttributes *)layoutAttributesForSupplementaryItemInSection:(NSInteger)section kind:(NSString *)kind;
 
 - (BOOL)wantsIndexPathsForItemsInRect;
 - (NSArray *)indexPathsForItemsInRect:(CGRect)rect;

@@ -112,7 +112,7 @@ NSString * const JNWCollectionViewListLayoutFooterIdentifier = @"JNWCollectionVi
 	
 	JNWCollectionViewLayoutAttributes *attributes = [[JNWCollectionViewLayoutAttributes alloc] init];
 	attributes.frame = CGRectMake(0, offset, width, height);
-	attributes.alpha = 1.f;;
+	attributes.alpha = 1.f;
 	return attributes;
 }
 

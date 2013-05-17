@@ -605,7 +605,13 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		}
 		cell.indexPath = indexPath;
 		cell.collectionView = self;
+		
+		JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
+		cell.alphaValue = attributes.alpha;
+		// TODO: set the frame from the layout attributes instead of the internal cache
+		
 		cell.frame = [self rectForItemAtIndexPath:indexPath];
+
 		
 		if (cell.superview == nil) {
 			[self.documentView addSubview:cell];

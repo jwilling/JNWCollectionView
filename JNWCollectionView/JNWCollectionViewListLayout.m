@@ -104,26 +104,33 @@ NSString * const JNWCollectionViewListLayoutFooterIdentifier = @"JNWCollectionVi
 	}
 }
 
-- (CGRect)rectForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (JNWCollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
 	JNWCollectionViewListLayoutSection *section = self.sections[indexPath.section];
 	CGFloat offset = section.offset + section.rowInfo[indexPath.item].yOffset;
 	CGFloat width = CGRectGetWidth(self.collectionView.documentVisibleRect);
 	CGFloat height = section.rowInfo[indexPath.item].height;
-	return CGRectMake(0, offset, width, height);
+	
+	JNWCollectionViewLayoutAttributes *attributes = [[JNWCollectionViewLayoutAttributes alloc] init];
+	attributes.frame = CGRectMake(0, offset, width, height);
+	attributes.alpha = 1.f;;
+	return attributes;
 }
 
-- (CGRect)rectForSupplementaryItemInSection:(NSInteger)idx kind:(NSString *)kind {
+- (JNWCollectionViewLayoutAttributes *)layoutAttributesForSupplementaryItemInSection:(NSInteger)idx kind:(NSString *)kind {
 	JNWCollectionViewListLayoutSection *section = self.sections[idx];
-	
 	CGFloat width = CGRectGetWidth(self.collectionView.documentVisibleRect);
-
+	CGRect frame = CGRectZero;
+	
 	if ([kind isEqualToString:JNWCollectionViewListLayoutHeaderIdentifier]) {
-		return CGRectMake(0, section.offset - section.headerHeight, width, section.headerHeight);
+		frame = CGRectMake(0, section.offset - section.headerHeight, width, section.headerHeight);
 	} else if ([kind isEqualToString:JNWCollectionViewListLayoutFooterIdentifier]) {
-		return CGRectMake(0, section.offset + section.height, width, section.footerHeight);
+		frame = CGRectMake(0, section.offset + section.height, width, section.footerHeight);
 	}
 	
-	return CGRectZero;
+	JNWCollectionViewLayoutAttributes *attributes = [[JNWCollectionViewLayoutAttributes alloc] init];
+	attributes.frame = frame;
+	attributes.alpha = 1.f;
+	return attributes;
 }
 
 - (NSIndexPath *)indexPathForNextItemInDirection:(JNWCollectionViewDirection)direction currentIndexPath:(NSIndexPath *)currentIndexPath {

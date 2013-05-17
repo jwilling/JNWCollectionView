@@ -112,11 +112,15 @@ typedef struct {
 	}
 }
 
-- (CGRect)rectForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (JNWCollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
 	JNWCollectionViewFlowLayoutSection *section = self.sections[indexPath.section];
 	JNWCollectionViewFlowLayoutItemInfo itemInfo = section.itemInfo[indexPath.item];
 	CGFloat offset = section.offset;
-	return CGRectMake(itemInfo.origin.x, itemInfo.origin.y + offset, itemInfo.size.width, itemInfo.size.height);
+	
+	JNWCollectionViewLayoutAttributes *attributes = [[JNWCollectionViewLayoutAttributes alloc] init];
+	attributes.frame = CGRectMake(itemInfo.origin.x, itemInfo.origin.y + offset, itemInfo.size.width, itemInfo.size.height);
+	attributes.alpha = 1.f;
+	return attributes;
 }
 
 @end

@@ -123,25 +123,32 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	}
 }
 
-- (CGRect)rectForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (JNWCollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
 	JNWCollectionViewGridLayoutSection *section = self.sections[indexPath.section];
 	JNWCollectionViewGridLayoutItemInfo itemInfo = section.itemInfo[indexPath.item];
 	CGFloat offset = section.offset;
-	return CGRectMake(itemInfo.origin.x, itemInfo.origin.y + offset, self.itemSize.width, self.itemSize.height);
+	
+	JNWCollectionViewLayoutAttributes *attributes = [[JNWCollectionViewLayoutAttributes alloc] init];
+	attributes.frame = CGRectMake(itemInfo.origin.x, itemInfo.origin.y + offset, self.itemSize.width, self.itemSize.height);
+	attributes.alpha = 1.f;
+	return attributes;
 }
 
-- (CGRect)rectForSupplementaryItemInSection:(NSInteger)idx identifier:(NSString *)identifier {
+- (JNWCollectionViewLayoutAttributes *)layoutAttributesForSupplementaryItemInSection:(NSInteger)idx kind:(NSString *)kind {
 	JNWCollectionViewGridLayoutSection *section = self.sections[idx];
-	
 	CGFloat width = CGRectGetWidth(self.collectionView.documentVisibleRect);
+	CGRect frame = CGRectZero;
 	
-	if ([identifier isEqualToString:JNWCollectionViewGridLayoutHeaderIdentifier]) {
-		return CGRectMake(0, section.offset - section.headerHeight, width, section.headerHeight);
-	} else if ([identifier isEqualToString:JNWCollectionViewGridLayoutFooterIdentifier]) {
-		return CGRectMake(0, section.offset + section.height, width, section.footerHeight);
+	if ([kind isEqualToString:JNWCollectionViewGridLayoutHeaderIdentifier]) {
+		frame = CGRectMake(0, section.offset - section.headerHeight, width, section.headerHeight);
+	} else if ([kind isEqualToString:JNWCollectionViewGridLayoutFooterIdentifier]) {
+		frame = CGRectMake(0, section.offset + section.height, width, section.footerHeight);
 	}
 	
-	return CGRectZero;
+	JNWCollectionViewLayoutAttributes *attributes = [[JNWCollectionViewLayoutAttributes alloc] init];
+	attributes.frame = frame;
+	attributes.alpha = 1.f;
+	return attributes;
 }
 
 - (BOOL)wantsIndexPathsForItemsInRect {

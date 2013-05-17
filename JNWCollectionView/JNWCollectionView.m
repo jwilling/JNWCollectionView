@@ -551,6 +551,10 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	documentView.frameSize = self.contentSize;
 }
 
+- (CGSize)contentSize {
+	return self.documentVisibleRect.size;
+}
+
 - (void)layoutCells {
 	[self layoutCellsWithRedraw:NO];
 }

@@ -90,7 +90,7 @@ typedef struct {
 			CGPoint itemOrigin = lastAddedItemFrame.origin;
 			itemOrigin.x += lastAddedItemFrame.size.width + self.minimumItemHorizontalSeparation;
 			
-			CGRect usableRect = CGRectMake(0, 0, CGRectGetWidth(self.collectionView.documentVisibleRect), sectionInfo.height);
+			CGRect usableRect = CGRectMake(0, 0, self.collectionView.contentSize.width, sectionInfo.height);
 			
 			// TODO: This will likely not work if the item size is bigger than the visible frame
 			if (CGRectIntersection(usableRect, (CGRect){ .size = itemSize, .origin = itemOrigin}).size.width != itemSize.width) {

@@ -121,6 +121,12 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 - (CGRect)rectForItemAtIndexPath:(NSIndexPath *)indexPath;
 - (CGRect)rectForSection:(NSInteger)section;
 
+// Provides the size of the visible document area in which the collection view is currently
+// displaying cells and other supplementary views.
+//
+// Equivalent to the size of -documentVisibleRect.
+@property (nonatomic, assign, readonly) CGSize contentSize;
+
 - (NSIndexPath *)indexPathForItemAtPoint:(CGPoint)point;
 - (NSIndexPath *)indexPathForCell:(JNWCollectionViewCell *)cell;
 - (NSArray *)indexPathsForItemsInRect:(CGRect)rect;

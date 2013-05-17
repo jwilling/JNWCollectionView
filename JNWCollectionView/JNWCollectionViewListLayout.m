@@ -107,7 +107,7 @@ NSString * const JNWCollectionViewListLayoutFooterIdentifier = @"JNWCollectionVi
 - (JNWCollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
 	JNWCollectionViewListLayoutSection *section = self.sections[indexPath.section];
 	CGFloat offset = section.offset + section.rowInfo[indexPath.item].yOffset;
-	CGFloat width = CGRectGetWidth(self.collectionView.documentVisibleRect);
+	CGFloat width = self.collectionView.contentSize.width;
 	CGFloat height = section.rowInfo[indexPath.item].height;
 	
 	JNWCollectionViewLayoutAttributes *attributes = [[JNWCollectionViewLayoutAttributes alloc] init];
@@ -118,7 +118,7 @@ NSString * const JNWCollectionViewListLayoutFooterIdentifier = @"JNWCollectionVi
 
 - (JNWCollectionViewLayoutAttributes *)layoutAttributesForSupplementaryItemInSection:(NSInteger)idx kind:(NSString *)kind {
 	JNWCollectionViewListLayoutSection *section = self.sections[idx];
-	CGFloat width = CGRectGetWidth(self.collectionView.documentVisibleRect);
+	CGFloat width = self.collectionView.contentSize.width;
 	CGRect frame = CGRectZero;
 	
 	if ([kind isEqualToString:JNWCollectionViewListLayoutHeaderIdentifier]) {

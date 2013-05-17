@@ -284,17 +284,18 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		CGRect previousRect = CGRectZero;
 		for (NSInteger item = 0; item < sectionInfo.numberOfItems; item++) {
 			NSIndexPath *indexPath = [NSIndexPath jnw_indexPathForItem:item inSection:section];
-			CGRect itemFrame = [self.collectionViewLayout rectForItemAtIndexPath:indexPath];
-			sectionInfo.itemInfo[item].frame = itemFrame;
-			previousRect = itemFrame;
+			JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
 			
-			sectionFrame = CGRectUnion(sectionFrame, itemFrame);
+			sectionInfo.itemInfo[item].frame = attributes.frame;
+			previousRect = attributes.frame;
+			
+			sectionFrame = CGRectUnion(sectionFrame, attributes.frame);
 		}
 		
 		[self.supplementaryViewClassMap enumerateKeysAndObjectsUsingBlock:^(NSString *identifier, Class class, BOOL *stop) {
 			NSString *kind = [self kindForSupplementaryViewIdentifier:identifier];
-			CGRect supplementaryViewFrame = [self.collectionViewLayout rectForSupplementaryItemInSection:section kind:kind];
-			sectionFrame = CGRectUnion(sectionFrame, supplementaryViewFrame);
+			JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForSupplementaryItemInSection:section kind:kind];
+			sectionFrame = CGRectUnion(sectionFrame, attributes.frame);
 		}];
 
 		sectionInfo.sectionFrame = sectionFrame;
@@ -387,8 +388,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	for (JNWCollectionViewSection *section in self.sectionData) {
 		for (NSString *identifier in allIdentifiers) {
 			NSString *kind = [self kindForSupplementaryViewIdentifier:identifier];
-			CGRect viewRect = [self.collectionViewLayout rectForSupplementaryItemInSection:section.index kind:kind];
-			if (CGRectIntersectsRect(viewRect, rect)) {
+			JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForSupplementaryItemInSection:section.index kind:kind];
+			if (CGRectIntersectsRect(attributes.frame, rect)) {
 				[visibleIdentifiers addObject:[self layoutIdentifierForSupplementaryViewIdentifier:identifier inSection:section.index]];
 			}
 		}		
@@ -464,7 +465,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 
 - (CGRect)rectForSupplementaryViewWithKind:(NSString *)kind inSection:(NSInteger)section {
 	if (section >= 0 && section < self.sectionData.count) {
-		return [self.collectionViewLayout rectForSupplementaryItemInSection:section kind:kind];
+		JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForSupplementaryItemInSection:section kind:kind];
+		return attributes.frame;
 	}
 	
 	return CGRectZero;
@@ -667,7 +669,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 			NSInteger section = [self sectionForSupplementaryLayoutIdentifier:layoutIdentifier];
 			JNWCollectionViewReusableView *view = [self supplementaryViewForKind:kind reuseIdentifier:reuseIdentifier inSection:section];
 			
-			view.frame = [self.collectionViewLayout rectForSupplementaryItemInSection:section kind:kind];
+			JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForSupplementaryItemInSection:section kind:kind];
+			view.frame = attributes.frame;
+			view.alphaValue = attributes.alpha;
 			[view setNeedsLayout:YES];
 		}
 	}
@@ -707,7 +711,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		NSAssert([view isKindOfClass:JNWCollectionViewReusableView.class], @"view returned from %@ should be a subclass of %@",
 				 NSStringFromSelector(@selector(collectionView:viewForSupplementaryViewOfKind:inSection:)), NSStringFromClass(JNWCollectionViewReusableView.class));
 		
-		view.frame = [self.collectionViewLayout rectForSupplementaryItemInSection:section kind:kind];
+		JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForSupplementaryItemInSection:section kind:kind];
+		view.frame = attributes.frame;
+		view.alphaValue = attributes.alpha;
 		[self.documentView addSubview:view];
 		
 		self.visibleSupplementaryViewsMap[layoutIdentifier] = view;

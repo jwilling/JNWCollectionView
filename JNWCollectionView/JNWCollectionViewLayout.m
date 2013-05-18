@@ -45,6 +45,14 @@
 	return nil;
 }
 
+- (BOOL)wantsRectForSectionAtIndex {
+	return NO;
+}
+
+- (CGRect)rectForSectionAtIndex:(NSInteger)index {
+	return CGRectNull;
+}
+
 - (NSIndexPath *)indexPathForNextItemInDirection:(JNWCollectionViewDirection)direction currentIndexPath:(NSIndexPath *)currentIndexPath {
 	return currentIndexPath;
 }

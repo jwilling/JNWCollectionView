@@ -35,6 +35,21 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewDirection) {
 - (BOOL)wantsIndexPathsForItemsInRect;
 - (NSArray *)indexPathsForItemsInRect:(CGRect)rect;
 
+// Returning YES to this method will inform the collection view that the
+// layout implements -rectForSectionAtIndex:.
+//
+// Default implementation returns NO.
+- (BOOL)wantsRectForSectionAtIndex;
+
+// This method decreases the time taken to recalculate layout information
+// since the layout can usually provide a pre-calculated rect far faster than
+// the collection view itself can calculate it.
+//
+// Be sure to account for supplementary views, in addition to cells when calculating
+// this rect. The behavior when the returned rect is incorrect is undefined.
+- (CGRect)rectForSectionAtIndex:(NSInteger)index;
+
+
 // Subclasses must implement this method for arrowed selection to work.
 - (NSIndexPath *)indexPathForNextItemInDirection:(JNWCollectionViewDirection)direction currentIndexPath:(NSIndexPath *)currentIndexPath;
 

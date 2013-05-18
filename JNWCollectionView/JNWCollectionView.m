@@ -1,10 +1,10 @@
 #import "JNWCollectionView.h"
 #import "RBLClipView.h"
-#import "JNWCollectionViewSection.h"
 #import "JNWCollectionView+Private.h"
 #import "JNWCollectionViewCell+Private.h"
 #import "JNWCollectionViewReusableView+Private.h"
 #import <QuartzCore/QuartzCore.h>
+#import "JNWCollectionViewData.h"
 #import "JNWCollectionViewListLayout.h"
 #import "JNWCollectionViewDocumentView.h"
 
@@ -34,19 +34,19 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 	BOOL _wantsLayout;
 }
 
-@property (nonatomic, strong) NSMutableArray *sectionData;
 @property (nonatomic, assign) CGSize documentSize;
+
+// Layout data/cache
+@property (nonatomic, strong) JNWCollectionViewData *data;
 
 // Selection
 @property (nonatomic, strong) NSMutableArray *selectedIndexes;
 
 // Cells
-@property (nonatomic, strong) NSMutableDictionary *cellClassMap; // { identifier : class }
 @property (nonatomic, strong) NSMutableDictionary *reusableCells; // { identifier : (cells) }
 @property (nonatomic, strong) NSMutableDictionary *visibleCellsMap; // { index path : cell }
 
 // Supplementary views
-@property (nonatomic, strong) NSMutableDictionary *supplementaryViewClassMap; // { "kind/identifier" : class }
 @property (nonatomic, strong) NSMutableDictionary *reusableSupplementaryViews; // { "kind/identifier" : (views) }
 @property (nonatomic, strong) NSMutableDictionary *visibleSupplementaryViewsMap; // { "index/kind/identifier" : view } }
 
@@ -54,29 +54,32 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 
 @implementation JNWCollectionView
 
-static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
-	_self.sectionData = [NSMutableArray array];
-	_self.selectedIndexes = [NSMutableArray array];
-	_self.cellClassMap = [NSMutableDictionary dictionary];
-	_self.visibleCellsMap = [NSMutableDictionary dictionary];
-	_self.reusableCells = [NSMutableDictionary dictionary];
-	_self.supplementaryViewClassMap = [NSMutableDictionary dictionary];
-	_self.visibleSupplementaryViewsMap = [NSMutableDictionary dictionary];
-	_self.reusableSupplementaryViews = [NSMutableDictionary dictionary];
+// We're using a static function for the common initialization so that subclassers
+// don't accidentally override this method in their own common init method.
+static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
+	collectionView.data = [[JNWCollectionViewData alloc] initWithCollectionView:collectionView];
+	
+	collectionView.selectedIndexes = [NSMutableArray array];
+	collectionView.data.cellClassMap = [NSMutableDictionary dictionary];
+	collectionView.visibleCellsMap = [NSMutableDictionary dictionary];
+	collectionView.reusableCells = [NSMutableDictionary dictionary];
+	collectionView.data.supplementaryViewClassMap = [NSMutableDictionary dictionary];
+	collectionView.visibleSupplementaryViewsMap = [NSMutableDictionary dictionary];
+	collectionView.reusableSupplementaryViews = [NSMutableDictionary dictionary];
 	
 	// By default we are layer-backed.
-	_self.wantsLayer = YES;
+	collectionView.wantsLayer = YES;
 	
 	// Set the document view to a custom class that returns YES to -isFlipped.
-	_self.documentView = [[JNWCollectionViewDocumentView alloc] initWithFrame:CGRectZero];
+	collectionView.documentView = [[JNWCollectionViewDocumentView alloc] initWithFrame:CGRectZero];
 
-	_self.hasHorizontalScroller = NO;
-	_self.hasVerticalScroller = YES;
+	collectionView.hasHorizontalScroller = NO;
+	collectionView.hasVerticalScroller = YES;
 	
-	_self.collectionViewLayout = [[JNWCollectionViewListLayout alloc] initWithCollectionView:_self];
+	collectionView.collectionViewLayout = [[JNWCollectionViewListLayout alloc] initWithCollectionView:collectionView];
 	
 	// We don't want to perform an initial layout pass until the user has called -reloadData.
-	_self->_wantsLayout = NO;
+	collectionView->_wantsLayout = NO;
 }
 
 - (id)initWithFrame:(NSRect)frameRect {
@@ -123,7 +126,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	NSParameterAssert(cellClass);
 	NSParameterAssert(reuseIdentifier);
 	NSAssert([cellClass isSubclassOfClass:JNWCollectionViewCell.class], @"registered cell class must be a subclass of JNWCollectionViewCell");
-	self.cellClassMap[reuseIdentifier] = cellClass;
+	self.data.cellClassMap[reuseIdentifier] = cellClass;
 }
 
 - (void)registerClass:(Class)supplementaryViewClass forSupplementaryViewOfKind:(NSString *)kind withReuseIdentifier:(NSString *)reuseIdentifier {
@@ -136,7 +139,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	// Thanks to PSTCollectionView for the original idea of using the key and reuse identfier to
 	// form the key for the supplementary views.
 	NSString *identifier = [self supplementaryViewIdentifierWithKind:kind reuseIdentifier:reuseIdentifier];
-	self.supplementaryViewClassMap[identifier] = supplementaryViewClass;
+	self.data.supplementaryViewClassMap[identifier] = supplementaryViewClass;
 }
 
 - (id)dequeueItemWithIdentifier:(NSString *)identifier inReusePool:(NSDictionary *)reuse {
@@ -186,7 +189,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	// If the view doesn't exist, we go ahead and create one. If we have a class registered
 	// for this identifier, we use it, otherwise we just create an instance of JNWCollectionViewCell.
 	if (cell == nil) {
-		Class cellClass = self.cellClassMap[identifier];
+		Class cellClass = self.data.cellClassMap[identifier];
 
 		if (cellClass == nil) {
 			cellClass = JNWCollectionViewCell.class;
@@ -208,7 +211,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	JNWCollectionViewReusableView *view = [self dequeueItemWithIdentifier:identifier inReusePool:self.reusableSupplementaryViews];
 	
 	if (view == nil) {
-		Class viewClass = self.supplementaryViewClassMap[identifier];
+		Class viewClass = self.data.supplementaryViewClassMap[identifier];
 		
 		if (viewClass == nil) {
 			viewClass = JNWCollectionViewReusableView.class;
@@ -242,92 +245,34 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	[self.reusableCells removeAllObjects];
 	[self.reusableSupplementaryViews removeAllObjects];
 		
-	[self recalculateItemInfo];	
+	[self.data recalculate];
 	[self layoutDocumentView];
 	[self layoutCells];
 	[self layoutSupplementaryViews];
 }
 
-- (void)recalculateItemInfo {
-	NSAssert(self.collectionViewLayout != nil, @"layout cannot be nil.");
-	
-	[self.sectionData removeAllObjects];
-	
-	
-	// Find how many sections we have in the collection view.
-	// We default to 1 if the data source doesn't implement the optional method.
-	NSUInteger numberOfSections = 1;
-	if (_collectionViewFlags.dataSourceNumberOfSections)
-		numberOfSections = [self.dataSource numberOfSectionsInCollectionView:self];
-	
-	// We run an initial pass through the sections and create empty section data so that
-	// the layout can query for this information when it calculates the frames.
-	for (NSInteger section = 0; section < numberOfSections; section++) {
-		NSInteger numberOfItems = [self.dataSource collectionView:self numberOfItemsInSection:section];
-		JNWCollectionViewSection *sectionInfo = [[JNWCollectionViewSection alloc] initWithNumberOfItems:numberOfItems];
-		sectionInfo.index = section;
-		[self.sectionData addObject:sectionInfo];
-	}
-		
-	
-	// Tell our layout we are about to need new layout data.
-	[self.collectionViewLayout prepareLayout];
-	
-	
-	CGRect contentFrame = CGRectZero;
-
-	// Now we go through and fill in the frames from the layout.
-	for (NSInteger section = 0; section < numberOfSections; section++) {
-		JNWCollectionViewSection *sectionInfo = self.sectionData[section];
-		
-		__block CGRect sectionFrame = CGRectNull;
-		CGRect previousRect = CGRectZero;
-		for (NSInteger item = 0; item < sectionInfo.numberOfItems; item++) {
-			NSIndexPath *indexPath = [NSIndexPath jnw_indexPathForItem:item inSection:section];
-			JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
-			
-			sectionInfo.itemInfo[item].frame = attributes.frame;
-			previousRect = attributes.frame;
-			
-			sectionFrame = CGRectUnion(sectionFrame, attributes.frame);
-		}
-		
-		[self.supplementaryViewClassMap enumerateKeysAndObjectsUsingBlock:^(NSString *identifier, Class class, BOOL *stop) {
-			NSString *kind = [self kindForSupplementaryViewIdentifier:identifier];
-			JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForSupplementaryItemInSection:section kind:kind];
-			sectionFrame = CGRectUnion(sectionFrame, attributes.frame);
-		}];
-
-		sectionInfo.sectionFrame = sectionFrame;
-		
-		contentFrame = CGRectUnion(contentFrame, sectionFrame);
-	}
-	
-	self.documentSize = contentFrame.size;
-}
-
 #pragma mark Cell Information
 
 - (NSInteger)numberOfSections {
-	return self.sectionData.count;
+	return self.data.numberOfSections;
 }
 
 - (NSInteger)numberOfItemsInSection:(NSInteger)section {
-	if (self.sectionData.count < section)
-		return 0.f;
-	return [(JNWCollectionViewSection *)self.sectionData[section] numberOfItems];
+	return [self.data numberOfItemsInSection:section];
 }
 
 - (NSIndexPath *)indexPathForItemAtPoint:(CGPoint)point {
 	// TODO: Optimize, and perhaps have an option to defer this to the layout class.
-	for (JNWCollectionViewSection *section in self.sectionData) {
-		if (!CGRectContainsPoint(section.sectionFrame, point))
+	for (JNWCollectionViewSection *section in self.data.sections) {
+		if (!CGRectContainsPoint(section.frame, point))
 			continue;
 		
 		NSUInteger numberOfItems = section.numberOfItems;
 		for (NSInteger item = 0; item < numberOfItems; item++) {
-			if (CGRectContainsPoint(section.itemInfo[item].frame, point)) {
-				return [NSIndexPath jnw_indexPathForItem:item inSection:section.index];
+			NSIndexPath *indexPath = [NSIndexPath jnw_indexPathForItem:item inSection:section.index];
+			JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
+			if (CGRectContainsPoint(attributes.frame, point)) {
+				return indexPath;
 			}
 		}
 	}
@@ -340,12 +285,12 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (BOOL)validateIndexPath:(NSIndexPath *)indexPath {
-	return (indexPath.section < self.sectionData.count && indexPath.item < [self.sectionData[indexPath.section] numberOfItems]);
+	return (indexPath.section < self.data.sections.count && indexPath.item < [self.data.sections[indexPath.section] numberOfItems]);
 }
 
 - (NSArray *)allIndexPaths {
 	NSMutableArray *indexPaths = [NSMutableArray array];
-	for (JNWCollectionViewSection *section in self.sectionData) {
+	for (JNWCollectionViewSection *section in self.data.sections) {
 		for (NSInteger row = 0; row < section.numberOfItems; row++) {
 			[indexPaths addObject:[NSIndexPath jnw_indexPathForItem:row inSection:section.index]];
 		}
@@ -364,28 +309,32 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		
 	NSMutableArray *visibleRows = [NSMutableArray array];
 	
-	for (JNWCollectionViewSection *section in self.sectionData) {
-		if (!CGRectIntersectsRect(section.sectionFrame, rect))
+	for (JNWCollectionViewSection *section in self.data.sections) {
+		if (!CGRectIntersectsRect(section.frame, rect))
 			continue;
 		
 		NSUInteger numberOfItems = section.numberOfItems;
 		for (NSInteger item = 0; item < numberOfItems; item++) {
-			if (CGRectIntersectsRect(section.itemInfo[item].frame, rect)) {
-				[visibleRows addObject:[NSIndexPath jnw_indexPathForItem:item inSection:section.index]];
+			NSIndexPath *indexPath = [NSIndexPath jnw_indexPathForItem:item inSection:section.index];
+			JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
+			
+			if (CGRectIntersectsRect(attributes.frame, rect)) {
+				[visibleRows addObject:indexPath];
 			}
 		}
 	}
+
 	return visibleRows;
 }
 
 - (NSArray *)layoutIdentifiersForSupplementaryViewsInRect:(CGRect)rect {
 	NSMutableArray *visibleIdentifiers = [NSMutableArray array];
-	NSArray *allIdentifiers = self.supplementaryViewClassMap.allKeys;
+	NSArray *allIdentifiers = self.data.supplementaryViewClassMap.allKeys;
 	
 	if (CGRectEqualToRect(rect, CGRectZero))
 		return visibleIdentifiers;
 	
-	for (JNWCollectionViewSection *section in self.sectionData) {
+	for (JNWCollectionViewSection *section in self.data.sections) {
 		for (NSString *identifier in allIdentifiers) {
 			NSString *kind = [self kindForSupplementaryViewIdentifier:identifier];
 			JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForSupplementaryItemInSection:section.index kind:kind];
@@ -404,8 +353,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	if (CGRectEqualToRect(rect, CGRectZero))
 		return indexes;
 	
-	for (JNWCollectionViewSection *section in self.sectionData) {
-		if (CGRectIntersectsRect(rect, section.sectionFrame)) {
+	for (JNWCollectionViewSection *section in self.data.sections) {
+		if (CGRectIntersectsRect(rect, section.frame)) {
 			[indexes addIndex:section.index];
 		}
 	}
@@ -455,16 +404,16 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (CGRect)rectForItemAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath == nil || indexPath.section < self.sectionData.count) {
-		JNWCollectionViewSection *section = self.sectionData[indexPath.section];
-		return section.itemInfo[indexPath.item].frame;
+	if (indexPath == nil || indexPath.section < self.data.sections.count) {
+		JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
+		return attributes.frame;
 	}
 	
 	return CGRectZero;
 }
 
 - (CGRect)rectForSupplementaryViewWithKind:(NSString *)kind inSection:(NSInteger)section {
-	if (section >= 0 && section < self.sectionData.count) {
+	if (section >= 0 && section < self.data.sections.count) {
 		JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForSupplementaryItemInSection:section kind:kind];
 		return attributes.frame;
 	}
@@ -473,9 +422,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (CGRect)rectForSection:(NSInteger)index {
-	if (index >= 0 && index < self.sectionData.count) {
-		JNWCollectionViewSection *section = self.sectionData[index];
-		return section.sectionFrame;
+	if (index >= 0 && index < self.data.sections.count) {
+		JNWCollectionViewSection *section = self.data.sections[index];
+		return section.frame;
 	}
 	return CGRectZero;
 }
@@ -506,14 +455,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	return indexPath;
 }
 
-- (JNWCollectionViewSection *)sectionForItemAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath == nil)
-		return nil;
-	
-	return self.sectionData[indexPath.section];
-}
-
-
 #pragma mark Layout
 
 - (void)layout {
@@ -525,8 +466,10 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 	
 	if (!CGRectEqualToRect(self.bounds, _lastDrawnBounds)) {
 		// TODO: Do we need to recalculate everything?
-		if (_wantsLayout)
-			[self recalculateItemInfo];
+		if (_wantsLayout) {
+			[self.data recalculate];
+			[self recalculateDocumentViewSize];
+		}
 		
 		// Check once more whether or not the document view needs to be resized.
 		// If there are a different number of items, `documentSize` might have changed.
@@ -541,6 +484,16 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		[self layoutCells];
 		[self layoutSupplementaryViews];
 	}
+}
+
+- (void)recalculateDocumentViewSize {
+	CGRect frame = CGRectNull;
+	
+	for (JNWCollectionViewSection *section in self.data.sections) {
+		frame = CGRectUnion(frame, section.frame);
+	}
+	
+	self.documentSize = frame.size;
 }
 
 - (void)layoutDocumentView {
@@ -805,7 +758,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 }
 
 - (NSIndexPath *)indexPathForNextSelectableItemAfterIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.item + 1 >= [self.sectionData[indexPath.section] numberOfItems]) {
+	if (indexPath.item + 1 >= [self.data.sections[indexPath.section] numberOfItems]) {
 		// Jump up to the next section
 		NSIndexPath *newIndexPath = [NSIndexPath jnw_indexPathForItem:0 inSection:indexPath.section + 1];
 		if ([self validateIndexPath:newIndexPath])
@@ -819,8 +772,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 - (NSIndexPath *)indexPathForNextSelectableItemBeforeIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.item - 1 >= 0) {
 		return [NSIndexPath jnw_indexPathForItem:indexPath.item - 1 inSection:indexPath.section];
-	} else if(indexPath.section - 1 >= 0 && self.sectionData.count) {
-		NSInteger numberOfItems = [self.sectionData[indexPath.section - 1] numberOfItems];
+	} else if(indexPath.section - 1 >= 0 && self.data.sections.count) {
+		NSInteger numberOfItems = [self.data.sections[indexPath.section - 1] numberOfItems];
 		NSIndexPath *newIndexPath = [NSIndexPath jnw_indexPathForItem:numberOfItems - 1 inSection:indexPath.section - 1];
 		if ([self validateIndexPath:newIndexPath])
 			return newIndexPath;

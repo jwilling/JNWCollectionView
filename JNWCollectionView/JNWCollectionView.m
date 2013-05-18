@@ -35,7 +35,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 }
 
 @property (nonatomic, strong) NSMutableArray *sectionData;
-@property (nonatomic, assign) CGSize contentSize;
+@property (nonatomic, assign) CGSize documentSize;
 
 // Selection
 @property (nonatomic, strong) NSMutableArray *selectedIndexes;
@@ -303,7 +303,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		contentFrame = CGRectUnion(contentFrame, sectionFrame);
 	}
 	
-	self.contentSize = contentFrame.size;
+	self.documentSize = contentFrame.size;
 }
 
 #pragma mark Cell Information
@@ -519,7 +519,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 - (void)layout {
 	[super layout];
 	
-	if (!CGSizeEqualToSize([self.documentView frame].size, self.contentSize)) {
+	if (!CGSizeEqualToSize([self.documentView frame].size, self.documentSize)) {
 		[self layoutDocumentView];
 	}
 	
@@ -529,8 +529,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 			[self recalculateItemInfo];
 		
 		// Check once more whether or not the document view needs to be resized.
-		// If there are a different number of items, `contentSize` might have changed.
-		if (!CGSizeEqualToSize([self.documentView frame].size, self.contentSize)) {
+		// If there are a different number of items, `documentSize` might have changed.
+		if (!CGSizeEqualToSize([self.documentView frame].size, self.documentSize)) {
 			[self layoutDocumentView];
 		}
 		
@@ -548,7 +548,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *_self) {
 		return;
 	
 	NSView *documentView = self.documentView;
-	documentView.frameSize = self.contentSize;
+	documentView.frameSize = self.documentSize;
 }
 
 - (CGSize)contentSize {

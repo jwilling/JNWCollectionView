@@ -369,29 +369,30 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 - (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition animated:(BOOL)animated {
 	CGRect rect = [self rectForItemAtIndexPath:indexPath];
 	CGRect visibleRect = self.documentVisibleRect;
-#warning this is actually pretty broken. get it working with horizontal scroll
 	
 	switch (scrollPosition) {
 			break;
 		case JNWCollectionViewScrollPositionTop:
 			// make the top of our rect flush with the top of the visible bounds
-			rect.size.height = visibleRect.size.height;
+			rect.size.height = CGRectGetHeight(visibleRect);
 			//rect.origin.y = self.documentVisibleRect.origin.y + rect.size.height;
 			break;
 		case JNWCollectionViewScrollPositionMiddle:
 			// TODO
+			rect.size.height = self.bounds.size.height;
+			rect.origin.y += (CGRectGetHeight(visibleRect) / 2.f) - CGRectGetHeight(rect);
 			break;
 		case JNWCollectionViewScrollPositionBottom:
 			// make the bottom of our rect flush with the bottom of the visible bounds
-			//rect.origin.y = self.documentVisibleRect.origin.y + self.documentVisibleRect.size.height;
-			rect.size.height = visibleRect.size.height;
-			rect.origin.y -= visibleRect.size.height;
+			rect.size.height = CGRectGetHeight(visibleRect);
+			rect.origin.y -= CGRectGetHeight(visibleRect);
 			break;
 		case JNWCollectionViewScrollPositionNearest:
-			
+			// We just pass the cell's frame onto the scroll view. It calculates this for us.
 			break;
 		case JNWCollectionViewScrollPositionNone:
 			// no scroll needed
+			break;
 		default:
 			break;
 	}

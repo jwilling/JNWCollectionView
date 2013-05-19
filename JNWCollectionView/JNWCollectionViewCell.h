@@ -17,9 +17,15 @@
 // Called when the cell is about to exit the reuse pool and be dequeued.
 - (void)prepareForReuse;
 
-@property (nonatomic, assign, readonly) JNWCollectionView *collectionView;
+@property (nonatomic, weak, readonly) JNWCollectionView *collectionView;
 
+// Sets the selection with no animation. Subclassers should override this method to add side
+// effects to the selection process.
 @property (nonatomic, assign) BOOL selected;
+
+// Calls -setSelected:, animating any changes to the content of the background view, such as
+// settting the background iamge or color.
+- (void)setSelected:(BOOL)selected animated:(BOOL)animate;
 
 // Any content added to the cell should be added as a subview of
 // the content view. The content view is guaranteed to be in front
@@ -32,6 +38,13 @@
 // If both are set, the image takes precedence over the color.
 @property (nonatomic, strong) NSImage *backgroundImage;
 @property (nonatomic, strong) NSColor *backgroundColor;
+
+// Determines the duration of the crossfade effect applied to the backgroundImage
+// and backgroundColor properties when the animatesSelection property on the collection
+// view is set to YES.
+//
+// Defaults to 0.25.
+@property (nonatomic, assign) CGFloat crossfadeDuration;
 
 @property (nonatomic, copy, readonly) NSString *reuseIdentifier;
 @property (nonatomic, strong, readonly) NSIndexPath *indexPath;

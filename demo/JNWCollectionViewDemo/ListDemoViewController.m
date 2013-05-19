@@ -40,6 +40,8 @@ static NSString * const headerIdentifier = @"HEADER";
 	[self.collectionView registerClass:ListCell.class forCellWithReuseIdentifier:cellIdentifier];
 	[self.collectionView registerClass:ListHeader.class forSupplementaryViewOfKind:JNWCollectionViewListLayoutHeaderIdentifier withReuseIdentifier:headerIdentifier];
 	
+	self.collectionView.animatesSelection = YES;
+	
 	[self.collectionView reloadData];
 }
 

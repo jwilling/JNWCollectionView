@@ -138,7 +138,11 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 - (NSArray *)indexPathsForVisibleItems;
 - (NSArray *)indexPathsForSelectedItems;
 
-@property (nonatomic, assign) BOOL animatesSelection; // TODO
+// If set to YES, any changes to the backgroundImage or backgroundColor properties of the collection view cell
+// will be animated with a crossfade.
+//
+// Defaults to NO.
+@property (nonatomic, assign) BOOL animatesSelection;
 
 - (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition animated:(BOOL)animated;
 - (void)selectItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition animated:(BOOL)animated;

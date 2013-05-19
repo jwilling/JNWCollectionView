@@ -9,10 +9,12 @@
 #import "JNWCollectionViewCell.h"
 #import "JNWCollectionViewCell+Private.h"
 #import "JNWCollectionView+Private.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface JNWCollectionViewCellBackgroundView : NSView
 @property (nonatomic, strong) NSColor *color;
 @property (nonatomic, strong) NSImage *image;
+@property (nonatomic, weak) JNWCollectionView *collectionView;
 @end
 
 @implementation JNWCollectionViewCellBackgroundView
@@ -77,9 +79,10 @@
 
 	_backgroundView = [[JNWCollectionViewCellBackgroundView alloc] initWithFrame:self.bounds];
 	
+	_crossfadeDuration = 0.25;
+	
 	[self addSubview:_contentView];
 	[self addSubview:_backgroundView positioned:NSWindowBelow relativeTo:_contentView];
-	
 	
 	return self;
 }
@@ -92,7 +95,24 @@
 }
 
 - (void)prepareForReuse {
+	[self.backgroundView.layer removeAnimationForKey:@"contents"];
+	
 	// for subclasses
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animate {
+	if (animate && self.selected != selected) {
+		CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"contents"];
+		animation.duration = self.crossfadeDuration;
+		[self.backgroundView.layer addAnimation:animation forKey:@"contents"];
+	}
+	
+	self.selected = selected;
+}
+
+- (void)setCollectionView:(JNWCollectionView *)collectionView {
+	_collectionView = collectionView;
+	self.backgroundView.collectionView = collectionView;
 }
 
 - (void)setBackgroundColor:(NSColor *)backgroundColor {

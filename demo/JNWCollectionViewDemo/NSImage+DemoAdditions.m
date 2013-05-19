@@ -12,8 +12,8 @@
 
 + (void)drawBackgroundInRect:(CGRect)dstRect highlighted:(BOOL)highlighted {
 	CGRect b = dstRect;
-	CGFloat top = highlighted ? .82 : 0.81;
-	CGFloat bottom = highlighted ? .76 : 0.87;
+	CGFloat top = highlighted ? .80 : 0.81;
+	CGFloat bottom = highlighted ? .70 : 0.87;
 	NSGradient *gradient = [[NSGradient alloc] initWithColors: @[[NSColor colorWithCalibratedRed:top green:top blue:top alpha:1],
 							[NSColor colorWithCalibratedRed:bottom green:bottom blue:bottom alpha:1]]];
 	[gradient drawInRect:b angle:90];

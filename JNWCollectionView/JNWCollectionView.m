@@ -730,7 +730,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	
 	// TODO animated
 	JNWCollectionViewCell *cell = [self cellForRowAtIndexPath:indexPath];
-	cell.selected = NO;
+	[cell setSelected:NO animated:self.animatesSelection];
 	[self.selectedIndexes removeObject:indexPath];
 	
 	if (_collectionViewFlags.delegateDidDeselect)
@@ -745,7 +745,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	
 	// TODO animated
 	JNWCollectionViewCell *cell = [self cellForRowAtIndexPath:indexPath];
-	cell.selected = YES;
+	[cell setSelected:YES animated:self.animatesSelection];
 	[self.selectedIndexes addObject:indexPath];
 	
 	if (_collectionViewFlags.delegateDidSelect)

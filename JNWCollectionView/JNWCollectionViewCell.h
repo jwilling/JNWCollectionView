@@ -17,7 +17,7 @@
 // Called when the cell is about to exit the reuse pool and be dequeued.
 - (void)prepareForReuse;
 
-@property (nonatomic, assign, readonly) JNWCollectionView *collectionView;
+@property (nonatomic, weak, readonly) JNWCollectionView *collectionView;
 
 @property (nonatomic, assign) BOOL selected;
 

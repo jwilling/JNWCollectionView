@@ -17,6 +17,7 @@
 		AB3C7241170CAC2C004A91DB /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = AB3C723D170CAC2C004A91DB /* Credits.rtf */; };
 		AB3C7242170CAC2C004A91DB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB3C723F170CAC2C004A91DB /* InfoPlist.strings */; };
 		AB3C7244170CAC32004A91DB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C7243170CAC32004A91DB /* main.m */; };
+		AB666C731749258D00545290 /* DemoImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = AB666C721749258D00545290 /* DemoImageCache.m */; };
 		ABA2769D171CFC80005C8E56 /* GridDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA2769B171CFC80005C8E56 /* GridDemoViewController.m */; };
 		ABA2769E171CFC80005C8E56 /* GridDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABA2769C171CFC80005C8E56 /* GridDemoViewController.xib */; };
 		ABA276A3171D0130005C8E56 /* GridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA276A2171D0130005C8E56 /* GridCell.m */; };
@@ -85,6 +86,8 @@
 		AB3C723E170CAC2C004A91DB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = JNWCollectionViewDemo/en.lproj/Credits.rtf; sourceTree = SOURCE_ROOT; };
 		AB3C7240170CAC2C004A91DB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = JNWCollectionViewDemo/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		AB3C7243170CAC32004A91DB /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = JNWCollectionViewDemo/main.m; sourceTree = SOURCE_ROOT; };
+		AB666C711749258D00545290 /* DemoImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DemoImageCache.h; path = JNWCollectionViewDemo/DemoImageCache.h; sourceTree = SOURCE_ROOT; };
+		AB666C721749258D00545290 /* DemoImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DemoImageCache.m; path = JNWCollectionViewDemo/DemoImageCache.m; sourceTree = SOURCE_ROOT; };
 		ABA2769A171CFC80005C8E56 /* GridDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GridDemoViewController.h; path = JNWCollectionViewDemo/GridDemoViewController.h; sourceTree = SOURCE_ROOT; };
 		ABA2769B171CFC80005C8E56 /* GridDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GridDemoViewController.m; path = JNWCollectionViewDemo/GridDemoViewController.m; sourceTree = SOURCE_ROOT; };
 		ABA2769C171CFC80005C8E56 /* GridDemoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GridDemoViewController.xib; path = JNWCollectionViewDemo/GridDemoViewController.xib; sourceTree = SOURCE_ROOT; };
@@ -225,6 +228,8 @@
 				ABB0F2FD16FD7D19002004F5 /* Supporting Files */,
 				ABB1B205171E095B009B9270 /* NSImage+DemoAdditions.h */,
 				ABB1B206171E095B009B9270 /* NSImage+DemoAdditions.m */,
+				AB666C711749258D00545290 /* DemoImageCache.h */,
+				AB666C721749258D00545290 /* DemoImageCache.m */,
 			);
 			name = JNWCollectionViewDemo;
 			path = JNWTableViewDemo;
@@ -360,6 +365,7 @@
 				ABA276AB171D146D005C8E56 /* NSTableViewDemoViewController.m in Sources */,
 				ABA276AF171D14E8005C8E56 /* DemoTableCellView.m in Sources */,
 				ABB1B207171E095B009B9270 /* NSImage+DemoAdditions.m in Sources */,
+				AB666C731749258D00545290 /* DemoImageCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

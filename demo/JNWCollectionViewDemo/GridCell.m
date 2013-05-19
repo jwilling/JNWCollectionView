@@ -9,6 +9,7 @@
 #import "GridCell.h"
 #import "JNWLabel.h"
 #import "NSImage+DemoAdditions.h"
+#import "DemoImageCache.h"
 
 @interface GridCell()
 @property (nonatomic, strong) JNWLabel *label;
@@ -42,11 +43,17 @@
 
 - (void)setSelected:(BOOL)selected {
 	[super setSelected:selected];
-	if (selected) {
-		self.backgroundImage = [NSImage highlightedGradientImageWithHeight:self.bounds.size.height];
-	} else {
-		self.backgroundImage = [NSImage standardGradientImageWithHeight:self.bounds.size.height];
-	}
+	[self updateBackgroundImage];
+}
+
+- (void)updateBackgroundImage {
+	NSString *identifier = [NSString stringWithFormat:@"%@%x", NSStringFromClass(self.class), self.selected];
+	CGSize size = CGSizeMake(1, CGRectGetHeight(self.bounds));
+	self.backgroundImage = [DemoImageCache.sharedCache cachedImageWithIdentifier:identifier size:size withCreationBlock:^NSImage * (CGSize size) {
+		if (self.selected)
+			return [NSImage highlightedGradientImageWithHeight:size.height];
+		return [NSImage standardGradientImageWithHeight:size.height];
+	}];
 }
 
 @end

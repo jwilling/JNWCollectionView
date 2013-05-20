@@ -12,7 +12,7 @@
 
 @interface JNWCollectionViewData()
 @property (nonatomic, weak) JNWCollectionView *collectionView;
-
+@property (nonatomic, strong) NSMutableArray *sectionData;
 @end
 
 @implementation JNWCollectionViewSection
@@ -25,7 +25,7 @@
 	self = [super init];
 	if (self == nil) return nil;
 	self.collectionView = collectionView;
-	self.sections = [NSMutableArray array];
+	self.sectionData = [NSMutableArray array];
 	return self;
 }
 
@@ -35,11 +35,15 @@
 	return [self.sections[section] numberOfItems];
 }
 
+- (NSArray *)sections {
+	return self.sectionData.copy;
+}
+
 - (void)recalculate {
 	JNWCollectionViewLayout *layout = self.collectionView.collectionViewLayout;
 	NSAssert(layout != nil, @"layout cannot be nil.");
 	
-	[self.sections removeAllObjects];
+	[self.sectionData removeAllObjects];
 	
 	// Find how many sections we have in the collection view.
 	// We default to 1 if the data source doesn't implement the optional method.
@@ -54,7 +58,7 @@
 		JNWCollectionViewSection *section = [[JNWCollectionViewSection alloc] init];
 		section.index = sectionIdx;
 		section.numberOfItems = [self.collectionView.dataSource collectionView:self.collectionView numberOfItemsInSection:sectionIdx];
-		[self.sections addObject:section];
+		[self.sectionData addObject:section];
 	}
 	
 	[layout prepareLayout];
@@ -78,7 +82,7 @@
 			continue;
 		}
 		
-		__block CGRect sectionFrame = CGRectNull;
+		CGRect sectionFrame = CGRectNull;
 		for (NSInteger itemIdx = 0; itemIdx < section.numberOfItems; itemIdx++) {
 			NSIndexPath *indexPath = [NSIndexPath jnw_indexPathForItem:itemIdx inSection:sectionIdx];
 			JNWCollectionViewLayoutAttributes *attributes = [layout layoutAttributesForItemAtIndexPath:indexPath];
@@ -86,11 +90,11 @@
 			sectionFrame = CGRectUnion(sectionFrame, attributes.frame);
 		}
 		
-		[self.supplementaryViewClassMap enumerateKeysAndObjectsUsingBlock:^(NSString *identifier, Class class, BOOL *stop) {
+		for (NSString *identifier in [self.collectionView allSupplementaryViewIdentifiers]) {
 			NSString *kind = [self.collectionView kindForSupplementaryViewIdentifier:identifier];
 			JNWCollectionViewLayoutAttributes *attributes = [layout layoutAttributesForSupplementaryItemInSection:sectionIdx kind:kind];
 			sectionFrame = CGRectUnion(sectionFrame, attributes.frame);
-		}];
+		}
 		
 		section.frame = sectionFrame;
 	}

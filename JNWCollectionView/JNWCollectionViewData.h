@@ -25,9 +25,6 @@
 @property (nonatomic, assign) NSInteger numberOfSections;
 - (NSInteger)numberOfItemsInSection:(NSInteger)section;
 
-@property (nonatomic, strong) NSMutableArray *sections;
-
-@property (nonatomic, strong) NSMutableDictionary *cellClassMap; // { identifier : class }
-@property (nonatomic, strong) NSMutableDictionary *supplementaryViewClassMap; // { "kind/identifier" : class }
+@property (nonatomic, strong, readonly) NSArray *sections;
 
 @end

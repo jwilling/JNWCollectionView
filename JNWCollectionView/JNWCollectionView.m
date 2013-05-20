@@ -45,10 +45,12 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 // Cells
 @property (nonatomic, strong) NSMutableDictionary *reusableCells; // { identifier : (cells) }
 @property (nonatomic, strong) NSMutableDictionary *visibleCellsMap; // { index path : cell }
+@property (nonatomic, strong) NSMutableDictionary *cellClassMap; // { identifier : class }
 
 // Supplementary views
 @property (nonatomic, strong) NSMutableDictionary *reusableSupplementaryViews; // { "kind/identifier" : (views) }
 @property (nonatomic, strong) NSMutableDictionary *visibleSupplementaryViewsMap; // { "index/kind/identifier" : view } }
+@property (nonatomic, strong) NSMutableDictionary *supplementaryViewClassMap; // { "kind/identifier" : class }
 
 @end
 
@@ -60,10 +62,10 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	collectionView.data = [[JNWCollectionViewData alloc] initWithCollectionView:collectionView];
 	
 	collectionView.selectedIndexes = [NSMutableArray array];
-	collectionView.data.cellClassMap = [NSMutableDictionary dictionary];
+	collectionView.cellClassMap = [NSMutableDictionary dictionary];
 	collectionView.visibleCellsMap = [NSMutableDictionary dictionary];
 	collectionView.reusableCells = [NSMutableDictionary dictionary];
-	collectionView.data.supplementaryViewClassMap = [NSMutableDictionary dictionary];
+	collectionView.supplementaryViewClassMap = [NSMutableDictionary dictionary];
 	collectionView.visibleSupplementaryViewsMap = [NSMutableDictionary dictionary];
 	collectionView.reusableSupplementaryViews = [NSMutableDictionary dictionary];
 	
@@ -124,7 +126,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	NSParameterAssert(cellClass);
 	NSParameterAssert(reuseIdentifier);
 	NSAssert([cellClass isSubclassOfClass:JNWCollectionViewCell.class], @"registered cell class must be a subclass of JNWCollectionViewCell");
-	self.data.cellClassMap[reuseIdentifier] = cellClass;
+	self.cellClassMap[reuseIdentifier] = cellClass;
 }
 
 - (void)registerClass:(Class)supplementaryViewClass forSupplementaryViewOfKind:(NSString *)kind withReuseIdentifier:(NSString *)reuseIdentifier {
@@ -137,7 +139,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	// Thanks to PSTCollectionView for the original idea of using the key and reuse identfier to
 	// form the key for the supplementary views.
 	NSString *identifier = [self supplementaryViewIdentifierWithKind:kind reuseIdentifier:reuseIdentifier];
-	self.data.supplementaryViewClassMap[identifier] = supplementaryViewClass;
+	self.supplementaryViewClassMap[identifier] = supplementaryViewClass;
 }
 
 - (id)dequeueItemWithIdentifier:(NSString *)identifier inReusePool:(NSDictionary *)reuse {
@@ -187,7 +189,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	// If the view doesn't exist, we go ahead and create one. If we have a class registered
 	// for this identifier, we use it, otherwise we just create an instance of JNWCollectionViewCell.
 	if (cell == nil) {
-		Class cellClass = self.data.cellClassMap[identifier];
+		Class cellClass = self.cellClassMap[identifier];
 
 		if (cellClass == nil) {
 			cellClass = JNWCollectionViewCell.class;
@@ -209,7 +211,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	JNWCollectionViewReusableView *view = [self dequeueItemWithIdentifier:identifier inReusePool:self.reusableSupplementaryViews];
 	
 	if (view == nil) {
-		Class viewClass = self.data.supplementaryViewClassMap[identifier];
+		Class viewClass = self.supplementaryViewClassMap[identifier];
 		
 		if (viewClass == nil) {
 			viewClass = JNWCollectionViewReusableView.class;
@@ -340,7 +342,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 
 - (NSArray *)layoutIdentifiersForSupplementaryViewsInRect:(CGRect)rect {
 	NSMutableArray *visibleIdentifiers = [NSMutableArray array];
-	NSArray *allIdentifiers = self.data.supplementaryViewClassMap.allKeys;
+	NSArray *allIdentifiers = self.supplementaryViewClassMap.allKeys;
 	
 	if (CGRectEqualToRect(rect, CGRectZero))
 		return visibleIdentifiers;
@@ -598,6 +600,10 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 #pragma mark Supplementary Views
+
+- (NSArray *)allSupplementaryViewIdentifiers {
+	return self.supplementaryViewClassMap.allKeys;
+}
 
 - (NSString *)supplementaryViewIdentifierWithKind:(NSString *)kind reuseIdentifier:(NSString *)reuseIdentifier {
 	return [NSString stringWithFormat:@"%@/%@", kind, reuseIdentifier];

@@ -15,5 +15,6 @@
 - (void)mouseUpInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event;
 
 - (NSString *)kindForSupplementaryViewIdentifier:(NSString *)identifier;
+- (NSArray *)allSupplementaryViewIdentifiers;
 
 @end

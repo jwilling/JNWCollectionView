@@ -75,9 +75,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 
 	collectionView.hasHorizontalScroller = NO;
 	collectionView.hasVerticalScroller = YES;
-	
-	collectionView.collectionViewLayout = [[JNWCollectionViewListLayout alloc] initWithCollectionView:collectionView];
-	
+		
 	// We don't want to perform an initial layout pass until the user has called -reloadData.
 	collectionView->_wantsLayout = NO;
 }
@@ -254,6 +252,14 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	[self layoutDocumentView];
 	[self layoutCells];
 	[self layoutSupplementaryViews];
+}
+
+- (void)setCollectionViewLayout:(JNWCollectionViewLayout *)collectionViewLayout {
+	if (self.collectionViewLayout == collectionViewLayout)
+		return;
+	
+	_collectionViewLayout = collectionViewLayout;
+	[self reloadData];
 }
 
 #pragma mark Cell Information

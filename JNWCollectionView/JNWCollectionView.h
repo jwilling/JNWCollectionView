@@ -7,10 +7,10 @@
 
 typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 	JNWCollectionViewScrollPositionNone, // does not scroll, only selects
-	JNWCollectionViewScrollPositionNearest,
-	JNWCollectionViewScrollPositionTop,
-	JNWCollectionViewScrollPositionMiddle,
-	JNWCollectionViewScrollPositionBottom
+	JNWCollectionViewScrollPositionNearest, // scrolls the minimum amount necessary to make visible
+	JNWCollectionViewScrollPositionTop, // scrolls the rect to be at the top of the screen, if possible
+	JNWCollectionViewScrollPositionMiddle, // center the rect in the center of the screen, if possible
+	JNWCollectionViewScrollPositionBottom // scrolls the rect to be at the bottom of the screen, if possible
 };
 
 @class JNWCollectionView;

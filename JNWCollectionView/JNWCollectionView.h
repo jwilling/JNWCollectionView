@@ -105,7 +105,9 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 // these methods should be called with a reuse identifier previously registered using
 // -registerClass:forCellWithReuseIdentifier: or -registerClass:forSupplementaryViewOfKind:withReuseIdentifier:.
 //
-// If a class was not previously registered, the base cell or supplementary view class will be used to create the view.
+// If a class was not previously registered, the base cell class will be used to create the view.
+// However, for supplementary views, the class must be registered, otherwise the collection view
+// will not attempt to load any supplementary views for that kind.
 //
 // The identifer must not be nil, otherwise an exception will be thrown.
 - (JNWCollectionViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier;

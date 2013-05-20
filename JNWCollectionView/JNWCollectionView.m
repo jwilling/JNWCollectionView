@@ -80,6 +80,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		
 	// We don't want to perform an initial layout pass until the user has called -reloadData.
 	collectionView->_wantsLayout = NO;
+	
+	collectionView.backgroundColor = NSColor.clearColor;
 }
 
 - (id)initWithFrame:(NSRect)frameRect {
@@ -262,6 +264,14 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	
 	_collectionViewLayout = collectionViewLayout;
 	[self reloadData];
+}
+
+- (void)setBackgroundColor:(NSColor *)backgroundColor {
+	self.contentView.backgroundColor = backgroundColor;
+}
+
+- (NSColor *)backgroundColor {
+	return self.contentView.backgroundColor;
 }
 
 #pragma mark Cell Information

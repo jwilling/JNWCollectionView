@@ -120,6 +120,13 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 // Defaults to nil.
 @property (nonatomic, strong) JNWCollectionViewLayout *collectionViewLayout;
 
+// The background color determines what is drawn underneath any cells that might be visible
+// at the time. This is different from NSScrollView's background color, which only sets the
+// color underneath the document view.
+//
+// Defaults to a clear color.
+@property (nonatomic, strong) NSColor *backgroundColor;
+
 - (NSInteger)numberOfSections;
 - (NSInteger)numberOfItemsInSection:(NSInteger)section;
 

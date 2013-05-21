@@ -51,7 +51,7 @@
 // Defaults to 0.25.
 @property (nonatomic, assign) CGFloat crossfadeDuration;
 
-// The current reuse identifier used by the collection view to reuse the cell.
+// The reuse identifier.
 @property (nonatomic, copy, readonly) NSString *reuseIdentifier;
 
 // The current index path.

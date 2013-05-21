@@ -21,6 +21,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 // The object that conforms to the data source must implement both `-collectionView:numberOfItemsInSection:`
 // and `-collectionView:cellForItemAtIndexPath:`, otherwise an exception will be thrown.
 @protocol JNWCollectionViewDataSource <NSObject>
+
 // Asks the data source how many items are in the section index specified. The first section begins at 0.
 //
 // Required.
@@ -53,6 +54,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 //
 // All delegate methods are optional.
 @protocol JNWCollectionViewDelegate <NSObject>
+
 @optional
 // Tells the delegate that the mouse is down inside of the item at the specified index path.
 - (void)collectionView:(JNWCollectionView *)collectionView mouseDownInItemAtIndexPath:(NSIndexPath *)indexPath;

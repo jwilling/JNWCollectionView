@@ -8,6 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 
+
+// This view is the base class for all cells. The properties can be set directly on this
+// class for customization, or it can be subclassed to provide custom drawing.
 @class JNWCollectionView;
 @interface JNWCollectionViewCell : NSView
 
@@ -15,6 +18,8 @@
 - (instancetype)initWithFrame:(NSRect)frameRect;
 
 // Called when the cell is about to exit the reuse pool and be dequeued.
+//
+// Subclasses should call super's implementation.
 - (void)prepareForReuse;
 
 @property (nonatomic, weak, readonly) JNWCollectionView *collectionView;
@@ -46,7 +51,10 @@
 // Defaults to 0.25.
 @property (nonatomic, assign) CGFloat crossfadeDuration;
 
+// The current reuse identifier used by the collection view to reuse the cell.
 @property (nonatomic, copy, readonly) NSString *reuseIdentifier;
+
+// The current index path.
 @property (nonatomic, strong, readonly) NSIndexPath *indexPath;
 
 @end

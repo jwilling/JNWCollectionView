@@ -129,13 +129,18 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 // Defaults to a clear color.
 @property (nonatomic, strong) NSColor *backgroundColor;
 
+// Returns the total number of sections.
 - (NSInteger)numberOfSections;
+
+// Returns the number of items in the specified section.
 - (NSInteger)numberOfItemsInSection:(NSInteger)section;
 
-// These will be provided in flipped coordinates.
-- (CGRect)rectForSupplementaryViewWithKind:(NSString *)kind inSection:(NSInteger)section;
+// The following methods will return frames in flipped coordinates, where the origin is the
+// top left point in the scroll view. All of these methods will return CGRectZero if an invalid
+// index path or section is specified.
 - (CGRect)rectForItemAtIndexPath:(NSIndexPath *)indexPath;
-- (CGRect)rectForSection:(NSInteger)section;
+- (CGRect)rectForSupplementaryViewWithKind:(NSString *)kind inSection:(NSInteger)section;
+- (CGRect)rectForSection:(NSInteger)section; // the frame encompassing the cells and views in the specified section
 
 // Provides the size of the visible document area in which the collection view is currently
 // displaying cells and other supplementary views.
@@ -143,15 +148,34 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 // Equivalent to the size of -documentVisibleRect.
 @property (nonatomic, assign, readonly) CGSize contentSize;
 
+// Returns the index path for the item at the specified point, otherwise nil if no item is found.
 - (NSIndexPath *)indexPathForItemAtPoint:(CGPoint)point;
+
+// Returns the index path for the specified cell, otherwise returns nil if the cell isn't visible.
 - (NSIndexPath *)indexPathForCell:(JNWCollectionViewCell *)cell;
+
+// Returns an array of all of the index paths contained within the specified frame.
 - (NSArray *)indexPathsForItemsInRect:(CGRect)rect;
+
+// Returns an index set containing the indexes for all sections that intersect the specified rect.
 - (NSIndexSet *)indexesForSectionsInRect:(CGRect)rect;
 
+// Returns the cell at the specified index path, otherwise returns nil if the index path
+// is invalid or if the cell is not visible.
 - (JNWCollectionViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+
+// Returns the supplementary view of the specified kind and reuse identifier in the section, otherwise returns nil if
+// the supplementary view is no longer visible or if the kind and reuse identifier are invalid or have not been
+// previously registered in -registerClass:forSupplementaryViewOfKind:reuseIdentifier:.
 - (JNWCollectionViewReusableView *)supplementaryViewForKind:(NSString *)kind reuseIdentifier:(NSString *)reuseIdentifier inSection:(NSInteger)section;
+
+// Returns an array of all the currently visible cells. The cells are not guaranteed to be in any order.
 - (NSArray *)visibleCells;
+
+// Returns the index paths for all the items in the visible rect. Order is not guaranteed.
 - (NSArray *)indexPathsForVisibleItems;
+
+// Returns the index paths for any selected items. Order is not guaranteed.
 - (NSArray *)indexPathsForSelectedItems;
 
 // If set to YES, any changes to the backgroundImage or backgroundColor properties of the collection view cell
@@ -160,13 +184,28 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 // Defaults to NO.
 @property (nonatomic, assign) BOOL animatesSelection;
 
+// Scrolls the collection view to the item at the specified path, optionally animated. The scroll position determines
+// where the item is positioned on the screen.
 - (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition animated:(BOOL)animated;
+
+// Selects the item at the specified index path, deselecting any other selected items in the process, optionally animated.
+// The collection view will then scroll to that item in the position as determined by scrollPosition. If no scroll is
+// desired, pass in JNWCollectionViewScrollPositionNone to prevent the scroll..
 - (void)selectItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition animated:(BOOL)animated;
+
+// Selects all items in the collection view.
 - (void)selectAllItems;
+
+// Deselects all items in the collection view.
 - (void)deselectAllItems;
 
+// Returns whether an index path contains a valid item.
 - (BOOL)validateIndexPath:(NSIndexPath *)indexPath;
+
+// Returns the next index path after the specified index path, or nil if it is the last index.
 - (NSIndexPath *)indexPathForNextSelectableItemAfterIndexPath:(NSIndexPath *)indexPath;
+
+// Returns the next index path before the specified index path, or nil if it is the last index.
 - (NSIndexPath *)indexPathForNextSelectableItemBeforeIndexPath:(NSIndexPath *)indexPath;
 
 @end

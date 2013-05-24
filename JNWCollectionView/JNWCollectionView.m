@@ -248,7 +248,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	[self.reusableSupplementaryViews removeAllObjects];
 	
 	// Remove any cells or views that might be added to the document view.
-	for (NSView *view in [self.documentView subviews]) {
+	NSArray *subviews = [[self.documentView subviews] copy];
+	for (NSView *view in subviews) {
 		[view removeFromSuperview];
 	}
 	

@@ -411,13 +411,14 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 			rect.size.height = CGRectGetHeight(visibleRect);
 			rect.origin.y -= CGRectGetHeight(visibleRect);
 			break;
+		case JNWCollectionViewScrollPositionNone:
+			// no scroll needed
+			return;
+			break;
 		case JNWCollectionViewScrollPositionNearest:
 			// We just pass the cell's frame onto the scroll view. It calculates this for us.
 			break;
-		case JNWCollectionViewScrollPositionNone:
-			// no scroll needed
-			break;
-		default:
+		default: // defaults to the same behavior as nearest
 			break;
 	}
 	

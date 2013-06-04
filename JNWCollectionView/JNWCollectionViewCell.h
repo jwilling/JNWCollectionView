@@ -50,3 +50,13 @@
 @property (nonatomic, strong, readonly) NSIndexPath *indexPath;
 
 @end
+
+@interface JNWCollectionViewCell (JNWDragging)
+
+// Subclass and override to return a custom dragging image for
+// the cell.
+//
+// Defaults to a rendering the cell's contents.
+- (NSDraggingImageComponent *)draggingImageRepresentation;
+
+@end

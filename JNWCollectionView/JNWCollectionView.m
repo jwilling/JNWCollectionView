@@ -247,6 +247,10 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	[self.reusableCells removeAllObjects];
 	[self.reusableSupplementaryViews removeAllObjects];
 	
+	// Remove any view mappings
+	[self.visibleCellsMap removeAllObjects];
+	[self.visibleSupplementaryViewsMap removeAllObjects];
+	
 	// Remove any cells or views that might be added to the document view.
 	NSArray *subviews = [[self.documentView subviews] copy];
 	for (NSView *view in subviews) {
@@ -254,6 +258,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	}
 	
 	[self.data recalculate];
+	[self recalculateDocumentViewSize];
 	[self layoutDocumentView];
 	[self layoutCells];
 	[self layoutSupplementaryViews];

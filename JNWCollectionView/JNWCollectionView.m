@@ -775,7 +775,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	// TODO animated
 	JNWCollectionViewCell *cell = [self cellForRowAtIndexPath:indexPath];
 	[cell setSelected:YES animated:self.animatesSelection];
-	[self.selectedIndexes addObject:indexPath];
+
+	if (![self.selectedIndexes containsObject:indexPath])
+		[self.selectedIndexes addObject:indexPath];
 	
 	if (_collectionViewFlags.delegateDidSelect)
 		[self.delegate collectionView:self didSelectItemAtIndexPath:indexPath];

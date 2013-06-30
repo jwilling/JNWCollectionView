@@ -10,6 +10,8 @@
 
 @class JNWCollectionView;
 
+// This class holds information about the state of the items (not cells) in the collection view.
+// It is not exposed publicly.
 @interface JNWCollectionViewSection : NSObject
 @property (nonatomic, assign) NSInteger index;
 @property (nonatomic, assign) CGRect frame;
@@ -20,11 +22,13 @@
 
 - (instancetype)initWithCollectionView:(JNWCollectionView *)collectionView;
 
+// Recalculates the local section cache from the layout and data source.
 - (void)recalculate;
 
 @property (nonatomic, assign) NSInteger numberOfSections;
 - (NSInteger)numberOfItemsInSection:(NSInteger)section;
 
+// Contains all of the sections cached from the last -recalculate call.
 @property (nonatomic, strong, readonly) NSArray *sections;
 
 @end

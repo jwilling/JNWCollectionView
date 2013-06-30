@@ -251,6 +251,10 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	[self.reusableCells removeAllObjects];
 	[self.reusableSupplementaryViews removeAllObjects];
 	
+	// Remove any view mappings
+	[self.visibleCellsMap removeAllObjects];
+	[self.visibleSupplementaryViewsMap removeAllObjects];
+	
 	// Remove any cells or views that might be added to the document view.
 	NSArray *subviews = [[self.documentView subviews] copy];
 	for (NSView *view in subviews) {
@@ -258,6 +262,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	}
 	
 	[self.data recalculate];
+	[self recalculateDocumentViewSize];
 	[self layoutDocumentView];
 	[self layoutCells];
 	[self layoutSupplementaryViews];
@@ -415,13 +420,14 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 			rect.size.height = CGRectGetHeight(visibleRect);
 			rect.origin.y -= CGRectGetHeight(visibleRect);
 			break;
+		case JNWCollectionViewScrollPositionNone:
+			// no scroll needed
+			return;
+			break;
 		case JNWCollectionViewScrollPositionNearest:
 			// We just pass the cell's frame onto the scroll view. It calculates this for us.
 			break;
-		case JNWCollectionViewScrollPositionNone:
-			// no scroll needed
-			break;
-		default:
+		default: // defaults to the same behavior as nearest
 			break;
 	}
 	
@@ -778,7 +784,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	// TODO animated
 	JNWCollectionViewCell *cell = [self cellForRowAtIndexPath:indexPath];
 	[cell setSelected:YES animated:self.animatesSelection];
-	[self.selectedIndexes addObject:indexPath];
+
+	if (![self.selectedIndexes containsObject:indexPath])
+		[self.selectedIndexes addObject:indexPath];
 	
 	if (_collectionViewFlags.delegateDidSelect)
 		[self.delegate collectionView:self didSelectItemAtIndexPath:indexPath];

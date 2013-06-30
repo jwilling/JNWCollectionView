@@ -25,10 +25,13 @@ describe(@"documentView property", ^{
 
 describe(@"data source", ^{
 	__block JNWCollectionView *collectionView = nil;
+	__block JNWCollectionViewLayout *collectionViewLayout = nil;
 	__block JNWTestDataSource *testDataSource = nil;
 		
 	beforeAll(^{
 		collectionView = [[JNWCollectionView alloc] initWithFrame:CGRectMake(0, 0, 400, 400)];
+		collectionViewLayout = [[JNWCollectionViewLayout alloc] initWithCollectionView:collectionView];
+		collectionView.collectionViewLayout = collectionViewLayout;
 		testDataSource = [[JNWTestDataSource alloc] init];
 		collectionView.dataSource = testDataSource;
 		
@@ -63,10 +66,13 @@ describe(@"data source", ^{
 
 describe(@"-selectItemAtIndexPath:atScrollPosition:animated:", ^{
 	__block JNWCollectionView *collectionView = nil;
+	__block JNWCollectionViewLayout *collectionViewLayout = nil;
 	__block JNWTestDataSource *dataSource = nil;
 	
 	beforeAll(^{
 		collectionView = [[JNWCollectionView alloc] initWithFrame:CGRectMake(0, 0, 300, 500)];
+		collectionViewLayout = [[JNWCollectionViewLayout alloc] initWithCollectionView:collectionView];
+		collectionView.collectionViewLayout = collectionViewLayout;
 		dataSource = [[JNWTestDataSource alloc] init];
 		collectionView.dataSource = dataSource;
 		[collectionView reloadData];

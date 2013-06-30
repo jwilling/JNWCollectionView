@@ -174,17 +174,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		reusableCells = [NSMutableArray array];
 		reuse[identifier] = reusableCells;
 	}
-	
-	//NSLog(@"%ld", reusableCells.count);
 
-//	if (reusableCells.count > JNWCollectionViewMaximumNumberOfQueuedCells) {
-//		if ([item isKindOfClass:NSView.class] && [item superview] != nil)
-//			[(NSView *)item removeFromSuperview];
-//		return;
-//	}
-	
-	//NSLog(@"%ld", reusableCells.count);
-	
 	[reusableCells addObject:item];
 }
 

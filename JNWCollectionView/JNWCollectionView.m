@@ -879,13 +879,21 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		NSDraggingItem *dragItem = [[NSDraggingItem alloc] initWithPasteboardWriter:pasteboardWriter];
 		dragItem.draggingFrame = [self convertRect:cell.frame fromView:self.documentView];
 		dragItem.imageComponentsProvider = ^ {
-			return @[cell.draggingImageRepresentation];
+			NSDraggingImageComponent *image = cell.draggingImageRepresentation;
+			image.key = NSDraggingImageComponentLabelKey;
+			return @[ image ];
 		};
 		[dragItems addObject:dragItem];
 	}
 	NSDraggingSession *draggingSession = [self beginDraggingSessionWithItems:dragItems event:event source:self];
 	draggingSession.animatesToStartingPositionsOnCancelOrFail = YES;
-	draggingSession.draggingFormation = NSDraggingFormationDefault;
+	draggingSession.draggingFormation = NSDraggingFormationNone;
+	if (_collectionViewFlags.dataSourceWriteRowsWithIndexesToPasteboard) {
+		if ([self.dataSource collectionView:self writeItemsAtIndexes:self.indexPathsForSelectedItems toPasteboard:draggingSession.draggingPasteboard]) {
+			
+		}
+	}
+	
 }
 
 

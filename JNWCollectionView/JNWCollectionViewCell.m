@@ -114,12 +114,12 @@
 	NSDraggingImageComponent *component = [[NSDraggingImageComponent alloc]init];
 	NSSize imgSize = self.bounds.size;
 	
-    NSBitmapImageRep * bir = [self bitmapImageRepForCachingDisplayInRect:[self bounds]];
+    NSBitmapImageRep *bir = [self bitmapImageRepForCachingDisplayInRect:[self bounds]];
     [bir setSize:imgSize];
 	
     [self cacheDisplayInRect:[self bounds] toBitmapImageRep:bir];
 	
-    NSImage* image = [[NSImage alloc] initWithSize:imgSize];
+    NSImage *image = [[NSImage alloc] initWithSize:imgSize];
     [image addRepresentation:bir];
 
 	component.contents = image;

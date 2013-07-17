@@ -10,7 +10,7 @@
 #import "ListHeader.h"
 #import "ListCell.h"
 
-@interface ListDemoViewController () <NSPasteboardWriting>
+@interface ListDemoViewController ()
 @property (nonatomic, strong) JNWCollectionView *collectionView;
 @end
 
@@ -64,10 +64,6 @@ static NSString * const headerIdentifier = @"HEADER";
 //	return 44.f;
 //}
 
-- (id<NSPasteboardWriting>)collectionView:(JNWCollectionView *)collectionView pasteboardWriterForItemAtIndexPath:(NSIndexPath *)index {
-	return self;
-}
-
 // Asks the data source to write the cells that are being dragged to the pasteboard.
 - (BOOL)collectionView:(JNWCollectionView *)collectionView writeItemsAtIndexes:(NSIndexSet *)indexes toPasteboard:(NSPasteboard *)pasteboard {
 	return YES;
@@ -85,12 +81,16 @@ static NSString * const headerIdentifier = @"HEADER";
 	return 24.f;
 }
 
-- (NSArray *)writableTypesForPasteboard:(NSPasteboard *)pasteboard {
-	return @[ NSPasteboardTypeString ];
+- (id<NSPasteboardWriting>)collectionView:(JNWCollectionView *)collectionView pasteboardWriterForItemAtIndexPath:(NSIndexPath *)index {
+	if (self.collectionView.indexPathsForSelectedItems.count == 0) return nil;
+	NSPasteboardItem *pboardItem = [[NSPasteboardItem alloc] init];
+	NSString *text = [(ListCell *)[self.collectionView cellForRowAtIndexPath:index] cellLabelText];
+	[pboardItem setString:text forType:(__bridge NSString *)kUTTypeUTF8PlainText];
+	return pboardItem;
 }
 
-- (id)pasteboardPropertyListForType:(NSString *)type {
-	return [type dataUsingEncoding:NSUTF8StringEncoding];
+- (NSArray *)writableTypesForPasteboard:(NSPasteboard *)pasteboard {
+	return @[ NSPasteboardTypeString ];
 }
 
 @end

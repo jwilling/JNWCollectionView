@@ -20,7 +20,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 	struct {
 		unsigned int dataSourceNumberOfSections;
 		unsigned int dataSourceViewForSupplementaryView;
-		unsigned int dataSourcePasteboardWriterForRow;
+		unsigned int dataSourcePasteboardWriterForItem;
 		unsigned int dataSourceWriteRowsWithIndexesToPasteboard;
 		
 		unsigned int delegateMouseDown;
@@ -118,7 +118,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	_collectionViewFlags.delegateDidScroll = [dataSource respondsToSelector:@selector(collectionView:didScrollToItemAtIndexPath:)];
 	_collectionViewFlags.dataSourceViewForSupplementaryView = [dataSource respondsToSelector:@selector(collectionView:viewForSupplementaryViewOfKind:inSection:)];
 	_collectionViewFlags.dataSourceWriteRowsWithIndexesToPasteboard = [dataSource respondsToSelector:@selector(collectionView:writeItemsAtIndexes:toPasteboard:)];
-	_collectionViewFlags.dataSourcePasteboardWriterForRow = [dataSource respondsToSelector:@selector(collectionView:pasteboardWriterForItemAtIndexPath:)];
+	_collectionViewFlags.dataSourcePasteboardWriterForItem = [dataSource respondsToSelector:@selector(collectionView:pasteboardWriterForItemAtIndexPath:)];
 	NSAssert([dataSource respondsToSelector:@selector(collectionView:numberOfItemsInSection:)],
 			 @"data source must implement collectionView:numberOfItemsInSection");
 	NSAssert([dataSource respondsToSelector:@selector(collectionView:cellForItemAtIndexPath:)],
@@ -866,7 +866,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (void)mouseDraggedInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
-	if (!_collectionViewFlags.dataSourcePasteboardWriterForRow) return;
+	if (!_collectionViewFlags.dataSourcePasteboardWriterForItem) return;
 	
 	NSMutableArray *dragItems = [NSMutableArray arrayWithCapacity:self.selectedIndexes.count];
 	
@@ -879,9 +879,11 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		NSDraggingItem *dragItem = [[NSDraggingItem alloc] initWithPasteboardWriter:pasteboardWriter];
 		dragItem.draggingFrame = [self convertRect:cell.frame fromView:self.documentView];
 		dragItem.imageComponentsProvider = ^ {
-			NSDraggingImageComponent *image = cell.draggingImageRepresentation;
-			image.key = NSDraggingImageComponentLabelKey;
-			return @[ image ];
+			NSImage *image = cell.draggingImageRepresentation;
+			NSDraggingImageComponent *component = [[NSDraggingImageComponent alloc]init];
+			component.contents = image;
+			component.key = NSDraggingImageComponentLabelKey;
+			return @[ component ];
 		};
 		[dragItems addObject:dragItem];
 	}

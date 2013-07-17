@@ -61,10 +61,8 @@
 
 @interface JNWCollectionViewCell (JNWDragging)
 
-// Subclass and override to return a custom dragging image for
-// the cell.
-//
-// Defaults to a rendering the cell's contents.
-- (NSDraggingImageComponent *)draggingImageRepresentation;
+// The image displayed on the dragging item when a cell is dragged out of its collection view.
+// You can subclass and override this to return a different image, or nil to display nothing.
+- (NSImage *)draggingImageRepresentation;
 
 @end

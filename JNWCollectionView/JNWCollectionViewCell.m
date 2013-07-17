@@ -110,8 +110,7 @@
 	self.selected = selected;
 }
 
-- (NSDraggingImageComponent *)draggingImageRepresentation {
-	NSDraggingImageComponent *component = [[NSDraggingImageComponent alloc]init];
+- (NSImage *)draggingImageRepresentation {
 	NSSize imgSize = self.bounds.size;
 	
     NSBitmapImageRep *bir = [self bitmapImageRepForCachingDisplayInRect:[self bounds]];
@@ -122,8 +121,7 @@
     NSImage *image = [[NSImage alloc] initWithSize:imgSize];
     [image addRepresentation:bir];
 
-	component.contents = image;
-    return component;
+    return image;
 }
 
 - (void)setCollectionView:(JNWCollectionView *)collectionView {

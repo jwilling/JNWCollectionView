@@ -47,7 +47,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 // -registerClass:forSupplementaryViewOfKind:withReuseIdentifier:.
 - (JNWCollectionViewReusableView *)collectionView:(JNWCollectionView *)collectionView viewForSupplementaryViewOfKind:(NSString *)kind inSection:(NSInteger)section;
 
-- (id<NSPasteboardWriting>)collectionView:(JNWCollectionView *)collectionView pasteboardWriterForItemAtIndex:(NSUInteger)index;
+- (id<NSPasteboardWriting>)collectionView:(JNWCollectionView *)collectionView pasteboardWriterForItemAtIndexPath:(NSIndexPath *)index;
 
 // Asks the data source to write the cells that are being dragged to the pasteboard.
 - (BOOL)collectionView:(JNWCollectionView *)collectionView writeItemsAtIndexes:(NSIndexSet *)indexes toPasteboard:(NSPasteboard *)pasteboard;

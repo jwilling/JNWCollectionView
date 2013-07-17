@@ -118,7 +118,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	_collectionViewFlags.delegateDidScroll = [dataSource respondsToSelector:@selector(collectionView:didScrollToItemAtIndexPath:)];
 	_collectionViewFlags.dataSourceViewForSupplementaryView = [dataSource respondsToSelector:@selector(collectionView:viewForSupplementaryViewOfKind:inSection:)];
 	_collectionViewFlags.dataSourceWriteRowsWithIndexesToPasteboard = [dataSource respondsToSelector:@selector(collectionView:writeItemsAtIndexes:toPasteboard:)];
-	_collectionViewFlags.dataSourcePasteboardWriterForRow = [dataSource respondsToSelector:@selector(collectionView:pasteboardWriterForItemAtIndex:)];
+	_collectionViewFlags.dataSourcePasteboardWriterForRow = [dataSource respondsToSelector:@selector(collectionView:pasteboardWriterForItemAtIndexPath:)];
 	NSAssert([dataSource respondsToSelector:@selector(collectionView:numberOfItemsInSection:)],
 			 @"data source must implement collectionView:numberOfItemsInSection");
 	NSAssert([dataSource respondsToSelector:@selector(collectionView:cellForItemAtIndexPath:)],
@@ -881,7 +881,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	NSMutableArray *dragItems = [NSMutableArray arrayWithCapacity:self.selectedIndexes.count];
 	
 	for (NSIndexPath *indexPath in self.selectedIndexes) {
-		id<NSPasteboardWriting> pasteboardWriter = [self.dataSource collectionView:self pasteboardWriterForItemAtIndex:indexPath.item];
+		id<NSPasteboardWriting> pasteboardWriter = [self.dataSource collectionView:self pasteboardWriterForItemAtIndexPath:indexPath];
 		if (pasteboardWriter == nil)
 			continue;
 		

@@ -10,7 +10,7 @@
 #import "ListHeader.h"
 #import "ListCell.h"
 
-@interface ListDemoViewController ()
+@interface ListDemoViewController () <NSPasteboardWriting>
 @property (nonatomic, strong) JNWCollectionView *collectionView;
 @end
 
@@ -64,6 +64,15 @@ static NSString * const headerIdentifier = @"HEADER";
 //	return 44.f;
 //}
 
+- (id<NSPasteboardWriting>)collectionView:(JNWCollectionView *)collectionView pasteboardWriterForItemAtIndexPath:(NSIndexPath *)index {
+	return self;
+}
+
+// Asks the data source to write the cells that are being dragged to the pasteboard.
+- (BOOL)collectionView:(JNWCollectionView *)collectionView writeItemsAtIndexes:(NSIndexSet *)indexes toPasteboard:(NSPasteboard *)pasteboard {
+	return YES;
+}
+
 - (NSUInteger)collectionView:(JNWCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
 	return 300;
 }
@@ -74,6 +83,14 @@ static NSString * const headerIdentifier = @"HEADER";
 
 - (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForHeaderInSection:(NSInteger)index {
 	return 24.f;
+}
+
+- (NSArray *)writableTypesForPasteboard:(NSPasteboard *)pasteboard {
+	return @[ NSPasteboardTypeString ];
+}
+
+- (id)pasteboardPropertyListForType:(NSString *)type {
+	return [type dataUsingEncoding:NSUTF8StringEncoding];
 }
 
 @end

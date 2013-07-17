@@ -110,6 +110,20 @@
 	self.selected = selected;
 }
 
+- (NSImage *)draggingImageRepresentation {
+	NSSize imgSize = self.bounds.size;
+	
+    NSBitmapImageRep *bir = [self bitmapImageRepForCachingDisplayInRect:[self bounds]];
+    [bir setSize:imgSize];
+	
+    [self cacheDisplayInRect:[self bounds] toBitmapImageRep:bir];
+	
+    NSImage *image = [[NSImage alloc] initWithSize:imgSize];
+    [image addRepresentation:bir];
+
+    return image;
+}
+
 - (void)setCollectionView:(JNWCollectionView *)collectionView {
 	_collectionView = collectionView;
 	self.backgroundView.collectionView = collectionView;
@@ -135,6 +149,12 @@
 	[super mouseDown:theEvent];
 	
 	[self.collectionView mouseDownInCollectionViewCell:self withEvent:theEvent];
+}
+
+- (void)mouseDragged:(NSEvent *)theEvent {
+	[super mouseDragged:theEvent];
+	
+	[self.collectionView mouseDraggedInCollectionViewCell:self withEvent:theEvent];
 }
 
 - (void)mouseUp:(NSEvent *)theEvent {

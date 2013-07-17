@@ -45,4 +45,16 @@ static NSString * const identifier = @"CELL";
 	return CGSizeMake(128.f, 128.f);
 }
 
+- (id<NSPasteboardWriting>)collectionView:(JNWCollectionView *)collectionView pasteboardWriterForItemAtIndexPath:(NSIndexPath *)index {
+	if (self.collectionView.indexPathsForSelectedItems.count == 0) return nil;
+	NSPasteboardItem *pboardItem = [[NSPasteboardItem alloc] init];
+	NSString *text = [(GridCell *)[self.collectionView cellForRowAtIndexPath:index] labelText];
+	[pboardItem setString:text forType:(__bridge NSString *)kUTTypeUTF8PlainText];
+	return pboardItem;
+}
+
+- (NSArray *)writableTypesForPasteboard:(NSPasteboard *)pasteboard {
+	return @[ NSPasteboardTypeString ];
+}
+
 @end

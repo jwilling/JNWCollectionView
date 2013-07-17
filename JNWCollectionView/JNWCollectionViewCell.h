@@ -58,3 +58,11 @@
 @property (nonatomic, strong, readonly) NSIndexPath *indexPath;
 
 @end
+
+@interface JNWCollectionViewCell (JNWDragging)
+
+// The image displayed on the dragging item when a cell is dragged out of its collection view.
+// You can subclass and override this to return a different image, or nil to display nothing.
+- (NSImage *)draggingImageRepresentation;
+
+@end

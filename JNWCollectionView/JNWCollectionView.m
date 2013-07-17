@@ -16,10 +16,12 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 	JNWCollectionViewSelectionTypeMultiple
 };
 
-@interface JNWCollectionView() {
+@interface JNWCollectionView() <NSDraggingSource, NSPasteboardItemDataProvider> {
 	struct {
 		unsigned int dataSourceNumberOfSections;
 		unsigned int dataSourceViewForSupplementaryView;
+		unsigned int dataSourcePasteboardWriterForItem;
+		unsigned int dataSourceWriteRowsWithIndexesToPasteboard;
 		
 		unsigned int delegateMouseDown;
 		unsigned int delegateMouseUp;
@@ -115,6 +117,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	_collectionViewFlags.dataSourceNumberOfSections = [dataSource respondsToSelector:@selector(numberOfSectionsInCollectionView:)];
 	_collectionViewFlags.delegateDidScroll = [dataSource respondsToSelector:@selector(collectionView:didScrollToItemAtIndexPath:)];
 	_collectionViewFlags.dataSourceViewForSupplementaryView = [dataSource respondsToSelector:@selector(collectionView:viewForSupplementaryViewOfKind:inSection:)];
+	_collectionViewFlags.dataSourceWriteRowsWithIndexesToPasteboard = [dataSource respondsToSelector:@selector(collectionView:writeItemsAtIndexes:toPasteboard:)];
+	_collectionViewFlags.dataSourcePasteboardWriterForItem = [dataSource respondsToSelector:@selector(collectionView:pasteboardWriterForItemAtIndexPath:)];
 	NSAssert([dataSource respondsToSelector:@selector(collectionView:numberOfItemsInSection:)],
 			 @"data source must implement collectionView:numberOfItemsInSection");
 	NSAssert([dataSource respondsToSelector:@selector(collectionView:cellForItemAtIndexPath:)],
@@ -861,6 +865,40 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	[self scrollToItemAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated];
 }
 
+- (void)mouseDraggedInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
+	if (!_collectionViewFlags.dataSourcePasteboardWriterForItem) return;
+	
+	NSMutableArray *dragItems = [NSMutableArray arrayWithCapacity:self.selectedIndexes.count];
+	
+	for (NSIndexPath *indexPath in self.selectedIndexes) {
+		id<NSPasteboardWriting> pasteboardWriter = [self.dataSource collectionView:self pasteboardWriterForItemAtIndexPath:indexPath];
+		if (pasteboardWriter == nil)
+			continue;
+		
+		JNWCollectionViewCell *cell = [self cellForRowAtIndexPath:indexPath];
+		NSDraggingItem *dragItem = [[NSDraggingItem alloc] initWithPasteboardWriter:pasteboardWriter];
+		dragItem.draggingFrame = [self convertRect:cell.frame fromView:self.documentView];
+		dragItem.imageComponentsProvider = ^ {
+			NSImage *image = cell.draggingImageRepresentation;
+			NSDraggingImageComponent *component = [[NSDraggingImageComponent alloc]init];
+			component.contents = image;
+			component.key = NSDraggingImageComponentLabelKey;
+			return @[ component ];
+		};
+		[dragItems addObject:dragItem];
+	}
+	NSDraggingSession *draggingSession = [self beginDraggingSessionWithItems:dragItems event:event source:self];
+	draggingSession.animatesToStartingPositionsOnCancelOrFail = YES;
+	draggingSession.draggingFormation = NSDraggingFormationNone;
+	if (_collectionViewFlags.dataSourceWriteRowsWithIndexesToPasteboard) {
+		if ([self.dataSource collectionView:self writeItemsAtIndexes:self.indexPathsForSelectedItems toPasteboard:draggingSession.draggingPasteboard]) {
+			
+		}
+	}
+	
+}
+
+
 - (void)mouseDownInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
 	[self.window makeFirstResponder:self];
 	
@@ -945,6 +983,12 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 
 - (void)selectAllItems {
 	[self selectAll:nil];
+}
+
+#pragma mark NSPasteboardItemDataProvider
+
+- (void)pasteboard:(NSPasteboard *)pasteboard item:(NSPasteboardItem *)item provideDataForType:(NSString *)type {
+	
 }
 
 #pragma mark NSObject

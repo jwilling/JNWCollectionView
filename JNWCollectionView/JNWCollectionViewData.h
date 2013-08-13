@@ -31,4 +31,8 @@
 // Contains all of the sections cached from the last -recalculate call.
 @property (nonatomic, strong, readonly) NSArray *sections;
 
+// The size that contains all of the sections. This size is used to determine
+// the content size of the scroll view.
+@property (nonatomic, assign) CGSize encompassingSize;
+
 @end

@@ -148,7 +148,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 // displaying cells and other supplementary views.
 //
 // Equivalent to the size of -documentVisibleRect.
-@property (nonatomic, assign, readonly) CGSize contentSize;
+@property (nonatomic, assign, readonly) CGSize visibleSize;
 
 // Returns the index path for the item at the specified point, otherwise nil if no item is found.
 - (NSIndexPath *)indexPathForItemAtPoint:(CGPoint)point;

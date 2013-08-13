@@ -51,7 +51,7 @@
 	if ([self.collectionView.dataSource respondsToSelector:@selector(numberOfSectionsInCollectionView:)])
 		self.numberOfSections = [self.collectionView.dataSource numberOfSectionsInCollectionView:self.collectionView];
 	
-	// Run through with empty sections and fill in the numbef of items in each, so that
+	// Run through with empty sections and fill in the number of items in each, so that
 	// the layouts can query the collection view and get correct values for the number of items
 	// in each section.
 	for (NSInteger sectionIdx = 0; sectionIdx < self.numberOfSections; sectionIdx++) {
@@ -74,7 +74,7 @@
 		// how large the document view of the collection view needs to be.
 		//
 		// However, this wastage can be avoided if the collection view layout implements the optional
-		// method, -rectForSectionAtIndex: and returns yes in -wantsRectForSectionAtIndex, which allows
+		// method, -rectForSectionAtIndex: and returns YES in -wantsRectForSectionAtIndex, which allows
 		// us to bypass this entire section iteration and increase the speed of the layout reloading.
 		
 		if (layout.wantsRectForSectionAtIndex) {
@@ -98,6 +98,31 @@
 		
 		section.frame = sectionFrame;
 	}
+	
+	[self calculateEncompassingSizeWithLayout:layout];
+}
+
+- (void)calculateEncompassingSizeWithLayout:(JNWCollectionViewLayout *)layout {
+	CGSize encompassingSize = CGSizeZero;
+	
+	if (CGSizeEqualToSize(CGSizeZero, layout.contentSize)) {
+		CGRect frame = CGRectNull;
+
+		for (JNWCollectionViewSection *section in self.sections) {
+			frame = CGRectUnion(frame, section.frame);
+		}
+		
+		encompassingSize = frame.size;
+	} else {
+		encompassingSize = layout.contentSize;
+	}
+	
+	// As documented, we stretch the size to be at least the size of the collection view's frame size.
+	CGSize collectionViewSize = self.collectionView.frame.size;
+	encompassingSize.height = MAX(encompassingSize.height, collectionViewSize.height);
+	encompassingSize.width = MAX(encompassingSize.width, collectionViewSize.width);
+	
+	self.encompassingSize = encompassingSize;
 }
 
 @end

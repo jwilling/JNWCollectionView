@@ -8,8 +8,6 @@
 #import "JNWCollectionViewListLayout.h"
 #import "JNWCollectionViewDocumentView.h"
 
-//static const NSUInteger JNWCollectionViewMaximumNumberOfQueuedCells = 2;
-
 typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 	JNWCollectionViewSelectionTypeSingle,
 	JNWCollectionViewSelectionTypeExtending,
@@ -28,13 +26,12 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 		unsigned int delegateShouldDeselect;
 		unsigned int delegateDidDeselect;
 		unsigned int delegateDidScroll;
+		
+		unsigned int wantsLayout;
 	} _collectionViewFlags;
 	
 	CGRect _lastDrawnBounds;
-	BOOL _wantsLayout;
 }
-
-@property (nonatomic, assign) CGSize documentSize;
 
 // Layout data/cache
 @property (nonatomic, strong) JNWCollectionViewData *data;
@@ -79,7 +76,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	collectionView.hasVerticalScroller = YES;
 		
 	// We don't want to perform an initial layout pass until the user has called -reloadData.
-	collectionView->_wantsLayout = NO;
+	collectionView->_collectionViewFlags.wantsLayout = NO;
 	
 	collectionView.backgroundColor = NSColor.clearColor;
 }
@@ -228,7 +225,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (void)reloadData {
-	_wantsLayout = YES;
+	_collectionViewFlags.wantsLayout = YES;
 	
 	// Remove any selected indexes we've been tracking.
 	[self.selectedIndexes removeAllObjects];
@@ -248,7 +245,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	}
 	
 	[self.data recalculate];
-	[self recalculateDocumentViewSize];
 	[self layoutDocumentView];
 	[self layoutCells];
 	[self layoutSupplementaryViews];
@@ -481,20 +477,19 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 - (void)layout {
 	[super layout];
 	
-	if (!CGSizeEqualToSize([self.documentView frame].size, self.documentSize)) {
+	if (!CGSizeEqualToSize(self.visibleSize, self.data.encompassingSize)) {
 		[self layoutDocumentView];
 	}
 	
 	if (!CGRectEqualToRect(self.bounds, _lastDrawnBounds)) {
 		// TODO: Do we need to recalculate everything?
-		if (_wantsLayout) {
+		if (_collectionViewFlags.wantsLayout) {
 			[self.data recalculate];
-			[self recalculateDocumentViewSize];
 		}
 		
 		// Check once more whether or not the document view needs to be resized.
-		// If there are a different number of items, `documentSize` might have changed.
-		if (!CGSizeEqualToSize([self.documentView frame].size, self.documentSize)) {
+		// If there are a different number of items, the encompassing size might have changed.
+		if (!CGSizeEqualToSize(self.visibleSize, self.data.encompassingSize)) {
 			[self layoutDocumentView];
 		}
 		
@@ -507,25 +502,15 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	}
 }
 
-- (void)recalculateDocumentViewSize {
-	CGRect frame = CGRectNull;
-	
-	for (JNWCollectionViewSection *section in self.data.sections) {
-		frame = CGRectUnion(frame, section.frame);
-	}
-	
-	self.documentSize = frame.size;
-}
-
 - (void)layoutDocumentView {
-	if (!_wantsLayout)
+	if (!_collectionViewFlags.wantsLayout)
 		return;
 	
 	NSView *documentView = self.documentView;
-	documentView.frameSize = self.documentSize;
+	documentView.frameSize = self.data.encompassingSize;
 }
 
-- (CGSize)contentSize {
+- (CGSize)visibleSize {
 	return self.documentVisibleRect.size;
 }
 
@@ -534,7 +519,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (void)layoutCellsWithRedraw:(BOOL)needsVisibleRedraw {
-	if (self.dataSource == nil || !_wantsLayout)
+	if (self.dataSource == nil || !_collectionViewFlags.wantsLayout)
 		return;
 	
 	if (needsVisibleRedraw) {
@@ -645,7 +630,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (void)layoutSupplementaryViewsWithRedraw:(BOOL)needsVisibleRedraw {
-	if (!_collectionViewFlags.dataSourceViewForSupplementaryView || !_wantsLayout)
+	if (!_collectionViewFlags.dataSourceViewForSupplementaryView || !_collectionViewFlags.wantsLayout)
 		return;
 	
 	if (needsVisibleRedraw) {

@@ -164,7 +164,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 
 // Returns the cell at the specified index path, otherwise returns nil if the index path
 // is invalid or if the cell is not visible.
-- (JNWCollectionViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (JNWCollectionViewCell *)cellForItemAtIndexPath:(NSIndexPath *)indexPath;
 
 // Returns the supplementary view of the specified kind and reuse identifier in the section, otherwise returns nil if
 // the supplementary view is no longer visible or if the kind and reuse identifier are invalid or have not been

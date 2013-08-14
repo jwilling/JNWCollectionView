@@ -10,7 +10,7 @@
 
 @interface NSIndexPath (JNWAdditions)
 
-+ (instancetype)jnw_indexPathForItem:(NSUInteger)row inSection:(NSUInteger)section;
++ (instancetype)jnw_indexPathForItem:(NSUInteger)item inSection:(NSUInteger)section;
 
 @property (nonatomic, readonly) NSInteger item;
 @property (nonatomic, readonly) NSInteger section;

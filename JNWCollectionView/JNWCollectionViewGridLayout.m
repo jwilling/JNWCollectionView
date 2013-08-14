@@ -196,6 +196,16 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 		newIndexPath = [self.collectionView indexPathForItemAtPoint:origin];
 	}
 	
+	if (newIndexPath == nil && (direction == JNWCollectionViewDirectionUp || direction == JNWCollectionViewDirectionDown)) {
+		CGRect frame = [self.collectionView rectForItemAtIndexPath:currentIndexPath];
+		CGPoint origin = frame.origin;
+		// This can occur if we have items in a grid section that don't completely fill the section on the
+		// last row. Because there still might be a cell above or below, we attempt to skip a row to see if
+		// this is the case.
+		origin.y += (direction == JNWCollectionViewDirectionDown ? self.itemSize.height + frame.size.height + 1 : -(self.itemSize.height + 1));
+		newIndexPath = [self.collectionView indexPathForItemAtPoint:origin];
+	}
+	
 	return newIndexPath;
 }
 

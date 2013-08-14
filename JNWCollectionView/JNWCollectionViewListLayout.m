@@ -13,8 +13,8 @@ typedef struct {
 	CGFloat yOffset;
 } JNWCollectionViewListLayoutRowInfo;
 
-NSString * const JNWCollectionViewListLayoutHeaderIdentifier = @"JNWCollectionViewListLayoutHeader";
-NSString * const JNWCollectionViewListLayoutFooterIdentifier = @"JNWCollectionViewListLayoutFooter";
+NSString * const JNWCollectionViewListLayoutHeaderKind = @"JNWCollectionViewListLayoutHeader";
+NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewListLayoutFooter";
 
 @interface JNWCollectionViewListLayoutSection : NSObject
 - (instancetype)initWithNumberOfRows:(NSInteger)numberOfRows;
@@ -124,9 +124,9 @@ NSString * const JNWCollectionViewListLayoutFooterIdentifier = @"JNWCollectionVi
 	CGFloat width = self.collectionView.contentSize.width;
 	CGRect frame = CGRectZero;
 	
-	if ([kind isEqualToString:JNWCollectionViewListLayoutHeaderIdentifier]) {
+	if ([kind isEqualToString:JNWCollectionViewListLayoutHeaderKind]) {
 		frame = CGRectMake(0, section.offset - section.headerHeight, width, section.headerHeight);
-	} else if ([kind isEqualToString:JNWCollectionViewListLayoutFooterIdentifier]) {
+	} else if ([kind isEqualToString:JNWCollectionViewListLayoutFooterKind]) {
 		frame = CGRectMake(0, section.offset + section.height, width, section.footerHeight);
 	}
 	

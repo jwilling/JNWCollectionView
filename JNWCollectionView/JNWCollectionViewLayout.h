@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "JNWCollectionView.h"
 
 typedef NS_ENUM(NSInteger, JNWCollectionViewDirection) {
 	JNWCollectionViewDirectionLeft,
@@ -49,8 +50,30 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewDirection) {
 // this rect. The behavior when the returned rect is incorrect is undefined.
 - (CGRect)rectForSectionAtIndex:(NSInteger)index;
 
+// The complete size of all sections combined. Overriding this method is optional,
+// however if a different size is desired than what can be inferred from the section
+// frames, it should be overridden.
+//
+// Note that the collection view will discard any values smaller than the frame size, so
+// if if an axis does not need to be scrolled a value of 0 can be provided.
+//
+// Defaults to CGSizeZero, which means it will fit the collection view's frame.
+- (CGSize)contentSize;
 
 // Subclasses must implement this method for arrowed selection to work.
 - (NSIndexPath *)indexPathForNextItemInDirection:(JNWCollectionViewDirection)direction currentIndexPath:(NSIndexPath *)currentIndexPath;
+
+@end
+
+@interface JNWCollectionView()
+
+// Returns whether an index path contains a valid item.
+- (BOOL)validateIndexPath:(NSIndexPath *)indexPath;
+
+// Returns the next index path after the specified index path, or nil if it is the last index.
+- (NSIndexPath *)indexPathForNextSelectableItemAfterIndexPath:(NSIndexPath *)indexPath;
+
+// Returns the next index path before the specified index path, or nil if it is the last index.
+- (NSIndexPath *)indexPathForNextSelectableItemBeforeIndexPath:(NSIndexPath *)indexPath;
 
 @end

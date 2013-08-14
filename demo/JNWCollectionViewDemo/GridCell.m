@@ -32,6 +32,11 @@
 	self.label.text = labelText;
 }
 
+- (void)setImage:(NSImage *)image {
+	_image = image;
+	self.backgroundImage = image;
+}
+
 - (void)layout {
 	[super layout];
 	
@@ -47,13 +52,21 @@
 }
 
 - (void)updateBackgroundImage {
-	NSString *identifier = [NSString stringWithFormat:@"%@%x", NSStringFromClass(self.class), self.selected];
-	CGSize size = CGSizeMake(1, CGRectGetHeight(self.bounds));
-	self.backgroundImage = [DemoImageCache.sharedCache cachedImageWithIdentifier:identifier size:size withCreationBlock:^NSImage * (CGSize size) {
-		if (self.selected)
+	NSImage *image = nil;
+	
+	if (self.selected) {
+		NSString *identifier = [NSString stringWithFormat:@"%@%x", NSStringFromClass(self.class), self.selected];
+		CGSize size = CGSizeMake(1, CGRectGetHeight(self.bounds));
+		image = [DemoImageCache.sharedCache cachedImageWithIdentifier:identifier size:size withCreationBlock:^NSImage * (CGSize size) {
 			return [NSImage highlightedGradientImageWithHeight:size.height];
-		return [NSImage standardGradientImageWithHeight:size.height];
-	}];
+		}];
+	} else {
+		image = self.image;
+	}
+	
+	if (self.backgroundImage != image) {
+		self.backgroundImage = image;
+	}
 }
 
 @end

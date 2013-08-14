@@ -53,6 +53,10 @@
 	return CGRectNull;
 }
 
+- (CGSize)contentSize {
+	return CGSizeZero;
+}
+
 - (NSIndexPath *)indexPathForNextItemInDirection:(JNWCollectionViewDirection)direction currentIndexPath:(NSIndexPath *)currentIndexPath {
 	return currentIndexPath;
 }

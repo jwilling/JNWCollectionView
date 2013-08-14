@@ -8,6 +8,7 @@
 
 #import "DemoTableCellView.h"
 #import "NSImage+DemoAdditions.h"
+#import "DemoImageCache.h"
 #import "JNWLabel.h"
 
 @interface DemoTableCellView()
@@ -21,6 +22,7 @@
 	self.layer.backgroundColor = [NSColor redColor].CGColor;
 	self.label = [[JNWLabel alloc] initWithFrame:CGRectZero];
 	[self addSubview:self.label];
+	self.layerContentsRedrawPolicy = NSViewLayerContentsRedrawOnSetNeedsDisplay;
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
@@ -57,7 +59,11 @@
 }
 
 - (void)updateLayer {
-	self.layer.contents = [NSImage standardGradientImageWithHeight:self.bounds.size.height];
+	NSString *identifier = NSStringFromClass(self.class);
+	CGSize size = CGSizeMake(1, CGRectGetHeight(self.bounds));
+	self.layer.contents = [DemoImageCache.sharedCache cachedImageWithIdentifier:identifier size:size withCreationBlock:^NSImage * (CGSize size) {
+		return [NSImage standardGradientImageWithHeight:size.height];
+	}];
 }
 
 @end

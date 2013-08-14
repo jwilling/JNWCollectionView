@@ -11,5 +11,6 @@
 @interface GridCell : JNWCollectionViewCell
 
 @property (nonatomic, copy) NSString *labelText;
+@property (nonatomic, strong) NSImage *image;
 
 @end

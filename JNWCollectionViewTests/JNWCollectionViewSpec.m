@@ -25,10 +25,13 @@ describe(@"documentView property", ^{
 
 describe(@"data source", ^{
 	__block JNWCollectionView *collectionView = nil;
+	__block JNWCollectionViewLayout *collectionViewLayout = nil;
 	__block JNWTestDataSource *testDataSource = nil;
 		
 	beforeAll(^{
 		collectionView = [[JNWCollectionView alloc] initWithFrame:CGRectMake(0, 0, 400, 400)];
+		collectionViewLayout = [[JNWCollectionViewLayout alloc] initWithCollectionView:collectionView];
+		collectionView.collectionViewLayout = collectionViewLayout;
 		testDataSource = [[JNWTestDataSource alloc] init];
 		collectionView.dataSource = testDataSource;
 		
@@ -47,26 +50,29 @@ describe(@"data source", ^{
 		expect(collectionView.numberOfSections).to.equal(kTestDataSourceNumberOfSections);
 	});
 	
-	it(@"should use the correct number of rows in each section", ^{
+	it(@"should use the correct number of items in each section", ^{
 		expect([collectionView numberOfItemsInSection:1]).to.equal(kTestDataSourceNumberOfItems);
 	});
 	
 	it(@"should not be using nil cells", ^{
-		expect([collectionView cellForRowAtIndexPath:[NSIndexPath jnw_indexPathForItem:0 inSection:0]]).notTo.beNil();
+		expect([collectionView cellForItemAtIndexPath:[NSIndexPath jnw_indexPathForItem:0 inSection:0]]).notTo.beNil();
 	});
 	
 	it(@"should use the cell created in collectionView:cellForItemAtIndexPath:", ^{
-		JNWCollectionViewCell *cell = [collectionView cellForRowAtIndexPath:[NSIndexPath jnw_indexPathForItem:0 inSection:0]];
+		JNWCollectionViewCell *cell = [collectionView cellForItemAtIndexPath:[NSIndexPath jnw_indexPathForItem:0 inSection:0]];
 		expect(cell.reuseIdentifier).to.equal(kTestDataSourceCellIdentifier);
 	});
 });
 
 describe(@"-selectItemAtIndexPath:atScrollPosition:animated:", ^{
 	__block JNWCollectionView *collectionView = nil;
+	__block JNWCollectionViewLayout *collectionViewLayout = nil;
 	__block JNWTestDataSource *dataSource = nil;
 	
 	beforeAll(^{
 		collectionView = [[JNWCollectionView alloc] initWithFrame:CGRectMake(0, 0, 300, 500)];
+		collectionViewLayout = [[JNWCollectionViewLayout alloc] initWithCollectionView:collectionView];
+		collectionView.collectionViewLayout = collectionViewLayout;
 		dataSource = [[JNWTestDataSource alloc] init];
 		collectionView.dataSource = dataSource;
 		[collectionView reloadData];
@@ -87,7 +93,7 @@ describe(@"-selectItemAtIndexPath:atScrollPosition:animated:", ^{
 	it(@"should select the cell", ^{
 		NSIndexPath *toSelect = [NSIndexPath jnw_indexPathForItem:1 inSection:0];
 		[collectionView selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNone animated:NO];
-		JNWCollectionViewCell *cell = [collectionView cellForRowAtIndexPath:toSelect];
+		JNWCollectionViewCell *cell = [collectionView cellForItemAtIndexPath:toSelect];
 		expect(cell).notTo.beNil();
 		expect(cell.selected).to.beTruthy();
 	});

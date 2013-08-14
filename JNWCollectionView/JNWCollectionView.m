@@ -7,8 +7,7 @@
 #import "JNWCollectionViewData.h"
 #import "JNWCollectionViewListLayout.h"
 #import "JNWCollectionViewDocumentView.h"
-
-//static const NSUInteger JNWCollectionViewMaximumNumberOfQueuedCells = 2;
+#import "JNWCollectionViewLayout.h"
 
 typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 	JNWCollectionViewSelectionTypeSingle,
@@ -28,13 +27,12 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 		unsigned int delegateShouldDeselect;
 		unsigned int delegateDidDeselect;
 		unsigned int delegateDidScroll;
+		
+		unsigned int wantsLayout;
 	} _collectionViewFlags;
 	
 	CGRect _lastDrawnBounds;
-	BOOL _wantsLayout;
 }
-
-@property (nonatomic, assign) CGSize documentSize;
 
 // Layout data/cache
 @property (nonatomic, strong) JNWCollectionViewData *data;
@@ -79,7 +77,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	collectionView.hasVerticalScroller = YES;
 		
 	// We don't want to perform an initial layout pass until the user has called -reloadData.
-	collectionView->_wantsLayout = NO;
+	collectionView->_collectionViewFlags.wantsLayout = NO;
 	
 	collectionView.backgroundColor = NSColor.clearColor;
 }
@@ -170,17 +168,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		reusableCells = [NSMutableArray array];
 		reuse[identifier] = reusableCells;
 	}
-	
-	//NSLog(@"%ld", reusableCells.count);
 
-//	if (reusableCells.count > JNWCollectionViewMaximumNumberOfQueuedCells) {
-//		if ([item isKindOfClass:NSView.class] && [item superview] != nil)
-//			[(NSView *)item removeFromSuperview];
-//		return;
-//	}
-	
-	//NSLog(@"%ld", reusableCells.count);
-	
 	[reusableCells addObject:item];
 }
 
@@ -238,7 +226,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (void)reloadData {
-	_wantsLayout = YES;
+	_collectionViewFlags.wantsLayout = YES;
 	
 	// Remove any selected indexes we've been tracking.
 	[self.selectedIndexes removeAllObjects];
@@ -247,8 +235,13 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	[self.reusableCells removeAllObjects];
 	[self.reusableSupplementaryViews removeAllObjects];
 	
+	// Remove any view mappings
+	[self.visibleCellsMap removeAllObjects];
+	[self.visibleSupplementaryViewsMap removeAllObjects];
+	
 	// Remove any cells or views that might be added to the document view.
-	for (NSView *view in [self.documentView subviews]) {
+	NSArray *subviews = [[self.documentView subviews] copy];
+	for (NSView *view in subviews) {
 		[view removeFromSuperview];
 	}
 	
@@ -314,8 +307,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 - (NSArray *)allIndexPaths {
 	NSMutableArray *indexPaths = [NSMutableArray array];
 	for (JNWCollectionViewSection *section in self.data.sections) {
-		for (NSInteger row = 0; row < section.numberOfItems; row++) {
-			[indexPaths addObject:[NSIndexPath jnw_indexPathForItem:row inSection:section.index]];
+		for (NSInteger item = 0; item < section.numberOfItems; item++) {
+			[indexPaths addObject:[NSIndexPath jnw_indexPathForItem:item inSection:section.index]];
 		}
 	}
 	
@@ -330,7 +323,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		return [self.collectionViewLayout indexPathsForItemsInRect:rect];
 	}
 		
-	NSMutableArray *visibleRows = [NSMutableArray array];
+	NSMutableArray *visibleCells = [NSMutableArray array];
 	
 	for (JNWCollectionViewSection *section in self.data.sections) {
 		if (!CGRectIntersectsRect(section.frame, rect))
@@ -342,12 +335,12 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 			JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
 			
 			if (CGRectIntersectsRect(attributes.frame, rect)) {
-				[visibleRows addObject:indexPath];
+				[visibleCells addObject:indexPath];
 			}
 		}
 	}
 
-	return visibleRows;
+	return visibleCells;
 }
 
 - (NSArray *)layoutIdentifiersForSupplementaryViewsInRect:(CGRect)rect {
@@ -410,13 +403,14 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 			rect.size.height = CGRectGetHeight(visibleRect);
 			rect.origin.y -= CGRectGetHeight(visibleRect);
 			break;
+		case JNWCollectionViewScrollPositionNone:
+			// no scroll needed
+			return;
+			break;
 		case JNWCollectionViewScrollPositionNearest:
 			// We just pass the cell's frame onto the scroll view. It calculates this for us.
 			break;
-		case JNWCollectionViewScrollPositionNone:
-			// no scroll needed
-			break;
-		default:
+		default: // defaults to the same behavior as nearest
 			break;
 	}
 	
@@ -453,7 +447,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	return CGRectZero;
 }
 
-- (JNWCollectionViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (JNWCollectionViewCell *)cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath == nil)
 		return nil;
 	return self.visibleCellsMap[indexPath];
@@ -484,20 +478,19 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 - (void)layout {
 	[super layout];
 	
-	if (!CGSizeEqualToSize([self.documentView frame].size, self.documentSize)) {
+	if (!CGSizeEqualToSize(self.visibleSize, self.data.encompassingSize)) {
 		[self layoutDocumentView];
 	}
 	
 	if (!CGRectEqualToRect(self.bounds, _lastDrawnBounds)) {
 		// TODO: Do we need to recalculate everything?
-		if (_wantsLayout) {
+		if (_collectionViewFlags.wantsLayout) {
 			[self.data recalculate];
-			[self recalculateDocumentViewSize];
 		}
 		
 		// Check once more whether or not the document view needs to be resized.
-		// If there are a different number of items, `documentSize` might have changed.
-		if (!CGSizeEqualToSize([self.documentView frame].size, self.documentSize)) {
+		// If there are a different number of items, the encompassing size might have changed.
+		if (!CGSizeEqualToSize(self.visibleSize, self.data.encompassingSize)) {
 			[self layoutDocumentView];
 		}
 		
@@ -510,25 +503,15 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	}
 }
 
-- (void)recalculateDocumentViewSize {
-	CGRect frame = CGRectNull;
-	
-	for (JNWCollectionViewSection *section in self.data.sections) {
-		frame = CGRectUnion(frame, section.frame);
-	}
-	
-	self.documentSize = frame.size;
-}
-
 - (void)layoutDocumentView {
-	if (!_wantsLayout)
+	if (!_collectionViewFlags.wantsLayout)
 		return;
 	
 	NSView *documentView = self.documentView;
-	documentView.frameSize = self.documentSize;
+	documentView.frameSize = self.data.encompassingSize;
 }
 
-- (CGSize)contentSize {
+- (CGSize)visibleSize {
 	return self.documentVisibleRect.size;
 }
 
@@ -537,7 +520,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (void)layoutCellsWithRedraw:(BOOL)needsVisibleRedraw {
-	if (self.dataSource == nil || !_wantsLayout)
+	if (self.dataSource == nil || !_collectionViewFlags.wantsLayout)
 		return;
 	
 	if (needsVisibleRedraw) {
@@ -560,7 +543,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	
 	// Remove old cells and put them in the reuse queue
 	for (NSIndexPath *indexPath in indexPathsToRemove) {
-		JNWCollectionViewCell *cell = [self cellForRowAtIndexPath:indexPath];
+		JNWCollectionViewCell *cell = [self cellForItemAtIndexPath:indexPath];
 		[self.visibleCellsMap removeObjectForKey:indexPath];
 
 		[self enqueueReusableCell:cell withIdentifier:cell.reuseIdentifier];
@@ -648,7 +631,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (void)layoutSupplementaryViewsWithRedraw:(BOOL)needsVisibleRedraw {
-	if (!_collectionViewFlags.dataSourceViewForSupplementaryView || !_wantsLayout)
+	if (!_collectionViewFlags.dataSourceViewForSupplementaryView || !_collectionViewFlags.wantsLayout)
 		return;
 	
 	if (needsVisibleRedraw) {
@@ -731,7 +714,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 // Returns the last object in the selection array.
-- (NSIndexPath *)indexPathForSelectedRow {
+- (NSIndexPath *)indexPathForSelectedItem {
 	return self.selectedIndexes.lastObject;
 }
 
@@ -756,7 +739,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		return;
 	
 	// TODO animated
-	JNWCollectionViewCell *cell = [self cellForRowAtIndexPath:indexPath];
+	JNWCollectionViewCell *cell = [self cellForItemAtIndexPath:indexPath];
 	[cell setSelected:NO animated:self.animatesSelection];
 	[self.selectedIndexes removeObject:indexPath];
 	
@@ -771,9 +754,11 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		return;
 	
 	// TODO animated
-	JNWCollectionViewCell *cell = [self cellForRowAtIndexPath:indexPath];
+	JNWCollectionViewCell *cell = [self cellForItemAtIndexPath:indexPath];
 	[cell setSelected:YES animated:self.animatesSelection];
-	[self.selectedIndexes addObject:indexPath];
+
+	if (![self.selectedIndexes containsObject:indexPath])
+		[self.selectedIndexes addObject:indexPath];
 	
 	if (_collectionViewFlags.delegateDidSelect)
 		[self.delegate collectionView:self didSelectItemAtIndexPath:indexPath];
@@ -898,41 +883,41 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (void)moveUp:(id)sender {
-	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionUp currentIndexPath:[self indexPathForSelectedRow]];
+	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionUp currentIndexPath:[self indexPathForSelectedItem]];
 	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:self.animatesSelection];}
 
 - (void)moveUpAndModifySelection:(id)sender {
-	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionUp currentIndexPath:[self indexPathForSelectedRow]];
+	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionUp currentIndexPath:[self indexPathForSelectedItem]];
 	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:self.animatesSelection selectionType:JNWCollectionViewSelectionTypeExtending];
 }
 
 - (void)moveDown:(id)sender {
-	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionDown currentIndexPath:[self indexPathForSelectedRow]];
+	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionDown currentIndexPath:[self indexPathForSelectedItem]];
 	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:self.animatesSelection];
 }
 
 - (void)moveDownAndModifySelection:(id)sender {
-	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionDown currentIndexPath:[self indexPathForSelectedRow]];
+	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionDown currentIndexPath:[self indexPathForSelectedItem]];
 	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:self.animatesSelection selectionType:JNWCollectionViewSelectionTypeExtending];
 }
 
 - (void)moveRight:(id)sender {
-	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionRight currentIndexPath:[self indexPathForSelectedRow]];
+	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionRight currentIndexPath:[self indexPathForSelectedItem]];
 	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:self.animatesSelection];
 }
 
 - (void)moveRightAndModifySelection:(id)sender {
-	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionRight currentIndexPath:[self indexPathForSelectedRow]];
+	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionRight currentIndexPath:[self indexPathForSelectedItem]];
 	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:self.animatesSelection selectionType:JNWCollectionViewSelectionTypeExtending];
 }
 
 - (void)moveLeft:(id)sender {
-	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionLeft currentIndexPath:[self indexPathForSelectedRow]];
+	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionLeft currentIndexPath:[self indexPathForSelectedItem]];
 	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:self.animatesSelection];
 }
 
 - (void)moveLeftAndModifySelection:(id)sender {
-	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionLeft currentIndexPath:[self indexPathForSelectedRow]];
+	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionLeft currentIndexPath:[self indexPathForSelectedItem]];
 	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:self.animatesSelection selectionType:JNWCollectionViewSelectionTypeExtending];
 }
 

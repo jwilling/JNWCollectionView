@@ -7,6 +7,7 @@
 #import "JNWCollectionViewData.h"
 #import "JNWCollectionViewListLayout.h"
 #import "JNWCollectionViewDocumentView.h"
+#import "JNWCollectionViewLayout.h"
 
 typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 	JNWCollectionViewSelectionTypeSingle,

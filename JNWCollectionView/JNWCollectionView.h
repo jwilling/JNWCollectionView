@@ -3,7 +3,6 @@
 #import "RBLScrollView.h"
 #import "JNWCollectionViewReusableView.h"
 #import "NSIndexPath+JNWAdditions.h"
-#import "JNWCollectionViewLayout.h"
 
 typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 	JNWCollectionViewScrollPositionNone, // does not scroll, only selects
@@ -82,6 +81,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 @end
 
 
+@class JNWCollectionViewLayout;
 @interface JNWCollectionView : RBLScrollView
 
 @property (nonatomic, weak) id<JNWCollectionViewDelegate> delegate;
@@ -200,14 +200,5 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 
 // Deselects all items in the collection view.
 - (void)deselectAllItems;
-
-// Returns whether an index path contains a valid item.
-- (BOOL)validateIndexPath:(NSIndexPath *)indexPath;
-
-// Returns the next index path after the specified index path, or nil if it is the last index.
-- (NSIndexPath *)indexPathForNextSelectableItemAfterIndexPath:(NSIndexPath *)indexPath;
-
-// Returns the next index path before the specified index path, or nil if it is the last index.
-- (NSIndexPath *)indexPathForNextSelectableItemBeforeIndexPath:(NSIndexPath *)indexPath;
 
 @end

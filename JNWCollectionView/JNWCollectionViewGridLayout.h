@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 AppJon. All rights reserved.
 //
 
-#import <JNWCollectionView/JNWCollectionView.h>
+#import "JNWCollectionViewLayout.h"
 
 extern NSString * const JNWCollectionViewGridLayoutHeaderIdentifier;
 extern NSString * const JNWCollectionViewGridLayoutFooterIdentifier;

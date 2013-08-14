@@ -9,6 +9,7 @@
 #import "JNWCollectionViewData.h"
 #import "JNWCollectionView+Private.h"
 #import "JNWCollectionView.h"
+#import "JNWCollectionViewLayout.h"
 
 @interface JNWCollectionViewData()
 @property (nonatomic, weak) JNWCollectionView *collectionView;

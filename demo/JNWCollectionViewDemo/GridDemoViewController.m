@@ -22,7 +22,8 @@ static NSString * const identifier = @"CELL";
 	gridLayout.delegate = self;
 	self.collectionView.collectionViewLayout = gridLayout;
 	self.collectionView.dataSource = self;
-	[self.collectionView registerClass:GridCell.class forCellWithReuseIdentifier:@"CELL"];
+	[self.collectionView registerClass:GridCell.class forCellWithReuseIdentifier:identifier];
+	self.collectionView.animatesSelection = NO; // (this is the default option)
 	
 	[self.collectionView reloadData];
 }
@@ -30,6 +31,7 @@ static NSString * const identifier = @"CELL";
 - (JNWCollectionViewCell *)collectionView:(JNWCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 	GridCell *cell = (GridCell *)[collectionView dequeueReusableCellWithIdentifier:identifier];
 	cell.labelText = [NSString stringWithFormat:@"%ld",indexPath.item];
+	cell.image = [NSImage imageNamed:[NSString stringWithFormat:@"%d.jpg", (arc4random() % 30)]];
 	return cell;
 }
 

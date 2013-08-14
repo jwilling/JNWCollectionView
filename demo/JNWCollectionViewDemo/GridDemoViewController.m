@@ -9,6 +9,10 @@
 #import "GridDemoViewController.h"
 #import "GridCell.h"
 
+@interface GridDemoViewController()
+@property (nonatomic, strong) NSArray *images;
+@end
+
 static NSString * const identifier = @"CELL";
 
 @implementation GridDemoViewController
@@ -18,6 +22,8 @@ static NSString * const identifier = @"CELL";
 }
 
 - (void)awakeFromNib {
+	[self generateImages];
+	
 	JNWCollectionViewGridLayout *gridLayout = [[JNWCollectionViewGridLayout alloc] initWithCollectionView:self.collectionView];
 	gridLayout.delegate = self;
 	self.collectionView.collectionViewLayout = gridLayout;
@@ -28,10 +34,12 @@ static NSString * const identifier = @"CELL";
 	[self.collectionView reloadData];
 }
 
+#pragma mark Data source
+
 - (JNWCollectionViewCell *)collectionView:(JNWCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 	GridCell *cell = (GridCell *)[collectionView dequeueReusableCellWithIdentifier:identifier];
 	cell.labelText = [NSString stringWithFormat:@"%ld",indexPath.item];
-	cell.image = [NSImage imageNamed:[NSString stringWithFormat:@"%d.jpg", (arc4random() % 30)]];
+	cell.image = self.images[arc4random() % self.images.count];
 	return cell;
 }
 
@@ -44,7 +52,38 @@ static NSString * const identifier = @"CELL";
 }
 
 - (CGSize)sizeForItemInCollectionView:(JNWCollectionView *)collectionView {
-	return CGSizeMake(128.f, 128.f);
+	return CGSizeMake(150.f, 150.f);
+}
+
+#pragma mark Image creation
+
+// To simulate at least something realistic, this just generates some randomly tinted images so that not every
+// cell has the same image.
+- (void)generateImages {
+	NSInteger numberOfImages = 30;
+	NSMutableArray *images = [NSMutableArray array];
+	
+	for (int i = 0; i < numberOfImages; i++) {
+		
+		// Just get a randomly-tinted template image.
+		NSImage *image = [NSImage imageWithSize:CGSizeMake(150.f, 150.f) flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
+			[[NSImage imageNamed:NSImageNameUser] drawInRect:dstRect fromRect:CGRectZero operation:NSCompositeSourceOver fraction:1];
+			
+			CGFloat hue = arc4random() % 256 / 256.0;
+			CGFloat saturation = arc4random() % 128 / 256.0 + 0.5;
+			CGFloat brightness = arc4random() % 128 / 256.0 + 0.5;
+			NSColor *color = [NSColor colorWithCalibratedHue:hue saturation:saturation brightness:brightness alpha:1];
+			
+			[color set];
+			NSRectFillUsingOperation(dstRect, NSCompositeDestinationAtop);
+			
+			return YES;
+		}];
+		
+		[images addObject:image];
+	}
+	
+	self.images = images.copy;
 }
 
 @end

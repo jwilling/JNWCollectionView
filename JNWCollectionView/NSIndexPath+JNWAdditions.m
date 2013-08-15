@@ -10,7 +10,7 @@
 
 @implementation NSIndexPath (JNWAdditions)
 
-+ (instancetype)jnw_indexPathForItem:(NSUInteger)item inSection:(NSUInteger)section {
++ (instancetype)jnw_indexPathForItem:(NSInteger)item inSection:(NSInteger)section {
 	NSUInteger indexPath[2] = { section , item };
 	return [self indexPathWithIndexes:indexPath length:2];
 }

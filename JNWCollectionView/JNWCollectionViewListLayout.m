@@ -162,17 +162,10 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 			// purposes, finding the rects of the upper and lower bound.
 			NSInteger lowerRow = [self nearestIntersectingRowInSection:section inRect:rect ascending:NO];
 			NSInteger upperRow = [self nearestIntersectingRowInSection:section inRect:rect ascending:YES];
-
-			//NSLog(@"lower row: %li section: %li", lowerRow, section.index);
-			//NSLog(@"upper row: %li section: %li", upperRow, section.index);
-			
 			
 			for (NSInteger item = lowerRow; item <= upperRow; item++) {
 				[indexPaths addObject:[NSIndexPath jnw_indexPathForItem:item inSection:section.index]];
 			}
-			
-			//NSIndexPath *lowerIndexPath = [self indexPathForClosestIntersectingItemInRect:rect ordered:NSOrderedDescending section:section];
-			//NSIndexPath *upperIndexPath = [self indexPathForClosestIntersectingItemInRect:rect ordered:NSOrderedAscending section:section];
 		}
 	}
 				 
@@ -184,35 +177,35 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 	NSInteger high = section.numberOfRows - 1;
 	NSInteger mid;
 	
-	CGFloat targetOffset = (ascending ? CGRectGetMaxY(containingRect) : containingRect.origin.y);
+	CGFloat absoluteOffset = (ascending ? CGRectGetMaxY(containingRect) : containingRect.origin.y);
+	CGFloat relativeOffset = absoluteOffset - section.offset;
 	
 	while (low <= high) {
 		mid = (low + high) / 2;
 		JNWCollectionViewListLayoutRowInfo midInfo = section.rowInfo[mid];
 		
-		if (midInfo.yOffset == targetOffset)
+		if (midInfo.yOffset == relativeOffset) {
 			return mid;
-		if (midInfo.yOffset > targetOffset)
+		}
+		if (midInfo.yOffset > relativeOffset) {
 			high = mid - 1;
-		if (midInfo.yOffset < targetOffset)
+		}
+		if (midInfo.yOffset < relativeOffset) {
 			low = mid + 1;
+		}
 	}
 	
 	// We haven't found a row that exactly aligns with the rect, which is quite often.
 	if (ascending) {
-		while (mid < section.numberOfRows && section.rowInfo[mid].yOffset + section.offset < targetOffset) {
+		while (mid < section.numberOfRows && section.rowInfo[mid].yOffset + section.offset < relativeOffset) {
 			mid++;
 		}
 		
 		return mid;
-		
-		//NSLog(@"ascending, final index: %li", mid);
 	} else {
-		while (mid >= 0 && section.rowInfo[mid].yOffset + section.offset > targetOffset) {
+		while (mid >= 0 && section.rowInfo[mid].yOffset + section.offset > relativeOffset) {
 			mid--;
 		}
-		
-		//NSLog(@"descending, final index: %li", mid);
 	}
 	
 	return mid;

@@ -256,7 +256,11 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		return;
 	
 	_collectionViewLayout = collectionViewLayout;
-	[self reloadData];
+	
+	// Don't reload the data until we've performed an initial reload.
+	if (_collectionViewFlags.wantsLayout) {
+		[self reloadData];
+	}
 }
 
 - (void)setBackgroundColor:(NSColor *)backgroundColor {

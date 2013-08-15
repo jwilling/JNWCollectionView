@@ -32,4 +32,8 @@
 	return NO;
 }
 
+- (NSString *)debugDescription {
+	return [NSString stringWithFormat:@"<%@: %p; section = %ld; item = %ld>", self.class, self, self.section, self.item];
+}
+
 @end

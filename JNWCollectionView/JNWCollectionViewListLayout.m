@@ -150,9 +150,6 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 }
 
 - (NSArray *)indexPathsForItemsInRect:(CGRect)rect {
-	CGFloat minimumY = rect.origin.y;
-	CGFloat maximumY = minimumY + rect.size.height;
-	
 	NSMutableArray *indexPaths = [NSMutableArray array];
 	
 	for (JNWCollectionViewListLayoutSection *section in self.sections) {
@@ -203,7 +200,7 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 		
 		return mid;
 	} else {
-		while (mid >= 0 && section.rowInfo[mid].yOffset + section.offset > relativeOffset) {
+		while (mid > 0 && section.rowInfo[mid].yOffset + section.offset > relativeOffset) {
 			mid--;
 		}
 	}

@@ -217,53 +217,6 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 	return mid;
 }
 
-- (NSIndexPath *)indexPathForClosestIntersectingItemInRect:(CGRect)encompassingRect ordered:(NSComparisonResult)ordered section:(JNWCollectionViewListLayoutSection *)section {
-	CGRect sectionFrame = section.frame;
-	CGFloat sectionOriginY = section.frame.origin.y;
-	CGFloat encompassingMinY = (encompassingRect.origin.y < sectionOriginY ? sectionOriginY : encompassingRect.origin.y);
-	CGFloat encompassingMaxY = (CGRectGetMaxY(encompassingRect) > CGRectGetMaxY(sectionFrame) ? CGRectGetMaxY(sectionFrame) : CGRectGetMaxY(encompassingRect));
-	
-	NSInteger mid = 0;
-	NSInteger first = 0;
-	NSInteger last = section.numberOfRows - 1;
-	
-	while (first <= last) {
-		mid = (first + last) / 2;
-		
-		CGRect itemRect = [self rectForItemAtIndex:mid section:section.index];
-		CGRect containingRect = CGRectMake(0, encompassingMinY, encompassingRect.size.width, encompassingMaxY - encompassingMinY);
-		CGRect intersection = CGRectIntersection(containingRect, itemRect);
-		
-		// If the order is ascending, we want the upper bound. If descending, we want the lower bound.
-		if (ordered == NSOrderedAscending) {
-			if (CGRectGetMaxY(itemRect) == encompassingMaxY || (CGRectGetHeight(intersection) > 0 && CGRectGetHeight(intersection) < CGRectGetHeight(itemRect)))
-				break;
-			else if (CGRectGetMaxY(itemRect) > encompassingMaxY)
-				last = mid - 1;
-			else
-				first = mid - 1;
-			
-		} else {
-
-			if (CGRectGetMinY(itemRect) == encompassingMinY || (CGRectGetHeight(intersection) > 0 && CGRectGetHeight(intersection) < CGRectGetHeight(itemRect))) {
-				NSLog(@"oh snap");
-				break;
-			}
-			else if (CGRectGetMaxY(itemRect) > encompassingMaxY) {
-				NSLog(@"greater than");
-				last = mid - 1;
-			}
-			else {
-				first = mid - 1;
-				NSLog(@"less than");
-			}
-		}
-	}
-	
-	NSLog(@"found potential index: %li", mid);
-	
-}
-
 - (NSIndexPath *)indexPathForNextItemInDirection:(JNWCollectionViewDirection)direction currentIndexPath:(NSIndexPath *)currentIndexPath {
 	NSIndexPath *newIndexPath = currentIndexPath;
 	

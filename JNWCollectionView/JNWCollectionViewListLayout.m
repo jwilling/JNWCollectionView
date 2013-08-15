@@ -75,39 +75,40 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 	BOOL delegateHeightForRow = [self.delegate respondsToSelector:@selector(collectionView:heightForRowAtIndexPath:)];
 	BOOL delegateHeightForHeader = [self.delegate respondsToSelector:@selector(collectionView:heightForHeaderInSection:)];
 	BOOL delegateHeightForFooter = [self.delegate respondsToSelector:@selector(collectionView:heightForFooterInSection:)];
+	JNWCollectionView *collectionView = self.collectionView;
 	
 	NSUInteger numberOfSections = [self.collectionView numberOfSections];
 	CGFloat totalHeight = 0;
 	
 	for (NSUInteger section = 0; section < numberOfSections; section++) {
-		NSInteger numberOfRows = [self.collectionView numberOfItemsInSection:section];
-		NSInteger headerHeight = delegateHeightForHeader ? [self.delegate collectionView:self.collectionView heightForHeaderInSection:section] : 0;
-		NSInteger footerHeight = delegateHeightForFooter ? [self.delegate collectionView:self.collectionView heightForFooterInSection:section] : 0;
+		NSInteger numberOfRows = [collectionView numberOfItemsInSection:section];
+		NSInteger headerHeight = delegateHeightForHeader ? [self.delegate collectionView:collectionView heightForHeaderInSection:section] : 0;
+		NSInteger footerHeight = delegateHeightForFooter ? [self.delegate collectionView:collectionView heightForFooterInSection:section] : 0;
 		
 		JNWCollectionViewListLayoutSection *sectionInfo = [[JNWCollectionViewListLayoutSection alloc] initWithNumberOfRows:numberOfRows];
-		sectionInfo.offset = totalHeight + headerHeight;
+		sectionInfo.offset = totalHeight;
 		sectionInfo.height = 0;
 		sectionInfo.headerHeight = headerHeight;
 		sectionInfo.footerHeight = footerHeight;
 		sectionInfo.index = section;
 		
-		CGRect sectionFrame = CGRectNull;
+		sectionInfo.height += headerHeight; // the footer height is added after cells have determined their offsets
+		
 		for (NSInteger row = 0; row < numberOfRows; row++) {
 			CGFloat rowHeight = self.rowHeight;
 			NSIndexPath *indexPath = [NSIndexPath jnw_indexPathForItem:row inSection:section];
 			if (delegateHeightForRow)
-				rowHeight = [self.delegate collectionView:self.collectionView heightForRowAtIndexPath:indexPath];
+				rowHeight = [self.delegate collectionView:collectionView heightForRowAtIndexPath:indexPath];
 			
 			sectionInfo.rowInfo[row].height = rowHeight;
 			sectionInfo.rowInfo[row].yOffset = sectionInfo.height;
 			sectionInfo.height += rowHeight;
-			
-			sectionFrame = CGRectUnion(sectionFrame, CGRectMake(0, sectionInfo.height + sectionInfo.offset, self.collectionView.contentSize.width, rowHeight));
 		}
 		
-		sectionInfo.frame = sectionFrame;
+		sectionInfo.height += footerHeight;
+		sectionInfo.frame = CGRectMake(0, sectionInfo.offset, collectionView.contentSize.width, sectionInfo.height);
 		
-		totalHeight += sectionInfo.height + footerHeight + headerHeight;
+		totalHeight += sectionInfo.height;
 		[self.sections addObject:sectionInfo];
 	}
 }
@@ -125,9 +126,9 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 	CGRect frame = CGRectZero;
 	
 	if ([kind isEqualToString:JNWCollectionViewListLayoutHeaderKind]) {
-		frame = CGRectMake(0, section.offset - section.headerHeight, width, section.headerHeight);
+		frame = CGRectMake(0, section.offset, width, section.headerHeight);
 	} else if ([kind isEqualToString:JNWCollectionViewListLayoutFooterKind]) {
-		frame = CGRectMake(0, section.offset + section.height, width, section.footerHeight);
+		frame = CGRectMake(0, section.offset + section.height - section.footerHeight, width, section.footerHeight);
 	}
 	
 	JNWCollectionViewLayoutAttributes *attributes = [[JNWCollectionViewLayoutAttributes alloc] init];

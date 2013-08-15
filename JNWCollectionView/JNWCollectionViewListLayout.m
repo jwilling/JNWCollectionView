@@ -34,7 +34,7 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 	self = [super init];
 	if (self == nil) return nil;
 	_numberOfRows = numberOfRows;
-	self.rowInfo = calloc(numberOfRows, sizeof(JNWCollectionViewListLayoutRowInfo));
+	self.rowInfo = calloc(numberOfRows - 1, sizeof(JNWCollectionViewListLayoutRowInfo));
 	return self;
 }
 
@@ -194,7 +194,7 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 	
 	// We haven't found a row that exactly aligns with the rect, which is quite often.
 	if (ascending) {
-		while (mid < section.numberOfRows && section.rowInfo[mid].yOffset + section.offset < relativeOffset) {
+		while (mid < (section.numberOfRows - 1) && section.rowInfo[mid].yOffset + section.offset < relativeOffset) {
 			mid++;
 		}
 		

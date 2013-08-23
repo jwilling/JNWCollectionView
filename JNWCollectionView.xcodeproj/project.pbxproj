@@ -39,12 +39,6 @@
 		ABB0240B170791D300537A92 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB0240A170791D300537A92 /* SenTestingKit.framework */; };
 		ABB0240C170791D300537A92 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB023F4170791D300537A92 /* Cocoa.framework */; };
 		ABB0240F170791D300537A92 /* JNWCollectionView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB023F1170791D300537A92 /* JNWCollectionView.framework */; };
-		ABB0245E1707936300537A92 /* NSColor+RBLCGColorAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB024581707936300537A92 /* NSColor+RBLCGColorAdditions.h */; };
-		ABB0245F1707936300537A92 /* NSColor+RBLCGColorAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB024591707936300537A92 /* NSColor+RBLCGColorAdditions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		ABB024611707936300537A92 /* RBLClipView.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB0245A1707936300537A92 /* RBLClipView.h */; };
-		ABB024621707936300537A92 /* RBLClipView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB0245B1707936300537A92 /* RBLClipView.m */; };
-		ABB024641707936300537A92 /* RBLScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB0245C1707936300537A92 /* RBLScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		ABB024651707936300537A92 /* RBLScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB0245D1707936300537A92 /* RBLScrollView.m */; };
 		ABB024681707937F00537A92 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB024671707937F00537A92 /* QuartzCore.framework */; };
 		ABBEA58B171E7D7A00A6F03D /* JNWCollectionViewSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = ABBEA58A171E7D7A00A6F03D /* JNWCollectionViewSpec.m */; };
 		ABDE2699172BD9B100F8924F /* JNWTestImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = ABDE2698172BD9B100F8924F /* JNWTestImplementation.m */; };
@@ -170,12 +164,6 @@
 		ABB023F9170791D300537A92 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		ABB02409170791D300537A92 /* JNWCollectionViewTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JNWCollectionViewTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABB0240A170791D300537A92 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		ABB024581707936300537A92 /* NSColor+RBLCGColorAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSColor+RBLCGColorAdditions.h"; path = "external/Rebel/Rebel/NSColor+RBLCGColorAdditions.h"; sourceTree = SOURCE_ROOT; };
-		ABB024591707936300537A92 /* NSColor+RBLCGColorAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSColor+RBLCGColorAdditions.m"; path = "external/Rebel/Rebel/NSColor+RBLCGColorAdditions.m"; sourceTree = SOURCE_ROOT; };
-		ABB0245A1707936300537A92 /* RBLClipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RBLClipView.h; path = external/Rebel/Rebel/RBLClipView.h; sourceTree = SOURCE_ROOT; };
-		ABB0245B1707936300537A92 /* RBLClipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RBLClipView.m; path = external/Rebel/Rebel/RBLClipView.m; sourceTree = SOURCE_ROOT; };
-		ABB0245C1707936300537A92 /* RBLScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RBLScrollView.h; path = external/Rebel/Rebel/RBLScrollView.h; sourceTree = SOURCE_ROOT; };
-		ABB0245D1707936300537A92 /* RBLScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RBLScrollView.m; path = external/Rebel/Rebel/RBLScrollView.m; sourceTree = SOURCE_ROOT; };
 		ABB024671707937F00537A92 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		ABBEA58A171E7D7A00A6F03D /* JNWCollectionViewSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewSpec.m; path = JNWCollectionViewTests/JNWCollectionViewSpec.m; sourceTree = SOURCE_ROOT; };
 		ABDE2697172BD9B100F8924F /* JNWTestImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWTestImplementation.h; path = JNWCollectionViewTests/JNWTestImplementation.h; sourceTree = SOURCE_ROOT; };
@@ -325,7 +313,6 @@
 				AB39819C1731A1B50062B2E0 /* JNWCollectionViewReusableView+Private.h */,
 				AB3C71F2170CA8D3004A91DB /* NSIndexPath+JNWAdditions.h */,
 				AB3C71F3170CA8D3004A91DB /* NSIndexPath+JNWAdditions.m */,
-				ABB024571707934300537A92 /* external */,
 				ABB023FB170791D300537A92 /* Supporting Files */,
 			);
 			name = JNWCollectionView;
@@ -356,19 +343,6 @@
 			path = JNWTableViewTests;
 			sourceTree = "<group>";
 		};
-		ABB024571707934300537A92 /* external */ = {
-			isa = PBXGroup;
-			children = (
-				ABB024581707936300537A92 /* NSColor+RBLCGColorAdditions.h */,
-				ABB024591707936300537A92 /* NSColor+RBLCGColorAdditions.m */,
-				ABB0245A1707936300537A92 /* RBLClipView.h */,
-				ABB0245B1707936300537A92 /* RBLClipView.m */,
-				ABB0245C1707936300537A92 /* RBLScrollView.h */,
-				ABB0245D1707936300537A92 /* RBLScrollView.m */,
-			);
-			name = external;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -384,9 +358,6 @@
 				AB1514951717443F00871248 /* JNWCollectionViewFlowLayout.h in Headers */,
 				AB1514741714D39600871248 /* JNWCollectionViewListLayout.h in Headers */,
 				AB3C7202170CA8D3004A91DB /* NSIndexPath+JNWAdditions.h in Headers */,
-				ABB024641707936300537A92 /* RBLScrollView.h in Headers */,
-				ABB0245E1707936300537A92 /* NSColor+RBLCGColorAdditions.h in Headers */,
-				ABB024611707936300537A92 /* RBLClipView.h in Headers */,
 				AB3C71F7170CA8D3004A91DB /* JNWCollectionView+Private.h in Headers */,
 				AB3C71FB170CA8D3004A91DB /* JNWCollectionViewCell+Private.h in Headers */,
 				AB39819D1731A1B50062B2E0 /* JNWCollectionViewReusableView+Private.h in Headers */,
@@ -574,9 +545,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ABB0245F1707936300537A92 /* NSColor+RBLCGColorAdditions.m in Sources */,
-				ABB024621707936300537A92 /* RBLClipView.m in Sources */,
-				ABB024651707936300537A92 /* RBLScrollView.m in Sources */,
 				AB3C71F5170CA8D3004A91DB /* JNWCollectionView.m in Sources */,
 				AB3C71F9170CA8D3004A91DB /* JNWCollectionViewCell.m in Sources */,
 				AB3C71FD170CA8D3004A91DB /* JNWCollectionViewReusableView.m in Sources */,

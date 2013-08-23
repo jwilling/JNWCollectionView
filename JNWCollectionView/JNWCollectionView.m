@@ -1,5 +1,4 @@
 #import "JNWCollectionView.h"
-#import "RBLClipView.h"
 #import "JNWCollectionView+Private.h"
 #import "JNWCollectionViewCell+Private.h"
 #import "JNWCollectionViewReusableView+Private.h"
@@ -414,7 +413,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 			break;
 	}
 	
-	[(RBLClipView *)self.contentView scrollRectToVisible:rect animated:animated];
+	[self.clipView scrollRectToVisible:rect animated:animated];
 	
 	if (_collectionViewFlags.delegateDidScroll) {
 		[self.delegate collectionView:self didScrollToItemAtIndexPath:indexPath];

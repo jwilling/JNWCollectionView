@@ -318,8 +318,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	if (CGRectEqualToRect(rect, CGRectZero))
 		return [NSArray array];
 	
-	if ([self.collectionViewLayout wantsIndexPathsForItemsInRect]) {
-		return [self.collectionViewLayout indexPathsForItemsInRect:rect];
+	NSArray *potentialIndexPaths = [self.collectionViewLayout indexPathsForItemsInRect:rect];
+	if (potentialIndexPaths != nil) {
+		return potentialIndexPaths;
 	}
 		
 	NSMutableArray *visibleCells = [NSMutableArray array];

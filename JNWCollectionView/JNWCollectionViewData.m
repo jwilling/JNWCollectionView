@@ -62,7 +62,10 @@
 		[self.sectionData addObject:section];
 	}
 	
+	NSTimeInterval start = [NSDate timeIntervalSinceReferenceDate];
 	[layout prepareLayout];
+	NSTimeInterval end = [NSDate timeIntervalSinceReferenceDate] - start;
+	NSLog(@"layout time: %f", end);
 	
 	for (NSInteger sectionIdx = 0; sectionIdx < self.numberOfSections; sectionIdx++) {
 		JNWCollectionViewSection *section = self.sections[sectionIdx];

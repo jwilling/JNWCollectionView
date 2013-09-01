@@ -47,7 +47,7 @@ static NSString * const headerIdentifier = @"HEADER";
 
 - (JNWCollectionViewCell *)collectionView:(JNWCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 	ListCell *cell = (ListCell *)[collectionView dequeueReusableCellWithIdentifier:cellIdentifier];
-	cell.cellLabelText = [NSString stringWithFormat:@"%ld", (long)indexPath.item];
+	cell.cellLabelText = [NSString stringWithFormat:@"%ld - %ld", indexPath.item, indexPath.section];
 	return cell;
 }
 

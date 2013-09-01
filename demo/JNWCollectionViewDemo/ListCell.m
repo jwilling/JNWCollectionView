@@ -12,7 +12,7 @@
 #import "DemoImageCache.h"
 
 @interface ListCell()
-@property (nonatomic, strong) JNWLabel *cellLabel;
+@property (nonatomic, strong) JNWLabel *label;
 @end
 
 @implementation ListCell
@@ -21,8 +21,8 @@
 	self = [super initWithFrame:frameRect];
 	if (self == nil) return nil;
 	
-	self.cellLabel = [[JNWLabel alloc] initWithFrame:CGRectZero];
-	[self.contentView addSubview:self.cellLabel];
+	self.label = [[JNWLabel alloc] initWithFrame:CGRectZero];
+	[self.contentView addSubview:self.label];
 	
 	return self;
 }
@@ -30,14 +30,15 @@
 - (void)layout {
 	[super layout];
 	
-	CGRect cellLabelFrame = self.bounds;
-	cellLabelFrame.size.width = 50;
-	self.cellLabel.frame = CGRectOffset(cellLabelFrame, 15, -15);
+	CGRect labelRect = CGRectMake(15, 10, 100, 20);
+	if (!CGRectEqualToRect(labelRect, self.label.frame)) {
+		self.label.frame = labelRect;
+	}
 }
 
 - (void)setCellLabelText:(NSString *)cellLabelText {
 	_cellLabelText = cellLabelText;
-	self.cellLabel.text = cellLabelText;
+	self.label.text = cellLabelText;
 }
 
 - (void)setSelected:(BOOL)selected {

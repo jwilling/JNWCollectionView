@@ -151,6 +151,12 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	return attributes;
 }
 
+- (CGRect)rectForSectionAtIndex:(NSInteger)index {
+	JNWCollectionViewGridLayoutSection *section = self.sections[index];
+	CGFloat height = section.height + section.headerHeight + section.footerHeight;
+	return CGRectMake(0, section.offset, self.collectionView.contentSize.width, height);
+}
+
 - (NSArray *)indexPathsForItemsInRect:(CGRect)rect {
 	NSMutableArray *visibleRows = [NSMutableArray array];
 	

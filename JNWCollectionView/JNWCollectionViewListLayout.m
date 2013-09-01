@@ -13,6 +13,11 @@ typedef struct {
 	CGFloat yOffset;
 } JNWCollectionViewListLayoutRowInfo;
 
+typedef NS_ENUM(NSInteger, JNWListEdge) {
+	JNWListEdgeTop,
+	JNWListEdgeBottom
+};
+
 NSString * const JNWCollectionViewListLayoutHeaderKind = @"JNWCollectionViewListLayoutHeader";
 NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewListLayoutFooter";
 
@@ -157,10 +162,10 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 			
 			// Since this is a linear set of data, we run a binary search for optimization
 			// purposes, finding the rects of the upper and lower bound.
-			NSInteger lowerRow = [self nearestIntersectingRowInSection:section inRect:rect ascending:NO];
-			NSInteger upperRow = [self nearestIntersectingRowInSection:section inRect:rect ascending:YES];
+			NSInteger upperRow = [self nearestIntersectingRowInSection:section inRect:rect edge:JNWListEdgeTop];
+			NSInteger lowerRow = [self nearestIntersectingRowInSection:section inRect:rect edge:JNWListEdgeBottom];
 			
-			for (NSInteger item = lowerRow; item <= upperRow; item++) {
+			for (NSInteger item = upperRow; item <= lowerRow; item++) {
 				[indexPaths addObject:[NSIndexPath jnw_indexPathForItem:item inSection:section.index]];
 			}
 		}
@@ -169,12 +174,12 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 	return indexPaths;
 }
 
-- (NSInteger)nearestIntersectingRowInSection:(JNWCollectionViewListLayoutSection *)section inRect:(CGRect)containingRect ascending:(BOOL)ascending {
+- (NSInteger)nearestIntersectingRowInSection:(JNWCollectionViewListLayoutSection *)section inRect:(CGRect)containingRect edge:(JNWListEdge)edge {
 	NSInteger low = 0;
 	NSInteger high = section.numberOfRows - 1;
 	NSInteger mid;
 	
-	CGFloat absoluteOffset = (ascending ? CGRectGetMaxY(containingRect) : containingRect.origin.y);
+	CGFloat absoluteOffset = (edge == JNWListEdgeTop ? containingRect.origin.y : containingRect.origin.y + containingRect.size.height);
 	CGFloat relativeOffset = absoluteOffset - section.offset;
 	
 	while (low <= high) {
@@ -193,15 +198,18 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 	}
 	
 	// We haven't found a row that exactly aligns with the rect, which is quite often.
-	if (ascending) {
-		while (mid < (section.numberOfRows - 1) && section.rowInfo[mid].yOffset + section.offset < relativeOffset) {
-			mid++;
+	if (edge == JNWListEdgeTop) {
+		// Start from the current top row, and keep decreasing the index so we keep travelling up
+		// until we're past the boundaries.
+		while (mid > 0 && section.rowInfo[mid].yOffset > relativeOffset) {
+			mid--;
 		}
 		
 		return mid;
 	} else {
-		while (mid > 0 && section.rowInfo[mid].yOffset + section.offset > relativeOffset) {
-			mid--;
+		// Start from the current bottom row and keep increasing the index until we hit the lower boundary
+		while (mid < (section.numberOfRows - 1) && section.rowInfo[mid].yOffset + section.rowInfo[mid].height + section.offset < relativeOffset) {
+			mid++;
 		}
 	}
 	

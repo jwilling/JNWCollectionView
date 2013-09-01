@@ -142,16 +142,17 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 	return attributes;
 }
 
-- (BOOL)wantsIndexPathsForItemsInRect {
-	return YES;
-}
-
 - (CGRect)rectForItemAtIndex:(NSInteger)index section:(NSInteger)section {
 	JNWCollectionViewListLayoutSection *sectionInfo = self.sections[section];
 	CGFloat offset = sectionInfo.offset + sectionInfo.rowInfo[index].yOffset;
 	CGFloat width = self.collectionView.contentSize.width;
 	CGFloat height = sectionInfo.rowInfo[index].height;
 	return CGRectMake(0, offset, width, height);
+}
+
+- (CGRect)rectForSectionAtIndex:(NSInteger)index {
+	JNWCollectionViewListLayoutSection *section = self.sections[index];
+	return section.frame;
 }
 
 - (NSArray *)indexPathsForItemsInRect:(CGRect)rect {

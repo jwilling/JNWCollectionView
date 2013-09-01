@@ -37,16 +37,8 @@
 	return nil;
 }
 
-- (BOOL)wantsIndexPathsForItemsInRect {
-	return NO;
-}
-
 - (NSArray *)indexPathsForItemsInRect:(CGRect)rect {
 	return nil;
-}
-
-- (BOOL)wantsRectForSectionAtIndex {
-	return NO;
 }
 
 - (CGRect)rectForSectionAtIndex:(NSInteger)index {

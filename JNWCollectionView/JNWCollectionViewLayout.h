@@ -33,21 +33,22 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewDirection) {
 - (JNWCollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath;
 - (JNWCollectionViewLayoutAttributes *)layoutAttributesForSupplementaryItemInSection:(NSInteger)section kind:(NSString *)kind;
 
-- (BOOL)wantsIndexPathsForItemsInRect;
+// Subclasses should an array of index paths that the layout decides should be inside the
+// specified rect. Implementing this method can provide far more optimized performance during scrolling.
+//
+// Default return value is nil.
 - (NSArray *)indexPathsForItemsInRect:(CGRect)rect;
 
-// Returning YES to this method will inform the collection view that the
-// layout implements -rectForSectionAtIndex:.
+// Subclasses should override this method to return the size of the specified section.
 //
-// Default implementation returns NO.
-- (BOOL)wantsRectForSectionAtIndex;
-
-// This method decreases the time taken to recalculate layout information
-// since the layout can usually provide a pre-calculated rect far faster than
-// the collection view itself can calculate it.
+// Overriding this method significantly decreases the time taken to recalculate layout
+// information since the layout can usually provide a pre-calculated rect far faster
+// than the collection view itself can calculate it.
 //
 // Be sure to account for supplementary views, in addition to cells when calculating
 // this rect. The behavior when the returned rect is incorrect is undefined.
+//
+// The default return value is CGRectNull.
 - (CGRect)rectForSectionAtIndex:(NSInteger)index;
 
 // The complete size of all sections combined. Overriding this method is optional,

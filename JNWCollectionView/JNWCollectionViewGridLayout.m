@@ -151,10 +151,6 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	return attributes;
 }
 
-- (BOOL)wantsIndexPathsForItemsInRect {
-	return YES;
-}
-
 - (NSArray *)indexPathsForItemsInRect:(CGRect)rect {
 	NSMutableArray *visibleRows = [NSMutableArray array];
 	

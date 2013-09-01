@@ -1,8 +1,8 @@
 #import <Cocoa/Cocoa.h>
 #import "JNWCollectionViewCell.h"
-#import "RBLScrollView.h"
 #import "JNWCollectionViewReusableView.h"
 #import "NSIndexPath+JNWAdditions.h"
+#import <BTRScrollView/BTRScrollView.h>
 
 typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 	JNWCollectionViewScrollPositionNone, // does not scroll, only selects
@@ -82,7 +82,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 
 
 @class JNWCollectionViewLayout;
-@interface JNWCollectionView : RBLScrollView
+@interface JNWCollectionView : BTRScrollView
 
 @property (nonatomic, weak) id<JNWCollectionViewDelegate> delegate;
 @property (nonatomic, weak) id<JNWCollectionViewDataSource> dataSource;

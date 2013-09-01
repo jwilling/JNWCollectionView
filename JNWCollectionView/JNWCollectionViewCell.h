@@ -8,7 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-
 // This view is the base class for all cells. The properties can be set directly on this
 // class for customization, or it can be subclassed to provide custom drawing.
 @class JNWCollectionView;
@@ -32,13 +31,12 @@
 // settting the background iamge or color.
 - (void)setSelected:(BOOL)selected animated:(BOOL)animate;
 
-// Any content added to the cell should be added as a subview of
-// the content view. The content view is guaranteed to be in front
-// of the background color or image.
+// Any content added to the cell should be added as a subview of the content view. The
+// content view is guaranteed to be in front of the background color or image.
 @property (nonatomic, strong, readonly) NSView *contentView;
 
-// Sets the background image or background color on a dedicated
-// background view that is always beneath the content view.
+// Sets the background image or background color on a dedicated background view that
+// is always beneath the content view.
 //
 // If both are set, the image takes precedence over the color.
 @property (nonatomic, strong) NSImage *backgroundImage;

@@ -77,12 +77,13 @@
 		// Additionally, the total size of all of the sections is needed so that we can figure out
 		// how large the document view of the collection view needs to be.
 		//
-		// However, this wastage can be avoided if the collection view layout implements the optional
-		// method, -rectForSectionAtIndex: and returns YES in -wantsRectForSectionAtIndex, which allows
-		// us to bypass this entire section iteration and increase the speed of the layout reloading.
+		// However, this wastage can be avoided if the collection view layout returns something other
+		// than CGRectNull in -rectForSectionAtIndex:, which allows us to bypass this entire section iteration
+		// and increase the speed of the layout reloading.
 		
-		if (layout.wantsRectForSectionAtIndex) {
-			section.frame = [layout rectForSectionAtIndex:sectionIdx];
+		CGRect potentialSectionFrame = [layout rectForSectionAtIndex:sectionIdx];
+		if (!CGRectIsNull(potentialSectionFrame)) {
+			section.frame = potentialSectionFrame;
 			continue;
 		}
 		

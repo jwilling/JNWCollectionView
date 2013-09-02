@@ -78,6 +78,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	// We don't want to perform an initial layout pass until the user has called -reloadData.
 	collectionView->_collectionViewFlags.wantsLayout = NO;
 	
+	collectionView.allowsSelection = YES;
+	
 	collectionView.backgroundColor = NSColor.clearColor;
 }
 
@@ -739,22 +741,27 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (void)deselectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
-	if (_collectionViewFlags.delegateShouldDeselect && ![self.delegate collectionView:self shouldDeselectItemAtIndexPath:indexPath])
+	if (!self.allowsSelection ||
+		(_collectionViewFlags.delegateShouldDeselect && ![self.delegate collectionView:self shouldDeselectItemAtIndexPath:indexPath])) {
 		return;
+	}
 	
 	JNWCollectionViewCell *cell = [self cellForItemAtIndexPath:indexPath];
 	[cell setSelected:NO animated:self.animatesSelection];
 	[self.selectedIndexes removeObject:indexPath];
 	
-	if (_collectionViewFlags.delegateDidDeselect)
+	if (_collectionViewFlags.delegateDidDeselect) {
 		[self.delegate collectionView:self didDeselectItemAtIndexPath:indexPath];
+	}
 }
 
 
 
 - (void)selectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
-	if (_collectionViewFlags.delegateShouldSelect && ![self.delegate collectionView:self shouldSelectItemAtIndexPath:indexPath])
+	if (!self.allowsSelection ||
+		(_collectionViewFlags.delegateShouldSelect && ![self.delegate collectionView:self shouldSelectItemAtIndexPath:indexPath])) {
 		return;
+	}
 	
 	JNWCollectionViewCell *cell = [self cellForItemAtIndexPath:indexPath];
 	[cell setSelected:YES animated:self.animatesSelection];
@@ -762,8 +769,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	if (![self.selectedIndexes containsObject:indexPath])
 		[self.selectedIndexes addObject:indexPath];
 	
-	if (_collectionViewFlags.delegateDidSelect)
+	if (_collectionViewFlags.delegateDidSelect) {
 		[self.delegate collectionView:self didSelectItemAtIndexPath:indexPath];
+	}
 }
 
 - (void)selectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -864,11 +872,11 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	// Detect if modifier flags are held down.
 	// We prioritize the command key over the shift key.
 	if (event.modifierFlags & NSCommandKeyMask) {
-		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest animated:self.animatesSelection selectionType:JNWCollectionViewSelectionTypeMultiple];
+		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES selectionType:JNWCollectionViewSelectionTypeMultiple];
 	} else if (event.modifierFlags & NSShiftKeyMask) {
-		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest animated:self.animatesSelection selectionType:JNWCollectionViewSelectionTypeExtending];
+		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES selectionType:JNWCollectionViewSelectionTypeExtending];
 	} else {
-		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest animated:self.animatesSelection];
+		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];
 	}
 }
 
@@ -881,7 +889,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (void)keyDown:(NSEvent *)theEvent {
-	[self interpretKeyEvents:@[theEvent]];
+	[self interpretKeyEvents:@[ theEvent ]];
 }
 
 - (void)moveUp:(id)sender {

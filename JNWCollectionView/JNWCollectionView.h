@@ -191,6 +191,11 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 // Defaults to NO.
 @property (nonatomic, assign) BOOL animatesSelection;
 
+// If set to NO, the collection view will not automatically select cells when they are clicked.
+//
+// Defaults to YES.
+@property (nonatomic, assign) BOOL allowsSelection;
+
 // Scrolls the collection view to the item at the specified path, optionally animated. The scroll position determines
 // where the item is positioned on the screen.
 - (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition animated:(BOOL)animated;

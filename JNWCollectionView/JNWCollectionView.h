@@ -14,6 +14,8 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 
 @class JNWCollectionView;
 
+#pragma mark - Data Source Protocol
+
 // The data source is the protocol which defines a set of methods for both information about the data model
 // and the views needed for creating the collection view.
 //
@@ -48,6 +50,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 
 @end
 
+#pragma mark Delegate Protocol
 
 // The delegate is the protocol which defines a set of methods with information about mouse clicks and selection.
 //
@@ -179,6 +182,8 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 
 // Returns the index paths for any selected items. Order is not guaranteed.
 - (NSArray *)indexPathsForSelectedItems;
+
+#pragma mark - Selection
 
 // If set to YES, any changes to the backgroundImage or backgroundColor properties of the collection view cell
 // will be animated with a crossfade.

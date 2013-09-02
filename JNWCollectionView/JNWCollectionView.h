@@ -134,6 +134,8 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 // Defaults to a clear color.
 @property (nonatomic, strong) NSColor *backgroundColor;
 
+#pragma mark - Information
+
 // Returns the total number of sections.
 - (NSInteger)numberOfSections;
 

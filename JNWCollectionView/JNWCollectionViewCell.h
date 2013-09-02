@@ -18,8 +18,8 @@
 
 // Called when the cell is about to exit the reuse pool and be dequeued.
 //
-// Subclasses should call super's implementation.
-- (void)prepareForReuse;
+// Subclasses must call super's implementation.
+- (void)prepareForReuse __attribute((objc_requires_super));
 
 @property (nonatomic, weak, readonly) JNWCollectionView *collectionView;
 
@@ -54,5 +54,8 @@
 
 // The current index path.
 @property (nonatomic, strong, readonly) NSIndexPath *indexPath;
+
+// Called when the cell will be layed out using the provided frame.
+- (void)willLayoutWithFrame:(CGRect)frame;
 
 @end

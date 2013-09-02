@@ -100,6 +100,10 @@
 	// for subclasses
 }
 
+- (void)willLayoutWithFrame:(CGRect)frame {
+	// for subclasses
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animate {
 	if (animate && self.selected != selected) {
 		CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"contents"];

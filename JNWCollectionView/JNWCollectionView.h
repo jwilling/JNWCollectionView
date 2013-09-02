@@ -191,7 +191,8 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 // Defaults to NO.
 @property (nonatomic, assign) BOOL animatesSelection;
 
-// If set to NO, the collection view will not automatically select cells when they are clicked.
+// If set to NO, the collection view will not automatically select cells either through clicks or
+// through keyboard actions.
 //
 // Defaults to YES.
 @property (nonatomic, assign) BOOL allowsSelection;

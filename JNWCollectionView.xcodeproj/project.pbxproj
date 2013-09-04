@@ -33,6 +33,10 @@
 		AB3C720C170CA8F3004A91DB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB3C720A170CA8F3004A91DB /* InfoPlist.strings */; };
 		AB3C7216170CAADB004A91DB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB024671707937F00537A92 /* QuartzCore.framework */; };
 		AB3C7249170CAD13004A91DB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB3C7211170CA981004A91DB /* InfoPlist.strings */; };
+		AB55AD1317D6EC1D007DC177 /* BTRClipView.h in Headers */ = {isa = PBXBuildFile; fileRef = AB55AD0F17D6EC1D007DC177 /* BTRClipView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AB55AD1417D6EC1D007DC177 /* BTRClipView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB55AD1017D6EC1D007DC177 /* BTRClipView.m */; };
+		AB55AD1517D6EC1D007DC177 /* BTRScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = AB55AD1117D6EC1D007DC177 /* BTRScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AB55AD1617D6EC1D007DC177 /* BTRScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB55AD1217D6EC1D007DC177 /* BTRScrollView.m */; };
 		ABA276B2171D1C4B005C8E56 /* JNWCollectionViewDocumentView.h in Headers */ = {isa = PBXBuildFile; fileRef = ABA276B0171D1C4B005C8E56 /* JNWCollectionViewDocumentView.h */; };
 		ABA276B3171D1C4B005C8E56 /* JNWCollectionViewDocumentView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA276B1171D1C4B005C8E56 /* JNWCollectionViewDocumentView.m */; };
 		ABB023F5170791D300537A92 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB023F4170791D300537A92 /* Cocoa.framework */; };
@@ -44,7 +48,6 @@
 		ABDE2699172BD9B100F8924F /* JNWTestImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = ABDE2698172BD9B100F8924F /* JNWTestImplementation.m */; };
 		ABE145351747519700DD3FCA /* JNWCollectionViewData.h in Headers */ = {isa = PBXBuildFile; fileRef = ABE145331747519700DD3FCA /* JNWCollectionViewData.h */; };
 		ABE145361747519700DD3FCA /* JNWCollectionViewData.m in Sources */ = {isa = PBXBuildFile; fileRef = ABE145341747519700DD3FCA /* JNWCollectionViewData.m */; };
-		ABFF7F3D17D0506600B898FB /* BTRScrollView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABFF7F3A17D0500900B898FB /* BTRScrollView.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -125,20 +128,6 @@
 			remoteGlobalIDString = ABB023F0170791D300537A92;
 			remoteInfo = JNWTableView;
 		};
-		ABFF7F3917D0500900B898FB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ABFF7F3517D0500900B898FB /* BTRScrollView.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = ABCEDC4817D03BCC0023B30C;
-			remoteInfo = BTRScrollView;
-		};
-		ABFF7F3B17D0505A00B898FB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ABFF7F3517D0500900B898FB /* BTRScrollView.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = ABCEDC4717D03BCC0023B30C;
-			remoteInfo = BTRScrollView;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -170,6 +159,10 @@
 		AB3C720B170CA8F3004A91DB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = JNWCollectionView/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		AB3C7212170CA981004A91DB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = JNWCollectionViewTests/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		AB3C7214170CA990004A91DB /* JNWCollectionViewTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "JNWCollectionViewTests-Info.plist"; path = "JNWCollectionViewTests/JNWCollectionViewTests-Info.plist"; sourceTree = SOURCE_ROOT; };
+		AB55AD0F17D6EC1D007DC177 /* BTRClipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTRClipView.h; path = external/BTRScrollView/BTRScrollView/BTRClipView.h; sourceTree = SOURCE_ROOT; };
+		AB55AD1017D6EC1D007DC177 /* BTRClipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTRClipView.m; path = external/BTRScrollView/BTRScrollView/BTRClipView.m; sourceTree = SOURCE_ROOT; };
+		AB55AD1117D6EC1D007DC177 /* BTRScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTRScrollView.h; path = external/BTRScrollView/BTRScrollView/BTRScrollView.h; sourceTree = SOURCE_ROOT; };
+		AB55AD1217D6EC1D007DC177 /* BTRScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTRScrollView.m; path = external/BTRScrollView/BTRScrollView/BTRScrollView.m; sourceTree = SOURCE_ROOT; };
 		ABA276B0171D1C4B005C8E56 /* JNWCollectionViewDocumentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewDocumentView.h; path = JNWCollectionView/JNWCollectionViewDocumentView.h; sourceTree = SOURCE_ROOT; };
 		ABA276B1171D1C4B005C8E56 /* JNWCollectionViewDocumentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewDocumentView.m; path = JNWCollectionView/JNWCollectionViewDocumentView.m; sourceTree = SOURCE_ROOT; };
 		ABB023F1170791D300537A92 /* JNWCollectionView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JNWCollectionView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -185,7 +178,6 @@
 		ABDE2698172BD9B100F8924F /* JNWTestImplementation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWTestImplementation.m; path = JNWCollectionViewTests/JNWTestImplementation.m; sourceTree = SOURCE_ROOT; };
 		ABE145331747519700DD3FCA /* JNWCollectionViewData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewData.h; path = JNWCollectionView/JNWCollectionViewData.h; sourceTree = SOURCE_ROOT; };
 		ABE145341747519700DD3FCA /* JNWCollectionViewData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewData.m; path = JNWCollectionView/JNWCollectionViewData.m; sourceTree = SOURCE_ROOT; };
-		ABFF7F3517D0500900B898FB /* BTRScrollView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BTRScrollView.xcodeproj; path = external/BTRScrollView/BTRScrollView.xcodeproj; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,7 +185,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ABFF7F3D17D0506600B898FB /* BTRScrollView.framework in Frameworks */,
 				ABB024681707937F00537A92 /* QuartzCore.framework in Frameworks */,
 				ABB023F5170791D300537A92 /* Cocoa.framework in Frameworks */,
 			);
@@ -364,17 +355,12 @@
 		ABE0A77817C7E22F005F35A8 /* External */ = {
 			isa = PBXGroup;
 			children = (
-				ABFF7F3517D0500900B898FB /* BTRScrollView.xcodeproj */,
+				AB55AD0F17D6EC1D007DC177 /* BTRClipView.h */,
+				AB55AD1017D6EC1D007DC177 /* BTRClipView.m */,
+				AB55AD1117D6EC1D007DC177 /* BTRScrollView.h */,
+				AB55AD1217D6EC1D007DC177 /* BTRScrollView.m */,
 			);
 			name = External;
-			sourceTree = "<group>";
-		};
-		ABFF7F3617D0500900B898FB /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				ABFF7F3A17D0500900B898FB /* BTRScrollView.framework */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -392,6 +378,8 @@
 				AB1514951717443F00871248 /* JNWCollectionViewFlowLayout.h in Headers */,
 				AB1514741714D39600871248 /* JNWCollectionViewListLayout.h in Headers */,
 				AB3C7202170CA8D3004A91DB /* NSIndexPath+JNWAdditions.h in Headers */,
+				AB55AD1517D6EC1D007DC177 /* BTRScrollView.h in Headers */,
+				AB55AD1317D6EC1D007DC177 /* BTRClipView.h in Headers */,
 				AB3C71F7170CA8D3004A91DB /* JNWCollectionView+Private.h in Headers */,
 				AB3C71FB170CA8D3004A91DB /* JNWCollectionViewCell+Private.h in Headers */,
 				AB39819D1731A1B50062B2E0 /* JNWCollectionViewReusableView+Private.h in Headers */,
@@ -416,7 +404,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				ABFF7F3C17D0505A00B898FB /* PBXTargetDependency */,
 			);
 			name = JNWCollectionView;
 			productName = JNWTableView;
@@ -464,10 +451,6 @@
 			productRefGroup = ABB023F2170791D300537A92 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
-				{
-					ProductGroup = ABFF7F3617D0500900B898FB /* Products */;
-					ProjectRef = ABFF7F3517D0500900B898FB /* BTRScrollView.xcodeproj */;
-				},
 				{
 					ProductGroup = 8467C6D9171E589200A1F343 /* Products */;
 					ProjectRef = 8467C6D8171E589200A1F343 /* Expecta.xcodeproj */;
@@ -542,13 +525,6 @@
 			remoteRef = 8467C6F4171E589500A1F343 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		ABFF7F3A17D0500900B898FB /* BTRScrollView.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = BTRScrollView.framework;
-			remoteRef = ABFF7F3917D0500900B898FB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -593,7 +569,9 @@
 			files = (
 				AB3C71F5170CA8D3004A91DB /* JNWCollectionView.m in Sources */,
 				AB3C71F9170CA8D3004A91DB /* JNWCollectionViewCell.m in Sources */,
+				AB55AD1417D6EC1D007DC177 /* BTRClipView.m in Sources */,
 				AB3C71FD170CA8D3004A91DB /* JNWCollectionViewReusableView.m in Sources */,
+				AB55AD1617D6EC1D007DC177 /* BTRScrollView.m in Sources */,
 				AB3C7203170CA8D3004A91DB /* NSIndexPath+JNWAdditions.m in Sources */,
 				AB1514701714C90800871248 /* JNWCollectionViewLayout.m in Sources */,
 				AB1514751714D39600871248 /* JNWCollectionViewListLayout.m in Sources */,
@@ -631,11 +609,6 @@
 			isa = PBXTargetDependency;
 			target = ABB023F0170791D300537A92 /* JNWCollectionView */;
 			targetProxy = ABB0240D170791D300537A92 /* PBXContainerItemProxy */;
-		};
-		ABFF7F3C17D0505A00B898FB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = BTRScrollView;
-			targetProxy = ABFF7F3B17D0505A00B898FB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

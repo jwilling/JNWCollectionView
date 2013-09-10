@@ -1,5 +1,5 @@
 ## JNWCollectionView ##
-`JNWCollectionView` is a modern collection view for the Mac with an extremely flexible API. Unlike `NSCollectionView`, cells are dequeued and memory usage is kept at a minimum. Cells are layer-backed by default, and performance is highly optimized. 
+`JNWCollectionView` is a modern collection view for the Mac with an extremely flexible API. Cells are dequeued and memory usage is kept at a minimum. Cells are layer-backed by default, and performance is highly optimized. 
 
 Anyone familiar with `UICollectionView` should feel right at home with `JNWCollectionView`. Like `UICollectionView`, `JNWCollectionView` uses the concept of a layout class for determining how items should be displayed onscreen. 
 
@@ -36,7 +36,7 @@ As with UI/NSTable/CollectionView, the data source is required. Make sure the cl
 Then the class can set itself as the data source.
 
 ```objc
-self.collectionView.dataSource = self;
+collectionView.dataSource = self;
 ```
 
 `JNWCollectionView` does not automatically pick a layout class. Two layout classes are included (and will be described later). For this example, lets pick the grid layout. However, the layout class is designed to be subclassed so you are not limited to the built-in layouts.
@@ -47,6 +47,9 @@ JNWCollectionViewGridLayout *gridLayout = [[JNWCollectionViewGridLayout alloc] i
 // The grid layout has its own delegate, so if we want to implement the delegate methods
 // we need to conform to JNWCollectionViewGridLayoutDelegate.
 gridLayout.delegate = self; 
+
+// Tell the grid layout the size of our cells.
+gridLayout.itemSize = CGSizeMake(100, 100);
 
 // Set the grid layout as the collection view layout, or the layout
 // that is used for positioning the items in the collection view.
@@ -79,7 +82,7 @@ That's it. Lets call the initial reload.
 [collectionView reloadData];
 ```
 
-You should now have a fully-functioning collection view. But that's just scratching the surface. What else can be done?
+You now have a fully-functioning collection view. But that's just scratching the surface. What else can be done?
 
 ## Lets dive deeper ##
 

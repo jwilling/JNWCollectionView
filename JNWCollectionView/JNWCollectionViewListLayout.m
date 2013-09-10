@@ -70,6 +70,10 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 	return _sections;
 }
 
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {
+	return NO;
+}
+
 - (void)prepareLayout {
 	[self.sections removeAllObjects];
 	

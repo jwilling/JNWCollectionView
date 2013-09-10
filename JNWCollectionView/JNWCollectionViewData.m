@@ -41,31 +41,36 @@
 }
 
 - (void)recalculate {
+	[self recalculateForcingLayoutInvalidation:NO];
+}
+
+- (void)recalculateForcingLayoutInvalidation:(BOOL)forceInvalidation {
 	JNWCollectionViewLayout *layout = self.collectionView.collectionViewLayout;
 	NSAssert(layout != nil, @"layout cannot be nil.");
 	
-	[self.sectionData removeAllObjects];
-	
-	// Find how many sections we have in the collection view.
-	// We default to 1 if the data source doesn't implement the optional method.
-	self.numberOfSections = 1;
-	if ([self.collectionView.dataSource respondsToSelector:@selector(numberOfSectionsInCollectionView:)])
-		self.numberOfSections = [self.collectionView.dataSource numberOfSectionsInCollectionView:self.collectionView];
-	
-	// Run through with empty sections and fill in the number of items in each, so that
-	// the layouts can query the collection view and get correct values for the number of items
-	// in each section.
-	for (NSInteger sectionIdx = 0; sectionIdx < self.numberOfSections; sectionIdx++) {
-		JNWCollectionViewSection *section = [[JNWCollectionViewSection alloc] init];
-		section.index = sectionIdx;
-		section.numberOfItems = [self.collectionView.dataSource collectionView:self.collectionView numberOfItemsInSection:sectionIdx];
-		[self.sectionData addObject:section];
+	if ([layout shouldInvalidateLayoutForBoundsChange:self.collectionView.bounds] || forceInvalidation) {
+		[self.sectionData removeAllObjects];
+		
+		// Find how many sections we have in the collection view.
+		// We default to 1 if the data source doesn't implement the optional method.
+		self.numberOfSections = 1;
+		if ([self.collectionView.dataSource respondsToSelector:@selector(numberOfSectionsInCollectionView:)]) {
+			self.numberOfSections = [self.collectionView.dataSource numberOfSectionsInCollectionView:self.collectionView];
+		}
+		
+		// Run through with empty sections and fill in the number of items in each, so that
+		// the layouts can query the collection view and get correct values for the number of items
+		// in each section.
+		for (NSInteger sectionIdx = 0; sectionIdx < self.numberOfSections; sectionIdx++) {
+			JNWCollectionViewSection *section = [[JNWCollectionViewSection alloc] init];
+			section.index = sectionIdx;
+			section.numberOfItems = [self.collectionView.dataSource collectionView:self.collectionView numberOfItemsInSection:sectionIdx];
+			[self.sectionData addObject:section];
+		}
+		
+		
+		[layout prepareLayout];
 	}
-	
-	NSTimeInterval start = [NSDate timeIntervalSinceReferenceDate];
-	[layout prepareLayout];
-	NSTimeInterval end = [NSDate timeIntervalSinceReferenceDate] - start;
-	NSLog(@"layout time: %f", end);
 	
 	for (NSInteger sectionIdx = 0; sectionIdx < self.numberOfSections; sectionIdx++) {
 		JNWCollectionViewSection *section = self.sections[sectionIdx];
@@ -80,7 +85,6 @@
 		// However, this wastage can be avoided if the collection view layout returns something other
 		// than CGRectNull in -rectForSectionAtIndex:, which allows us to bypass this entire section iteration
 		// and increase the speed of the layout reloading.
-		
 		CGRect potentialSectionFrame = [layout rectForSectionAtIndex:sectionIdx];
 		if (!CGRectIsNull(potentialSectionFrame)) {
 			section.frame = potentialSectionFrame;

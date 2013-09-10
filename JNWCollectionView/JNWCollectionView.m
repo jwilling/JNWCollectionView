@@ -229,6 +229,15 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 - (void)reloadData {
 	_collectionViewFlags.wantsLayout = YES;
 	
+	[self resetAllCells];
+		
+	[self.data recalculateForcingLayoutInvalidation:YES];
+	[self layoutDocumentView];
+	[self layoutCells];
+	[self layoutSupplementaryViews];
+}
+
+- (void)resetAllCells {
 	// Remove any selected indexes we've been tracking.
 	[self.selectedIndexes removeAllObjects];
 	
@@ -245,11 +254,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	for (NSView *view in subviews) {
 		[view removeFromSuperview];
 	}
-	
-	[self.data recalculate];
-	[self layoutDocumentView];
-	[self layoutCells];
-	[self layoutSupplementaryViews];
+
 }
 
 - (void)setCollectionViewLayout:(JNWCollectionViewLayout *)collectionViewLayout {
@@ -488,10 +493,18 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		[self layoutDocumentView];
 	}
 	
-	if (!CGRectEqualToRect(self.bounds, _lastDrawnBounds)) {
-		// TODO: Do we need to recalculate everything?
-		if (_collectionViewFlags.wantsLayout) {
-			[self.data recalculate];
+	if (CGRectEqualToRect(self.bounds, _lastDrawnBounds)) {
+		[self layoutCells];
+		[self layoutSupplementaryViews];
+	} else {
+		// Calling recalculate on our data will update the bounds needed for the collection
+		// view, and optionally prepare the layout once again if the layout subclass decides
+		// it needs a recalculation.
+		[self.data recalculate];
+
+		BOOL wantsInvalidation = [self.collectionViewLayout shouldInvalidateLayoutForBoundsChange:self.bounds];
+		if (wantsInvalidation && _collectionViewFlags.wantsLayout) {
+			[self resetAllCells];
 		}
 		
 		// Check once more whether or not the document view needs to be resized.
@@ -502,10 +515,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		
 		[self layoutCellsWithRedraw:YES];
 		[self layoutSupplementaryViewsWithRedraw:YES];
+		
 		_lastDrawnBounds = self.bounds;
-	} else {
-		[self layoutCells];
-		[self layoutSupplementaryViews];
 	}
 }
 
@@ -753,8 +764,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		[self.delegate collectionView:self didDeselectItemAtIndexPath:indexPath];
 	}
 }
-
-
 
 - (void)selectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
 	if (!self.allowsSelection ||

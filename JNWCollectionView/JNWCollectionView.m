@@ -311,7 +311,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (BOOL)validateIndexPath:(NSIndexPath *)indexPath {
-	return (indexPath.section < self.data.sections.count && indexPath.item < [self.data.sections[indexPath.section] numberOfItems]);
+	return (indexPath.jnw_section < self.data.sections.count && indexPath.jnw_item < [self.data.sections[indexPath.jnw_section] numberOfItems]);
 }
 
 - (NSArray *)allIndexPaths {
@@ -433,7 +433,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (CGRect)rectForItemAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath == nil || indexPath.section < self.data.sections.count) {
+	if (indexPath == nil || indexPath.jnw_section < self.data.sections.count) {
 		JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
 		return attributes.frame;
 	}
@@ -789,23 +789,23 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (NSIndexPath *)indexPathForNextSelectableItemAfterIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.item + 1 >= [self.data.sections[indexPath.section] numberOfItems]) {
+	if (indexPath.jnw_item + 1 >= [self.data.sections[indexPath.jnw_section] numberOfItems]) {
 		// Jump up to the next section
-		NSIndexPath *newIndexPath = [NSIndexPath jnw_indexPathForItem:0 inSection:indexPath.section + 1];
+		NSIndexPath *newIndexPath = [NSIndexPath jnw_indexPathForItem:0 inSection:indexPath.jnw_section + 1];
 		if ([self validateIndexPath:newIndexPath])
 			return newIndexPath;
 	} else {
-		return [NSIndexPath jnw_indexPathForItem:indexPath.item + 1 inSection:indexPath.section];
+		return [NSIndexPath jnw_indexPathForItem:indexPath.jnw_item + 1 inSection:indexPath.jnw_section];
 	}
 	return nil;
 }
 
 - (NSIndexPath *)indexPathForNextSelectableItemBeforeIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.item - 1 >= 0) {
-		return [NSIndexPath jnw_indexPathForItem:indexPath.item - 1 inSection:indexPath.section];
-	} else if(indexPath.section - 1 >= 0 && self.data.sections.count) {
-		NSInteger numberOfItems = [self.data.sections[indexPath.section - 1] numberOfItems];
-		NSIndexPath *newIndexPath = [NSIndexPath jnw_indexPathForItem:numberOfItems - 1 inSection:indexPath.section - 1];
+	if (indexPath.jnw_item - 1 >= 0) {
+		return [NSIndexPath jnw_indexPathForItem:indexPath.jnw_item - 1 inSection:indexPath.jnw_section];
+	} else if(indexPath.jnw_section - 1 >= 0 && self.data.sections.count) {
+		NSInteger numberOfItems = [self.data.sections[indexPath.jnw_section - 1] numberOfItems];
+		NSIndexPath *newIndexPath = [NSIndexPath jnw_indexPathForItem:numberOfItems - 1 inSection:indexPath.jnw_section - 1];
 		if ([self validateIndexPath:newIndexPath])
 			return newIndexPath;
 	}

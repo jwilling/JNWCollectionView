@@ -124,7 +124,7 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 
 - (JNWCollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {	
 	JNWCollectionViewLayoutAttributes *attributes = [[JNWCollectionViewLayoutAttributes alloc] init];
-	attributes.frame = [self rectForItemAtIndex:indexPath.item section:indexPath.section];
+	attributes.frame = [self rectForItemAtIndex:indexPath.jnw_item section:indexPath.jnw_section];
 	attributes.alpha = 1.f;
 	return attributes;
 }

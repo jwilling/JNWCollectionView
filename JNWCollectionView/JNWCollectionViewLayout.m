@@ -19,7 +19,7 @@
 @implementation JNWCollectionViewLayout
 
 - (void)prepareLayout {
-	
+	// For subclasses
 }
 
 - (instancetype)initWithCollectionView:(JNWCollectionView *)collectionView {

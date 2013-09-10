@@ -26,10 +26,32 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewDirection) {
 
 @property (nonatomic, weak, readonly) JNWCollectionView *collectionView;
 
+
+// Dedicated initializer. Subclasses should override this method for their custom
+// initializers.
 - (instancetype)initWithCollectionView:(JNWCollectionView *)collectionView;
 
+// Called when the layout is invalidated and should be recalculated.
+//
+// This is an appropriate time to calculate geometry for the layout. Ideally
+// this data should be cached to provide faster access when the collection view
+// needs the layout information at a later point in time.
+//
+// Will be called every time the collection view is resized, unless
+// -shouldInvalidateLayoutForBoundsChange: is overridden for custom
+// invalidation behavior.
 - (void)prepareLayout;
 
+// Subclasses should override these methods (if applicable) to return the layout attributes
+// for the item at the specified index path, or the supplementary item for the specified
+// section and kind.
+//
+// As these methods will be called quite frequently during scrolling of the collection view,
+// time-intensive calculations should not be performed in these methods. It is better to
+// do as many calculations as possible beforehand in -prepareLayout, and return
+// cached information in these methods.
+//
+// Return values should be non-nil.
 - (JNWCollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath;
 - (JNWCollectionViewLayoutAttributes *)layoutAttributesForSupplementaryItemInSection:(NSInteger)section kind:(NSString *)kind;
 
@@ -64,7 +86,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewDirection) {
 // Subclasses must implement this method for arrowed selection to work.
 - (NSIndexPath *)indexPathForNextItemInDirection:(JNWCollectionViewDirection)direction currentIndexPath:(NSIndexPath *)currentIndexPath;
 
-// Subclasses can implement this method to optinally decline a layout invalidation.
+// Subclasses can implement this method to optionally decline a layout invalidation.
 //
 // The default return value is YES.
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds;

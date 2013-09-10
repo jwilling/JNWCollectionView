@@ -77,8 +77,8 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 - (void)prepareLayout {
 	[self.sections removeAllObjects];
 	
-	if (![self.delegate conformsToProtocol:@protocol(JNWCollectionViewListLayoutDelegate)]) {
-		NSLog(@"delegate does not conform to JNWCollectionViewListLayoutDelegate!");
+	if (self.delegate != nil && ![self.delegate conformsToProtocol:@protocol(JNWCollectionViewListLayoutDelegate)]) {
+		NSLog(@"*** list delegate does not conform to JNWCollectionViewListLayoutDelegate!");
 	}
 	
 	BOOL delegateHeightForRow = [self.delegate respondsToSelector:@selector(collectionView:heightForRowAtIndexPath:)];

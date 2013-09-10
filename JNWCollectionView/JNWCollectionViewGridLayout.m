@@ -83,8 +83,8 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 - (void)prepareLayout {
 	[self.sections removeAllObjects];
 
-	if (![self.delegate conformsToProtocol:@protocol(JNWCollectionViewGridLayoutDelegate)]) {
-		NSLog(@"delegate does not conform to JNWCollectionViewGridLayoutDelegate!");
+	if (self.delegate != nil && ![self.delegate conformsToProtocol:@protocol(JNWCollectionViewGridLayoutDelegate)]) {
+		NSLog(@"*** grid delegate does not conform to JNWCollectionViewGridLayoutDelegate!");
 	}
 	
 	CGSize itemSize = self.itemSize;

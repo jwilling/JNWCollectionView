@@ -83,6 +83,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 
 @end
 
+#pragma mark Reloading and customizing
 
 @class JNWCollectionViewLayout;
 @interface JNWCollectionView : BTRScrollView

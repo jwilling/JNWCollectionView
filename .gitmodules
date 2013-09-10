@@ -7,6 +7,4 @@
 [submodule "external/Specta"]
 	path = external/Specta
 	url = https://github.com/petejkim/specta.git
-[submodule "external/BTRScrollView"]
-	path = external/BTRScrollView
-	url = https://github.com/ButterKit/BTRScrollView.git
+

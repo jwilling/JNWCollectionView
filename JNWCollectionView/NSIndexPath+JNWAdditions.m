@@ -15,25 +15,27 @@
 	return [self indexPathWithIndexes:indexPath length:2];
 }
 
-- (NSInteger)section {
+- (NSInteger)jnw_section {
 	return [self indexAtPosition:0];
 }
 
 
-- (NSInteger)item {
+- (NSInteger)jnw_item {
 	return [self indexAtPosition:1];
 }
 
 - (BOOL)isEqual:(id)object {
-	if ([object isKindOfClass:NSIndexPath.class])
-		if (self.section == [(NSIndexPath *)object section] && self.item == [(NSIndexPath *)object item])
+	if ([object isKindOfClass:NSIndexPath.class]) {
+		if (self.jnw_section == [(NSIndexPath *)object jnw_section] && self.jnw_item == [(NSIndexPath *)object jnw_item]) {
 			return YES;
-		
+		}
+	}
+
 	return NO;
 }
 
 - (NSString *)debugDescription {
-	return [NSString stringWithFormat:@"<%@: %p; section = %ld; item = %ld>", self.class, self, self.section, self.item];
+	return [NSString stringWithFormat:@"<%@: %p; section = %ld; item = %ld>", self.class, self, self.jnw_section, self.jnw_item];
 }
 
 @end

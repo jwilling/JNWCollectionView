@@ -1,4 +1,4 @@
-## JNWCollectionView ##
+# JNWCollectionView #
 `JNWCollectionView` is a modern collection view for the Mac with an extremely flexible API. Cells are dequeued and memory usage is kept at a minimum. Cells are layer-backed by default, and performance is highly optimized.
 
 Anyone familiar with `UICollectionView` should feel right at home with `JNWCollectionView`. Like `UICollectionView`, `JNWCollectionView` uses the concept of a layout class for determining how items should be displayed onscreen. 
@@ -82,7 +82,7 @@ That's it. Lets call the initial reload.
 [collectionView reloadData];
 ```
 
-You now have a fully-functioning collection view. But that's just scratching the surface.
+You now have a fully-functioning collection view. But that's just scratching the surface. Take a look at the demo project and give it a spin, otherwise keep reading.
 
 ## Lets dive deeper ##
 
@@ -122,21 +122,22 @@ Supplementary views are reusable views that are distinguished by the use of iden
 
 All supplementary views are built on top of `JNWCollectionViewReusableView`. See the header for more details.
 
-### The Collection View Itself ###
+### The Collection View ###
 
 There are many methods that are built into `JNWCollectionView`...far too many to describe. Why not take a look [at the header itself?](https://github.com/jwilling/jnwcollectionview/blob/master/JNWCollectionView/JNWCollectionView.h)
 
 
 ## What's left to do? ##
 
-Flow layout.
-
+- Flow layout.
+- Animated insertion / removals
+- Batch reloads
+- Drag and drop
 
 ## License ##
 `JNWCollectionView` is licensed under the [MIT](http://opensource.org/licenses/MIT) license. See [LICENSE.md](LICENSE.md).
 
 In short, I made this to help out as many people as I can. If you find it helpful, let me know! You just might make my day. 😉
 
-
 ## Get In Touch ##
-You can follow me on Twitter as [@willing](http://twitter.com/willing), email me at the email listed on my GitHub profile, or read my blog at [jwilling.com](http://www.jwilling.com).
+You can follow me on Twitter as [@willing](http://twitter.com/willing), email me at the email listed on my GitHub profile, or read my blog at [jwilling.com](http://www.jwilling.com). If you have questions, feel free to post an issue here on GitHub, or just ping me on Twitter.

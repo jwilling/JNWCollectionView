@@ -92,12 +92,13 @@ You now have a fully-functioning collection view. But that's just scratching the
 
 `NSTableView` is (still) a well designed class, however it is not perfect. For example, in newer versions of OS X, it forces Auto Layout to be enabled. It is not very easy to customize, and its support for legacy brings a lot of baggage along with the current API. Although scrolling performance is quite good, it can be improved upon.
 
-On the contrary, `JNWCollectionView` was designed from the ground up to be as fast and as lightweight as possible, using a combination of layer-backed views and optimized cell dequeuing. This required relentless profiling and tweaking. Although scrolling performance could probably be improved even more, `JNWCollectionView` is reaching the bounds of what is possible using pure AppKit. There is no legacy baggage — this was built from the ground up for speed and ease of use.
+On the contrary, `JNWCollectionView` was designed from the ground up to be as fast and as lightweight as possible, using a combination of layer-backed views and optimized cell dequeuing, refined by relentless profiling and tweaking. Although scrolling performance could probably be improved even more, `JNWCollectionView` is reaching the bounds of what is possible using pure AppKit. There is no legacy baggage — this was built from the ground up for speed and ease of use.
 
 
 ### Layouts ###
 
 ![](http://jwilling.com/drop/collection_view_list-UgrsbKwdwH.png) ![](http://jwilling.com/drop/collection_view_grid-yEqBykss8P.png)
+
 As mentioned in the introduction, `JNWCollectionView` is completely based around the concept of layouts. A collection view can only have a single layout at one time. The layout is responsible for determining where items should be positioned, however *it does not touch the view layer itself*. The distinction is made between "items" and "cells", where items stand for the data representation of views themselves, such as the frame, the alpha value, the index path, etc. The cell itself is the view.
 
 `JNWCollectionViewLayout` subclasses, then, are responsible for determining how to lay out the *items* in the collection view, in addition to supplementary views. The collection view itself handles the views. 

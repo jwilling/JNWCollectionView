@@ -8,6 +8,7 @@ Anyone familiar with `UICollectionView` should feel right at home with `JNWColle
 
 The easiest way to understand what this framework can do is to just dive in with an example. Lets go.
 
+*If you just want to know how to download the project, see [below](README.md#how-do-i-add-it-to-my-project).*
 
 ## Getting Started ##
 
@@ -126,6 +127,11 @@ All supplementary views are built on top of `JNWCollectionViewReusableView`. See
 
 There are many methods that are built into `JNWCollectionView`...far too many to describe. Why not take a look [at the header itself?](https://github.com/jwilling/jnwcollectionview/blob/master/JNWCollectionView/JNWCollectionView.h)
 
+## How do I add it to my project? ##
+
+`JNWCollectionView` has external dependencies. When you clone the project, make sure you clone the project recursively to pull down the submodules.
+
+    git clone --recursive https://github.com/jwilling/JNWCollectionView.git
 
 ## What's left to do? ##
 

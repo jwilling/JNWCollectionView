@@ -2,7 +2,7 @@
 #import "JNWCollectionViewCell.h"
 #import "JNWCollectionViewReusableView.h"
 #import "NSIndexPath+JNWAdditions.h"
-#import "BTRScrollView.h"
+#import "JNWScrollView.h"
 
 typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 	JNWCollectionViewScrollPositionNone, // does not scroll, only selects
@@ -86,7 +86,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 #pragma mark Reloading and customizing
 
 @class JNWCollectionViewLayout;
-@interface JNWCollectionView : BTRScrollView
+@interface JNWCollectionView : JNWScrollView
 
 @property (nonatomic, weak) id<JNWCollectionViewDelegate> delegate;
 @property (nonatomic, weak) id<JNWCollectionViewDataSource> dataSource;

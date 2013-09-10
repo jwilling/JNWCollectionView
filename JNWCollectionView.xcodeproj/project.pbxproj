@@ -16,6 +16,10 @@
 		AB1514751714D39600871248 /* JNWCollectionViewListLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = AB1514731714D39600871248 /* JNWCollectionViewListLayout.m */; };
 		AB1514821715361E00871248 /* JNWCollectionViewGridLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = AB1514801715361D00871248 /* JNWCollectionViewGridLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AB1514831715361E00871248 /* JNWCollectionViewGridLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = AB1514811715361D00871248 /* JNWCollectionViewGridLayout.m */; };
+		AB38E38E17DF099A00D50B3C /* JNWClipView.h in Headers */ = {isa = PBXBuildFile; fileRef = AB38E38A17DF099A00D50B3C /* JNWClipView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AB38E38F17DF099A00D50B3C /* JNWClipView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB38E38B17DF099A00D50B3C /* JNWClipView.m */; };
+		AB38E39017DF099A00D50B3C /* JNWScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = AB38E38C17DF099A00D50B3C /* JNWScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AB38E39117DF099A00D50B3C /* JNWScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB38E38D17DF099A00D50B3C /* JNWScrollView.m */; };
 		AB39819D1731A1B50062B2E0 /* JNWCollectionViewReusableView+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = AB39819C1731A1B50062B2E0 /* JNWCollectionViewReusableView+Private.h */; };
 		AB3C71F4170CA8D3004A91DB /* JNWCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = AB3C71E8170CA8D3004A91DB /* JNWCollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AB3C71F5170CA8D3004A91DB /* JNWCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C71E9170CA8D3004A91DB /* JNWCollectionView.m */; };
@@ -31,10 +35,6 @@
 		AB3C720C170CA8F3004A91DB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB3C720A170CA8F3004A91DB /* InfoPlist.strings */; };
 		AB3C7216170CAADB004A91DB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB024671707937F00537A92 /* QuartzCore.framework */; };
 		AB3C7249170CAD13004A91DB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB3C7211170CA981004A91DB /* InfoPlist.strings */; };
-		AB55AD1317D6EC1D007DC177 /* BTRClipView.h in Headers */ = {isa = PBXBuildFile; fileRef = AB55AD0F17D6EC1D007DC177 /* BTRClipView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		AB55AD1417D6EC1D007DC177 /* BTRClipView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB55AD1017D6EC1D007DC177 /* BTRClipView.m */; };
-		AB55AD1517D6EC1D007DC177 /* BTRScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = AB55AD1117D6EC1D007DC177 /* BTRScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		AB55AD1617D6EC1D007DC177 /* BTRScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB55AD1217D6EC1D007DC177 /* BTRScrollView.m */; };
 		ABA276B2171D1C4B005C8E56 /* JNWCollectionViewDocumentView.h in Headers */ = {isa = PBXBuildFile; fileRef = ABA276B0171D1C4B005C8E56 /* JNWCollectionViewDocumentView.h */; };
 		ABA276B3171D1C4B005C8E56 /* JNWCollectionViewDocumentView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA276B1171D1C4B005C8E56 /* JNWCollectionViewDocumentView.m */; };
 		ABB023F5170791D300537A92 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB023F4170791D300537A92 /* Cocoa.framework */; };
@@ -139,6 +139,10 @@
 		AB1514731714D39600871248 /* JNWCollectionViewListLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewListLayout.m; path = JNWCollectionView/JNWCollectionViewListLayout.m; sourceTree = SOURCE_ROOT; };
 		AB1514801715361D00871248 /* JNWCollectionViewGridLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewGridLayout.h; path = JNWCollectionView/JNWCollectionViewGridLayout.h; sourceTree = SOURCE_ROOT; };
 		AB1514811715361D00871248 /* JNWCollectionViewGridLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewGridLayout.m; path = JNWCollectionView/JNWCollectionViewGridLayout.m; sourceTree = SOURCE_ROOT; };
+		AB38E38A17DF099A00D50B3C /* JNWClipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWClipView.h; path = external/JNWScrollView/JNWClipView.h; sourceTree = SOURCE_ROOT; };
+		AB38E38B17DF099A00D50B3C /* JNWClipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWClipView.m; path = external/JNWScrollView/JNWClipView.m; sourceTree = SOURCE_ROOT; };
+		AB38E38C17DF099A00D50B3C /* JNWScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWScrollView.h; path = external/JNWScrollView/JNWScrollView.h; sourceTree = SOURCE_ROOT; };
+		AB38E38D17DF099A00D50B3C /* JNWScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWScrollView.m; path = external/JNWScrollView/JNWScrollView.m; sourceTree = SOURCE_ROOT; };
 		AB39819C1731A1B50062B2E0 /* JNWCollectionViewReusableView+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JNWCollectionViewReusableView+Private.h"; path = "JNWCollectionView/JNWCollectionViewReusableView+Private.h"; sourceTree = SOURCE_ROOT; };
 		AB3C71E8170CA8D3004A91DB /* JNWCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionView.h; path = JNWCollectionView/JNWCollectionView.h; sourceTree = SOURCE_ROOT; };
 		AB3C71E9170CA8D3004A91DB /* JNWCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionView.m; path = JNWCollectionView/JNWCollectionView.m; sourceTree = SOURCE_ROOT; };
@@ -155,10 +159,6 @@
 		AB3C720B170CA8F3004A91DB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = JNWCollectionView/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		AB3C7212170CA981004A91DB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = JNWCollectionViewTests/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		AB3C7214170CA990004A91DB /* JNWCollectionViewTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "JNWCollectionViewTests-Info.plist"; path = "JNWCollectionViewTests/JNWCollectionViewTests-Info.plist"; sourceTree = SOURCE_ROOT; };
-		AB55AD0F17D6EC1D007DC177 /* BTRClipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTRClipView.h; path = external/BTRScrollView/BTRScrollView/BTRClipView.h; sourceTree = SOURCE_ROOT; };
-		AB55AD1017D6EC1D007DC177 /* BTRClipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTRClipView.m; path = external/BTRScrollView/BTRScrollView/BTRClipView.m; sourceTree = SOURCE_ROOT; };
-		AB55AD1117D6EC1D007DC177 /* BTRScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTRScrollView.h; path = external/BTRScrollView/BTRScrollView/BTRScrollView.h; sourceTree = SOURCE_ROOT; };
-		AB55AD1217D6EC1D007DC177 /* BTRScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTRScrollView.m; path = external/BTRScrollView/BTRScrollView/BTRScrollView.m; sourceTree = SOURCE_ROOT; };
 		ABA276B0171D1C4B005C8E56 /* JNWCollectionViewDocumentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewDocumentView.h; path = JNWCollectionView/JNWCollectionViewDocumentView.h; sourceTree = SOURCE_ROOT; };
 		ABA276B1171D1C4B005C8E56 /* JNWCollectionViewDocumentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewDocumentView.m; path = JNWCollectionView/JNWCollectionViewDocumentView.m; sourceTree = SOURCE_ROOT; };
 		ABB023F1170791D300537A92 /* JNWCollectionView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JNWCollectionView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -357,10 +357,10 @@
 		ABE0A77817C7E22F005F35A8 /* External */ = {
 			isa = PBXGroup;
 			children = (
-				AB55AD0F17D6EC1D007DC177 /* BTRClipView.h */,
-				AB55AD1017D6EC1D007DC177 /* BTRClipView.m */,
-				AB55AD1117D6EC1D007DC177 /* BTRScrollView.h */,
-				AB55AD1217D6EC1D007DC177 /* BTRScrollView.m */,
+				AB38E38A17DF099A00D50B3C /* JNWClipView.h */,
+				AB38E38B17DF099A00D50B3C /* JNWClipView.m */,
+				AB38E38C17DF099A00D50B3C /* JNWScrollView.h */,
+				AB38E38D17DF099A00D50B3C /* JNWScrollView.m */,
 			);
 			name = External;
 			sourceTree = "<group>";
@@ -379,8 +379,8 @@
 				AB1514821715361E00871248 /* JNWCollectionViewGridLayout.h in Headers */,
 				AB1514741714D39600871248 /* JNWCollectionViewListLayout.h in Headers */,
 				AB3C7202170CA8D3004A91DB /* NSIndexPath+JNWAdditions.h in Headers */,
-				AB55AD1517D6EC1D007DC177 /* BTRScrollView.h in Headers */,
-				AB55AD1317D6EC1D007DC177 /* BTRClipView.h in Headers */,
+				AB38E38E17DF099A00D50B3C /* JNWClipView.h in Headers */,
+				AB38E39017DF099A00D50B3C /* JNWScrollView.h in Headers */,
 				AB3C71F7170CA8D3004A91DB /* JNWCollectionView+Private.h in Headers */,
 				AB3C71FB170CA8D3004A91DB /* JNWCollectionViewCell+Private.h in Headers */,
 				AB39819D1731A1B50062B2E0 /* JNWCollectionViewReusableView+Private.h in Headers */,
@@ -570,14 +570,14 @@
 			files = (
 				AB3C71F5170CA8D3004A91DB /* JNWCollectionView.m in Sources */,
 				AB3C71F9170CA8D3004A91DB /* JNWCollectionViewCell.m in Sources */,
-				AB55AD1417D6EC1D007DC177 /* BTRClipView.m in Sources */,
 				AB3C71FD170CA8D3004A91DB /* JNWCollectionViewReusableView.m in Sources */,
-				AB55AD1617D6EC1D007DC177 /* BTRScrollView.m in Sources */,
 				AB3C7203170CA8D3004A91DB /* NSIndexPath+JNWAdditions.m in Sources */,
+				AB38E39117DF099A00D50B3C /* JNWScrollView.m in Sources */,
 				AB1514701714C90800871248 /* JNWCollectionViewLayout.m in Sources */,
 				AB1514751714D39600871248 /* JNWCollectionViewListLayout.m in Sources */,
 				AB1514831715361E00871248 /* JNWCollectionViewGridLayout.m in Sources */,
 				ABA276B3171D1C4B005C8E56 /* JNWCollectionViewDocumentView.m in Sources */,
+				AB38E38F17DF099A00D50B3C /* JNWClipView.m in Sources */,
 				ABE145361747519700DD3FCA /* JNWCollectionViewData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

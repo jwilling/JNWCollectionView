@@ -247,6 +247,16 @@
 			name = Layouts;
 			sourceTree = "<group>";
 		};
+		AB38E37917DEFA1E00D50B3C /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				AB3C71EA170CA8D3004A91DB /* JNWCollectionView+Private.h */,
+				AB3C71ED170CA8D3004A91DB /* JNWCollectionViewCell+Private.h */,
+				AB39819C1731A1B50062B2E0 /* JNWCollectionViewReusableView+Private.h */,
+			);
+			name = Private;
+			sourceTree = "<group>";
+		};
 		AB46B0AF171F900100F727C7 /* external */ = {
 			isa = PBXGroup;
 			children = (
@@ -306,15 +316,13 @@
 				ABE145341747519700DD3FCA /* JNWCollectionViewData.m */,
 				ABA276B0171D1C4B005C8E56 /* JNWCollectionViewDocumentView.h */,
 				ABA276B1171D1C4B005C8E56 /* JNWCollectionViewDocumentView.m */,
-				AB3C71EA170CA8D3004A91DB /* JNWCollectionView+Private.h */,
 				AB3C71EB170CA8D3004A91DB /* JNWCollectionViewCell.h */,
 				AB3C71EC170CA8D3004A91DB /* JNWCollectionViewCell.m */,
-				AB3C71ED170CA8D3004A91DB /* JNWCollectionViewCell+Private.h */,
 				AB3C71EE170CA8D3004A91DB /* JNWCollectionViewReusableView.h */,
 				AB3C71EF170CA8D3004A91DB /* JNWCollectionViewReusableView.m */,
-				AB39819C1731A1B50062B2E0 /* JNWCollectionViewReusableView+Private.h */,
 				AB3C71F2170CA8D3004A91DB /* NSIndexPath+JNWAdditions.h */,
 				AB3C71F3170CA8D3004A91DB /* NSIndexPath+JNWAdditions.m */,
+				AB38E37917DEFA1E00D50B3C /* Private */,
 				ABE0A77817C7E22F005F35A8 /* External */,
 				ABB023FB170791D300537A92 /* Supporting Files */,
 			);

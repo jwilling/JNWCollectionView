@@ -15,6 +15,10 @@ typedef struct {
 NSString * const JNWCollectionViewGridLayoutHeaderIdentifier = @"JNWCollectionViewGridLayoutHeader";
 NSString * const JNWCollectionViewGridLayoutFooterIdentifier = @"JNWCollectionViewGridLayoutFooter";
 
+@interface JNWCollectionViewGridLayout()
+@property (nonatomic, assign) CGRect lastInvalidatedBounds;
+@end
+
 @interface JNWCollectionViewGridLayoutSection : NSObject
 - (instancetype)initWithNumberOfItems:(NSInteger)numberOfItems;
 @property (nonatomic, assign) CGFloat offset;
@@ -67,9 +71,18 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	return _sections;
 }
 
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {
+	if (newBounds.size.width != self.lastInvalidatedBounds.size.width) {
+		self.lastInvalidatedBounds = newBounds;
+		return YES;
+	}
+	
+	return NO;
+}
+
 - (void)prepareLayout {
 	[self.sections removeAllObjects];
-	
+
 	if (![self.delegate conformsToProtocol:@protocol(JNWCollectionViewGridLayoutDelegate)]) {
 		NSLog(@"delegate does not conform to JNWCollectionViewGridLayoutDelegate!");
 	}

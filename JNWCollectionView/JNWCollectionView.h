@@ -66,17 +66,20 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 // The mouse up event can occur outside of the originating cell.
 - (void)collectionView:(JNWCollectionView *)collectionView mouseUpInItemAtIndexPath:(NSIndexPath *)indexPath;
 
-// Asks the delegate if the item at the specified index should be selected.
+// Asks the delegate if the item at the specified index path should be selected.
 - (BOOL)collectionView:(JNWCollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath;
 
-// Tells the delegate that the item at the specified index has been selected.
+// Tells the delegate that the item at the specified index path has been selected.
 - (void)collectionView:(JNWCollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
 
-// Asks the delegate if the item at the specified index should be deselected.
+// Asks the delegate if the item at the specified index path should be deselected.
 - (BOOL)collectionView:(JNWCollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath;
 
-// Tells the delegate that the item at the specified index has been deselected.
+// Tells the delegate that the item at the specified index path has been deselected.
 - (void)collectionView:(JNWCollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath;
+
+// Tells the delegate that the item at the specified index path has been double-clicked.
+- (void)collectionView:(JNWCollectionView *)collectionView didDoubleClickItemAtIndexPath:(NSIndexPath *)indexPath;
 
 // Tells the delegate that the specified index path has been scrolled to.
 - (void)collectionView:(JNWCollectionView *)collectionView didScrollToItemAtIndexPath:(NSIndexPath *)indexPath;
@@ -88,8 +91,13 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 @class JNWCollectionViewLayout;
 @interface JNWCollectionView : JNWScrollView
 
-@property (nonatomic, weak) id<JNWCollectionViewDelegate> delegate;
-@property (nonatomic, weak) id<JNWCollectionViewDataSource> dataSource;
+// The delegate for the collection view.
+@property (nonatomic, unsafe_unretained) id<JNWCollectionViewDelegate> delegate;
+
+// The data source for the collection view.
+//
+// Required.
+@property (nonatomic, unsafe_unretained) id<JNWCollectionViewDataSource> dataSource;
 
 // Calling this method will cause the collection view to clean up all the views and
 // recalculate item info. It will then perform a layout pass.

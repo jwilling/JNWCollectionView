@@ -26,6 +26,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 		unsigned int delegateShouldDeselect;
 		unsigned int delegateDidDeselect;
 		unsigned int delegateDidScroll;
+		unsigned int delegateDidDoubleClick;
 		
 		unsigned int wantsLayout;
 	} _collectionViewFlags;
@@ -107,6 +108,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	_collectionViewFlags.delegateDidSelect = [delegate respondsToSelector:@selector(collectionView:didSelectItemAtIndexPath:)];
 	_collectionViewFlags.delegateShouldDeselect = [delegate respondsToSelector:@selector(collectionView:shouldDeselectItemAtIndexPath:)];
 	_collectionViewFlags.delegateDidDeselect = [delegate respondsToSelector:@selector(collectionView:didDeselectItemAtIndexPath:)];
+	_collectionViewFlags.delegateDidDoubleClick = [delegate respondsToSelector:@selector(collectionView:didDoubleClickItemAtIndexPath:)];
 }
 
 - (void)setDataSource:(id<JNWCollectionViewDataSource>)dataSource {
@@ -891,8 +893,14 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 - (void)mouseUpInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
 	if (_collectionViewFlags.delegateMouseUp) {
 		NSIndexPath *indexPath = [self indexPathForCell:cell];
-		
 		[self.delegate collectionView:self mouseUpInItemAtIndexPath:indexPath];
+	}
+}
+
+- (void)doubleClickInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
+	if (_collectionViewFlags.delegateDidDoubleClick) {
+		NSIndexPath *indexPath = [self indexPathForCell:cell];
+		[self.delegate collectionView:self didDoubleClickItemAtIndexPath:indexPath];
 	}
 }
 

@@ -132,6 +132,8 @@ There are many methods that are built into `JNWCollectionView`...far too many to
 `JNWCollectionView` has external dependencies. When you clone the project, make sure you clone the project recursively to pull down the submodules.
 
     git clone --recursive https://github.com/jwilling/JNWCollectionView.git
+    
+One you have the framework pulled, the next step is to link the framework with your app. The easiest way to do this is to add `JNWCollectionView` as a subproject of your project as a target dependency. If you're confused, the demo application demonstrates the correct way to link to the framework.
 
 ## What's left to do? ##
 
@@ -143,7 +145,7 @@ There are many methods that are built into `JNWCollectionView`...far too many to
 ## License ##
 `JNWCollectionView` is licensed under the [MIT](http://opensource.org/licenses/MIT) license. See [LICENSE.md](LICENSE.md).
 
-In short, I made this to help out as many people as I can. If you find it helpful, let me know! You just might make my day. 😉
+In short, I made this to help out as many people as I can. If you find it helpful, let me know! You just might make my day. :wink:
 
 ## Get In Touch ##
 You can follow me on Twitter as [@willing](http://twitter.com/willing), email me at the email listed on my GitHub profile, or read my blog at [jwilling.com](http://www.jwilling.com). If you have questions, feel free to post an issue here on GitHub, or just ping me on Twitter.

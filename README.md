@@ -1,5 +1,5 @@
 ## JNWCollectionView ##
-`JNWCollectionView` is a modern collection view for the Mac with an extremely flexible API. Cells are dequeued and memory usage is kept at a minimum. Cells are layer-backed by default, and performance is highly optimized. 
+`JNWCollectionView` is a modern collection view for the Mac with an extremely flexible API. Cells are dequeued and memory usage is kept at a minimum. Cells are layer-backed by default, and performance is highly optimized.
 
 Anyone familiar with `UICollectionView` should feel right at home with `JNWCollectionView`. Like `UICollectionView`, `JNWCollectionView` uses the concept of a layout class for determining how items should be displayed onscreen. 
 
@@ -82,12 +82,53 @@ That's it. Lets call the initial reload.
 [collectionView reloadData];
 ```
 
-You now have a fully-functioning collection view. But that's just scratching the surface. What else can be done?
+You now have a fully-functioning collection view. But that's just scratching the surface.
 
 ## Lets dive deeper ##
 
+### What makes this better than NSCollectionView / NSTableView? ###
+
+`NSCollectionView` is sadly neglected. `NSCollectionView` does not attempt to reuse cells at all, meaning it will every single cell, even if it's not onscreen. It cannot handle being layer-backed, and therefore scrolling performance is terrible. It is not very customizable.
+
+`NSTableView` is (still) a well designed class, however it is not perfect. For example, in newer versions of OS X, it forces Auto Layout to be enabled. It is not very easy to customize, and its support for legacy brings a lot of baggage along with the current API. Although scrolling performance is quite good, it can be improved upon.
+
+On the contrary, `JNWCollectionView` was designed from the ground up to be as fast and as lightweight as possible, using a combination of layer-backed views and optimized cell dequeuing. This required relentless profiling and tweaking. Although scrolling performance could probably be improved even more, `JNWCollectionView` is reaching the bounds of what is possible using pure AppKit. There is no legacy baggage — this was built from the ground up for speed and ease of use.
+
+
+### Layouts ###
+
+![](http://jwilling.com/drop/collection_view_list-UgrsbKwdwH.png) ![](http://jwilling.com/drop/collection_view_grid-yEqBykss8P.png)
+As mentioned in the introduction, `JNWCollectionView` is completely based around the concept of layouts. A collection view can only have a single layout at one time. The layout is responsible for determining where items should be positioned, however *it does not touch the view layer itself*. The distinction is made between "items" and "cells", where items stand for the data representation of views themselves, such as the frame, the alpha value, the index path, etc. The cell itself is the view.
+
+`JNWCollectionViewLayout` subclasses, then, are responsible for determining how to lay out the *items* in the collection view, in addition to supplementary views. The collection view itself handles the views. 
+
+The layout is also responsible for handling selection. Selection be triggered by the mouse *and* the keyboard. `JNWCollectionView` has a helper API that attempts to make handling selection events as easy as possible.
+
+So, to accomplish anything powerful with `JNWCollectionView`, a layout subclass must be used. Two are included (list and grid), however there are many more layouts that can be created if desired. For examples of how to subclass `JNWCollectionViewLayout`, see `JNWCollectionViewListLayout` and `JNWCollectionViewGridLayout`. The header contains full documentation and subclassing advice.
+
+### Cells ###
+Cells are built on top of the `JNWCollectionViewCell` class. There are many convenience methods available for use.
+
+Every `JNWCollectionViewCell` instance has two subviews by default. One is the background view, which cannot be modified directly. Instead, it can be customized by setting either an image or a color using the related properties (`backgroundImage` and `backgroundColor`).
+
+The other subview is the `contentView`. Any subviews added to the cell should be added to this view to guarantee correct ordering with the background view.
+
+There are many more methods and details available for discovery in the header.
+
+### Supplementary Views ###
+
+Supplementary views are reusable views that are distinguished by the use of identifiers, know as "kinds". There can only be one supplementary view for each *kind* in a single section. This does not mean you are limited to a single supplementary view in each section. Instead, if multiple supplementary views are needed, they should be registered under a separate kind.
+
+All supplementary views are built on top of `JNWCollectionViewReusableView`. See the header for more details.
+
+### The Collection View Itself ###
+
+There are many methods that are built into `JNWCollectionView`...far too many to describe. Why not take a look [at the header itself?](https://github.com/jwilling/jnwcollectionview/blob/master/JNWCollectionView/JNWCollectionView.h)
+
 
 ## What's left to do? ##
+
+Flow layout.
 
 
 ## License ##

@@ -12,8 +12,8 @@ typedef struct {
 	CGPoint origin;
 } JNWCollectionViewGridLayoutItemInfo;
 
-NSString * const JNWCollectionViewGridLayoutHeaderIdentifier = @"JNWCollectionViewGridLayoutHeader";
-NSString * const JNWCollectionViewGridLayoutFooterIdentifier = @"JNWCollectionViewGridLayoutFooter";
+NSString * const JNWCollectionViewGridLayoutHeaderKind = @"JNWCollectionViewGridLayoutHeader";
+NSString * const JNWCollectionViewGridLayoutFooterKind = @"JNWCollectionViewGridLayoutFooter";
 
 @interface JNWCollectionViewGridLayout()
 @property (nonatomic, assign) CGRect lastInvalidatedBounds;
@@ -152,9 +152,9 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	CGFloat width = self.collectionView.visibleSize.width;
 	CGRect frame = CGRectZero;
 	
-	if ([kind isEqualToString:JNWCollectionViewGridLayoutHeaderIdentifier]) {
+	if ([kind isEqualToString:JNWCollectionViewGridLayoutHeaderKind]) {
 		frame = CGRectMake(0, section.offset - section.headerHeight, width, section.headerHeight);
-	} else if ([kind isEqualToString:JNWCollectionViewGridLayoutFooterIdentifier]) {
+	} else if ([kind isEqualToString:JNWCollectionViewGridLayoutFooterKind]) {
 		frame = CGRectMake(0, section.offset + section.height, width, section.footerHeight);
 	}
 	

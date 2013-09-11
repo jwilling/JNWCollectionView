@@ -9,8 +9,8 @@
 #import "JNWCollectionViewLayout.h"
 
 // The supplementary view kind identifiers used for the header and the footer.
-extern NSString * const JNWCollectionViewGridLayoutHeaderIdentifier;
-extern NSString * const JNWCollectionViewGridLayoutFooterIdentifier;
+extern NSString * const JNWCollectionViewGridLayoutHeaderKind;
+extern NSString * const JNWCollectionViewGridLayoutFooterKind;
 
 // The delegate is responsible for returning size information for the grid layout.
 @protocol JNWCollectionViewGridLayoutDelegate <NSObject>

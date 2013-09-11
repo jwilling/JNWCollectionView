@@ -135,6 +135,12 @@ Take a look [at the header itself](https://github.com/jwilling/jnwcollectionview
     
 One you have the framework pulled, the next step is to link the framework with your app. The easiest way to do this is to add `JNWCollectionView` as a subproject of your project as a target dependency. If you're confused, the demo application demonstrates the correct way to link to the framework.
 
+## Case Study ##
+
+![](http://jwilling.com/drop/collection_view_wwdc-MVWUZID5Ov.png)
+
+This is an app I wrote for Apple's WWDC'13 scholarship. It was mostly written to demonstrate what my collection view could do, so I have decided to release the source for it, most of which was written in a day. It demonstrates a custom layout class that creates a timeline arrangement. The line is composed of supplementary views, and the text, images, and selection dot are all cells. Each row across the screen is a section. If the demo in this repo is underwhelming in complexity, take this app for a spin and check out the layout class. It can be found [here](https://github.com/jwilling/WWDC--13-Scholarship-App).
+
 ## What's left to do? ##
 
 - Flow layout.

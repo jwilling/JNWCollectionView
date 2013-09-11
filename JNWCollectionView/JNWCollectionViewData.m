@@ -57,7 +57,10 @@
 
 - (void)recalculateForcingLayoutInvalidation:(BOOL)forceInvalidation {
 	JNWCollectionViewLayout *layout = self.collectionView.collectionViewLayout;
-	NSAssert(layout != nil, @"layout cannot be nil.");
+	
+	if (layout == nil) {
+		return;
+	}
 	
 	if ([layout shouldInvalidateLayoutForBoundsChange:self.collectionView.bounds] || forceInvalidation) {
 		[self.sectionData removeAllObjects];

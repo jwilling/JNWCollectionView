@@ -25,7 +25,7 @@ First, make sure you're linking with the `JNWCollectionView` framework and have 
 // Create the collection view
 JNWCollectionView *collectionView = [[JNWCollectionView alloc] initWithFrame:self.view.bounds];
 collectionView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-[self.view addSubview:self.collectionView];
+[self.view addSubview:collectionView];
 ```
 
 As with UI/NSTable/CollectionView, the data source is required. Make sure the class conforms to `JNWCollectionViewDataSource`.
@@ -54,13 +54,13 @@ gridLayout.itemSize = CGSizeMake(100, 100);
 
 // Set the grid layout as the collection view layout, or the layout
 // that is used for positioning the items in the collection view.
-self.collectionView.collectionViewLayout = gridLayout;
+collectionView.collectionViewLayout = gridLayout;
 ```
 
 Next, we can create a custom cell that inherits from `JNWCollectionViewCell`. We then need to register this class for use in dequeuing cells.
 
 ```objc
-[self.collectionView registerClass:MyCustomCell.class forCellWithReuseIdentifier:@"some identifier"];
+[collectionView registerClass:MyCustomCell.class forCellWithReuseIdentifier:@"some identifier"];
 ```
 
 Almost done. Lets implement the required data source methods.

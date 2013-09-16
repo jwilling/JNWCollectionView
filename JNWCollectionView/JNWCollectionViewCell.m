@@ -162,6 +162,13 @@
 	}
 }
 
+- (void)rightMouseDown:(NSEvent *)theEvent
+{
+    [super rightMouseDown:theEvent];
+    
+    [self.collectionView rightClickInCollectionViewCell:self withEvent:theEvent];
+}
+
 #pragma mark NSObject
 
 - (NSString *)description {

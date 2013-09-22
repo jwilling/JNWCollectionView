@@ -1,13 +1,16 @@
 [submodule "demo/external/JNWLabel"]
 	path = demo/external/JNWLabel
 	url = https://github.com/jwilling/JNWLabel.git
+	ignore = dirty
 [submodule "external/Expecta"]
 	path = external/Expecta
 	url = https://github.com/petejkim/expecta.git
+	ignore = dirty
 [submodule "external/Specta"]
 	path = external/Specta
 	url = https://github.com/petejkim/specta.git
-
+	ignore = dirty
 [submodule "external/JNWScrollView"]
 	path = external/JNWScrollView
 	url = https://github.com/jwilling/JNWScrollView.git
+	ignore = dirty

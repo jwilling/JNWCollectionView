@@ -11,12 +11,8 @@
 		AB29A69016FEFE1B00C9A941 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB29A68F16FEFE1B00C9A941 /* QuartzCore.framework */; };
 		AB2E9606170CB116004678DC /* JNWCollectionView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB2E9603170CB107004678DC /* JNWCollectionView.framework */; };
 		AB2E960B170CB196004678DC /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB2E9609170CB196004678DC /* MainMenu.xib */; };
-		AB3C7236170CABFF004A91DB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C7230170CABFF004A91DB /* AppDelegate.m */; };
 		AB3C7238170CABFF004A91DB /* ListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C7233170CABFF004A91DB /* ListCell.m */; };
 		AB3C7239170CABFF004A91DB /* ListHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C7235170CABFF004A91DB /* ListHeader.m */; };
-		AB3C7241170CAC2C004A91DB /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = AB3C723D170CAC2C004A91DB /* Credits.rtf */; };
-		AB3C7242170CAC2C004A91DB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB3C723F170CAC2C004A91DB /* InfoPlist.strings */; };
-		AB3C7244170CAC32004A91DB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C7243170CAC32004A91DB /* main.m */; };
 		AB666C731749258D00545290 /* DemoImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = AB666C721749258D00545290 /* DemoImageCache.m */; };
 		ABA2769D171CFC80005C8E56 /* GridDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA2769B171CFC80005C8E56 /* GridDemoViewController.m */; };
 		ABA2769E171CFC80005C8E56 /* GridDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABA2769C171CFC80005C8E56 /* GridDemoViewController.xib */; };
@@ -75,17 +71,12 @@
 		AB29A68F16FEFE1B00C9A941 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		AB2E95FD170CB107004678DC /* JNWCollectionView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JNWCollectionView.xcodeproj; path = ../JNWCollectionView.xcodeproj; sourceTree = "<group>"; };
 		AB2E960A170CB196004678DC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = JNWCollectionViewDemo/en.lproj/MainMenu.xib; sourceTree = SOURCE_ROOT; };
-		AB3C722F170CABFF004A91DB /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = JNWCollectionViewDemo/AppDelegate.h; sourceTree = SOURCE_ROOT; };
-		AB3C7230170CABFF004A91DB /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = JNWCollectionViewDemo/AppDelegate.m; sourceTree = SOURCE_ROOT; };
 		AB3C7232170CABFF004A91DB /* ListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ListCell.h; path = JNWCollectionViewDemo/ListCell.h; sourceTree = SOURCE_ROOT; };
 		AB3C7233170CABFF004A91DB /* ListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ListCell.m; path = JNWCollectionViewDemo/ListCell.m; sourceTree = SOURCE_ROOT; };
 		AB3C7234170CABFF004A91DB /* ListHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ListHeader.h; path = JNWCollectionViewDemo/ListHeader.h; sourceTree = SOURCE_ROOT; };
 		AB3C7235170CABFF004A91DB /* ListHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ListHeader.m; path = JNWCollectionViewDemo/ListHeader.m; sourceTree = SOURCE_ROOT; };
 		AB3C723A170CAC1B004A91DB /* JNWCollectionViewDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "JNWCollectionViewDemo-Info.plist"; path = "JNWCollectionViewDemo/JNWCollectionViewDemo-Info.plist"; sourceTree = SOURCE_ROOT; };
 		AB3C723B170CAC1B004A91DB /* JNWCollectionViewDemo-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JNWCollectionViewDemo-Prefix.pch"; path = "JNWCollectionViewDemo/JNWCollectionViewDemo-Prefix.pch"; sourceTree = SOURCE_ROOT; };
-		AB3C723E170CAC2C004A91DB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = JNWCollectionViewDemo/en.lproj/Credits.rtf; sourceTree = SOURCE_ROOT; };
-		AB3C7240170CAC2C004A91DB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = JNWCollectionViewDemo/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
-		AB3C7243170CAC32004A91DB /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = JNWCollectionViewDemo/main.m; sourceTree = SOURCE_ROOT; };
 		AB666C711749258D00545290 /* DemoImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DemoImageCache.h; path = JNWCollectionViewDemo/DemoImageCache.h; sourceTree = SOURCE_ROOT; };
 		AB666C721749258D00545290 /* DemoImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DemoImageCache.m; path = JNWCollectionViewDemo/DemoImageCache.m; sourceTree = SOURCE_ROOT; };
 		ABA2769A171CFC80005C8E56 /* GridDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GridDemoViewController.h; path = JNWCollectionViewDemo/GridDemoViewController.h; sourceTree = SOURCE_ROOT; };
@@ -216,8 +207,6 @@
 			isa = PBXGroup;
 			children = (
 				ABAF15551718C39300658A1D /* JNWLabel */,
-				AB3C722F170CABFF004A91DB /* AppDelegate.h */,
-				AB3C7230170CABFF004A91DB /* AppDelegate.m */,
 				AB2E9609170CB196004678DC /* MainMenu.xib */,
 				ABAF15661718E67C00658A1D /* DemoWindowController.h */,
 				ABAF15671718E67C00658A1D /* DemoWindowController.m */,
@@ -240,9 +229,6 @@
 			children = (
 				AB3C723A170CAC1B004A91DB /* JNWCollectionViewDemo-Info.plist */,
 				AB3C723B170CAC1B004A91DB /* JNWCollectionViewDemo-Prefix.pch */,
-				AB3C723D170CAC2C004A91DB /* Credits.rtf */,
-				AB3C7243170CAC32004A91DB /* main.m */,
-				AB3C723F170CAC2C004A91DB /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -336,8 +322,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AB3C7241170CAC2C004A91DB /* Credits.rtf in Resources */,
-				AB3C7242170CAC2C004A91DB /* InfoPlist.strings in Resources */,
 				AB2E960B170CB196004678DC /* MainMenu.xib in Resources */,
 				ABAF156A1718E67C00658A1D /* DemoWindowController.xib in Resources */,
 				ABA2769E171CFC80005C8E56 /* GridDemoViewController.xib in Resources */,
@@ -352,10 +336,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AB3C7236170CABFF004A91DB /* AppDelegate.m in Sources */,
 				AB3C7238170CABFF004A91DB /* ListCell.m in Sources */,
 				AB3C7239170CABFF004A91DB /* ListHeader.m in Sources */,
-				AB3C7244170CAC32004A91DB /* main.m in Sources */,
 				ABAF155B1718C39C00658A1D /* JNWLabel.m in Sources */,
 				ABAF155C1718C39C00658A1D /* JNWLabel+Accessibility.m in Sources */,
 				ABAF15691718E67C00658A1D /* DemoWindowController.m in Sources */,
@@ -386,22 +368,6 @@
 				AB2E960A170CB196004678DC /* en */,
 			);
 			name = MainMenu.xib;
-			sourceTree = "<group>";
-		};
-		AB3C723D170CAC2C004A91DB /* Credits.rtf */ = {
-			isa = PBXVariantGroup;
-			children = (
-				AB3C723E170CAC2C004A91DB /* en */,
-			);
-			name = Credits.rtf;
-			sourceTree = "<group>";
-		};
-		AB3C723F170CAC2C004A91DB /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				AB3C7240170CAC2C004A91DB /* en */,
-			);
-			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

@@ -33,42 +33,27 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 	JNWCollectionViewSelectionTypeMultiple
 };
 
-@interface JNWCollectionView() {
-	struct {
-		unsigned int dataSourceNumberOfSections;
-		unsigned int dataSourceViewForSupplementaryView;
-		
-		unsigned int delegateMouseDown;
-		unsigned int delegateMouseUp;
-		unsigned int delegateShouldSelect;
-		unsigned int delegateDidSelect;
-		unsigned int delegateShouldDeselect;
-		unsigned int delegateDidDeselect;
-		unsigned int delegateDidScroll;
-		unsigned int delegateDidDoubleClick;
-		unsigned int delegateDidRightClick;
-		
-		unsigned int wantsLayout;
-	} _collectionViewFlags;
-	
+@interface JNWCollectionView() {	struct { 
+
+		unsigned int 	dataSourceNumberOfSections, 	dataSourceViewForSupplementaryView,
+							delegateMouseDown,				delegateMouseUp,
+							delegateShouldSelect,			delegateDidSelect,
+							delegateShouldDeselect, 	 	delegateDidDeselect,
+							delegateDidScroll,				delegateDidDoubleClick,
+							delegateDidRightClick,			wantsLayout;
+	} _collectionViewFlags;	
 	CGRect _lastDrawnBounds;
 }
+@property (nonatomic) JNWCollectionViewData * data;									// Layout data/cache
+@property (nonatomic) 		  NSMutableArray * selectedIndexes;						// Selection
+@property (nonatomic)   NSMutableDictionary  
 
-// Layout data/cache
-@property (nonatomic, strong) JNWCollectionViewData *data;
-
-// Selection
-@property (nonatomic, strong) NSMutableArray *selectedIndexes;
-
-// Cells
-@property (nonatomic, strong) NSMutableDictionary *reusableCells; // { identifier : (cells) }
-@property (nonatomic, strong) NSMutableDictionary *visibleCellsMap; // { index path : cell }
-@property (nonatomic, strong) NSMutableDictionary *cellClassMap; // { identifier : class }
-
-// Supplementary views
-@property (nonatomic, strong) NSMutableDictionary *reusableSupplementaryViews; // { "kind/identifier" : (views) }
-@property (nonatomic, strong) NSMutableDictionary *visibleSupplementaryViewsMap; // { "index/kind/identifier" : view } }
-@property (nonatomic, strong) NSMutableDictionary *supplementaryViewClassMap; // { "kind/identifier" : class }
+	* reusableCells, 						// { identifier : (cells) }					// Cells
+	* visibleCellsMap,					// { index path :  cell   }
+	* cellClassMap, 						// { identifier :  class  }
+	* reusableSupplementaryViews, 	// { "kind/identifier" 		  : (views) }  // Supplementary views
+	* visibleSupplementaryViewsMap, 	// { "index/kind/identifier" :  view } }
+	* supplementaryViewClassMap; 		// { "kind/identifier"       :  class  }
 
 @end
 
@@ -77,30 +62,26 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 // We're using a static function for the common initialization so that subclassers
 // don't accidentally override this method in their own common init method.
 static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
-	collectionView.data = [[JNWCollectionViewData alloc] initWithCollectionView:collectionView];
-	
-	collectionView.selectedIndexes = [NSMutableArray array];
-	collectionView.cellClassMap = [NSMutableDictionary dictionary];
-	collectionView.visibleCellsMap = [NSMutableDictionary dictionary];
-	collectionView.reusableCells = [NSMutableDictionary dictionary];
-	collectionView.supplementaryViewClassMap = [NSMutableDictionary dictionary];
-	collectionView.visibleSupplementaryViewsMap = [NSMutableDictionary dictionary];
-	collectionView.reusableSupplementaryViews = [NSMutableDictionary dictionary];
-	
-	// By default we are layer-backed.
-	collectionView.wantsLayer = YES;
-	
-	// Set the document view to a custom class that returns YES to -isFlipped.
-	collectionView.documentView = [[JNWCollectionViewDocumentView alloc] initWithFrame:CGRectZero];
 
-	collectionView.hasHorizontalScroller = NO;
-	collectionView.hasVerticalScroller = YES;
+	collectionView.data = [JNWCollectionViewData.alloc initWithCollectionView:collectionView];
+	
+	collectionView.selectedIndexes 					= NSMutableArray.new;;
+	collectionView.cellClassMap 						= NSMutableDictionary.new;
+	collectionView.visibleCellsMap 					= NSMutableDictionary.new;
+	collectionView.reusableCells 						= NSMutableDictionary.new;
+	collectionView.supplementaryViewClassMap 		= NSMutableDictionary.new;
+	collectionView.visibleSupplementaryViewsMap 	= NSMutableDictionary.new;
+	collectionView.reusableSupplementaryViews 	= NSMutableDictionary.new;
+
+	collectionView.wantsLayer 		= YES;  	// By default we are layer-backed.
+	// Set the document view to a custom class that returns YES to -isFlipped.
+	collectionView.documentView 	= [JNWCollectionViewDocumentView.alloc initWithFrame:CGRectZero];
+	collectionView.hasHorizontalScroller 	= NO;
+	collectionView.hasVerticalScroller 		= YES;
 		
 	// We don't want to perform an initial layout pass until the user has called -reloadData.
 	collectionView->_collectionViewFlags.wantsLayout = NO;
-	
 	collectionView.allowsSelection = YES;
-	
 	collectionView.backgroundColor = NSColor.clearColor;
 }
 

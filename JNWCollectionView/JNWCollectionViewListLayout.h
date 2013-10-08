@@ -17,7 +17,7 @@
  IN THE SOFTWARE.
  */
 
-#import "JNWCollectionViewLayout.h"
+#import <JNWCollectionView/JNWCollectionViewReorderableLayout.h>
 
 // The supplementary view kind identifiers used for the header and the footer.
 extern NSString * const JNWCollectionViewListLayoutHeaderKind;
@@ -44,7 +44,7 @@ extern NSString * const JNWCollectionViewListLayoutFooterKind;
 
 // A layout subclass that displays items in a vertical list with rows of
 // items, similar to a table view.
-@interface JNWCollectionViewListLayout : JNWCollectionViewLayout
+@interface JNWCollectionViewListLayout : JNWCollectionViewReorderableLayout
 
 // The delegate for the list layout. The delegate, if needed, should be set before
 // the collection view is reloaded.

@@ -17,7 +17,7 @@
  IN THE SOFTWARE.
  */
 
-#import "JNWCollectionViewLayout.h"
+#import <JNWCollectionView/JNWCollectionViewReorderableLayout.h>
 
 // The supplementary view kind identifiers used for the header and the footer.
 extern NSString * const JNWCollectionViewGridLayoutHeaderKind;
@@ -43,7 +43,7 @@ extern NSString * const JNWCollectionViewGridLayoutFooterKind;
 
 // A layout subclass that displays items in an evenly spaced grid. All items
 // have the same size, and are evenly spaced apart from each other.
-@interface JNWCollectionViewGridLayout : JNWCollectionViewLayout
+@interface JNWCollectionViewGridLayout : JNWCollectionViewReorderableLayout
 
 // The delegate for the grid layout. The delegate, if needed, should be set before
 // the collection view is reloaded.

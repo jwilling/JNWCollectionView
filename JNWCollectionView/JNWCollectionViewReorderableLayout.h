@@ -19,6 +19,36 @@
 
 #import <JNWCollectionView/JNWCollectionViewLayout.h>
 
+typedef NS_ENUM(NSInteger, JNWReorderingType) {
+	JNWReorderingTypeDisplacement,
+	JNWReorderingTypeMarker
+};
+
 @interface JNWCollectionViewReorderableLayout : JNWCollectionViewLayout
+
+// Determines how the layout should handle reordering.
+//
+// Reordering by displacement (JNWReorderingTypeDisplacement) occurs by
+// determining which cell is closest to the item that is being dragged
+// within the bounds of the collection view, and swapping its position
+// with that of the nearby item.
+//
+// Reordering by marker (JNWReorderingTypeMarker) occurs by drawing a
+// marker to indicate the proposed drop position. The position of the marker
+// is determined by the frame returned from -markerRect.
+//
+// Defaults to JNWReorderingTypeDisplacement.
+@property (nonatomic, assign) JNWReorderingType reorderingType;
+
+// The rect in which the drop marker should be placed. This is only utilized
+// if the reorderingType is JNWReorderingTypeMarker.
+//
+// Specified relative the scroll view, not the visible frame.
+//
+// Defaults to CGRectZero.
+- (CGRect)markerRect;
+
+// The fill color of the marker.
+- (NSColor *)markerColor;
 
 @end

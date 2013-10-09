@@ -20,7 +20,13 @@
 #import "JNWCollectionView.h"
 
 @interface JNWCollectionViewCell ()
+
 @property (nonatomic, copy, readwrite) NSString *reuseIdentifier;
 @property (nonatomic, weak, readwrite) JNWCollectionView *collectionView;
 @property (nonatomic, strong, readwrite) NSIndexPath *indexPath;
+
+// The image displayed on the dragging item when a cell is dragged out of its collection view.
+// You can subclass and override this to return a different image, or nil to display nothing.
+- (NSImage *)draggingImageRepresentation;
+
 @end

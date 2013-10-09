@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		861091BF180573E70003A338 /* ListMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 861091BE180573E70003A338 /* ListMarker.m */; };
 		AB15147F171511DD00871248 /* JNWCollectionView.framework in Copy Framework */ = {isa = PBXBuildFile; fileRef = AB2E9603170CB107004678DC /* JNWCollectionView.framework */; };
 		AB29A69016FEFE1B00C9A941 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB29A68F16FEFE1B00C9A941 /* QuartzCore.framework */; };
 		AB2E9606170CB116004678DC /* JNWCollectionView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB2E9603170CB107004678DC /* JNWCollectionView.framework */; };
@@ -72,6 +73,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		861091BD180573E70003A338 /* ListMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ListMarker.h; path = JNWCollectionViewDemo/ListMarker.h; sourceTree = SOURCE_ROOT; };
+		861091BE180573E70003A338 /* ListMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ListMarker.m; path = JNWCollectionViewDemo/ListMarker.m; sourceTree = SOURCE_ROOT; };
 		AB29A68F16FEFE1B00C9A941 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		AB2E95FD170CB107004678DC /* JNWCollectionView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JNWCollectionView.xcodeproj; path = ../JNWCollectionView.xcodeproj; sourceTree = "<group>"; };
 		AB2E960A170CB196004678DC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = JNWCollectionViewDemo/en.lproj/MainMenu.xib; sourceTree = SOURCE_ROOT; };
@@ -254,6 +257,8 @@
 				AB3C7233170CABFF004A91DB /* ListCell.m */,
 				AB3C7234170CABFF004A91DB /* ListHeader.h */,
 				AB3C7235170CABFF004A91DB /* ListHeader.m */,
+				861091BD180573E70003A338 /* ListMarker.h */,
+				861091BE180573E70003A338 /* ListMarker.m */,
 				ABAF156B1718F6D000658A1D /* ListDemoViewController.h */,
 				ABAF156C1718F6D000658A1D /* ListDemoViewController.m */,
 			);
@@ -366,6 +371,7 @@
 				ABA276AF171D14E8005C8E56 /* DemoTableCellView.m in Sources */,
 				ABB1B207171E095B009B9270 /* NSImage+DemoAdditions.m in Sources */,
 				AB666C731749258D00545290 /* DemoImageCache.m in Sources */,
+				861091BF180573E70003A338 /* ListMarker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,6 +417,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -443,6 +450,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;

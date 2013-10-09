@@ -10,6 +10,10 @@
 		8467C6D7171E587F00A1F343 /* JNWCollectionViewReusableViewSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8467C6D6171E587F00A1F343 /* JNWCollectionViewReusableViewSpec.m */; };
 		8467C6FA171E58F700A1F343 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8467C6E0171E589200A1F343 /* libExpecta.a */; };
 		8467C6FB171E58F700A1F343 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8467C6EF171E589500A1F343 /* libSpecta.a */; };
+		861091811803F9530003A338 /* JNWCollectionViewDragContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 8610917F1803F9530003A338 /* JNWCollectionViewDragContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		861091821803F9530003A338 /* JNWCollectionViewDragContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 861091801803F9530003A338 /* JNWCollectionViewDragContext.m */; };
+		861091A4180443A20003A338 /* JNWCollectionViewDropIndexPath.h in Headers */ = {isa = PBXBuildFile; fileRef = 861091A2180443A20003A338 /* JNWCollectionViewDropIndexPath.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		861091A5180443A20003A338 /* JNWCollectionViewDropIndexPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 861091A3180443A20003A338 /* JNWCollectionViewDropIndexPath.m */; };
 		AB15146F1714C90800871248 /* JNWCollectionViewLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = AB15146D1714C90800871248 /* JNWCollectionViewLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AB1514701714C90800871248 /* JNWCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = AB15146E1714C90800871248 /* JNWCollectionViewLayout.m */; };
 		AB1514741714D39600871248 /* JNWCollectionViewListLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = AB1514721714D39600871248 /* JNWCollectionViewListLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -133,6 +137,10 @@
 		8467C6D8171E589200A1F343 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = external/Expecta/Expecta.xcodeproj; sourceTree = SOURCE_ROOT; };
 		8467C6E7171E589500A1F343 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = external/Specta/Specta.xcodeproj; sourceTree = SOURCE_ROOT; };
 		8467C704171E5C9B00A1F343 /* JNWCollectionViewTests-Tests.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JNWCollectionViewTests-Tests.pch"; path = "JNWCollectionViewTests/JNWCollectionViewTests-Tests.pch"; sourceTree = SOURCE_ROOT; };
+		8610917F1803F9530003A338 /* JNWCollectionViewDragContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewDragContext.h; path = JNWCollectionView/JNWCollectionViewDragContext.h; sourceTree = SOURCE_ROOT; };
+		861091801803F9530003A338 /* JNWCollectionViewDragContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewDragContext.m; path = JNWCollectionView/JNWCollectionViewDragContext.m; sourceTree = SOURCE_ROOT; };
+		861091A2180443A20003A338 /* JNWCollectionViewDropIndexPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewDropIndexPath.h; path = JNWCollectionView/JNWCollectionViewDropIndexPath.h; sourceTree = SOURCE_ROOT; };
+		861091A3180443A20003A338 /* JNWCollectionViewDropIndexPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewDropIndexPath.m; path = JNWCollectionView/JNWCollectionViewDropIndexPath.m; sourceTree = SOURCE_ROOT; };
 		AB15146D1714C90800871248 /* JNWCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewLayout.h; path = JNWCollectionView/JNWCollectionViewLayout.h; sourceTree = SOURCE_ROOT; };
 		AB15146E1714C90800871248 /* JNWCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewLayout.m; path = JNWCollectionView/JNWCollectionViewLayout.m; sourceTree = SOURCE_ROOT; };
 		AB1514721714D39600871248 /* JNWCollectionViewListLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewListLayout.h; path = JNWCollectionView/JNWCollectionViewListLayout.h; sourceTree = SOURCE_ROOT; };
@@ -234,6 +242,17 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		861091781803F91D0003A338 /* Drag and Drop */ = {
+			isa = PBXGroup;
+			children = (
+				8610917F1803F9530003A338 /* JNWCollectionViewDragContext.h */,
+				861091801803F9530003A338 /* JNWCollectionViewDragContext.m */,
+				861091A2180443A20003A338 /* JNWCollectionViewDropIndexPath.h */,
+				861091A3180443A20003A338 /* JNWCollectionViewDropIndexPath.m */,
+			);
+			name = "Drag and Drop";
+			sourceTree = "<group>";
+		};
 		AB1514711714D36200871248 /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
@@ -309,6 +328,7 @@
 		ABB023FA170791D300537A92 /* JNWCollectionView */ = {
 			isa = PBXGroup;
 			children = (
+				861091781803F91D0003A338 /* Drag and Drop */,
 				AB1514711714D36200871248 /* Layouts */,
 				AB3C71E8170CA8D3004A91DB /* JNWCollectionView.h */,
 				AB3C71E9170CA8D3004A91DB /* JNWCollectionView.m */,
@@ -387,6 +407,8 @@
 				AB3C7209170CA8EF004A91DB /* JNWCollectionView-Prefix.pch in Headers */,
 				ABA276B2171D1C4B005C8E56 /* JNWCollectionViewDocumentView.h in Headers */,
 				ABE145351747519700DD3FCA /* JNWCollectionViewData.h in Headers */,
+				861091811803F9530003A338 /* JNWCollectionViewDragContext.h in Headers */,
+				861091A4180443A20003A338 /* JNWCollectionViewDropIndexPath.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -579,6 +601,8 @@
 				ABA276B3171D1C4B005C8E56 /* JNWCollectionViewDocumentView.m in Sources */,
 				AB38E38F17DF099A00D50B3C /* JNWClipView.m in Sources */,
 				ABE145361747519700DD3FCA /* JNWCollectionViewData.m in Sources */,
+				861091821803F9530003A338 /* JNWCollectionViewDragContext.m in Sources */,
+				861091A5180443A20003A338 /* JNWCollectionViewDropIndexPath.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -637,6 +661,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -669,6 +694,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;

@@ -20,11 +20,29 @@
 #import <Foundation/Foundation.h>
 #import "JNWCollectionView.h"
 
+
 typedef NS_ENUM(NSInteger, JNWCollectionViewDirection) {
 	JNWCollectionViewDirectionLeft,
 	JNWCollectionViewDirectionRight,
 	JNWCollectionViewDirectionUp,
 	JNWCollectionViewDirectionDown
+};
+
+// How to handle dropping items in a drag and drop operation.
+typedef NS_ENUM(NSInteger, JNWCollectionViewDropType) {
+	// No support for drag and drop.
+	JNWCollectionViewDropTypeNone,
+	
+	// The items stay in place, an additional marker is drawn at the drop
+	// location (for example, like a cursor).
+	JNWCollectionViewDropTypeMarker,
+	
+	// The items are displaced and a (possibly empty) placeholder view is drawn
+	// at the drop location.
+	//
+	// Attributes for the placeholder are queried via -layoutAttributesForItemAtIndexPath:.
+	// 
+	JNWCollectionViewDropTypeDisplacement,
 };
 
 @interface JNWCollectionViewLayoutAttributes : NSObject
@@ -38,7 +56,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewDirection) {
 @property (nonatomic, weak, readonly) JNWCollectionView *collectionView;
 
 
-// Dedicated initializer. Subclasses should override this method for their custom
+// Designated initializer. Subclasses should override this method for their custom
 // initializers.
 - (instancetype)initWithCollectionView:(JNWCollectionView *)collectionView;
 
@@ -66,11 +84,21 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewDirection) {
 - (JNWCollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath;
 - (JNWCollectionViewLayoutAttributes *)layoutAttributesForSupplementaryItemInSection:(NSInteger)section kind:(NSString *)kind;
 
-// Subclasses should an array of index paths that the layout decides should be inside the
+// Subclasses should return an array of index paths that the layout decides should be inside the
 // specified rect. Implementing this method can provide far more optimized performance during scrolling.
 //
 // Default return value is nil.
 - (NSArray *)indexPathsForItemsInRect:(CGRect)rect;
+
+// Subclasses should returns the index path for a drop operation at the specified point, or nil
+// if the layout does not support dropping or no clear index path can be determined.
+- (JNWCollectionViewDropIndexPath *)dropIndexPathAtPoint:(NSPoint)point;
+
+// Returns the attributes of a marker for the drop location if a drag and drop
+// session is in progress and the layout supports markers.
+//
+// The height of the returned frame should be 1.
+- (JNWCollectionViewLayoutAttributes *)layoutAttributesForDropMarker;
 
 // Subclasses should override this method to return the size of the specified section.
 //

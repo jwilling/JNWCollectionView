@@ -9,9 +9,11 @@
 #import "ListDemoViewController.h"
 #import "ListHeader.h"
 #import "ListCell.h"
+#import "ListMarker.h"
 
 @interface ListDemoViewController ()
 @property (nonatomic, strong) JNWCollectionView *collectionView;
+@property (nonatomic, strong) NSMutableArray *sections;
 @end
 
 static NSString * const cellIdentifier = @"CELL";
@@ -42,13 +44,29 @@ static NSString * const headerIdentifier = @"HEADER";
 	
 	self.collectionView.animatesSelection = YES;
 	
+	_sections = [NSMutableArray array];
+	for (NSUInteger section = 0; section < 5; ++section) {
+		NSMutableArray *sectionArray = [NSMutableArray array];
+		for (NSUInteger item = 0; item < 100; ++item) {
+			[sectionArray addObject:@((section * 1000) + item)];
+		}
+		[_sections addObject:sectionArray];
+	}
+	
 	[self.collectionView reloadData];
 }
 
 - (JNWCollectionViewCell *)collectionView:(JNWCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 	ListCell *cell = (ListCell *)[collectionView dequeueReusableCellWithIdentifier:cellIdentifier];
-	cell.cellLabelText = [NSString stringWithFormat:@"%ld - %ld", indexPath.jnw_item, indexPath.jnw_section];
+	NSArray *sectionArray = [_sections objectAtIndex:indexPath.jnw_section];
+	cell.cellLabelText = [[sectionArray objectAtIndex:indexPath.jnw_item] description];
 	return cell;
+}
+
+- (NSView *)collectionView:(JNWCollectionView *)collectionView dropMarkerViewWithFrame:(NSRect)frame {
+	frame.size.height += 1;
+	frame.origin.y -= 1;
+	return [[ListMarker alloc] initWithFrame:frame];
 }
 
 - (JNWCollectionViewReusableView *)collectionView:(JNWCollectionView *)collectionView viewForSupplementaryViewOfKind:(NSString *)kind inSection:(NSInteger)section {
@@ -64,12 +82,68 @@ static NSString * const headerIdentifier = @"HEADER";
 //	return 44.f;
 //}
 
+- (id<NSPasteboardWriting>)collectionView:(JNWCollectionView *)collectionView pasteboardWriterForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+	NSPasteboardItem *pboardItem = [[NSPasteboardItem alloc] init];
+	NSArray *sectionArray = [_sections objectAtIndex:indexPath.jnw_section];
+	NSString *text = [[sectionArray objectAtIndex:indexPath.jnw_item] description];
+	[pboardItem setString:text forType:NSPasteboardTypeString];
+	return pboardItem;
+}
+
+- (NSArray *)draggedTypesForCollectionView:(JNWCollectionView *)collectionView
+{
+	return @[ NSStringPboardType ];
+}
+
+- (BOOL)collectionView:(JNWCollectionView *)collectionView performDragOperation:(id<NSDraggingInfo>)sender fromIndexPaths:(NSArray *)dragIndexPaths toIndexPath:(JNWCollectionViewDropIndexPath *)dropIndexPath
+{
+	NSMutableArray *toSectionArray = [_sections objectAtIndex:dropIndexPath.jnw_section];
+	
+	if (dragIndexPaths.count == 0) {
+		// Drag from outside.
+		NSString *text = [[sender draggingPasteboard] stringForType:NSStringPboardType];
+		if (text) {
+			[toSectionArray insertObject:text atIndex:dropIndexPath.jnw_item];
+			[_collectionView reloadData];
+			return YES;
+		}
+	} else {
+		// Dragged a row.
+		// TODO: This doesn't work correctly with multiple rows.
+		for (NSIndexPath *fromPath in dragIndexPaths) {
+			NSMutableArray *fromSectionArray = [_sections objectAtIndex:fromPath.jnw_section];
+			if (fromSectionArray == toSectionArray) {
+				// Move within a section.
+				id object = [toSectionArray objectAtIndex:fromPath.jnw_item];
+				if (fromPath.jnw_item < dropIndexPath.jnw_item) {
+					[toSectionArray insertObject:object atIndex:dropIndexPath.jnw_item];
+					[toSectionArray removeObjectAtIndex:fromPath.jnw_item];
+				} else {
+					[toSectionArray removeObjectAtIndex:fromPath.jnw_item];
+					[toSectionArray insertObject:object atIndex:dropIndexPath.jnw_item];
+				}
+			} else {
+				// Move between sections.
+				id object = [fromSectionArray objectAtIndex:fromPath.jnw_item];
+				[toSectionArray insertObject:object atIndex:dropIndexPath.jnw_item];
+				[fromSectionArray removeObjectAtIndex:fromPath.jnw_item];
+			}
+		}
+		[_collectionView reloadData];
+		return YES;
+	}
+	
+	return NO;
+}
+
 - (NSUInteger)collectionView:(JNWCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-	return 300;
+	NSArray *sectionArray = [_sections objectAtIndex:section];
+	return [sectionArray count];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(JNWCollectionView *)collectionView {
-	return 5;
+	return [_sections count];
 }
 
 - (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForHeaderInSection:(NSInteger)index {

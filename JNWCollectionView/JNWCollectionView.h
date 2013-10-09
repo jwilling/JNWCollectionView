@@ -22,6 +22,7 @@
 #import "JNWCollectionViewReusableView.h"
 #import "NSIndexPath+JNWAdditions.h"
 #import "JNWScrollView.h"
+#import "JNWCollectionViewDragContext.h"
 
 typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 	JNWCollectionViewScrollPositionNone, // does not scroll, only selects
@@ -67,9 +68,37 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 // -registerClass:forSupplementaryViewOfKind:withReuseIdentifier:.
 - (JNWCollectionViewReusableView *)collectionView:(JNWCollectionView *)collectionView viewForSupplementaryViewOfKind:(NSString *)kind inSection:(NSInteger)section;
 
+#pragma mark Optional drag and drop methods
+
+// Asks the data source for a pasteboard representation of the item at the specified index path.
+//
+// Required if drag and drop support is to be used.
+- (id<NSPasteboardWriting>)collectionView:(JNWCollectionView *)collectionView pasteboardWriterForItemAtIndexPath:(NSIndexPath *)indexPath;
+
+// Asks the data source which UTI (uniform type identifiers) to support.
+//
+// Required if drag and drop support is to be used. See -[NSView registerForDraggedTypes:] for details.
+- (NSArray *)draggedTypesForCollectionView:(JNWCollectionView *)collectionView;
+
+// Asks the data source to return an appropriate view for marking a drop location.
+// The returned view may have a different frame but should somehow emphasize the specified frame.
+//
+// Optional if drag and drop support is to be used.
+- (NSView *)collectionView:(JNWCollectionView *)collectionView dropMarkerViewWithFrame:(NSRect)frame;
+
+// Asks the data source to conclude the drag and drop operation at the specified index path.
+//
+// See -[NSDraggingDestination performDragOperation:] for details about the sender and return value semenatics.
+//
+// The dragIndexPaths array may be nil or empty if the the drag started outside the view or application.
+// The dropIndexPath specifies where the user wants to drag to. See JNWCollectionViewDropIndexPath for more details.
+//
+// Required if drag and drop support is to be used.
+- (BOOL)collectionView:(JNWCollectionView *)collectionView performDragOperation:(id<NSDraggingInfo>)sender fromIndexPaths:(NSArray *)dragIndexPaths toIndexPath:(JNWCollectionViewDropIndexPath *)dropIndexPath;
+
 @end
 
-#pragma mark Delegate Protocol
+#pragma mark - Delegate Protocol
 
 // The delegate is the protocol which defines a set of methods with information about mouse clicks and selection.
 //
@@ -111,7 +140,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 #pragma mark Reloading and customizing
 
 @class JNWCollectionViewLayout;
-@interface JNWCollectionView : JNWScrollView
+@interface JNWCollectionView : JNWScrollView <NSDraggingSource>
 
 // The delegate for the collection view.
 @property (nonatomic, unsafe_unretained) id<JNWCollectionViewDelegate> delegate;
@@ -244,5 +273,11 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 
 // Deselects all items in the collection view.
 - (void)deselectAllItems;
+
+
+#pragma mark - Drag and Drop
+
+// During a drag and drop operation, returns context information.
+@property (nonatomic, readonly) JNWCollectionViewDragContext *dragContext;
 
 @end

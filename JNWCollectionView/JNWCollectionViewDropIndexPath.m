@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2013, Jonathan Willing. All rights reserved.
+ Copyright (c) 2013, Marc Haisenko, equinux AG. All rights reserved.
  Licensed under the MIT license <http://opensource.org/licenses/MIT>
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -17,16 +17,29 @@
  IN THE SOFTWARE.
  */
 
-#import "JNWCollectionView.h"
+#import "JNWCollectionViewDropIndexPath.h"
 
-@interface JNWCollectionViewCell ()
+@implementation JNWCollectionViewDropIndexPath
 
-@property (nonatomic, copy, readwrite) NSString *reuseIdentifier;
-@property (nonatomic, weak, readwrite) JNWCollectionView *collectionView;
-@property (nonatomic, strong, readwrite) NSIndexPath *indexPath;
++ (instancetype)indexPathForItem:(NSInteger)item inSection:(NSInteger)section dropRelation:(JNWCollectionViewDropRelation)relation {
+	NSUInteger indexPath[3] = { section , item , relation };
+	return [self indexPathWithIndexes:indexPath length:3];
+}
 
-// The image displayed on the dragging item when a cell is dragged out of its collection view.
-// You can subclass and override this to return a different image, or nil to display nothing.
-- (NSImage *)draggingImageRepresentation;
+- (NSInteger)jnw_section {
+	return [self indexAtPosition:0];
+}
+
+- (NSInteger)jnw_item {
+	return [self indexAtPosition:1];
+}
+
+- (JNWCollectionViewDropRelation)jnw_relation {
+	return [self indexAtPosition:2];
+}
+
+- (NSString *)description {
+	return [NSString stringWithFormat:@"<%@: %p section %ld item %ld relation %ld", [self class], self, self.jnw_section, self.jnw_item, (NSInteger)self.jnw_relation];
+}
 
 @end

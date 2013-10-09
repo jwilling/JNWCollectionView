@@ -163,15 +163,37 @@
 }
 
 - (void)rightMouseDown:(NSEvent *)theEvent {
-    [super rightMouseDown:theEvent];
-    
-    [self.collectionView rightClickInCollectionViewCell:self withEvent:theEvent];
+	[super rightMouseDown:theEvent];
+	
+	[self.collectionView rightClickInCollectionViewCell:self withEvent:theEvent];
+}
+
+- (void)mouseDragged:(NSEvent *)theEvent {
+	[super mouseDragged:theEvent];
+	
+	[self.collectionView mouseDraggedInCollectionViewCell:self withEvent:theEvent];
 }
 
 #pragma mark NSObject
 
 - (NSString *)description {
 	return [NSString stringWithFormat:@"<%@: %p; frame = %@; layer = <%@: %p>>", self.class, self, NSStringFromRect(self.frame), self.layer.class, self.layer];
+}
+
+#pragma mark Drag and drop
+
+- (NSImage *)draggingImageRepresentation {
+	NSSize imgSize = self.bounds.size;
+	
+	NSBitmapImageRep *bir = [self bitmapImageRepForCachingDisplayInRect:[self bounds]];
+	[bir setSize:imgSize];
+	
+	[self cacheDisplayInRect:[self bounds] toBitmapImageRep:bir];
+	
+	NSImage *image = [[NSImage alloc] initWithSize:imgSize];
+	[image addRepresentation:bir];
+	
+	return image;
 }
 
 @end

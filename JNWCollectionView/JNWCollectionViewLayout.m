@@ -19,6 +19,8 @@
 
 #import "JNWCollectionViewLayout.h"
 
+#import "JNWCollectionViewDragContext.h"
+
 @interface JNWCollectionViewLayout()
 @property (nonatomic, weak, readwrite) JNWCollectionView *collectionView;
 @end
@@ -54,6 +56,16 @@
 
 - (CGRect)rectForSectionAtIndex:(NSInteger)index {
 	return CGRectNull;
+}
+
+- (JNWCollectionViewDropIndexPath *)dropIndexPathAtPoint:(NSPoint)point
+{
+	return nil;
+}
+
+- (JNWCollectionViewLayoutAttributes *)layoutAttributesForDropMarker
+{
+	return nil;
 }
 
 - (CGSize)contentSize {

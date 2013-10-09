@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2013, Jonathan Willing. All rights reserved.
+ Copyright (c) 2013, Marc Haisenko, equinux AG. All rights reserved.
  Licensed under the MIT license <http://opensource.org/licenses/MIT>
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -17,16 +17,8 @@
  IN THE SOFTWARE.
  */
 
-#import "JNWCollectionView.h"
+#import "JNWCollectionViewDragContext.h"
 
-@interface JNWCollectionViewCell ()
-
-@property (nonatomic, copy, readwrite) NSString *reuseIdentifier;
-@property (nonatomic, weak, readwrite) JNWCollectionView *collectionView;
-@property (nonatomic, strong, readwrite) NSIndexPath *indexPath;
-
-// The image displayed on the dragging item when a cell is dragged out of its collection view.
-// You can subclass and override this to return a different image, or nil to display nothing.
-- (NSImage *)draggingImageRepresentation;
+@implementation JNWCollectionViewDragContext
 
 @end

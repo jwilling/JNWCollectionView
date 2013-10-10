@@ -46,6 +46,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 		unsigned int delegateDidDeselect;
 		unsigned int delegateDidScroll;
 		unsigned int delegateDidDoubleClick;
+		unsigned int delegateDidRightClick;
 		
 		unsigned int wantsLayout;
 	} _collectionViewFlags;
@@ -128,6 +129,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	_collectionViewFlags.delegateShouldDeselect = [delegate respondsToSelector:@selector(collectionView:shouldDeselectItemAtIndexPath:)];
 	_collectionViewFlags.delegateDidDeselect = [delegate respondsToSelector:@selector(collectionView:didDeselectItemAtIndexPath:)];
 	_collectionViewFlags.delegateDidDoubleClick = [delegate respondsToSelector:@selector(collectionView:didDoubleClickItemAtIndexPath:)];
+	_collectionViewFlags.delegateDidRightClick = [delegate respondsToSelector:@selector(collectionView:didRightClickItemAtIndexPath:)];
 }
 
 - (void)setDataSource:(id<JNWCollectionViewDataSource>)dataSource {
@@ -135,9 +137,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	_collectionViewFlags.dataSourceNumberOfSections = [dataSource respondsToSelector:@selector(numberOfSectionsInCollectionView:)];
 	_collectionViewFlags.delegateDidScroll = [dataSource respondsToSelector:@selector(collectionView:didScrollToItemAtIndexPath:)];
 	_collectionViewFlags.dataSourceViewForSupplementaryView = [dataSource respondsToSelector:@selector(collectionView:viewForSupplementaryViewOfKind:inSection:)];
-	NSAssert([dataSource respondsToSelector:@selector(collectionView:numberOfItemsInSection:)],
+	NSAssert(dataSource == nil || [dataSource respondsToSelector:@selector(collectionView:numberOfItemsInSection:)],
 			 @"data source must implement collectionView:numberOfItemsInSection");
-	NSAssert([dataSource respondsToSelector:@selector(collectionView:cellForItemAtIndexPath:)],
+	NSAssert(dataSource == nil || [dataSource respondsToSelector:@selector(collectionView:cellForItemAtIndexPath:)],
 			 @"data source must implement collectionView:cellForItemAtIndexPath:");
 }
 
@@ -923,8 +925,11 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	}
 }
 
-- (void)keyDown:(NSEvent *)theEvent {
-	[self interpretKeyEvents:@[ theEvent ]];
+- (void)rightClickInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
+	if (_collectionViewFlags.delegateDidRightClick) {
+		NSIndexPath *indexPath = [self indexPathForCell:cell];
+		[self.delegate collectionView:self didRightClickItemAtIndexPath:indexPath];
+	}
 }
 
 - (void)moveUp:(id)sender {

@@ -201,14 +201,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	JNWCollectionViewCell *cell = [self dequeueItemWithIdentifier:identifier inReusePool:self.reusableCells];
 
 	// If the view doesn't exist, we go ahead and create one. If we have a class registered
-	// for this identifier, we use it, otherwise we just create an instance of JNWCollectionViewCell.
+	// for this identifier, we use it.
 	if (cell == nil) {
 		Class cellClass = self.cellClassMap[identifier];
-
-		if (cellClass == nil) {
-			cellClass = JNWCollectionViewCell.class;
-		}
-		
 		cell = [[cellClass alloc] initWithFrame:CGRectZero];
 	}
 	
@@ -226,11 +221,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	
 	if (view == nil) {
 		Class viewClass = self.supplementaryViewClassMap[identifier];
-		
-		if (viewClass == nil) {
-			viewClass = JNWCollectionViewReusableView.class;
-		}
-		
 		view = [[viewClass alloc] initWithFrame:CGRectZero];
 	}
 	

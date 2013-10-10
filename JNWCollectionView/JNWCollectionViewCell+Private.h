@@ -20,7 +20,6 @@
 #import "JNWCollectionView.h"
 
 @interface JNWCollectionViewCell ()
-@property (nonatomic, copy, readwrite) NSString *reuseIdentifier;
 @property (nonatomic, weak, readwrite) JNWCollectionView *collectionView;
 @property (nonatomic, strong, readwrite) NSIndexPath *indexPath;
 @end

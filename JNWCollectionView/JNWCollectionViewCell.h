@@ -61,7 +61,7 @@
 @property (nonatomic, assign) CGFloat crossfadeDuration;
 
 // The reuse identifier.
-@property (nonatomic, copy, readonly) NSString *reuseIdentifier;
+@property (nonatomic, copy) NSString *reuseIdentifier;
 
 // The current index path.
 @property (nonatomic, strong, readonly) NSIndexPath *indexPath;

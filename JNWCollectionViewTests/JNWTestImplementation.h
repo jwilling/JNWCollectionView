@@ -18,7 +18,7 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "JNWCollectionView.h"
+#import "JNWCollectionViewFramework.h"
 #import "JNWCollectionViewListLayout.h"
 #import "JNWCollectionViewGridLayout.h"
 

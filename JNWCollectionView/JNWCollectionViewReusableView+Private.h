@@ -17,7 +17,7 @@
  IN THE SOFTWARE.
  */
 
-#import "JNWCollectionView.h"
+#import "JNWCollectionViewFramework.h"
 
 @interface JNWCollectionViewReusableView ()
 @property (nonatomic, copy, readwrite) NSString *reuseIdentifier;

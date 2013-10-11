@@ -495,16 +495,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (NSIndexPath *)indexPathForCell:(JNWCollectionViewCell *)cell {
-	__block NSIndexPath *indexPath = nil;
-	
-	[self.visibleCellsMap enumerateKeysAndObjectsUsingBlock:^(id key, id visibleCell, BOOL *stop) {
-		if (cell == visibleCell) {
-			indexPath = key;
-			*stop = YES;
-		}
-	}];
-	
-	return indexPath;
+	return cell.indexPath;
 }
 
 #pragma mark Layout

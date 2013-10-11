@@ -5,7 +5,7 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>0882DCD3-306B-48FE-833A-2E247289C1EA</string>
+	<string>239AC2DB-A140-441E-81F6-69CE63FC2182</string>
 	<key>IDESourceControlProjectName</key>
 	<string>JNWCollectionViewDemo</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
@@ -14,8 +14,8 @@
 		<string>https://github.com/petejkim/expecta.git</string>
 		<key>217BCF70-24BF-4054-AE16-1605E9D3C4E0</key>
 		<string>https://github.com/petejkim/specta.git</string>
-		<key>526643B2-44EF-494B-A8FB-0F49F828E300</key>
-		<string>https://github.com/jwilling/Rebel.git</string>
+		<key>8CBB0E93-63C0-4576-AA32-1EA270F21A72</key>
+		<string>https://github.com/jwilling/JNWScrollView.git</string>
 		<key>D9F69EA8-377F-4D6F-B1CD-CCE112EFE123</key>
 		<string>https://github.com/jwilling/JNWLabel.git</string>
 		<key>DFC6CB6E-56CD-4A18-B4DD-726F4CE6A3FC</key>
@@ -29,8 +29,8 @@
 		<string>../../../external/Expecta</string>
 		<key>217BCF70-24BF-4054-AE16-1605E9D3C4E0</key>
 		<string>../../../external/Specta</string>
-		<key>526643B2-44EF-494B-A8FB-0F49F828E300</key>
-		<string>../../../external/Rebel</string>
+		<key>8CBB0E93-63C0-4576-AA32-1EA270F21A72</key>
+		<string>../../../external/JNWScrollView</string>
 		<key>D9F69EA8-377F-4D6F-B1CD-CCE112EFE123</key>
 		<string>../../external/JNWLabel</string>
 		<key>DFC6CB6E-56CD-4A18-B4DD-726F4CE6A3FC</key>
@@ -72,9 +72,9 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>526643B2-44EF-494B-A8FB-0F49F828E300</string>
+			<string>8CBB0E93-63C0-4576-AA32-1EA270F21A72</string>
 			<key>IDESourceControlWCCName</key>
-			<string>Rebel</string>
+			<string>JNWScrollView</string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>

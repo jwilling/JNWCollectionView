@@ -43,6 +43,7 @@
 		ABB0240F170791D300537A92 /* JNWCollectionView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB023F1170791D300537A92 /* JNWCollectionView.framework */; };
 		ABB024681707937F00537A92 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB024671707937F00537A92 /* QuartzCore.framework */; };
 		ABBEA58B171E7D7A00A6F03D /* JNWCollectionViewSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = ABBEA58A171E7D7A00A6F03D /* JNWCollectionViewSpec.m */; };
+		ABC05C691807808E00CAED48 /* JNWCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = ABC05C681807808E00CAED48 /* JNWCollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		ABDE2699172BD9B100F8924F /* JNWTestImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = ABDE2698172BD9B100F8924F /* JNWTestImplementation.m */; };
 		ABE145351747519700DD3FCA /* JNWCollectionViewData.h in Headers */ = {isa = PBXBuildFile; fileRef = ABE145331747519700DD3FCA /* JNWCollectionViewData.h */; };
 		ABE145361747519700DD3FCA /* JNWCollectionViewData.m in Sources */ = {isa = PBXBuildFile; fileRef = ABE145341747519700DD3FCA /* JNWCollectionViewData.m */; };
@@ -170,6 +171,7 @@
 		ABB0240A170791D300537A92 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		ABB024671707937F00537A92 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		ABBEA58A171E7D7A00A6F03D /* JNWCollectionViewSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewSpec.m; path = JNWCollectionViewTests/JNWCollectionViewSpec.m; sourceTree = SOURCE_ROOT; };
+		ABC05C681807808E00CAED48 /* JNWCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionView.h; path = JNWCollectionView/JNWCollectionView.h; sourceTree = SOURCE_ROOT; };
 		ABDE2697172BD9B100F8924F /* JNWTestImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWTestImplementation.h; path = JNWCollectionViewTests/JNWTestImplementation.h; sourceTree = SOURCE_ROOT; };
 		ABDE2698172BD9B100F8924F /* JNWTestImplementation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWTestImplementation.m; path = JNWCollectionViewTests/JNWTestImplementation.m; sourceTree = SOURCE_ROOT; };
 		ABE145331747519700DD3FCA /* JNWCollectionViewData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewData.h; path = JNWCollectionView/JNWCollectionViewData.h; sourceTree = SOURCE_ROOT; };
@@ -310,6 +312,7 @@
 			isa = PBXGroup;
 			children = (
 				AB1514711714D36200871248 /* Layouts */,
+				ABC05C681807808E00CAED48 /* JNWCollectionView.h */,
 				AB3C71E8170CA8D3004A91DB /* JNWCollectionViewFramework.h */,
 				AB3C71E9170CA8D3004A91DB /* JNWCollectionViewFramework.m */,
 				ABE145331747519700DD3FCA /* JNWCollectionViewData.h */,
@@ -381,6 +384,7 @@
 				AB3C7202170CA8D3004A91DB /* NSIndexPath+JNWAdditions.h in Headers */,
 				AB38E38E17DF099A00D50B3C /* JNWClipView.h in Headers */,
 				AB38E39017DF099A00D50B3C /* JNWScrollView.h in Headers */,
+				ABC05C691807808E00CAED48 /* JNWCollectionView.h in Headers */,
 				AB3C71F7170CA8D3004A91DB /* JNWCollectionView+Private.h in Headers */,
 				AB3C71FB170CA8D3004A91DB /* JNWCollectionViewCell+Private.h in Headers */,
 				AB39819D1731A1B50062B2E0 /* JNWCollectionViewReusableView+Private.h in Headers */,

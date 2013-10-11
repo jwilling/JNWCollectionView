@@ -35,18 +35,18 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 
 @interface JNWCollectionView() {
 	struct {
-		unsigned int dataSourceNumberOfSections;
-		unsigned int dataSourceViewForSupplementaryView;
+		unsigned int dataSourceNumberOfSections:1;
+		unsigned int dataSourceViewForSupplementaryView:1;
 		
-		unsigned int delegateMouseDown;
-		unsigned int delegateMouseUp;
-		unsigned int delegateShouldSelect;
-		unsigned int delegateDidSelect;
-		unsigned int delegateShouldDeselect;
-		unsigned int delegateDidDeselect;
-		unsigned int delegateDidScroll;
-		unsigned int delegateDidDoubleClick;
-		unsigned int delegateDidRightClick;
+		unsigned int delegateMouseDown:1;
+		unsigned int delegateMouseUp:1;
+		unsigned int delegateShouldSelect:1;
+		unsigned int delegateDidSelect:1;
+		unsigned int delegateShouldDeselect:1;
+		unsigned int delegateDidDeselect:1;
+		unsigned int delegateDidScroll:1;
+		unsigned int delegateDidDoubleClick:1;
+		unsigned int delegateDidRightClick:1;
 		
 		unsigned int wantsLayout;
 	} _collectionViewFlags;

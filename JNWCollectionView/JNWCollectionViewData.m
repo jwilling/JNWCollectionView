@@ -19,7 +19,7 @@
 
 #import "JNWCollectionViewData.h"
 #import "JNWCollectionView+Private.h"
-#import "JNWCollectionView.h"
+#import "JNWCollectionViewFramework.h"
 #import "JNWCollectionViewLayout.h"
 
 @interface JNWCollectionViewData()

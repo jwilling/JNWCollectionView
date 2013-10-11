@@ -17,7 +17,7 @@
  IN THE SOFTWARE.
  */
 
-#import "JNWCollectionView.h"
+#import "JNWCollectionViewFramework.h"
 
 @class JNWCollectionViewCell;
 @interface JNWCollectionView ()

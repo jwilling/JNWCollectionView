@@ -86,9 +86,11 @@
 
 	
 	_contentView = [[NSView alloc] initWithFrame:self.bounds];
+	_contentView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
 	_contentView.wantsLayer = YES;
 
 	_backgroundView = [[JNWCollectionViewCellBackgroundView alloc] initWithFrame:self.bounds];
+	_backgroundView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
 	
 	_crossfadeDuration = 0.25;
 	
@@ -96,13 +98,6 @@
 	[self addSubview:_backgroundView positioned:NSWindowBelow relativeTo:_contentView];
 	
 	return self;
-}
-
-- (void)layout {
-	[super layout];
-	
-	self.contentView.frame = self.bounds;
-	self.backgroundView.frame = self.bounds;
 }
 
 - (void)prepareForReuse {

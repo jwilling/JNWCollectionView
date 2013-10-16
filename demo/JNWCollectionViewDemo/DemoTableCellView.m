@@ -20,7 +20,8 @@
 - (void)commonInit {
 	self.wantsLayer = YES;
 	self.layer.backgroundColor = [NSColor redColor].CGColor;
-	self.label = [[JNWLabel alloc] initWithFrame:CGRectZero];
+	self.label = [[JNWLabel alloc] initWithFrame:self.bounds];
+	self.label.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
 	[self addSubview:self.label];
 	self.layerContentsRedrawPolicy = NSViewLayerContentsRedrawOnSetNeedsDisplay;
 }
@@ -37,15 +38,6 @@
     if (self == nil) return nil;
 	[self commonInit];
     return self;
-}
-
-- (void)layout {
-	[super layout];
-	
-	CGRect labelRect = self.bounds;
-	if (!CGRectEqualToRect(labelRect, self.label.frame)) {
-		self.label.frame = labelRect;
-	}
 }
 
 - (void)setLabelText:(NSString *)labelText {

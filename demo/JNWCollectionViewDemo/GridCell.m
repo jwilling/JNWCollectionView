@@ -21,7 +21,8 @@
 	self = [super initWithFrame:frameRect];
 	if (self == nil) return nil;
 	
-	self.label = [[JNWLabel alloc] initWithFrame:CGRectZero];
+	self.label = [[JNWLabel alloc] initWithFrame:self.bounds];
+	self.label.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
 	[self addSubview:self.label];
 	
 	return self;
@@ -35,15 +36,6 @@
 - (void)setImage:(NSImage *)image {
 	_image = image;
 	self.backgroundImage = image;
-}
-
-- (void)layout {
-	[super layout];
-	
-	CGRect labelRect = self.bounds;
-	if (!CGRectEqualToRect(labelRect, self.label.frame)) {
-		self.label.frame = labelRect;
-	}
 }
 
 - (void)setSelected:(BOOL)selected {

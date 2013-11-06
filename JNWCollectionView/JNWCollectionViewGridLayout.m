@@ -136,12 +136,16 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 		
 		for (NSInteger item = 0; item < numberOfItems; item++) {
 			CGPoint origin = CGPointZero;
-			origin.x = self.itemPadding + (item % numberOfColumns) * (itemSize.width + self.itemPadding);
-			origin.y = ((item - (item % numberOfColumns)) / numberOfColumns) * itemSize.height;
+            NSInteger column = item % numberOfColumns;
+            NSInteger row = (NSInteger)floor(item / numberOfColumns);
+            origin.x = self.itemPadding + column * (itemSize.width + self.itemPadding);
+            origin.y = row * (itemSize.height + self.minimumLineSpacing);
 			sectionInfo.itemInfo[item].origin = origin;
 		}
-		
-		sectionInfo.height = itemSize.height * ceilf((float)numberOfItems / (float)numberOfColumns);
+
+        NSUInteger numberOfRowsInSection = (NSUInteger)ceilf((float)numberOfItems / (float)numberOfColumns);
+        CGFloat totalVerticalSpacing = fmax(self.minimumInteritemSpacing*(numberOfRowsInSection-1), 0); // In case numberOfRowsInSection is 0
+        sectionInfo.height = itemSize.height * numberOfRowsInSection + totalVerticalSpacing;
 		totalHeight += sectionInfo.height + footerHeight + headerHeight;
 		[self.sections addObject:sectionInfo];
 	}
@@ -264,8 +268,8 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	
 	CGFloat relativeRectTop = MAX(0, CGRectGetMinY(rect) - section.offset);
 	CGFloat relativeRectBottom = CGRectGetMaxY(rect) - section.offset;
-	NSInteger rowBegin = relativeRectTop / self.itemSize.height;
-	NSInteger rowEnd = ceilf(relativeRectBottom / self.itemSize.height);
+	NSInteger rowBegin = relativeRectTop / (self.itemSize.height + self.minimumLineSpacing);
+	NSInteger rowEnd = ceilf(relativeRectBottom / (self.itemSize.height + self.minimumLineSpacing));
 	return NSMakeRange(rowBegin, 1 + rowEnd - rowBegin);
 }
 

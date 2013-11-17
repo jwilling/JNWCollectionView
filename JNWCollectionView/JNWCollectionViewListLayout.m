@@ -50,7 +50,7 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 	self = [super init];
 	if (self == nil) return nil;
 	_numberOfRows = numberOfRows;
-	self.rowInfo = calloc(numberOfRows - 1, sizeof(JNWCollectionViewListLayoutRowInfo));
+	self.rowInfo = calloc(numberOfRows, sizeof(JNWCollectionViewListLayoutRowInfo));
 	return self;
 }
 

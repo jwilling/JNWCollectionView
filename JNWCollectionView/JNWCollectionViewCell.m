@@ -61,11 +61,8 @@
 }
 
 - (void)updateLayer {
-	if (self.image != nil) {
-		self.layer.contents = self.image;
-	} else if (self.color != nil) {
-		self.layer.backgroundColor = self.color.CGColor;
-	}
+	self.layer.contents = self.image;
+	self.layer.backgroundColor = self.color.CGColor;
 }
 
 @end

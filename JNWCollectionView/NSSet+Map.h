@@ -8,4 +8,5 @@
 
 - (NSSet*)map:(id (^)(id))block;
 
+- (NSSet*)setByRemovingObjectsFromArray:(NSArray*)array;
 @end

@@ -97,7 +97,13 @@ static NSString * const identifier = @"CELL";
     [self.items insertObject:self.freshItem atIndex:6];
     NSIndexPath* indexPath = [NSIndexPath jnw_indexPathForItem:5 inSection:0];
     [self.collectionView insertItemsAtIndexPaths:@[indexPath, [NSIndexPath jnw_indexPathForItem:1 inSection:0]]];
+}
 
+- (IBAction)deleteItem:(id)sender {
+    [self.items removeObjectAtIndex:2];
+    [self.items removeObjectAtIndex:4];
+    NSIndexPath* path = [NSIndexPath jnw_indexPathForItem:5 inSection:0];
+    [self.collectionView deleteItemsAtIndexPaths:@[[NSIndexPath jnw_indexPathForItem:2 inSection:0], path]];
 }
 
 @end

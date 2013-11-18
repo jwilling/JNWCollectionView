@@ -69,4 +69,10 @@ typedef enum {
     }
 }
 
+- (IBAction)deleteItem:(id)sender {
+    if ([self.currentViewController respondsToSelector:@selector(deleteItem:)]) {
+        [self.currentViewController performSelector:@selector(deleteItem:) withObject:sender];
+    }
+}
+
 @end

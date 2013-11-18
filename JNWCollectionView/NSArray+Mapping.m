@@ -17,7 +17,10 @@
 {
     NSMutableArray* array = [NSMutableArray arrayWithCapacity:self.count];
     for(id item in self) {
-        [array addObject:block(item)];
+        id result = block(item);
+        if (result) {
+            [array addObject:result];
+        }
     }
     return array;
 }

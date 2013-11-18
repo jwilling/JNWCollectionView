@@ -16,4 +16,11 @@
     }
     return result;
 }
+
+- (NSSet*)setByRemovingObjectsFromArray:(NSArray*)array
+{
+    NSMutableSet* result = [self mutableCopy];
+    [result minusSet:[NSSet setWithArray:array]];
+    return result;
+}
 @end

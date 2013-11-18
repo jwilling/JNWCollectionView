@@ -49,14 +49,25 @@
                         <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </box>
                     <button verticalHuggingPriority="750" id="dk9-bE-LGZ">
-                        <rect key="frame" x="460" y="12" width="98" height="32"/>
+                        <rect key="frame" x="470" y="12" width="78" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                        <buttonCell key="cell" type="push" title="Add Item" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="j1B-9n-wEJ">
+                        <buttonCell key="cell" type="push" title="Add 2" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="j1B-9n-wEJ">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
                             <action selector="addItem:" target="-2" id="F4V-ya-JUR"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" id="xuV-8k-Bmm">
+                        <rect key="frame" x="9" y="12" width="93" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="push" title="Delete 2" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6eF-cS-eGM">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="deleteItem:" target="-2" id="k4l-SS-APY"/>
                         </connections>
                     </button>
                 </subviews>

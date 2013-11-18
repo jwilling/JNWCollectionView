@@ -62,4 +62,11 @@ typedef enum {
 	self.containerBox.contentView = _currentViewController.view;
 }
 
+- (IBAction)addItem:(id)sender
+{
+    if ([self.currentViewController respondsToSelector:@selector(addItem:)]) {
+        [self.currentViewController performSelector:@selector(addItem:) withObject:sender];
+    }
+}
+
 @end

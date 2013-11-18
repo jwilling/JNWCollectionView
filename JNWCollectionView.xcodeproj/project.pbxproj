@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A4162F08F9C9C886D7B09A5 /* NSDictionary+NewCategory.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A4169574C509C6F8B58CAE0 /* NSDictionary+NewCategory.h */; };
+		5A416533F02BA93097646819 /* NSDictionary+NewCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A4164660BC583AB19877083 /* NSDictionary+NewCategory.m */; };
+		5A4167544E60A3E4C7AE57E3 /* NSArray+Mapping.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A416B1ACD8EAEA3760E4892 /* NSArray+Mapping.h */; };
+		5A4167B1AA01C1AEBCE25907 /* NSSet+Map.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A4164D61C0261CC86CA1D0E /* NSSet+Map.m */; };
+		5A416B3FFA175A6686B0FDA5 /* NSArray+Mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A416E5EEEF915474F8DB184 /* NSArray+Mapping.m */; };
+		5A416D4D793F1CF4C96D3A46 /* NSSet+Map.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A416FCBABD7C7102EE20D13 /* NSSet+Map.h */; };
 		8467C6D7171E587F00A1F343 /* JNWCollectionViewReusableViewSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8467C6D6171E587F00A1F343 /* JNWCollectionViewReusableViewSpec.m */; };
 		8467C6FA171E58F700A1F343 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8467C6E0171E589200A1F343 /* libExpecta.a */; };
 		8467C6FB171E58F700A1F343 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8467C6EF171E589500A1F343 /* libSpecta.a */; };
@@ -130,6 +136,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5A4164660BC583AB19877083 /* NSDictionary+NewCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDictionary+NewCategory.m"; path = "JNWCollectionView/NSDictionary+NewCategory.m"; sourceTree = SOURCE_ROOT; };
+		5A4164D61C0261CC86CA1D0E /* NSSet+Map.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSSet+Map.m"; path = "JNWCollectionView/NSSet+Map.m"; sourceTree = SOURCE_ROOT; };
+		5A4169574C509C6F8B58CAE0 /* NSDictionary+NewCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+NewCategory.h"; path = "JNWCollectionView/NSDictionary+NewCategory.h"; sourceTree = SOURCE_ROOT; };
+		5A416B1ACD8EAEA3760E4892 /* NSArray+Mapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+Mapping.h"; path = "JNWCollectionView/NSArray+Mapping.h"; sourceTree = SOURCE_ROOT; };
+		5A416E5EEEF915474F8DB184 /* NSArray+Mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+Mapping.m"; path = "JNWCollectionView/NSArray+Mapping.m"; sourceTree = SOURCE_ROOT; };
+		5A416FCBABD7C7102EE20D13 /* NSSet+Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSSet+Map.h"; path = "JNWCollectionView/NSSet+Map.h"; sourceTree = SOURCE_ROOT; };
 		8467C6D6171E587F00A1F343 /* JNWCollectionViewReusableViewSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewReusableViewSpec.m; path = JNWCollectionViewTests/JNWCollectionViewReusableViewSpec.m; sourceTree = SOURCE_ROOT; };
 		8467C6D8171E589200A1F343 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = external/Expecta/Expecta.xcodeproj; sourceTree = SOURCE_ROOT; };
 		8467C6E7171E589500A1F343 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = external/Specta/Specta.xcodeproj; sourceTree = SOURCE_ROOT; };
@@ -391,6 +403,9 @@
 				AB3C7209170CA8EF004A91DB /* JNWCollectionView-Prefix.pch in Headers */,
 				ABA276B2171D1C4B005C8E56 /* JNWCollectionViewDocumentView.h in Headers */,
 				ABE145351747519700DD3FCA /* JNWCollectionViewData.h in Headers */,
+				5A416D4D793F1CF4C96D3A46 /* NSSet+Map.h in Headers */,
+				5A4162F08F9C9C886D7B09A5 /* NSDictionary+NewCategory.h in Headers */,
+				5A4167544E60A3E4C7AE57E3 /* NSArray+Mapping.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -583,6 +598,9 @@
 				ABA276B3171D1C4B005C8E56 /* JNWCollectionViewDocumentView.m in Sources */,
 				AB38E38F17DF099A00D50B3C /* JNWClipView.m in Sources */,
 				ABE145361747519700DD3FCA /* JNWCollectionViewData.m in Sources */,
+				5A4167B1AA01C1AEBCE25907 /* NSSet+Map.m in Sources */,
+				5A416533F02BA93097646819 /* NSDictionary+NewCategory.m in Sources */,
+				5A416B3FFA175A6686B0FDA5 /* NSArray+Mapping.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

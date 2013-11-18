@@ -10,7 +10,11 @@
 #import "GridCell.h"
 
 @interface GridDemoViewController()
+
 @property (nonatomic, strong) NSArray *images;
+@property (nonatomic, strong) NSMutableArray* items;
+@property (nonatomic) NSUInteger freshInteger;
+
 @end
 
 static NSString * const identifier = @"CELL";
@@ -22,68 +26,78 @@ static NSString * const identifier = @"CELL";
 }
 
 - (void)awakeFromNib {
-	[self generateImages];
-	
 	JNWCollectionViewGridLayout *gridLayout = [[JNWCollectionViewGridLayout alloc] initWithCollectionView:self.collectionView];
 	gridLayout.delegate = self;
 	self.collectionView.collectionViewLayout = gridLayout;
 	self.collectionView.dataSource = self;
 	[self.collectionView registerClass:GridCell.class forCellWithReuseIdentifier:identifier];
 	self.collectionView.animatesSelection = NO; // (this is the default option)
-	
-	[self.collectionView reloadData];
+
+    NSMutableArray* items = [NSMutableArray array];
+    for(NSUInteger i = 0; i < 10; i++) {
+        [items addObject:[self freshItem]];
+    }
+    self.items = items;
+
+    [self.collectionView reloadData];
+}
+
+- (id)freshItem
+{
+    return @{
+            @"text": [@(self.freshInteger++) description],
+            @"image": self.generateImage
+    };
 }
 
 #pragma mark Data source
 
 - (JNWCollectionViewCell *)collectionView:(JNWCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 	GridCell *cell = (GridCell *)[collectionView dequeueReusableCellWithIdentifier:identifier];
-	cell.labelText = [NSString stringWithFormat:@"%ld",indexPath.jnw_item];
-	cell.image = self.images[indexPath.jnw_item % self.images.count];
+    NSDictionary* item = self.items[indexPath.jnw_item];
+	cell.labelText = item[@"text"];
+	cell.image = item[@"image"];
 	return cell;
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(JNWCollectionView *)collectionView {
-	return 5;
+	return 1;
 }
 
 - (NSUInteger)collectionView:(JNWCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-	return 500;
+    return self.items.count;
 }
 
 - (CGSize)sizeForItemInCollectionView:(JNWCollectionView *)collectionView {
 	return CGSizeMake(150.f, 150.f);
 }
 
-#pragma mark Image creation
 
-// To simulate at least something realistic, this just generates some randomly tinted images so that not every
-// cell has the same image.
-- (void)generateImages {
-	NSInteger numberOfImages = 30;
-	NSMutableArray *images = [NSMutableArray array];
-	
-	for (int i = 0; i < numberOfImages; i++) {
-		
-		// Just get a randomly-tinted template image.
-		NSImage *image = [NSImage imageWithSize:CGSizeMake(150.f, 150.f) flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
+- (NSImage*)generateImage
+{
+// Just get a randomly-tinted template image.
+    NSImage *image = [NSImage imageWithSize:CGSizeMake(150.f, 150.f) flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
 			[[NSImage imageNamed:NSImageNameUser] drawInRect:dstRect fromRect:CGRectZero operation:NSCompositeSourceOver fraction:1];
-			
+
 			CGFloat hue = arc4random() % 256 / 256.0;
 			CGFloat saturation = arc4random() % 128 / 256.0 + 0.5;
 			CGFloat brightness = arc4random() % 128 / 256.0 + 0.5;
 			NSColor *color = [NSColor colorWithCalibratedHue:hue saturation:saturation brightness:brightness alpha:1];
-			
+
 			[color set];
 			NSRectFillUsingOperation(dstRect, NSCompositeDestinationAtop);
-			
+
 			return YES;
 		}];
-		
-		[images addObject:image];
-	}
-	
-	self.images = images.copy;
+    return image;
+}
+
+- (IBAction)addItem:(id)sender {
+    [self.items insertObject:self.freshItem atIndex:1];
+    [self.items insertObject:self.freshItem atIndex:6];
+    NSIndexPath* indexPath = [NSIndexPath jnw_indexPathForItem:5 inSection:0];
+    [self.collectionView insertItemsAtIndexPaths:@[indexPath, [NSIndexPath jnw_indexPathForItem:1 inSection:0]]];
+
 }
 
 @end

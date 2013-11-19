@@ -13,6 +13,7 @@
     NSMutableDictionary* result = [NSMutableDictionary dictionary];
     [self enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL* stop)
     {
+        NSLog(@"%@ -> %@", key, block(key));
         result[block(key)] = obj;
     }];
     return result;

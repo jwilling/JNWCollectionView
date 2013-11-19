@@ -1050,7 +1050,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 - (void)animateUpdates:(void (^)(BOOL))completion
 {
     if (self.willBeginBatchUpdates) {
-        NSLog(@"going to do batch updates");
         return;
     }
 
@@ -1060,34 +1059,20 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
     }
 
     self.isAnimating = YES;
-    NSArray* insertedIndexPaths = self.insertedItems;
+    NSArray* insertedIndexPaths = [self.insertedItems sortedArrayUsingSelector:@selector(compare:)];
     NSArray* deletedIndexPaths = self.deletedItems;
 
+    // TODO: Use IndexSet?
     NSIndexPath*(^existingIndexPathMapping)(NSIndexPath*) = ^NSIndexPath*(NSIndexPath* oldIndexPath) {
         NSInteger newItem = oldIndexPath.jnw_item;
-        for(NSIndexPath* insertedIndexPath in insertedIndexPaths) {
-            if (insertedIndexPath.jnw_section == oldIndexPath.jnw_section && oldIndexPath.jnw_item >= insertedIndexPath.jnw_item) {
-                newItem++;
-            }
-        }
         for (NSIndexPath* deletedIndexPath in deletedIndexPaths) {
             if (deletedIndexPath.jnw_section == oldIndexPath.jnw_section && oldIndexPath.jnw_item > deletedIndexPath.jnw_item) {
                 newItem--;
             }
         }
-        return [NSIndexPath jnw_indexPathForItem:newItem inSection:0];
-    };
-
-    NSIndexPath*(^insertedIndexPathMapping)(NSIndexPath*) = ^NSIndexPath*(NSIndexPath* oldIndexPath) {
-        NSInteger newItem = oldIndexPath.jnw_item;
         for(NSIndexPath* insertedIndexPath in insertedIndexPaths) {
-            if (insertedIndexPath.jnw_section == oldIndexPath.jnw_section && oldIndexPath.jnw_item > insertedIndexPath.jnw_item) {
+            if (insertedIndexPath.jnw_section == oldIndexPath.jnw_section && newItem >= insertedIndexPath.jnw_item) {
                 newItem++;
-            }
-        }
-        for (NSIndexPath* deletedIndexPath in deletedIndexPaths) {
-            if (deletedIndexPath.jnw_section == oldIndexPath.jnw_section && oldIndexPath.jnw_item > deletedIndexPath.jnw_item) {
-                newItem--;
             }
         }
         return [NSIndexPath jnw_indexPathForItem:newItem inSection:0];
@@ -1156,21 +1141,25 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
     [self.data recalculateForcingLayoutInvalidation:YES];
 
     NSArray* visibleIndexPaths = self.indexPathsForVisibleItems;
+
+    [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context) {
+        context.duration = 0;
+        for(NSIndexPath* indexPath in insertedIndexPaths) {
+            if ([visibleIndexPaths containsObject:indexPath]) {
+                [self addCellForIndexPath:indexPath];
+                JNWCollectionViewCell* cell = [self cellForItemAtIndexPath:indexPath];
+                cell.alphaValue = 0;
+            }
+        }
+    } completionHandler:NULL];
+
     NSMutableArray* indexPathsToBeRemoved = [NSMutableArray array];
     NSSet* movingCells = [oldVisibleItems setByAddingObjectsFromSet:newVisibleItems];
-
-    for(NSIndexPath* indexPath in [insertedIndexPaths map:insertedIndexPathMapping]) {
-        if ([visibleIndexPaths containsObject:indexPath]) {
-            [self addCellForIndexPath:indexPath];
-            JNWCollectionViewCell* cell = [self cellForItemAtIndexPath:indexPath];
-            cell.alphaValue = 0;
-        }
-    }
 
     [NSAnimationContext runAnimationGroup:^(NSAnimationContext* context)
     {
         context.allowsImplicitAnimation = YES;
-
+        context.duration = 2;
 
         for (NSIndexPath* indexPath in movingCells) {
             JNWCollectionViewCell* cell = [self cellForItemAtIndexPath:indexPath];
@@ -1179,7 +1168,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 
         }
 
-        for(NSIndexPath* indexPath in [insertedIndexPaths map:insertedIndexPathMapping]) {
+        for(NSIndexPath* indexPath in insertedIndexPaths) {
             if ([visibleIndexPaths containsObject:indexPath]) {
                 JNWCollectionViewCell* cell = [self cellForItemAtIndexPath:indexPath];
                 cell.alphaValue = 1;

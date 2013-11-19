@@ -95,22 +95,23 @@ static NSString * const identifier = @"CELL";
 
 - (IBAction)addItem:(id)sender {
     [self.items insertObject:self.freshItem atIndex:1];
-    [self.items insertObject:self.freshItem atIndex:6];
-    NSIndexPath* indexPath = [NSIndexPath jnw_indexPathForItem:5 inSection:0];
-    [self.collectionView insertItemsAtIndexPaths:@[indexPath, [NSIndexPath jnw_indexPathForItem:1 inSection:0]]];
+    [self.items insertObject:self.freshItem atIndex:1];
+    [self.collectionView insertItemsAtIndexPaths:@[
+        [NSIndexPath jnw_indexPathForItem:1 inSection:0],
+        [NSIndexPath jnw_indexPathForItem:2 inSection:0]
+    ]];
 }
 
 - (IBAction)deleteItem:(id)sender {
-    [self.items insertObject:self.freshItem atIndex:5];
-    [self.items insertObject:self.freshItem atIndex:6];
     [self.items removeObjectAtIndex:2];
+    [self.items insertObject:self.freshItem atIndex:5];
+    [self.items insertObject:self.freshItem atIndex:5];
     NSIndexPath* path = [NSIndexPath jnw_indexPathForItem:5 inSection:0];
     NSIndexPath* secondPath = [NSIndexPath jnw_indexPathForItem:6 inSection:0];
     NSIndexPath* otherPath = [NSIndexPath jnw_indexPathForItem:2 inSection:0];
     [self.collectionView performBatchUpdates:^{
-
-        [self.collectionView insertItemsAtIndexPaths:@[path, secondPath]];
         [self.collectionView deleteItemsAtIndexPaths:@[otherPath]];
+        [self.collectionView insertItemsAtIndexPaths:@[path, secondPath]];
     } completion:^(BOOL completed) {
         NSLog(@"completed");
     }];

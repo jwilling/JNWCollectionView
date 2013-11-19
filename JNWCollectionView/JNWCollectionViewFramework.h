@@ -247,4 +247,6 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 
 - (void)insertItemsAtIndexPaths:(NSArray*)insertedIndexPaths;
 - (void)deleteItemsAtIndexPaths:(NSArray*)deletedIndexPaths;
+- (void)reloadItemsAtIndexPaths:(NSArray *)reloadedIndexPaths;
+- (void)performBatchUpdates:(void (^)(void))updates completion:(void (^)(BOOL finished))completion;
 @end

@@ -75,8 +75,9 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 
 // Animations
 @property (nonatomic) BOOL isAnimating;
-@property (nonatomic, strong) NSArray* insertedItems;
-@property (nonatomic, strong) NSArray* deletedItems;
+@property (nonatomic, strong) NSMutableArray* insertedItems;
+@property (nonatomic, strong) NSMutableArray* deletedItems;
+@property (nonatomic) BOOL willBeginBatchUpdates;
 
 @end
 
@@ -110,6 +111,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	collectionView.allowsSelection = YES;
 	
 	collectionView.backgroundColor = NSColor.clearColor;
+
+    collectionView.insertedItems = [NSMutableArray array];
+    collectionView.deletedItems = [NSMutableArray array];
 }
 
 - (id)initWithFrame:(NSRect)frameRect {
@@ -1013,19 +1017,43 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 
 - (void)insertItemsAtIndexPaths:(NSArray*)insertedIndexPaths
 {
-    self.insertedItems = insertedIndexPaths;
-    [self animateUpdates];
+    [self.insertedItems addObjectsFromArray:insertedIndexPaths];
+    [self animateUpdates:NULL];
 }
 
 - (void)deleteItemsAtIndexPaths:(NSArray*)deletedIndexPaths
 {
-    self.deletedItems = deletedIndexPaths;
-    [self animateUpdates];
+    [self.deletedItems addObjectsFromArray:deletedIndexPaths];
+    [self animateUpdates:NULL];
     
 }
 
-- (void)animateUpdates
+- (void)reloadItemsAtIndexPaths:(NSArray*)reloadedIndexPaths 
 {
+    for (NSIndexPath* indexPath in reloadedIndexPaths) {
+        if ([self cellForItemAtIndexPath:indexPath] != nil) {
+            [self removeAndEnqueueCellAtIndexPath:indexPath];
+            [self addCellForIndexPath:indexPath];
+        }
+    }
+}
+
+- (void)performBatchUpdates:(void (^)(void))updates completion:(void (^)(BOOL finished))completion
+{
+    self.willBeginBatchUpdates = YES;
+    updates();
+    self.willBeginBatchUpdates = NO;
+    [self animateUpdates:completion];
+
+}
+
+- (void)animateUpdates:(void (^)(BOOL))completion
+{
+    if (self.willBeginBatchUpdates) {
+        NSLog(@"going to do batch updates");
+        return;
+    }
+
     if (self.isAnimating) {
         NSLog(@"TODO: multiple simultaneous animations are not supported yet");
         return;
@@ -1175,10 +1203,13 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
             [cell setHidden:YES];
         }
         self.isAnimating = NO;
+        if (completion != NULL) {
+            completion(YES);
+        }
     }];
 
-    self.insertedItems = nil;
-    self.deletedItems = nil;
+    [self.insertedItems removeAllObjects];
+    [self.deletedItems removeAllObjects];
 }
 
 

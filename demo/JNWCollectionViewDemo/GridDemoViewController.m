@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 AppJon. All rights reserved.
 //
 
+#import <JNWCollectionView/JNWCollectionView.h>
 #import "GridDemoViewController.h"
 #import "GridCell.h"
 
@@ -55,7 +56,7 @@ static NSString * const identifier = @"CELL";
 - (JNWCollectionViewCell *)collectionView:(JNWCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 	GridCell *cell = (GridCell *)[collectionView dequeueReusableCellWithIdentifier:identifier];
     NSDictionary* item = self.items[indexPath.jnw_item];
-	cell.labelText = item[@"text"];
+	cell.labelText = [item[@"text"] stringByAppendingString:[@(arc4random()) description]];
 	cell.image = item[@"image"];
 	return cell;
 }
@@ -100,10 +101,19 @@ static NSString * const identifier = @"CELL";
 }
 
 - (IBAction)deleteItem:(id)sender {
+    [self.items insertObject:self.freshItem atIndex:5];
+    [self.items insertObject:self.freshItem atIndex:6];
     [self.items removeObjectAtIndex:2];
-    [self.items removeObjectAtIndex:4];
     NSIndexPath* path = [NSIndexPath jnw_indexPathForItem:5 inSection:0];
-    [self.collectionView deleteItemsAtIndexPaths:@[[NSIndexPath jnw_indexPathForItem:2 inSection:0], path]];
+    NSIndexPath* secondPath = [NSIndexPath jnw_indexPathForItem:6 inSection:0];
+    NSIndexPath* otherPath = [NSIndexPath jnw_indexPathForItem:2 inSection:0];
+    [self.collectionView performBatchUpdates:^{
+
+        [self.collectionView insertItemsAtIndexPaths:@[path, secondPath]];
+        [self.collectionView deleteItemsAtIndexPaths:@[otherPath]];
+    } completion:^(BOOL completed) {
+        NSLog(@"completed");
+    }];
 }
 
 @end

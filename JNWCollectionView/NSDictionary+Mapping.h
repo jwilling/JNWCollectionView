@@ -4,7 +4,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSDictionary (NewCategory)
+@interface NSDictionary (Mapping)
 
 
 - (NSDictionary*)dictionaryByMappingKeys:(id (^)(id))block;

@@ -2,20 +2,19 @@
 // Created by chris on 18.11.13.
 //
 
-#import "NSDictionary+NewCategory.h"
+#import "NSDictionary+Mapping.h"
 
 
-@implementation NSDictionary (NewCategory)
-
+@implementation NSDictionary (Mapping)
 
 - (NSDictionary*)dictionaryByMappingKeys:(id (^)(id))block
 {
     NSMutableDictionary* result = [NSMutableDictionary dictionary];
     [self enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL* stop)
     {
-        NSLog(@"%@ -> %@", key, block(key));
         result[block(key)] = obj;
     }];
     return result;
 }
+
 @end

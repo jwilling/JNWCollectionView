@@ -27,7 +27,7 @@
 #import "JNWCollectionViewDocumentView.h"
 #import "JNWCollectionViewLayout.h"
 #import "NSSet+Map.h"
-#import "NSDictionary+NewCategory.h"
+#import "NSDictionary+Mapping.h"
 #import "NSArray+Mapping.h"
 
 typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {

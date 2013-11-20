@@ -2,11 +2,10 @@
 // Created by chris on 18.11.13.
 //
 
-#import "NSDictionary+NewCategory.h"
+#import "NSDictionary+Mapping.h"
 
 
-@implementation NSDictionary (NewCategory)
-
+@implementation NSDictionary (Mapping)
 
 - (NSDictionary*)dictionaryByMappingKeys:(id (^)(id))block
 {
@@ -17,4 +16,5 @@
     }];
     return result;
 }
+
 @end

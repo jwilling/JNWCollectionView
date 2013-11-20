@@ -1159,7 +1159,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
     [NSAnimationContext runAnimationGroup:^(NSAnimationContext* context)
     {
         context.allowsImplicitAnimation = YES;
-        context.duration = 2;
 
         for (NSIndexPath* indexPath in movingCells) {
             JNWCollectionViewCell* cell = [self cellForItemAtIndexPath:indexPath];

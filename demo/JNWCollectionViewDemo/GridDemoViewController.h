@@ -13,4 +13,6 @@
 
 @property (nonatomic, weak) IBOutlet JNWCollectionView *collectionView;
 
+- (IBAction)addItem:(id)sender;
+
 @end

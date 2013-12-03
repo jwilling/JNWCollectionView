@@ -123,7 +123,7 @@ All supplementary views are built on top of `JNWCollectionViewReusableView`. See
 
 ### The Collection View ###
 
-Take a look [at the header itself](https://github.com/jwilling/jnwcollectionview/blob/master/JNWCollectionView/JNWCollectionView.h), as the documentation is thorough.
+Take a look [at the header itself](https://github.com/jwilling/jnwcollectionview/blob/master/JNWCollectionView/JNWCollectionViewFramework.h), as the documentation is thorough.
 
 ## How do I add it to my project? ##
 

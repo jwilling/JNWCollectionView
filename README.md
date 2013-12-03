@@ -96,7 +96,7 @@ On the contrary, `JNWCollectionView` was designed from the ground up to be as fa
 
 ### Layouts ###
 
-![](http://jwilling.com/drop/collection_view_list-UgrsbKwdwH.png) ![](http://jwilling.com/drop/collection_view_grid-yEqBykss8P.png)
+![](http://appjon.com/drop/github/jnwcollectionview/layouts.png)
 
 As mentioned in the introduction, `JNWCollectionView` is completely based around the concept of layouts. A collection view can only have a single layout at one time. The layout is responsible for determining where items should be positioned, however *it does not touch the view layer itself*. The distinction is made between "items" and "cells", where items stand for the data representation of views themselves, such as the frame, the alpha value, the index path, etc. The cell itself is the view.
 

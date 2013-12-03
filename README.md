@@ -1,10 +1,8 @@
-# JNWCollectionView #
+![](http://appjon.com/drop/github/jnwcollectionview/title.png)
+
 `JNWCollectionView` is a modern collection view for the Mac with an extremely flexible API. Cells are dequeued and memory usage is kept at a minimum. The collection view is layer-backed by default, and performance is highly optimized.
 
 Anyone familiar with `UICollectionView` should feel right at home with `JNWCollectionView`. Like `UICollectionView`, `JNWCollectionView` uses the concept of a layout class for determining how items should be displayed onscreen. 
-
-
-![](http://jwilling.com/drop/collectionview_hero-vdDIP2yyVy.png)
 
 The easiest way to understand what this framework can do is to just dive in with an example. Lets go.
 

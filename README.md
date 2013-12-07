@@ -135,7 +135,7 @@ One you have the framework pulled, the next step is to link the framework with y
 
 ## Case Study ##
 
-![](http://jwilling.com/drop/collection_view_wwdc-MVWUZID5Ov.png)
+![](http://appjon.com/drop/github/jnwcollectionview/custom-layout-wwdc.png)
 
 This is an app I wrote for Apple's WWDC'13 scholarship. It was mostly written to demonstrate what my collection view could do, so I have decided to release the source for it, most of which was written in a day. It demonstrates a custom layout class that creates a timeline arrangement. The line is composed of supplementary views, and the text, images, and selection dot are all cells. Each row across the screen is a section. If the demo in this repo is underwhelming in complexity, take this app for a spin and check out the layout class. It can be found [here](https://github.com/jwilling/WWDC--13-Scholarship-App).
 

@@ -1,10 +1,8 @@
-# JNWCollectionView #
+![](http://appjon.com/drop/github/jnwcollectionview/title.png)
+
 `JNWCollectionView` is a modern collection view for the Mac with an extremely flexible API. Cells are dequeued and memory usage is kept at a minimum. The collection view is layer-backed by default, and performance is highly optimized.
 
 Anyone familiar with `UICollectionView` should feel right at home with `JNWCollectionView`. Like `UICollectionView`, `JNWCollectionView` uses the concept of a layout class for determining how items should be displayed onscreen. 
-
-
-![](http://jwilling.com/drop/collectionview_hero-vdDIP2yyVy.png)
 
 The easiest way to understand what this framework can do is to just dive in with an example. Lets go.
 
@@ -98,7 +96,7 @@ On the contrary, `JNWCollectionView` was designed from the ground up to be as fa
 
 ### Layouts ###
 
-![](http://jwilling.com/drop/collection_view_list-UgrsbKwdwH.png) ![](http://jwilling.com/drop/collection_view_grid-yEqBykss8P.png)
+![](http://appjon.com/drop/github/jnwcollectionview/layouts.png)
 
 As mentioned in the introduction, `JNWCollectionView` is completely based around the concept of layouts. A collection view can only have a single layout at one time. The layout is responsible for determining where items should be positioned, however *it does not touch the view layer itself*. The distinction is made between "items" and "cells", where items stand for the data representation of views themselves, such as the frame, the alpha value, the index path, etc. The cell itself is the view.
 
@@ -125,7 +123,7 @@ All supplementary views are built on top of `JNWCollectionViewReusableView`. See
 
 ### The Collection View ###
 
-Take a look [at the header itself](https://github.com/jwilling/jnwcollectionview/blob/master/JNWCollectionView/JNWCollectionView.h), as the documentation is thorough.
+Take a look [at the header itself](https://github.com/jwilling/jnwcollectionview/blob/master/JNWCollectionView/JNWCollectionViewFramework.h), as the documentation is thorough.
 
 ## How do I add it to my project? ##
 
@@ -137,7 +135,7 @@ One you have the framework pulled, the next step is to link the framework with y
 
 ## Case Study ##
 
-![](http://jwilling.com/drop/collection_view_wwdc-MVWUZID5Ov.png)
+![](http://appjon.com/drop/github/jnwcollectionview/custom-layout-wwdc.png)
 
 This is an app I wrote for Apple's WWDC'13 scholarship. It was mostly written to demonstrate what my collection view could do, so I have decided to release the source for it, most of which was written in a day. It demonstrates a custom layout class that creates a timeline arrangement. The line is composed of supplementary views, and the text, images, and selection dot are all cells. Each row across the screen is a section. If the demo in this repo is underwhelming in complexity, take this app for a spin and check out the layout class. It can be found [here](https://github.com/jwilling/WWDC--13-Scholarship-App).
 

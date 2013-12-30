@@ -162,8 +162,20 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 // at the time. This is different from NSScrollView's background color, which only sets the
 // color underneath the document view.
 //
-// Defaults to a clear color.
+// Defaults to a white color.
 @property (nonatomic, strong) NSColor *backgroundColor;
+
+// The background color of the scroll view. This only determines the color that lies
+// underneath the document view, and does not scroll along with the content.
+//
+// Defaults to a clear color.
+@property (nonatomic, strong) NSColor *scrollViewBackgroundColor;
+
+// Whether or not the collection view draws the background color. If the collection view
+// background color needs to be transparent, this should be disabled.
+//
+// Defaults to YES.
+@property (nonatomic, assign) BOOL drawsBackground;
 
 #pragma mark - Information
 

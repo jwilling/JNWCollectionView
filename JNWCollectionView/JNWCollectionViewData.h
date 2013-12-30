@@ -21,8 +21,8 @@
 
 @class JNWCollectionView;
 
-// This class holds information about the state of the items (not cells) in the collection view.
-// It is not exposed publicly.
+/// This class holds information about the state of the items (not cells) in the collection view.
+/// It is not exposed publicly.
 @interface JNWCollectionViewSection : NSObject
 @property (nonatomic, assign) NSInteger index;
 @property (nonatomic, assign) CGRect frame;
@@ -33,21 +33,21 @@
 
 - (instancetype)initWithCollectionView:(JNWCollectionView *)collectionView;
 
-// Calls -recalculateForcingLayoutInvalidation:NO.
+/// Calls -recalculateForcingLayoutInvalidation:NO.
 - (void)recalculate;
 
-// Recalculates the local section cache from the layout and data source, optionally
-// forcing an invalidation of the layout.
+/// Recalculates the local section cache from the layout and data source, optionally
+/// forcing an invalidation of the layout.
 - (void)recalculateForcingLayoutInvalidation:(BOOL)forceInvalidation;
 
 @property (nonatomic, assign) NSInteger numberOfSections;
 - (NSInteger)numberOfItemsInSection:(NSInteger)section;
 
-// Contains all of the sections cached from the last -recalculate call.
+/// Contains all of the sections cached from the last -recalculate call.
 @property (nonatomic, strong, readonly) NSArray *sections;
 
-// The size that contains all of the sections. This size is used to determine
-// the content size of the scroll view.
+/// The size that contains all of the sections. This size is used to determine
+/// the content size of the scroll view.
 @property (nonatomic, assign) CGSize encompassingSize;
 
 @end

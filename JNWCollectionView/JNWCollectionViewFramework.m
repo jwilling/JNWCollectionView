@@ -514,10 +514,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 - (void)layout {
 	[super layout];
 	
-	if (!CGSizeEqualToSize(self.visibleSize, self.data.encompassingSize)) {
-		[self layoutDocumentView];
-	}
-	
 	if (CGRectEqualToRect(self.bounds, _lastDrawnBounds)) {
 		[self layoutCells];
 		[self layoutSupplementaryViews];
@@ -534,7 +530,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		
 		// Check once more whether or not the document view needs to be resized.
 		// If there are a different number of items, the encompassing size might have changed.
-		if (!CGSizeEqualToSize(self.visibleSize, self.data.encompassingSize)) {
+		if (!CGSizeEqualToSize(self.documentSize, self.data.encompassingSize)) {
 			[self layoutDocumentView];
 		}
 		
@@ -548,13 +544,17 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 - (void)layoutDocumentView {
 	if (!_collectionViewFlags.wantsLayout)
 		return;
-	
+
 	NSView *documentView = self.documentView;
 	documentView.frameSize = self.data.encompassingSize;
 }
 
 - (CGSize)visibleSize {
 	return self.documentVisibleRect.size;
+}
+
+- (CGSize)documentSize {
+	return ((NSView *)self.documentView).bounds.size;
 }
 
 - (void)layoutCells {

@@ -29,13 +29,13 @@ extern NSString * const JNWCollectionViewListLayoutFooterKind;
 @optional
 
 /// Asks the delegate for the size of the row at the specified index path.
-//
+///
 /// Note that if all rows are the same height, this method should not be implemented.
 /// Instead, `rowHeight` should be set manually for performance improvements.
 - (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 
 /// Asks the delegate for the height of the header or footer in the specified section.
-//
+///
 /// The default height for both the header and footer is 0.
 - (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForHeaderInSection:(NSInteger)index;
 - (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForFooterInSection:(NSInteger)index;
@@ -53,7 +53,7 @@ extern NSString * const JNWCollectionViewListLayoutFooterKind;
 /// The height of all rows in the list. If the row heights for all items are
 /// the same, setting this property directly instead of using the delegate method will
 /// yield performance gains.
-//
+///
 /// However, if the delegate method -collectionView:heightForRowAtIndexPath: is
 /// implemented, it will take precedence over any value set here.
 @property (nonatomic, assign) CGFloat rowHeight;

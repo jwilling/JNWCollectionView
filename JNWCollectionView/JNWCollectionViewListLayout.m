@@ -193,7 +193,7 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 - (NSInteger)nearestIntersectingRowInSection:(JNWCollectionViewListLayoutSection *)section inRect:(CGRect)containingRect edge:(JNWListEdge)edge {
 	NSInteger low = 0;
 	NSInteger high = section.numberOfRows - 1;
-	NSInteger mid;
+	NSInteger mid = 0;
 	
 	CGFloat absoluteOffset = (edge == JNWListEdgeTop ? containingRect.origin.y : containingRect.origin.y + containingRect.size.height);
 	CGFloat relativeOffset = absoluteOffset - section.offset;

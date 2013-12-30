@@ -42,31 +42,31 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 
 /// The data source is the protocol which defines a set of methods for both information about the data model
 /// and the views needed for creating the collection view.
-//
+///
 /// The object that conforms to the data source must implement both `-collectionView:numberOfItemsInSection:`
 /// and `-collectionView:cellForItemAtIndexPath:`, otherwise an exception will be thrown.
 @protocol JNWCollectionViewDataSource <NSObject>
 
 /// Asks the data source how many items are in the section index specified. The first section begins at 0.
-//
+///
 /// Required.
 - (NSUInteger)collectionView:(JNWCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section;
 
 /// Asks the data source for the view that should be used for the cell at the specified index path. The returned
 /// view must be non-nil, and it must be a subclass of JNWCollectionViewCell, otherwise an exception will be thrown.
-//
+///
 /// Required.
 - (JNWCollectionViewCell *)collectionView:(JNWCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
 
 @optional
 /// Asks the data source for the number of sections in the collection view.
-//
+///
 /// If this method is not implemented, the collection view will default to 1 section.
 - (NSInteger)numberOfSectionsInCollectionView:(JNWCollectionView *)collectionView;
 
 /// Asks the data source for the view used for the supplementary view for the specified section. The returned
 /// view must be a subclass of JNWCollectionViewReusableView, otherwise an exception will be thrown.
-//
+///
 /// Note that this data source method will *not* be called unless a class has been registered for a supplementary
 /// view kind. So if you wish to use supplementary views, you must register at least one class using
 /// -registerClass:forSupplementaryViewOfKind:withReuseIdentifier:.
@@ -77,7 +77,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 #pragma mark Delegate Protocol
 
 /// The delegate is the protocol which defines a set of methods with information about mouse clicks and selection.
-//
+///
 /// All delegate methods are optional.
 @protocol JNWCollectionViewDelegate <NSObject>
 
@@ -86,7 +86,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 - (void)collectionView:(JNWCollectionView *)collectionView mouseDownInItemAtIndexPath:(NSIndexPath *)indexPath;
 
 /// Tells the delegate that the mouse click originating from the item at the specified index path is now up.
-//
+///
 /// The mouse up event can occur outside of the originating cell.
 - (void)collectionView:(JNWCollectionView *)collectionView mouseUpInItemAtIndexPath:(NSIndexPath *)indexPath;
 
@@ -122,20 +122,20 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 @property (nonatomic, unsafe_unretained) id<JNWCollectionViewDelegate> delegate;
 
 /// The data source for the collection view.
-//
+///
 /// Required.
 @property (nonatomic, unsafe_unretained) id<JNWCollectionViewDataSource> dataSource;
 
 /// Calling this method will cause the collection view to clean up all the views and
 /// recalculate item info. It will then perform a layout pass.
-//
+///
 /// This method should be called after the data source has been set and initial setup on the collection
 /// view has been completed.
 - (void)reloadData;
 
 /// In order for cell or supplementary view dequeueing to occur, a class must be registered with the appropriate
 /// registration method.
-//
+///
 /// The class passed in will be used to initialize a new instance of the view, as needed. The class
 /// must be a subclass of JNWCollectionViewCell for the cell class, and JNWCollectionViewReusableView
 /// for the supplementary view class, otherwise an exception will be thrown.
@@ -145,11 +145,11 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 /// These methods are used to create or reuse a new view. Cells should not be created manually. Instead,
 /// these methods should be called with a reuse identifier previously registered using
 /// -registerClass:forCellWithReuseIdentifier: or -registerClass:forSupplementaryViewOfKind:withReuseIdentifier:.
-//
+///
 /// If a class was not previously registered, the base cell class will be used to create the view.
 /// However, for supplementary views, the class must be registered, otherwise the collection view
 /// will not attempt to load any supplementary views for that kind.
-//
+///
 /// The identifer must not be nil, otherwise an exception will be thrown.
 - (JNWCollectionViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier;
 - (JNWCollectionViewReusableView *)dequeueReusableSupplementaryViewOfKind:(NSString *)kind withReuseIdentifer:(NSString *)identifier;
@@ -157,28 +157,28 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 /// The layout is responsible for providing the positioning and layout attributes for cells and views.
 /// It is also responsible for handling selection changes that are performed via the keyboard. See the
 /// documentation in JNWCollectionViewLayout.h.
-//
+///
 /// A valid layout must be set before calling -reloadData, otherwise an exception will be thrown.
-//
+///
 /// Defaults to nil.
 @property (nonatomic, strong) JNWCollectionViewLayout *collectionViewLayout;
 
 /// The background color determines what is drawn underneath any cells that might be visible
 /// at the time. This is different from NSScrollView's background color, which only sets the
 /// color underneath the document view.
-//
+///
 /// Defaults to a white color.
 @property (nonatomic, strong) NSColor *backgroundColor;
 
 /// The background color of the scroll view. This only determines the color that lies
 /// underneath the document view, and does not scroll along with the content.
-//
+///
 /// Defaults to a clear color.
 @property (nonatomic, strong) NSColor *scrollViewBackgroundColor;
 
 /// Whether or not the collection view draws the background color. If the collection view
 /// background color needs to be transparent, this should be disabled.
-//
+///
 /// Defaults to YES.
 @property (nonatomic, assign) BOOL drawsBackground;
 
@@ -199,7 +199,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 
 /// Provides the size of the visible document area in which the collection view is currently
 /// displaying cells and other supplementary views.
-//
+///
 /// Equivalent to the size of -documentVisibleRect.
 @property (nonatomic, assign, readonly) CGSize visibleSize;
 
@@ -237,13 +237,13 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 
 /// If set to YES, any changes to the backgroundImage or backgroundColor properties of the collection view cell
 /// will be animated with a crossfade.
-//
+///
 /// Defaults to NO.
 @property (nonatomic, assign) BOOL animatesSelection;
 
 /// If set to NO, the collection view will not automatically select cells either through clicks or
 /// through keyboard actions.
-//
+///
 /// Defaults to YES.
 @property (nonatomic, assign) BOOL allowsSelection;
 

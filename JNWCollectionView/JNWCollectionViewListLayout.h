@@ -58,4 +58,9 @@ extern NSString * const JNWCollectionViewListLayoutFooterKind;
 /// implemented, it will take precedence over any value set here.
 @property (nonatomic, assign) CGFloat rowHeight;
 
+/// The spacing between any adjacent cells.
+///
+/// Defaults to 0.
+@property (nonatomic, assign) CGFloat verticalSpacing;
+
 @end

@@ -99,6 +99,7 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 	
 	NSUInteger numberOfSections = [self.collectionView numberOfSections];
 	CGFloat totalHeight = 0;
+	CGFloat verticalSpacing = self.verticalSpacing;
 	
 	for (NSUInteger section = 0; section < numberOfSections; section++) {
 		NSInteger numberOfRows = [collectionView numberOfItemsInSection:section];
@@ -123,7 +124,10 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 			sectionInfo.rowInfo[row].height = rowHeight;
 			sectionInfo.rowInfo[row].yOffset = sectionInfo.height;
 			sectionInfo.height += rowHeight;
+			sectionInfo.height += verticalSpacing;
 		}
+		
+		sectionInfo.height -= verticalSpacing; // We don't want spacing after the last cell.
 		
 		sectionInfo.height += footerHeight;
 		sectionInfo.frame = CGRectMake(0, sectionInfo.offset, collectionView.visibleSize.width, sectionInfo.height);

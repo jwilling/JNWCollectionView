@@ -74,6 +74,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 
 @implementation JNWCollectionView
 @dynamic drawsBackground;
+@dynamic backgroundColor;
 
 // We're using a static function for the common initialization so that subclassers
 // don't accidentally override this method in their own common init method.
@@ -103,7 +104,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	collectionView.allowsSelection = YES;
 	
 	collectionView.backgroundColor = NSColor.whiteColor;
-	collectionView.scrollViewBackgroundColor = NSColor.clearColor;
 	collectionView.drawsBackground = YES;
 }
 
@@ -293,22 +293,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	if (_collectionViewFlags.wantsLayout) {
 		[self reloadData];
 	}
-}
-
-- (void)setBackgroundColor:(NSColor *)backgroundColor {
-	self.contentView.backgroundColor = backgroundColor;
-}
-
-- (NSColor *)backgroundColor {
-	return self.contentView.backgroundColor;
-}
-
-- (void)setScrollViewBackgroundColor:(NSColor *)scrollViewBackgroundColor {
-	super.backgroundColor = scrollViewBackgroundColor;
-}
-
-- (NSColor *)scrollViewBackgroundColor {
-	return super.backgroundColor;
 }
 
 #pragma mark Cell Information

@@ -38,7 +38,6 @@ static NSString * const identifier = @"CELL";
 
 - (JNWCollectionViewCell *)collectionView:(JNWCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 	GridCell *cell = (GridCell *)[collectionView dequeueReusableCellWithIdentifier:identifier];
-	cell.labelText = [NSString stringWithFormat:@"%ld",indexPath.jnw_item];
 	cell.image = self.images[indexPath.jnw_item % self.images.count];
 	return cell;
 }

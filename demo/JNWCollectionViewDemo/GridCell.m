@@ -11,27 +11,7 @@
 #import "NSImage+DemoAdditions.h"
 #import "DemoImageCache.h"
 
-@interface GridCell()
-@property (nonatomic, strong) JNWLabel *label;
-@end
-
 @implementation GridCell
-
-- (instancetype)initWithFrame:(NSRect)frameRect {
-	self = [super initWithFrame:frameRect];
-	if (self == nil) return nil;
-	
-	self.label = [[JNWLabel alloc] initWithFrame:self.bounds];
-	self.label.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-	[self addSubview:self.label];
-	
-	return self;
-}
-
-- (void)setLabelText:(NSString *)labelText {
-	_labelText = labelText;
-	self.label.text = labelText;
-}
 
 - (void)setImage:(NSImage *)image {
 	_image = image;

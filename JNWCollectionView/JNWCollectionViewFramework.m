@@ -556,11 +556,12 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	if (self.dataSource == nil || !_collectionViewFlags.wantsLayout)
 		return;
 	
-	if (needsVisibleRedraw) {
+	if (needsVisibleRedraw || [self.collectionViewLayout shouldApplyExistingLayoutAttributesOnLayout]) {
 		for (NSIndexPath *indexPath in self.visibleCellsMap.allKeys) {
 			JNWCollectionViewCell *cell = self.visibleCellsMap[indexPath];
-			cell.frame = [self rectForItemAtIndexPath:indexPath];
-			[cell setNeedsLayout:YES];
+			JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
+			
+			[self applyLayoutAttributes:attributes toCell:cell];
 		}
 	}
 
@@ -603,10 +604,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		cell.collectionView = self;
 		
 		JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
-		cell.alphaValue = attributes.alpha;
-		CGRect frame = attributes.frame;
-		[cell willLayoutWithFrame:frame];
-		cell.frame = frame;
+		[self applyLayoutAttributes:attributes toCell:cell];
 		
 		if (cell.superview == nil) {
 			[self.documentView addSubview:cell];
@@ -621,6 +619,13 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		
 		self.visibleCellsMap[indexPath] = cell;
 	}
+}
+
+- (void)applyLayoutAttributes:(JNWCollectionViewLayoutAttributes *)attributes toCell:(JNWCollectionViewCell *)cell {
+	[cell willLayoutWithFrame:attributes.frame];
+
+	cell.frame = attributes.frame;
+	cell.alphaValue = attributes.alpha;
 }
 
 #pragma mark Supplementary Views
@@ -665,7 +670,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	if (!_collectionViewFlags.dataSourceViewForSupplementaryView || !_collectionViewFlags.wantsLayout)
 		return;
 	
-	if (needsVisibleRedraw) {
+	if (needsVisibleRedraw || [self.collectionViewLayout shouldApplyExistingLayoutAttributesOnLayout]) {
 		NSArray *allVisibleIdentifiers = self.visibleSupplementaryViewsMap.allKeys;
 		for (NSString *layoutIdentifier in allVisibleIdentifiers) {
 			NSString *identifier = [self supplementaryViewIdentifierForLayoutIdentifier:layoutIdentifier];
@@ -675,9 +680,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 			JNWCollectionViewReusableView *view = [self supplementaryViewForKind:kind reuseIdentifier:reuseIdentifier inSection:section];
 			
 			JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForSupplementaryItemInSection:section kind:kind];
-			view.frame = attributes.frame;
-			view.alphaValue = attributes.alpha;
-			[view setNeedsLayout:YES];
+			[self applyLayoutAttributes:attributes toSupplementaryView:view];
 		}
 	}
 	
@@ -725,6 +728,10 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	}
 }
 
+- (void)applyLayoutAttributes:(JNWCollectionViewLayoutAttributes *)attributes toSupplementaryView:(JNWCollectionViewReusableView *)view {
+	view.frame = attributes.frame;
+	view.alphaValue = attributes.alpha;
+}
 
 #pragma mark Mouse events and selection
 

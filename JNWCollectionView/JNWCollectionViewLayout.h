@@ -42,7 +42,21 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewDirection) {
 /// initializers.
 - (instancetype)initWithCollectionView:(JNWCollectionView *)collectionView;
 
-/// Called when the layout is invalidated and should be recalculated.
+/// This method is provided as a way to inform the layout that it will
+/// need to invalidate the current layout and recalculate data.
+///
+/// After invalidating the layout, visible cells will be redrawn on the next
+/// layout pass with the new layout information.
+///
+/// Any subclasses that implement this method must call super.
+///
+/// Note that this is not equivalent to calling `reloadData` on the collection
+/// view. If any changes to the data source have occurred, you should reload the
+/// data instead of invalidating the layout.
+- (void)invalidateLayout __attribute((objc_requires_super));
+
+/// Called when the layout has already been invalidated and should now
+/// update the current layout.
 ///
 /// This is an appropriate time to calculate geometry for the layout. Ideally
 /// this data should be cached to provide faster access when the collection view

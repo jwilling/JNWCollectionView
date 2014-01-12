@@ -18,6 +18,7 @@
  */
 
 #import "JNWCollectionViewLayout.h"
+#import "JNWCollectionView+Private.h"
 
 @interface JNWCollectionViewLayout()
 @property (nonatomic, weak, readwrite) JNWCollectionView *collectionView;
@@ -28,6 +29,11 @@
 @end
 
 @implementation JNWCollectionViewLayout
+
+- (void)invalidateLayout {
+	// Forward this onto the collection view itself.
+	[self.collectionView collectionViewLayoutWasInvalidated:self];
+}
 
 - (void)prepareLayout {
 	// For subclasses

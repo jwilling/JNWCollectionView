@@ -252,35 +252,16 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	[self enqueueItem:view withIdentifier:identifier inReusePool:self.reusableSupplementaryViews];
 }
 
+#pragma mark Reloading
+
 - (void)reloadData {
 	_collectionViewFlags.wantsLayout = YES;
-	
-	[self resetAllCells];
-		
-	[self.data recalculateForcingLayoutInvalidation:YES];
-	[self layoutDocumentView];
-	[self layoutCells];
-	[self layoutSupplementaryViews];
-}
-
-- (void)resetAllCells {
+			
 	// Remove any selected indexes we've been tracking.
 	[self.selectedIndexes removeAllObjects];
 	
-	// Remove any queued views.
-	[self.reusableCells removeAllObjects];
-	[self.reusableSupplementaryViews removeAllObjects];
-	
-	// Remove any view mappings
-	[self.visibleCellsMap removeAllObjects];
-	[self.visibleSupplementaryViewsMap removeAllObjects];
-	
-	// Remove any cells or views that might be added to the document view.
-	NSArray *subviews = [[self.documentView subviews] copy];
-	for (NSView *view in subviews) {
-		[view removeFromSuperview];
-	}
-
+	[self.data recalculateAndPrepareLayout:YES];
+	[self performFullRelayoutForcingSubviewsReset:YES];
 }
 
 - (void)setCollectionViewLayout:(JNWCollectionViewLayout *)collectionViewLayout {
@@ -292,6 +273,26 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	// Don't reload the data until we've performed an initial reload.
 	if (_collectionViewFlags.wantsLayout) {
 		[self reloadData];
+	}
+}
+
+#pragma mark Resetting of state
+
+/// Completely removes and resets cells, supplementary views, and selection state.
+- (void)resetAllCellsAndSupplementaryViews {
+	// Remove any queued views.
+	[self.reusableCells removeAllObjects];
+	[self.reusableSupplementaryViews removeAllObjects];
+	
+	// Remove any view mappings
+	[self.visibleCellsMap removeAllObjects];
+	[self.visibleSupplementaryViewsMap removeAllObjects];
+	
+	// Remove any cells or views that might be added to the document view.
+	NSArray *subviews = [[self.documentView subviews] copy];
+	
+	for (NSView *view in subviews) {
+		[view removeFromSuperview];
 	}
 }
 
@@ -505,23 +506,30 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		// Calling recalculate on our data will update the bounds needed for the collection
 		// view, and optionally prepare the layout once again if the layout subclass decides
 		// it needs a recalculation.
-		BOOL layoutWasRecalculated = [self.data recalculateAndInvalidateLayoutIfNeeded];
-
-		if (layoutWasRecalculated && _collectionViewFlags.wantsLayout) {
-			[self resetAllCells];
-		}
+		BOOL shouldInvalidate = [self.collectionViewLayout shouldInvalidateLayoutForBoundsChange:self.bounds];
+		[self.data recalculateAndPrepareLayout:shouldInvalidate];
 		
-		// Check once more whether or not the document view needs to be resized.
-		// If there are a different number of items, the encompassing size might have changed.
-		if (!CGSizeEqualToSize(self.documentSize, self.data.encompassingSize)) {
-			[self layoutDocumentView];
-		}
-		
-		[self layoutCellsWithRedraw:YES];
-		[self layoutSupplementaryViewsWithRedraw:YES];
-		
-		_lastDrawnBounds = self.bounds;
+		[self performFullRelayoutForcingSubviewsReset:shouldInvalidate];
 	}
+}
+
+- (void)collectionViewLayoutWasInvalidated:(JNWCollectionViewLayout *)layout {
+	// First we prepare the layout. In the future it would possibly be a good idea to coalesce
+	// this call to reduce unnecessary layout preparation calls.
+	[self.data recalculateAndPrepareLayout:YES];
+	[self performFullRelayoutForcingSubviewsReset:YES];
+}
+
+- (void)performFullRelayoutForcingSubviewsReset:(BOOL)forceReset {
+	if (forceReset && _collectionViewFlags.wantsLayout) {
+		[self resetAllCellsAndSupplementaryViews];
+	}
+	
+	[self layoutDocumentView];
+	[self layoutCellsWithRedraw:YES];
+	[self layoutSupplementaryViewsWithRedraw:YES];
+	
+	_lastDrawnBounds = self.bounds;
 }
 
 - (void)layoutDocumentView {
@@ -570,7 +578,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	for (NSIndexPath *indexPath in indexPathsToRemove) {
 		JNWCollectionViewCell *cell = [self cellForItemAtIndexPath:indexPath];
 		[self.visibleCellsMap removeObjectForKey:indexPath];
-
 		[self enqueueReusableCell:cell withIdentifier:cell.reuseIdentifier];
 		
 		[cell setHidden:YES];

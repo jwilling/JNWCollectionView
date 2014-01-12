@@ -51,20 +51,15 @@
 	return self.sectionData.copy;
 }
 
-- (BOOL)recalculateAndInvalidateLayoutIfNeeded {
-	return [self recalculateForcingLayoutInvalidation:NO];
-}
 
-- (BOOL)recalculateForcingLayoutInvalidation:(BOOL)forceInvalidation {
+- (void)recalculateAndPrepareLayout:(BOOL)prepareLayout {
 	JNWCollectionViewLayout *layout = self.collectionView.collectionViewLayout;
 	
 	if (layout == nil) {
-		return NO;
+		return;
 	}
-
-	BOOL layoutWasInvalidated = NO;
 	
-	if ([layout shouldInvalidateLayoutForBoundsChange:self.collectionView.bounds] || forceInvalidation) {
+	if (prepareLayout) {
 		[self.sectionData removeAllObjects];
 		
 		// Find how many sections we have in the collection view.
@@ -86,8 +81,6 @@
 		
 		// Recalculate the layout.
 		[layout prepareLayout];
-		
-		layoutWasInvalidated = YES;
 	}
 	
 	for (NSInteger sectionIdx = 0; sectionIdx < self.numberOfSections; sectionIdx++) {
@@ -127,7 +120,6 @@
 	}
 	
 	self.encompassingSize = [self encompassingSizeWithLayout:layout];
-	return layoutWasInvalidated;
 }
 
 - (CGSize)encompassingSizeWithLayout:(JNWCollectionViewLayout *)layout {

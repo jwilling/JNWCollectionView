@@ -505,10 +505,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		// Calling recalculate on our data will update the bounds needed for the collection
 		// view, and optionally prepare the layout once again if the layout subclass decides
 		// it needs a recalculation.
-		[self.data recalculate];
+		BOOL layoutWasRecalculated = [self.data recalculateAndInvalidateLayoutIfNeeded];
 
-		BOOL wantsInvalidation = [self.collectionViewLayout shouldInvalidateLayoutForBoundsChange:self.bounds];
-		if (wantsInvalidation && _collectionViewFlags.wantsLayout) {
+		if (layoutWasRecalculated && _collectionViewFlags.wantsLayout) {
 			[self resetAllCells];
 		}
 		

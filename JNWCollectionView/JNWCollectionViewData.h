@@ -34,11 +34,15 @@
 - (instancetype)initWithCollectionView:(JNWCollectionView *)collectionView;
 
 /// Calls -recalculateForcingLayoutInvalidation:NO.
-- (void)recalculate;
+///
+/// Returns whether or not the layout needed invalidated.
+- (BOOL)recalculateAndInvalidateLayoutIfNeeded;
 
 /// Recalculates the local section cache from the layout and data source, optionally
 /// forcing an invalidation of the layout.
-- (void)recalculateForcingLayoutInvalidation:(BOOL)forceInvalidation;
+///
+/// Returns whether or not the layout was invalidated.
+- (BOOL)recalculateForcingLayoutInvalidation:(BOOL)forceInvalidation;
 
 @property (nonatomic, assign) NSInteger numberOfSections;
 - (NSInteger)numberOfItemsInSection:(NSInteger)section;

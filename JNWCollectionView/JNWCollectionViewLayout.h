@@ -116,6 +116,13 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewDirection) {
 /// The default return value is YES.
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds;
 
+/// Subclasses can override this method to inform the collection view that it should
+/// re-apply the layout attributes of any visible items every time the collection view
+/// performs a new layout pass.
+///
+/// The default return value is NO, for performance reasons.
+- (BOOL)shouldApplyExistingLayoutAttributesOnLayout;
+
 @end
 
 @interface JNWCollectionView()

@@ -74,4 +74,8 @@
 	return YES;
 }
 
+- (BOOL)shouldApplyExistingLayoutAttributesOnLayout {
+	return YES;
+}
+
 @end

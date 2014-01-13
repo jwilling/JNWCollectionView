@@ -144,13 +144,26 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 	return attributes;
 }
 
-- (JNWCollectionViewLayoutAttributes *)layoutAttributesForSupplementaryItemInSection:(NSInteger)idx kind:(NSString *)kind {
-	JNWCollectionViewListLayoutSection *section = self.sections[idx];
+- (JNWCollectionViewLayoutAttributes *)layoutAttributesForSupplementaryItemInSection:(NSInteger)sectionIdx kind:(NSString *)kind {
+	JNWCollectionViewListLayoutSection *section = self.sections[sectionIdx];
 	CGFloat width = self.collectionView.visibleSize.width;
 	CGRect frame = CGRectZero;
 	
 	if ([kind isEqualToString:JNWCollectionViewListLayoutHeaderKind]) {
 		frame = CGRectMake(0, section.offset, width, section.headerHeight);
+		
+		if (self.stickyHeaders) {
+			// Thanks to http://blog.radi.ws/post/32905838158/sticky-headers-for-uicollectionview-using for the inspiration.
+			CGPoint contentOffset = self.collectionView.documentVisibleRect.origin;
+			CGPoint nextHeaderOrigin = CGPointMake(FLT_MAX, FLT_MAX);
+			
+			if (sectionIdx + 1 < self.sections.count) {
+				JNWCollectionViewLayoutAttributes *nextHeaderAttributes = [self layoutAttributesForSupplementaryItemInSection:sectionIdx + 1 kind:kind];
+				nextHeaderOrigin = nextHeaderAttributes.frame.origin;
+			}
+			
+			frame.origin.y = MIN(MAX(contentOffset.y, frame.origin.y), nextHeaderOrigin.y - CGRectGetHeight(frame));
+		}
 	} else if ([kind isEqualToString:JNWCollectionViewListLayoutFooterKind]) {
 		frame = CGRectMake(0, section.offset + section.height - section.footerHeight, width, section.footerHeight);
 	}
@@ -158,7 +171,12 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 	JNWCollectionViewLayoutAttributes *attributes = [[JNWCollectionViewLayoutAttributes alloc] init];
 	attributes.frame = frame;
 	attributes.alpha = 1.f;
+	attributes.zIndex = NSIntegerMax;
 	return attributes;
+}
+
+- (BOOL)shouldApplyExistingLayoutAttributesOnLayout {
+	return self.stickyHeaders;
 }
 
 - (CGRect)rectForItemAtIndex:(NSInteger)index section:(NSInteger)section {

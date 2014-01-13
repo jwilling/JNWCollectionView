@@ -30,6 +30,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewDirection) {
 @interface JNWCollectionViewLayoutAttributes : NSObject
 @property (nonatomic, assign) CGRect frame;
 @property (nonatomic, assign) CGFloat alpha;
+@property (nonatomic, assign) NSInteger zIndex;
 @end
 
 @class JNWCollectionView;

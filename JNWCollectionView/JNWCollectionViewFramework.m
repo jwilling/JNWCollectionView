@@ -626,6 +626,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 
 	cell.frame = attributes.frame;
 	cell.alphaValue = attributes.alpha;
+	cell.layer.zPosition = attributes.zIndex;
 }
 
 #pragma mark Supplementary Views
@@ -731,6 +732,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 - (void)applyLayoutAttributes:(JNWCollectionViewLayoutAttributes *)attributes toSupplementaryView:(JNWCollectionViewReusableView *)view {
 	view.frame = attributes.frame;
 	view.alphaValue = attributes.alpha;
+	view.layer.zPosition = attributes.zIndex;
 }
 
 #pragma mark Mouse events and selection

@@ -265,7 +265,7 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	CGFloat relativeRectTop = MAX(0, CGRectGetMinY(rect) - section.offset);
 	CGFloat relativeRectBottom = CGRectGetMaxY(rect) - section.offset;
 	NSInteger rowBegin = relativeRectTop / self.itemSize.height;
-	NSInteger rowEnd = ceilf(relativeRectBottom / self.itemSize.height);
+	NSInteger rowEnd = floorf(relativeRectBottom / self.itemSize.height);
 	return NSMakeRange(rowBegin, 1 + rowEnd - rowBegin);
 }
 

@@ -11,6 +11,7 @@
 
 @interface GridDemoViewController()
 @property (nonatomic, strong) NSArray *images;
+@property (nonatomic, strong) IBOutlet NSSlider *sizeSlider;
 @end
 
 static NSString * const identifier = @"CELL";
@@ -34,11 +35,14 @@ static NSString * const identifier = @"CELL";
 	[self.collectionView reloadData];
 }
 
+- (IBAction)updateSizeSliderValue:(id)sender {
+	[self.collectionView.collectionViewLayout invalidateLayout];
+}
+
 #pragma mark Data source
 
 - (JNWCollectionViewCell *)collectionView:(JNWCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 	GridCell *cell = (GridCell *)[collectionView dequeueReusableCellWithIdentifier:identifier];
-	cell.labelText = [NSString stringWithFormat:@"%ld",indexPath.jnw_item];
 	cell.image = self.images[indexPath.jnw_item % self.images.count];
 	return cell;
 }
@@ -52,7 +56,8 @@ static NSString * const identifier = @"CELL";
 }
 
 - (CGSize)sizeForItemInCollectionView:(JNWCollectionView *)collectionView {
-	return CGSizeMake(150.f, 150.f);
+	CGFloat sizeSliderValue = self.sizeSlider.floatValue;
+	return CGSizeMake(sizeSliderValue, sizeSliderValue);
 }
 
 #pragma mark Image creation

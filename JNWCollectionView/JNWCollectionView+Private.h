@@ -30,4 +30,6 @@
 - (NSString *)kindForSupplementaryViewIdentifier:(NSString *)identifier;
 - (NSArray *)allSupplementaryViewIdentifiers;
 
+- (void)collectionViewLayoutWasInvalidated:(JNWCollectionViewLayout *)layout;
+
 @end

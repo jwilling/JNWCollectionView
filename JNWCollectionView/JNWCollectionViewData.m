@@ -51,18 +51,15 @@
 	return self.sectionData.copy;
 }
 
-- (void)recalculate {
-	[self recalculateForcingLayoutInvalidation:NO];
-}
 
-- (void)recalculateForcingLayoutInvalidation:(BOOL)forceInvalidation {
+- (void)recalculateAndPrepareLayout:(BOOL)prepareLayout {
 	JNWCollectionViewLayout *layout = self.collectionView.collectionViewLayout;
 	
 	if (layout == nil) {
 		return;
 	}
 	
-	if ([layout shouldInvalidateLayoutForBoundsChange:self.collectionView.bounds] || forceInvalidation) {
+	if (prepareLayout) {
 		[self.sectionData removeAllObjects];
 		
 		// Find how many sections we have in the collection view.
@@ -82,7 +79,7 @@
 			[self.sectionData addObject:section];
 		}
 		
-		
+		// Recalculate the layout.
 		[layout prepareLayout];
 	}
 	
@@ -122,10 +119,10 @@
 		section.frame = sectionFrame;
 	}
 	
-	[self calculateEncompassingSizeWithLayout:layout];
+	self.encompassingSize = [self encompassingSizeWithLayout:layout];
 }
 
-- (void)calculateEncompassingSizeWithLayout:(JNWCollectionViewLayout *)layout {
+- (CGSize)encompassingSizeWithLayout:(JNWCollectionViewLayout *)layout {
 	CGSize encompassingSize = CGSizeZero;
 	
 	if (CGSizeEqualToSize(CGSizeZero, layout.contentSize)) {
@@ -145,7 +142,7 @@
 	encompassingSize.height = MAX(encompassingSize.height, collectionViewSize.height);
 	encompassingSize.width = MAX(encompassingSize.width, collectionViewSize.width);
 	
-	self.encompassingSize = encompassingSize;
+	return encompassingSize;
 }
 
 @end

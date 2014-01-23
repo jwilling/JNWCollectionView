@@ -22,7 +22,8 @@
 	if (self == nil) return nil;
 	
 	self.label = [[JNWLabel alloc] initWithFrame:CGRectZero];
-	[self.contentView addSubview:self.label];
+	self.contentView = self.label;
+	//[self.contentView addSubview:self.label];
 	
 	return self;
 }

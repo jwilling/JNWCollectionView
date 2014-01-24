@@ -42,9 +42,13 @@
 /// settting the background iamge or color.
 - (void)setSelected:(BOOL)selected animated:(BOOL)animate;
 
-/// Any content added to the cell should be added as a subview of the content view. The
+/// Any content added to the cell can be added as a subview of the content view. The
 /// content view is guaranteed to be in front of the background color or image.
-@property (nonatomic, strong, readonly) NSView *contentView;
+///
+/// Alternatively, a custom content view can be set for a flatter heirarchy. Note that
+/// any custom content views will have autoresizing masks applied to them, and the view
+/// will be layer-backed.
+@property (nonatomic, strong) NSView *contentView;
 
 /// Sets the background image or background color on a dedicated background view that
 /// is always beneath the content view.

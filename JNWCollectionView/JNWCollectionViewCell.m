@@ -68,11 +68,11 @@
 @end
 
 @interface JNWCollectionViewCell()
-@property (nonatomic, strong, readwrite) NSView *contentView;
 @property (nonatomic, strong) JNWCollectionViewCellBackgroundView *backgroundView;
 @end
 
 @implementation JNWCollectionViewCell
+@synthesize contentView = _contentView;
 
 - (instancetype)initWithFrame:(NSRect)frameRect {
 	self = [super initWithFrame:frameRect];
@@ -81,17 +81,11 @@
 	self.wantsLayer = YES;
 	self.layerContentsRedrawPolicy = NSViewLayerContentsRedrawOnSetNeedsDisplay;
 
-	
-	_contentView = [[NSView alloc] initWithFrame:self.bounds];
-	_contentView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-	_contentView.wantsLayer = YES;
-
 	_backgroundView = [[JNWCollectionViewCellBackgroundView alloc] initWithFrame:self.bounds];
 	_backgroundView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
 	
 	_crossfadeDuration = 0.25;
 	
-	[self addSubview:_contentView];
 	[self addSubview:_backgroundView positioned:NSWindowBelow relativeTo:_contentView];
 	
 	return self;
@@ -105,6 +99,31 @@
 
 - (void)willLayoutWithFrame:(CGRect)frame {
 	// for subclasses
+}
+
+- (NSView *)contentView {
+	if (_contentView == nil) {
+		_contentView = [[NSView alloc] initWithFrame:self.bounds];
+		[self configureContentView:_contentView];
+	}
+	
+	return _contentView;
+}
+
+- (void)setContentView:(NSView *)contentView {
+	if (_contentView) {
+		[_contentView removeFromSuperview];
+	}
+	
+	_contentView = contentView;
+	[self configureContentView:contentView];
+}
+
+- (void)configureContentView:(NSView *)contentView {
+	contentView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+	contentView.wantsLayer = YES;
+	
+	[self addSubview:contentView];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animate {

@@ -167,7 +167,9 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 		frame = CGRectMake(0, section.offset - section.headerHeight, width, section.headerHeight);
 	} else if ([kind isEqualToString:JNWCollectionViewGridLayoutFooterKind]) {
 		frame = CGRectMake(0, section.offset + section.height, width, section.footerHeight);
-	}
+	}else{
+        NSAssert(0, @"Unhandled supplementary view kind: %@",kind);
+    }
 	
 	JNWCollectionViewLayoutAttributes *attributes = [[JNWCollectionViewLayoutAttributes alloc] init];
 	attributes.frame = frame;

@@ -284,8 +284,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		
 		if (viewNib != nil) {
 			view = [self firstTopLevelObjectOfClass:JNWCollectionViewReusableView.class inNib:viewNib];
-		} else if (viewClass != nil)
-		{
+		} else if (viewClass != nil) {
 			view = [[viewClass alloc] initWithFrame:CGRectZero];
 		}
 	}

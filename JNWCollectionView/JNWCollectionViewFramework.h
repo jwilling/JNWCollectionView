@@ -139,14 +139,16 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 /// The class passed in will be used to initialize a new instance of the view, as needed. The class
 /// must be a subclass of JNWCollectionViewCell for the cell class, and JNWCollectionViewReusableView
 /// for the supplementary view class, otherwise an exception will be thrown.
+///
 /// Registering a class or nib are exclusive: registering one will unregister the other.
 - (void)registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)reuseIdentifier;
 - (void)registerClass:(Class)supplementaryViewClass forSupplementaryViewOfKind:(NSString *)kind withReuseIdentifier:(NSString *)reuseIdentifier;
 
 /// You can also register a nib instead of a class to be able to dequeue a cell or supplementary view.
 ///
-/// The Nib must contain a top-level object of a subclass of JNWCollectionViewCell for the cell, and
+/// The nib must contain a top-level object of a subclass of JNWCollectionViewCell for the cell, and
 /// JNWCollectionViewReusableView for the supplementary view, otherwise an exception will be thrown when dequeuing.
+///
 /// Registering a class or nib are exclusive: registering one will unregister the other.
 - (void)registerNib:(NSNib *)cellNib forCellWithReuseIdentifier:(NSString *)identifier;
 - (void)registerNib:(NSNib *)supplementaryViewNib forSupplementaryViewOfKind:(NSString *)kind withReuseIdentifier:(NSString *)reuseIdentifier;

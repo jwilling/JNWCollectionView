@@ -25,7 +25,7 @@ static NSString * const identifier = @"CELL";
 - (void)awakeFromNib {
 	[self generateImages];
 	
-	JNWCollectionViewGridLayout *gridLayout = [[JNWCollectionViewGridLayout alloc] initWithCollectionView:self.collectionView];
+	JNWCollectionViewGridLayout *gridLayout = [[JNWCollectionViewGridLayout alloc] init];
 	gridLayout.delegate = self;
 	self.collectionView.collectionViewLayout = gridLayout;
 	self.collectionView.dataSource = self;

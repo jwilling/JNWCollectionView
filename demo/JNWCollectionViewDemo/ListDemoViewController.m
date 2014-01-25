@@ -32,7 +32,7 @@ static NSString * const headerIdentifier = @"HEADER";
 	self.collectionView.dataSource = self;
 	[self.view addSubview:self.collectionView];
 	
-	JNWCollectionViewListLayout *layout = [[JNWCollectionViewListLayout alloc] initWithCollectionView:self.collectionView];
+	JNWCollectionViewListLayout *layout = [[JNWCollectionViewListLayout alloc] init];
 	layout.rowHeight = 44.f;
 	layout.delegate = self;
 	self.collectionView.collectionViewLayout = layout;

@@ -160,6 +160,9 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 ///
 /// A valid layout must be set before calling -reloadData, otherwise an exception will be thrown.
 ///
+/// Layouts must not be reused between separate collection view instances. A single layout can be
+/// associated with only one collection view at any given time.
+///
 /// Defaults to nil.
 @property (nonatomic, strong) JNWCollectionViewLayout *collectionViewLayout;
 

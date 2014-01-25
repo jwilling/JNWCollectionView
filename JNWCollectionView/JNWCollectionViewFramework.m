@@ -26,6 +26,7 @@
 #import "JNWCollectionViewListLayout.h"
 #import "JNWCollectionViewDocumentView.h"
 #import "JNWCollectionViewLayout.h"
+#import "JNWCollectionViewLayout+Private.h"
 
 typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 	JNWCollectionViewSelectionTypeSingle,
@@ -268,7 +269,10 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	if (self.collectionViewLayout == collectionViewLayout)
 		return;
 	
+	NSAssert(collectionViewLayout.collectionView == nil, @"Collection view layouts should not be reused between separate collection view instances.");
+	
 	_collectionViewLayout = collectionViewLayout;
+	_collectionViewLayout.collectionView = self;
 	
 	// Don't reload the data until we've performed an initial reload.
 	if (_collectionViewFlags.wantsLayout) {

@@ -19,10 +19,7 @@
 
 #import "JNWCollectionViewLayout.h"
 #import "JNWCollectionView+Private.h"
-
-@interface JNWCollectionViewLayout()
-@property (nonatomic, weak, readwrite) JNWCollectionView *collectionView;
-@end
+#import "JNWCollectionViewLayout+Private.h"
 
 @implementation JNWCollectionViewLayoutAttributes
 
@@ -40,10 +37,7 @@
 }
 
 - (instancetype)initWithCollectionView:(JNWCollectionView *)collectionView {
-	self = [super init];
-	if (self == nil) return nil;
-	self.collectionView = collectionView;
-	return self;
+	return [super init];
 }
 
 - (JNWCollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {

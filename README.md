@@ -8,6 +8,10 @@ The easiest way to understand what this framework can do is to just dive in with
 
 *If you just want to know how to download the project, see [below](README.md#how-do-i-add-it-to-my-project).*
 
+## Compatibility ##
+
+`JNWCollectionView` requires OS X 10.8+.
+
 ## Getting Started ##
 
 `JNWCollectionView` inherits from `NSScrollView`, so it can either be instantiated through code or in Interface Builder. The following example demonstrates creating a collection view through code.

@@ -55,4 +55,9 @@ extern NSString * const JNWCollectionViewGridLayoutFooterKind;
 /// override any value set here.
 @property (nonatomic, assign) CGSize itemSize;
 
+/// Choose whether even padding between horizontal items is enabled.
+///
+/// Default is YES.
+@property (nonatomic, assign) BOOL enableItemPadding;
+
 @end

@@ -72,6 +72,7 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	self = [super initWithCollectionView:collectionView];
 	if (self == nil) return nil;
 	self.itemSize = JNWCollectionViewGridLayoutDefaultSize;
+	self.enableItemPadding = YES;
 	return self;
 }
 
@@ -113,8 +114,10 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	
 	self.itemPadding = 0;
 	if (numberOfColumns > 0) {
-		CGFloat totalPadding = totalWidth - (numberOfColumns * itemSize.width);
-		self.itemPadding = floorf(totalPadding / (numberOfColumns + 1));
+		if(self.enableItemPadding) {
+			CGFloat totalPadding = totalWidth - (numberOfColumns * itemSize.width);
+			self.itemPadding = floorf(totalPadding / (numberOfColumns + 1));
+		}
 	}
 	else {
 		numberOfColumns = 1;

@@ -42,7 +42,7 @@ NSString * const kTestDataSourceFooterIdentifier = @"footer";
 }
 
 - (JNWCollectionViewReusableView *)collectionView:(JNWCollectionView *)collectionView viewForSupplementaryViewOfKind:(NSString *)kind inSection:(NSInteger)section {
-	if ([kind isEqualToString:JNWCollectionViewListLayoutHeaderIdentifier]) {
+	if ([kind isEqualToString:JNWCollectionViewListLayoutHeaderKind]) {
 		JNWCollectionViewReusableView *header = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifer:kTestDataSourceHeaderIdentifier];
 		return header;
 	} else {

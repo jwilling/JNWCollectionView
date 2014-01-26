@@ -41,7 +41,7 @@ describe(@"data source", ^{
 		
 	beforeAll(^{
 		collectionView = [[JNWCollectionView alloc] initWithFrame:CGRectMake(0, 0, 400, 400)];
-		collectionViewLayout = [[JNWCollectionViewLayout alloc] initWithCollectionView:collectionView];
+		collectionViewLayout = [[JNWCollectionViewLayout alloc] init];
 		collectionView.collectionViewLayout = collectionViewLayout;
 		testDataSource = [[JNWTestDataSource alloc] init];
 		collectionView.dataSource = testDataSource;
@@ -82,7 +82,7 @@ describe(@"-selectItemAtIndexPath:atScrollPosition:animated:", ^{
 	
 	beforeAll(^{
 		collectionView = [[JNWCollectionView alloc] initWithFrame:CGRectMake(0, 0, 300, 500)];
-		collectionViewLayout = [[JNWCollectionViewLayout alloc] initWithCollectionView:collectionView];
+		collectionViewLayout = [[JNWCollectionViewLayout alloc] init];
 		collectionView.collectionViewLayout = collectionViewLayout;
 		dataSource = [[JNWTestDataSource alloc] init];
 		collectionView.dataSource = dataSource;

@@ -166,6 +166,8 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 		}
 	} else if ([kind isEqualToString:JNWCollectionViewListLayoutFooterKind]) {
 		frame = CGRectMake(0, section.offset + section.height - section.footerHeight, width, section.footerHeight);
+	} else {
+		NSAssert(0, @"Unhandled supplementary view kind: %@",kind);
 	}
 	
 	JNWCollectionViewLayoutAttributes *attributes = [[JNWCollectionViewLayoutAttributes alloc] init];

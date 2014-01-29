@@ -162,7 +162,7 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 				nextHeaderOrigin = nextHeaderAttributes.frame.origin;
 			}
 			
-			frame.origin.y = MIN(MAX(contentOffset.y, frame.origin.y), nextHeaderOrigin.y - CGRectGetHeight(frame));
+			frame.origin.y = MIN(MAX(contentOffset.y, frame.origin.y), nextHeaderOrigin.y - CGRectGetHeight(frame) - section.footerHeight);
 		}
 	} else if ([kind isEqualToString:JNWCollectionViewListLayoutFooterKind]) {
 		frame = CGRectMake(0, section.offset + section.height - section.footerHeight, width, section.footerHeight);

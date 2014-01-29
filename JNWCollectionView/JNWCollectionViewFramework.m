@@ -394,7 +394,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		index++;
 	}
 
-	return visibleIdentifiers.copy;
+	return visibleIdentifiers;
 }
 
 - (NSArray *)indexPathsForVisibleItems {
@@ -553,7 +553,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 			[self applyLayoutAttributes:attributes toCell:cell];
 		}
 	}
-	NSLog(@"redraw");
 	NSArray *oldVisibleIndexPaths = [self.visibleCellsMap allKeys];
 	NSArray *updatedVisibleIndexPaths = [self indexPathsForItemsInRect:self.documentVisibleRect];
 

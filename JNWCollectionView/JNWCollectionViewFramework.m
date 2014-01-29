@@ -344,21 +344,16 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	return indexPaths.copy;
 }
 
-- (NSArray *)indexPathsForItemsInRect:(CGRect)rect {
+- (NSArray *)indexPathsForItemsInRect:(CGRect)rect
+{
 	if (CGRectEqualToRect(rect, CGRectZero))
 		return [NSArray array];
-	
-	NSArray *potentialIndexPaths = [self.collectionViewLayout indexPathsForItemsInRect:rect];
-	if (potentialIndexPaths != nil) {
-		return potentialIndexPaths;
-	}
-		
+			
 	NSMutableArray *visibleCells = [NSMutableArray array];
 	
-	for (JNWCollectionViewSection *section in self.data.sections) {
-		if (!CGRectIntersectsRect(section.frame, rect))
-			continue;
-		
+	NSIndexSet* visibleSectionIndexes = [self.data indexesOfSectionsInRect:rect];
+	[visibleSectionIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+		JNWCollectionViewSection *section = self.data.sections[idx];
 		NSUInteger numberOfItems = section.numberOfItems;
 		for (NSInteger item = 0; item < numberOfItems; item++) {
 			NSIndexPath *indexPath = [NSIndexPath jnw_indexPathForItem:item inSection:section.index];
@@ -368,7 +363,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 				[visibleCells addObject:indexPath];
 			}
 		}
-	}
+	}];
 
 	return visibleCells;
 }
@@ -381,11 +376,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		return visibleIdentifiers;
 	
 	// locate first section that intersects rect, speed up
-	
-	NSUInteger index = [self.data indexOfSectionForOffset:rect.origin.y];
-	if (index > 0){
-		index--; // need to scan from previous section (bottom), because use the offset of the section top
-	}
+	NSUInteger index = [self.data indexOfSectionForPoint:rect.origin];
 	
 	while (index < [self.data.sections count]) {
 		JNWCollectionViewSection *section = self.data.sections[index];
@@ -404,21 +395,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	}
 
 	return visibleIdentifiers.copy;
-}
-
-- (NSIndexSet *)indexesForSectionsInRect:(CGRect)rect {	
-	NSMutableIndexSet *indexes = [NSMutableIndexSet indexSet];
-	
-	if (CGRectEqualToRect(rect, CGRectZero))
-		return indexes;
-	
-	for (JNWCollectionViewSection *section in self.data.sections) {
-		if (CGRectIntersectsRect(rect, section.frame)) {
-			[indexes addIndex:section.index];
-		}
-	}
-	
-	return indexes.copy;
 }
 
 - (NSArray *)indexPathsForVisibleItems {
@@ -577,7 +553,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 			[self applyLayoutAttributes:attributes toCell:cell];
 		}
 	}
-
+	NSLog(@"redraw");
 	NSArray *oldVisibleIndexPaths = [self.visibleCellsMap allKeys];
 	NSArray *updatedVisibleIndexPaths = [self indexPathsForItemsInRect:self.documentVisibleRect];
 

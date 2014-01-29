@@ -200,6 +200,9 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 - (NSArray *)indexPathsForItemsInRect:(CGRect)rect {
 	NSMutableArray *indexPaths = [NSMutableArray array];
 	
+	
+	
+	
 	for (JNWCollectionViewListLayoutSection *section in self.sections) {
 		if (CGRectIntersectsRect(section.frame, rect)) {
 			

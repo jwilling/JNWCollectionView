@@ -55,15 +55,35 @@
 	return self.sectionData.copy;
 }
 
--(NSUInteger)indexOfSectionForOffset:(CGFloat)offset;
+-(NSUInteger)indexOfSectionForPoint:(CGPoint)point;
 {
-	return [self.sectionOffsets indexOfObject:@(offset)
+	NSUInteger index = [self.sectionOffsets indexOfObject:@(point.y)
 								inSortedRange:NSMakeRange(0, [self.sectionOffsets count])
 									  options:NSBinarySearchingInsertionIndex
 							  usingComparator:^NSComparisonResult(NSNumber* obj1, NSNumber* obj2) {
 								  return [obj1 compare:obj2];
 							   }];
+	if (index > 0){
+		index--;
+	}
+	return index;
 }
+
+-(NSIndexSet*)indexesOfSectionsInRect:(CGRect)rect
+{
+	NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
+	NSUInteger index = [self indexOfSectionForPoint:rect.origin];
+	CGFloat maxY = rect.origin.y + rect.size.height;
+	while (index < [self.sectionOffsets count]) {
+		if ([self.sectionOffsets[index] floatValue] > maxY){
+			break;
+		}
+		[indexSet addIndex:index];
+		index++;
+	}
+	return indexSet;
+}
+
 
 - (void)recalculateAndPrepareLayout:(BOOL)prepareLayout {
 	JNWCollectionViewLayout *layout = self.collectionView.collectionViewLayout;

@@ -34,6 +34,8 @@ static NSString * const headerIdentifier = @"HEADER";
 	
 	JNWCollectionViewListLayout *layout = [[JNWCollectionViewListLayout alloc] initWithCollectionView:self.collectionView];
 	layout.rowHeight = 44.f;
+	layout.headerHeight = 24.f;
+	layout.footerHeight = 24.f;
 	layout.stickyHeaders = YES;
 	layout.delegate = self;
 	self.collectionView.collectionViewLayout = layout;
@@ -64,11 +66,6 @@ static NSString * const headerIdentifier = @"HEADER";
 
 // Can be used in place of setting the collective height of the layout, as seen above in `-loadView`, if
 // a variable-row height list view is wanted.
-
-//- (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//	return 44.f;
-//}
-
 - (NSUInteger)collectionView:(JNWCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
 	return 3+section;
@@ -78,12 +75,5 @@ static NSString * const headerIdentifier = @"HEADER";
 	return 200;
 }
 
-- (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForHeaderInSection:(NSInteger)index {
-	return 24.f;
-}
-
-- (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForFooterInSection:(NSInteger)index {
-	return 24.f;
-}
 
 @end

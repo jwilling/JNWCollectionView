@@ -380,16 +380,29 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	if (CGRectEqualToRect(rect, CGRectZero))
 		return visibleIdentifiers;
 	
-	for (JNWCollectionViewSection *section in self.data.sections) {
+	// locate first section that intersects rect, speed up
+	
+	NSUInteger index = [self.data indexOfSectionForOffset:rect.origin.y];
+	if (index > 0){
+		index--; // need to scan from previous section (bottom), because use the offset of the section top
+	}
+	
+	while (index < [self.data.sections count]) {
+		JNWCollectionViewSection *section = self.data.sections[index];
+		if (section.frame.origin.y > rect.origin.y + rect.size.height){
+			break;
+		}
+		
 		for (NSString *identifier in allIdentifiers) {
 			NSString *kind = [self kindForSupplementaryViewIdentifier:identifier];
 			JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForSupplementaryItemInSection:section.index kind:kind];
 			if (CGRectIntersectsRect(attributes.frame, rect)) {
 				[visibleIdentifiers addObject:[self layoutIdentifierForSupplementaryViewIdentifier:identifier inSection:section.index]];
 			}
-		}		
+		}
+		index++;
 	}
-	
+
 	return visibleIdentifiers.copy;
 }
 

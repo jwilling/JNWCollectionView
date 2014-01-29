@@ -37,6 +37,8 @@
 /// re-preparing the layout.
 - (void)recalculateAndPrepareLayout:(BOOL)prepareLayout;
 
+-(NSUInteger)indexOfSectionForOffset:(CGFloat)offset;
+
 @property (nonatomic, assign) NSInteger numberOfSections;
 - (NSInteger)numberOfItemsInSection:(NSInteger)section;
 

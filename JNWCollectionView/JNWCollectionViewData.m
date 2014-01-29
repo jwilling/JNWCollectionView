@@ -23,8 +23,11 @@
 #import "JNWCollectionViewLayout.h"
 
 @interface JNWCollectionViewData()
+
 @property (nonatomic, weak) JNWCollectionView *collectionView;
 @property (nonatomic, strong) NSMutableArray *sectionData;
+@property (nonatomic, strong) NSMutableOrderedSet *sectionOffsets;
+
 @end
 
 @implementation JNWCollectionViewSection
@@ -38,6 +41,7 @@
 	if (self == nil) return nil;
 	self.collectionView = collectionView;
 	self.sectionData = [NSMutableArray array];
+	self.sectionOffsets = [NSMutableOrderedSet orderedSet];
 	return self;
 }
 
@@ -51,6 +55,15 @@
 	return self.sectionData.copy;
 }
 
+-(NSUInteger)indexOfSectionForOffset:(CGFloat)offset;
+{
+	return [self.sectionOffsets indexOfObject:@(offset)
+								inSortedRange:NSMakeRange(0, [self.sectionOffsets count])
+									  options:NSBinarySearchingInsertionIndex
+							  usingComparator:^NSComparisonResult(NSNumber* obj1, NSNumber* obj2) {
+								  return [obj1 compare:obj2];
+							   }];
+}
 
 - (void)recalculateAndPrepareLayout:(BOOL)prepareLayout {
 	JNWCollectionViewLayout *layout = self.collectionView.collectionViewLayout;
@@ -99,6 +112,7 @@
 		CGRect potentialSectionFrame = [layout rectForSectionAtIndex:sectionIdx];
 		if (!CGRectIsNull(potentialSectionFrame)) {
 			section.frame = potentialSectionFrame;
+			[self.sectionOffsets addObject:@(section.frame.origin.y)];
 			continue;
 		}
 		
@@ -106,7 +120,6 @@
 		for (NSInteger itemIdx = 0; itemIdx < section.numberOfItems; itemIdx++) {
 			NSIndexPath *indexPath = [NSIndexPath jnw_indexPathForItem:itemIdx inSection:sectionIdx];
 			JNWCollectionViewLayoutAttributes *attributes = [layout layoutAttributesForItemAtIndexPath:indexPath];
-			
 			sectionFrame = CGRectUnion(sectionFrame, attributes.frame);
 		}
 		
@@ -117,6 +130,7 @@
 		}
 		
 		section.frame = sectionFrame;
+		[self.sectionOffsets addObject:@(section.frame.origin.y)];
 	}
 	
 	self.encompassingSize = [self encompassingSizeWithLayout:layout];

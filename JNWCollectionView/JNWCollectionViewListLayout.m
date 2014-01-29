@@ -148,7 +148,7 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 	JNWCollectionViewListLayoutSection *section = self.sections[sectionIdx];
 	CGFloat width = self.collectionView.visibleSize.width;
 	CGRect frame = CGRectZero;
-	
+
 	if ([kind isEqualToString:JNWCollectionViewListLayoutHeaderKind]) {
 		frame = CGRectMake(0, section.offset, width, section.headerHeight);
 		
@@ -157,9 +157,10 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 			CGPoint contentOffset = self.collectionView.documentVisibleRect.origin;
 			CGPoint nextHeaderOrigin = CGPointMake(FLT_MAX, FLT_MAX);
 			
-			if (sectionIdx + 1 < self.sections.count) {
-				JNWCollectionViewLayoutAttributes *nextHeaderAttributes = [self layoutAttributesForSupplementaryItemInSection:sectionIdx + 1 kind:kind];
-				nextHeaderOrigin = nextHeaderAttributes.frame.origin;
+			NSUInteger nextSectionIdx = sectionIdx + 1;
+			if (nextSectionIdx < self.sections.count) {
+				JNWCollectionViewListLayoutSection *section = self.sections[nextSectionIdx];
+				nextHeaderOrigin = section.frame.origin;
 			}
 			
 			frame.origin.y = MIN(MAX(contentOffset.y, frame.origin.y), nextHeaderOrigin.y - CGRectGetHeight(frame) - section.footerHeight);

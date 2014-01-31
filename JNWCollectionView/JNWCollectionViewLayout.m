@@ -60,6 +60,10 @@
 	return CGSizeZero;
 }
 
+- (JNWCollectionViewScrollDirection)scrollDirection {
+	return JNWCollectionViewScrollDirectionVertical;
+}
+
 - (NSIndexPath *)indexPathForNextItemInDirection:(JNWCollectionViewDirection)direction currentIndexPath:(NSIndexPath *)currentIndexPath {
 	return currentIndexPath;
 }

@@ -99,9 +99,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	
 	// Set the document view to a custom class that returns YES to -isFlipped.
 	collectionView.documentView = [[JNWCollectionViewDocumentView alloc] initWithFrame:CGRectZero];
-
-	collectionView.hasHorizontalScroller = NO;
-	collectionView.hasVerticalScroller = YES;
 		
 	// We don't want to perform an initial layout pass until the user has called -reloadData.
 	collectionView->_collectionViewFlags.wantsLayout = NO;
@@ -591,9 +588,29 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 - (void)layoutDocumentView {
 	if (!_collectionViewFlags.wantsLayout)
 		return;
+	
+	[self updateScrollDirection];
 
 	NSView *documentView = self.documentView;
 	documentView.frameSize = self.data.encompassingSize;
+}
+
+- (void)updateScrollDirection {
+	switch (self.collectionViewLayout.scrollDirection) {
+		case JNWCollectionViewScrollDirectionVertical:
+			self.hasVerticalScroller = YES;
+			self.hasHorizontalScroller = NO;
+			break;
+		case JNWCollectionViewScrollDirectionHorizontal:
+			self.hasVerticalScroller = NO;
+			self.hasHorizontalScroller = YES;
+			break;
+		case JNWCollectionViewScrollDirectionBoth:
+		default:
+			self.hasVerticalScroller = YES;
+			self.hasHorizontalScroller = YES;
+			break;
+	}
 }
 
 - (CGSize)visibleSize {

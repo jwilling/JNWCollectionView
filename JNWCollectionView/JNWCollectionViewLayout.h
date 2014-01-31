@@ -27,6 +27,12 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewDirection) {
 	JNWCollectionViewDirectionDown
 };
 
+typedef NS_ENUM(NSInteger, JNWCollectionViewScrollDirection) {
+	JNWCollectionViewScrollDirectionVertical,
+	JNWCollectionViewScrollDirectionHorizontal,
+	JNWCollectionViewScrollDirectionBoth
+};
+
 @interface JNWCollectionViewLayoutAttributes : NSObject
 @property (nonatomic, assign) CGRect frame;
 @property (nonatomic, assign) CGFloat alpha;
@@ -103,6 +109,18 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewDirection) {
 ///
 /// Defaults to CGSizeZero, which means it will fit the collection view's frame.
 - (CGSize)contentSize;
+
+/// The scroll direction determines which way the collection view will show scroll indicators.
+///
+/// Subclasses should override this method to change the scroll direction.
+///
+/// Note that if the content view is larger than the bounds of the collection view, the content will
+/// still be scrollable, even if the scroll indicators do not show up. To prevent this, do not make
+/// the content view larger than the collection view itself in the direction in which you do not want
+/// scrolling.
+///
+/// Defaults to JNWCollectionViewScrollDirectionVertical.
+- (JNWCollectionViewScrollDirection)scrollDirection;
 
 /// Subclasses must implement this method for arrowed selection to work.
 - (NSIndexPath *)indexPathForNextItemInDirection:(JNWCollectionViewDirection)direction currentIndexPath:(NSIndexPath *)currentIndexPath;

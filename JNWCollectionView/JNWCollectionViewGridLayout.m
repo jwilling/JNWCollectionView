@@ -68,8 +68,8 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 
 @implementation JNWCollectionViewGridLayout
 
-- (instancetype)initWithCollectionView:(JNWCollectionView *)collectionView {
-	self = [super initWithCollectionView:collectionView];
+- (instancetype)init {
+	self = [super init];
 	if (self == nil) return nil;
 	self.itemSize = JNWCollectionViewGridLayoutDefaultSize;
 	return self;

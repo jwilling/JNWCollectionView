@@ -67,8 +67,8 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 
 @implementation JNWCollectionViewListLayout
 
-- (instancetype)initWithCollectionView:(JNWCollectionView *)collectionView {
-	self = [super initWithCollectionView:collectionView];
+- (instancetype)init {
+	self = [super init];
 	if (self == nil) return nil;
 	self.rowHeight = 44.f;
 	self.headerHeight = 24.f;

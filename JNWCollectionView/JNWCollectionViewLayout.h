@@ -38,11 +38,6 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewDirection) {
 
 @property (nonatomic, weak, readonly) JNWCollectionView *collectionView;
 
-
-/// Dedicated initializer. Subclasses should override this method for their custom
-/// initializers.
-- (instancetype)initWithCollectionView:(JNWCollectionView *)collectionView;
-
 /// This method is provided as a way to inform the layout that it will
 /// need to invalidate the current layout and recalculate data.
 ///
@@ -137,4 +132,8 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewDirection) {
 /// Returns the next index path before the specified index path, or nil if it is the last index.
 - (NSIndexPath *)indexPathForNextSelectableItemBeforeIndexPath:(NSIndexPath *)indexPath;
 
+@end
+
+@interface JNWCollectionViewLayout(Deprecated)
+- (instancetype)initWithCollectionView:(JNWCollectionView *)collectionView __attribute__((deprecated("use -init instead.")));
 @end

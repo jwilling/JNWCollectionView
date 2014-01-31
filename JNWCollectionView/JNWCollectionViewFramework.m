@@ -344,6 +344,11 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	return indexPaths.copy;
 }
 
+- (NSIndexSet*)indexesForSectionsInRect:(CGRect)rect
+{
+	return [self.data indexesOfSectionsInRect:rect];
+}
+
 - (NSArray *)indexPathsForItemsInRect:(CGRect)rect
 {
 	if (CGRectEqualToRect(rect, CGRectZero))
@@ -351,10 +356,15 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 			
 	NSMutableArray *visibleCells = [NSMutableArray array];
 	
-	NSIndexSet* visibleSectionIndexes = [self.data indexesOfSectionsInRect:rect];
+	NSIndexSet* visibleSectionIndexes = [self indexesForSectionsInRect:rect];
+	
+	// really need have to check first and last sections, for intermediate sections add all section indexPaths!
+	
 	[visibleSectionIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+		
 		JNWCollectionViewSection *section = self.data.sections[idx];
 		NSUInteger numberOfItems = section.numberOfItems;
+		
 		for (NSInteger item = 0; item < numberOfItems; item++) {
 			NSIndexPath *indexPath = [NSIndexPath jnw_indexPathForItem:item inSection:section.index];
 			JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];

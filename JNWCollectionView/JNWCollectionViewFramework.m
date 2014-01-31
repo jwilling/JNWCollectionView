@@ -400,22 +400,27 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	return indexPaths.copy;
 }
 
-- (NSArray *)indexPathsForItemsInRect:(CGRect)rect {
+- (NSIndexSet*)indexesForSectionsInRect:(CGRect)rect
+{
+	return [self.data indexesOfSectionsInRect:rect];
+}
+
+- (NSArray *)indexPathsForItemsInRect:(CGRect)rect
+{
 	if (CGRectEqualToRect(rect, CGRectZero))
 		return [NSArray array];
-	
-	NSArray *potentialIndexPaths = [self.collectionViewLayout indexPathsForItemsInRect:rect];
-	if (potentialIndexPaths != nil) {
-		return potentialIndexPaths;
-	}
-		
+			
 	NSMutableArray *visibleCells = [NSMutableArray array];
 	
-	for (JNWCollectionViewSection *section in self.data.sections) {
-		if (!CGRectIntersectsRect(section.frame, rect))
-			continue;
+	NSIndexSet* visibleSectionIndexes = [self indexesForSectionsInRect:rect];
+	
+	// really need have to check first and last sections, for intermediate sections add all section indexPaths!
+	
+	[visibleSectionIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
 		
+		JNWCollectionViewSection *section = self.data.sections[idx];
 		NSUInteger numberOfItems = section.numberOfItems;
+		
 		for (NSInteger item = 0; item < numberOfItems; item++) {
 			NSIndexPath *indexPath = [NSIndexPath jnw_indexPathForItem:item inSection:section.index];
 			JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
@@ -424,7 +429,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 				[visibleCells addObject:indexPath];
 			}
 		}
-	}
+	}];
 
 	return visibleCells;
 }
@@ -436,32 +441,26 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	if (CGRectEqualToRect(rect, CGRectZero))
 		return visibleIdentifiers;
 	
-	for (JNWCollectionViewSection *section in self.data.sections) {
+	// locate first section that intersects rect, speed up
+	NSUInteger index = [self.data indexOfSectionForPoint:rect.origin];
+	
+	while (index < [self.data.sections count]) {
+		JNWCollectionViewSection *section = self.data.sections[index];
+		if (section.frame.origin.y > rect.origin.y + rect.size.height){
+			break;
+		}
+		
 		for (NSString *identifier in allIdentifiers) {
 			NSString *kind = [self kindForSupplementaryViewIdentifier:identifier];
 			JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForSupplementaryItemInSection:section.index kind:kind];
 			if (CGRectIntersectsRect(attributes.frame, rect)) {
 				[visibleIdentifiers addObject:[self layoutIdentifierForSupplementaryViewIdentifier:identifier inSection:section.index]];
 			}
-		}		
-	}
-	
-	return visibleIdentifiers.copy;
-}
-
-- (NSIndexSet *)indexesForSectionsInRect:(CGRect)rect {	
-	NSMutableIndexSet *indexes = [NSMutableIndexSet indexSet];
-	
-	if (CGRectEqualToRect(rect, CGRectZero))
-		return indexes;
-	
-	for (JNWCollectionViewSection *section in self.data.sections) {
-		if (CGRectIntersectsRect(rect, section.frame)) {
-			[indexes addIndex:section.index];
 		}
+		index++;
 	}
-	
-	return indexes.copy;
+
+	return visibleIdentifiers;
 }
 
 - (NSArray *)indexPathsForVisibleItems {
@@ -620,7 +619,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 			[self applyLayoutAttributes:attributes toCell:cell];
 		}
 	}
-
 	NSArray *oldVisibleIndexPaths = [self.visibleCellsMap allKeys];
 	NSArray *updatedVisibleIndexPaths = [self indexPathsForItemsInRect:self.documentVisibleRect];
 

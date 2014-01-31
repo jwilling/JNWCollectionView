@@ -34,12 +34,16 @@ static NSString * const headerIdentifier = @"HEADER";
 	
 	JNWCollectionViewListLayout *layout = [[JNWCollectionViewListLayout alloc] init];
 	layout.rowHeight = 44.f;
+	layout.headerHeight = 24.f;
+	layout.footerHeight = 24.f;
+	layout.stickyHeaders = YES;
 	layout.delegate = self;
 	self.collectionView.collectionViewLayout = layout;
 	
 	[self.collectionView registerClass:ListCell.class forCellWithReuseIdentifier:cellIdentifier];
 	[self.collectionView registerClass:ListHeader.class forSupplementaryViewOfKind:JNWCollectionViewListLayoutHeaderKind withReuseIdentifier:headerIdentifier];
-	
+	[self.collectionView registerClass:ListHeader.class forSupplementaryViewOfKind:JNWCollectionViewListLayoutFooterKind withReuseIdentifier:headerIdentifier];
+
 	self.collectionView.animatesSelection = YES;
 	
 	[self.collectionView reloadData];
@@ -53,27 +57,23 @@ static NSString * const headerIdentifier = @"HEADER";
 
 - (JNWCollectionViewReusableView *)collectionView:(JNWCollectionView *)collectionView viewForSupplementaryViewOfKind:(NSString *)kind inSection:(NSInteger)section {
 	ListHeader *header = (ListHeader *)[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifer:headerIdentifier];
-	header.headerLabelText = [NSString stringWithFormat:@"Header %ld", section];
+	
+	NSString* label = [kind isEqualToString:JNWCollectionViewListLayoutHeaderKind] ? @"Header": @"Footer";
+	header.headerLabelText = [NSString stringWithFormat:@"%@ %ld", label,section];
 	return header;
 }
 
+
 // Can be used in place of setting the collective height of the layout, as seen above in `-loadView`, if
 // a variable-row height list view is wanted.
-
-//- (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//	return 44.f;
-//}
-
-- (NSUInteger)collectionView:(JNWCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-	return 300;
+- (NSUInteger)collectionView:(JNWCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+	return 3+section;
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(JNWCollectionView *)collectionView {
-	return 5;
+	return 200;
 }
 
-- (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForHeaderInSection:(NSInteger)index {
-	return 24.f;
-}
 
 @end

@@ -23,8 +23,11 @@
 #import "JNWCollectionViewLayout.h"
 
 @interface JNWCollectionViewData()
+
 @property (nonatomic, weak) JNWCollectionView *collectionView;
 @property (nonatomic, strong) NSMutableArray *sectionData;
+@property (nonatomic, strong) NSMutableOrderedSet *sectionOffsets;
+
 @end
 
 @implementation JNWCollectionViewSection
@@ -38,6 +41,7 @@
 	if (self == nil) return nil;
 	self.collectionView = collectionView;
 	self.sectionData = [NSMutableArray array];
+	self.sectionOffsets = [NSMutableOrderedSet orderedSet];
 	return self;
 }
 
@@ -49,6 +53,35 @@
 
 - (NSArray *)sections {
 	return self.sectionData.copy;
+}
+
+-(NSUInteger)indexOfSectionForPoint:(CGPoint)point;
+{
+	NSUInteger index = [self.sectionOffsets indexOfObject:@(point.y)
+								inSortedRange:NSMakeRange(0, [self.sectionOffsets count])
+									  options:NSBinarySearchingInsertionIndex
+							  usingComparator:^NSComparisonResult(NSNumber* obj1, NSNumber* obj2) {
+								  return [obj1 compare:obj2];
+							   }];
+	if (index > 0){
+		index--;
+	}
+	return index;
+}
+
+-(NSIndexSet*)indexesOfSectionsInRect:(CGRect)rect
+{
+	NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
+	NSUInteger index = [self indexOfSectionForPoint:rect.origin];
+	CGFloat maxY = rect.origin.y + rect.size.height;
+	while (index < [self.sectionOffsets count]) {
+		if ([self.sectionOffsets[index] floatValue] > maxY){
+			break;
+		}
+		[indexSet addIndex:index];
+		index++;
+	}
+	return indexSet;
 }
 
 
@@ -99,6 +132,7 @@
 		CGRect potentialSectionFrame = [layout rectForSectionAtIndex:sectionIdx];
 		if (!CGRectIsNull(potentialSectionFrame)) {
 			section.frame = potentialSectionFrame;
+			[self.sectionOffsets addObject:@(section.frame.origin.y)];
 			continue;
 		}
 		
@@ -106,7 +140,6 @@
 		for (NSInteger itemIdx = 0; itemIdx < section.numberOfItems; itemIdx++) {
 			NSIndexPath *indexPath = [NSIndexPath jnw_indexPathForItem:itemIdx inSection:sectionIdx];
 			JNWCollectionViewLayoutAttributes *attributes = [layout layoutAttributesForItemAtIndexPath:indexPath];
-			
 			sectionFrame = CGRectUnion(sectionFrame, attributes.frame);
 		}
 		
@@ -117,6 +150,7 @@
 		}
 		
 		section.frame = sectionFrame;
+		[self.sectionOffsets addObject:@(section.frame.origin.y)];
 	}
 	
 	self.encompassingSize = [self encompassingSizeWithLayout:layout];

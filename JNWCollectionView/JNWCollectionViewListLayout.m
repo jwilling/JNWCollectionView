@@ -71,6 +71,8 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 	self = [super init];
 	if (self == nil) return nil;
 	self.rowHeight = 44.f;
+	self.headerHeight = 24.f;
+	self.footerHeight = 24.f;
 	return self;
 }
 
@@ -103,8 +105,8 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 	
 	for (NSUInteger section = 0; section < numberOfSections; section++) {
 		NSInteger numberOfRows = [collectionView numberOfItemsInSection:section];
-		NSInteger headerHeight = delegateHeightForHeader ? [self.delegate collectionView:collectionView heightForHeaderInSection:section] : 0;
-		NSInteger footerHeight = delegateHeightForFooter ? [self.delegate collectionView:collectionView heightForFooterInSection:section] : 0;
+		NSInteger headerHeight = delegateHeightForHeader ? [self.delegate collectionView:collectionView heightForHeaderInSection:section] : self.headerHeight;
+		NSInteger footerHeight = delegateHeightForFooter ? [self.delegate collectionView:collectionView heightForFooterInSection:section] : self.footerHeight;
 		
 		JNWCollectionViewListLayoutSection *sectionInfo = [[JNWCollectionViewListLayoutSection alloc] initWithNumberOfRows:numberOfRows];
 		sectionInfo.offset = totalHeight;
@@ -148,7 +150,7 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 	JNWCollectionViewListLayoutSection *section = self.sections[sectionIdx];
 	CGFloat width = self.collectionView.visibleSize.width;
 	CGRect frame = CGRectZero;
-	
+
 	if ([kind isEqualToString:JNWCollectionViewListLayoutHeaderKind]) {
 		frame = CGRectMake(0, section.offset, width, section.headerHeight);
 		
@@ -157,15 +159,18 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 			CGPoint contentOffset = self.collectionView.documentVisibleRect.origin;
 			CGPoint nextHeaderOrigin = CGPointMake(FLT_MAX, FLT_MAX);
 			
-			if (sectionIdx + 1 < self.sections.count) {
-				JNWCollectionViewLayoutAttributes *nextHeaderAttributes = [self layoutAttributesForSupplementaryItemInSection:sectionIdx + 1 kind:kind];
-				nextHeaderOrigin = nextHeaderAttributes.frame.origin;
+			NSUInteger nextSectionIdx = sectionIdx + 1;
+			if (nextSectionIdx < self.sections.count) {
+				JNWCollectionViewListLayoutSection *section = self.sections[nextSectionIdx];
+				nextHeaderOrigin = section.frame.origin;
 			}
 			
-			frame.origin.y = MIN(MAX(contentOffset.y, frame.origin.y), nextHeaderOrigin.y - CGRectGetHeight(frame));
+			frame.origin.y = MIN(MAX(contentOffset.y, frame.origin.y), nextHeaderOrigin.y - CGRectGetHeight(frame) - section.footerHeight);
 		}
 	} else if ([kind isEqualToString:JNWCollectionViewListLayoutFooterKind]) {
 		frame = CGRectMake(0, section.offset + section.height - section.footerHeight, width, section.footerHeight);
+	} else {
+		NSAssert(0, @"Unhandled supplementary view kind: %@",kind);
 	}
 	
 	JNWCollectionViewLayoutAttributes *attributes = [[JNWCollectionViewLayoutAttributes alloc] init];
@@ -194,6 +199,9 @@ NSString * const JNWCollectionViewListLayoutFooterKind = @"JNWCollectionViewList
 
 - (NSArray *)indexPathsForItemsInRect:(CGRect)rect {
 	NSMutableArray *indexPaths = [NSMutableArray array];
+	
+	
+	
 	
 	for (JNWCollectionViewListLayoutSection *section in self.sections) {
 		if (CGRectIntersectsRect(section.frame, rect)) {

@@ -24,33 +24,29 @@
 
 @interface JNWCollectionViewData()
 @property (nonatomic, weak) JNWCollectionView *collectionView;
-@property (nonatomic, strong) NSMutableArray *sectionData;
 @end
 
-@implementation JNWCollectionViewSection
+@implementation JNWCollectionViewData {
+	JNWCollectionViewSection *_sectionData;
+}
 
-@end
-
-@implementation JNWCollectionViewData
+- (JNWCollectionViewSection *)sections {
+	return _sectionData;
+}
 
 - (instancetype)initWithCollectionView:(JNWCollectionView *)collectionView {
 	self = [super init];
 	if (self == nil) return nil;
 	self.collectionView = collectionView;
-	self.sectionData = [NSMutableArray array];
 	return self;
 }
 
 - (NSInteger)numberOfItemsInSection:(NSInteger)section {
-	if (self.sections.count < section)
+	if (self.numberOfSections < section)
 		return 0;
-	return [self.sections[section] numberOfItems];
+	
+	return self.sections[section].numberOfItems;
 }
-
-- (NSArray *)sections {
-	return self.sectionData.copy;
-}
-
 
 - (void)recalculateAndPrepareLayout:(BOOL)prepareLayout {
 	JNWCollectionViewLayout *layout = self.collectionView.collectionViewLayout;
@@ -60,7 +56,9 @@
 	}
 	
 	if (prepareLayout) {
-		[self.sectionData removeAllObjects];
+		if (_sectionData != nil) {
+			free(_sectionData);
+		}
 		
 		// Find how many sections we have in the collection view.
 		// We default to 1 if the data source doesn't implement the optional method.
@@ -69,22 +67,25 @@
 			self.numberOfSections = [self.collectionView.dataSource numberOfSectionsInCollectionView:self.collectionView];
 		}
 		
+		_sectionData = calloc(self.numberOfSections, sizeof(JNWCollectionViewSection));
+		
 		// Run through with empty sections and fill in the number of items in each, so that
 		// the layouts can query the collection view and get correct values for the number of items
 		// in each section.
 		for (NSInteger sectionIdx = 0; sectionIdx < self.numberOfSections; sectionIdx++) {
-			JNWCollectionViewSection *section = [[JNWCollectionViewSection alloc] init];
+			JNWCollectionViewSection section;
 			section.index = sectionIdx;
 			section.numberOfItems = [self.collectionView.dataSource collectionView:self.collectionView numberOfItemsInSection:sectionIdx];
-			[self.sectionData addObject:section];
+			
+			self.sections[sectionIdx] = section;
 		}
 		
-		// Recalculate the layout.
+		// Rp ecalculate the layout.
 		[layout prepareLayout];
 	}
 	
 	for (NSInteger sectionIdx = 0; sectionIdx < self.numberOfSections; sectionIdx++) {
-		JNWCollectionViewSection *section = self.sections[sectionIdx];
+		JNWCollectionViewSection section = self.sections[sectionIdx];
 		
 		// We're running through all of the items just to find the total size of each section.
 		// Although this might seem like a waste, remember that this is only performed each time the
@@ -98,7 +99,7 @@
 		// and increase the speed of the layout reloading.
 		CGRect potentialSectionFrame = [layout rectForSectionAtIndex:sectionIdx];
 		if (!CGRectIsNull(potentialSectionFrame)) {
-			section.frame = potentialSectionFrame;
+			self.sections[sectionIdx].frame = potentialSectionFrame;
 			continue;
 		}
 		
@@ -116,7 +117,7 @@
 			sectionFrame = CGRectUnion(sectionFrame, attributes.frame);
 		}
 		
-		section.frame = sectionFrame;
+		self.sections[sectionIdx].frame = sectionFrame;
 	}
 	
 	self.encompassingSize = [self encompassingSizeWithLayout:layout];
@@ -128,8 +129,8 @@
 	if (CGSizeEqualToSize(CGSizeZero, layout.contentSize)) {
 		CGRect frame = CGRectNull;
 
-		for (JNWCollectionViewSection *section in self.sections) {
-			frame = CGRectUnion(frame, section.frame);
+		for (int i = 0; i < self.numberOfSections; i++) {
+			frame = CGRectUnion(frame, self.sections[i].frame);
 		}
 		
 		encompassingSize = frame.size;

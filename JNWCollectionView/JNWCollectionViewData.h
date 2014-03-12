@@ -19,15 +19,13 @@
 
 #import <Foundation/Foundation.h>
 
-@class JNWCollectionView;
+typedef struct  {
+	NSInteger index;
+	CGRect frame;
+	NSInteger numberOfItems;
+} JNWCollectionViewSection;
 
-/// This class holds information about the state of the items (not cells) in the collection view.
-/// It is not exposed publicly.
-@interface JNWCollectionViewSection : NSObject
-@property (nonatomic, assign) NSInteger index;
-@property (nonatomic, assign) CGRect frame;
-@property (nonatomic, assign) NSInteger numberOfItems;
-@end
+@class JNWCollectionView;
 
 @interface JNWCollectionViewData : NSObject
 
@@ -41,7 +39,7 @@
 - (NSInteger)numberOfItemsInSection:(NSInteger)section;
 
 /// Contains all of the sections cached from the last -recalculate call.
-@property (nonatomic, strong, readonly) NSArray *sections;
+@property (nonatomic, assign, readonly) JNWCollectionViewSection *sections;
 
 /// The size that contains all of the sections. This size is used to determine
 /// the content size of the scroll view.

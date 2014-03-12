@@ -138,7 +138,7 @@
 	}
 	
 	// As documented, we stretch the size to be at least the size of the collection view's frame size.
-	CGSize collectionViewSize = self.collectionView.frame.size;
+	CGSize collectionViewSize = self.collectionView.visibleSize;
 	encompassingSize.height = MAX(encompassingSize.height, collectionViewSize.height);
 	encompassingSize.width = MAX(encompassingSize.width, collectionViewSize.width);
 	

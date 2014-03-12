@@ -29,13 +29,17 @@ typedef struct  {
 
 @interface JNWCollectionViewData : NSObject
 
+/// Designated initializer.
 - (instancetype)initWithCollectionView:(JNWCollectionView *)collectionView;
 
 /// Recalculates the local section cache from the layout and data source, optionally
 /// re-preparing the layout.
 - (void)recalculateAndPrepareLayout:(BOOL)prepareLayout;
 
-@property (nonatomic, assign) NSInteger numberOfSections;
+/// The number of sections that the data source has reported.
+@property (nonatomic, assign, readonly) NSInteger numberOfSections;
+
+/// Returns the number of items in the specified section.
 - (NSInteger)numberOfItemsInSection:(NSInteger)section;
 
 /// Contains all of the sections cached from the last -recalculate call.
@@ -43,6 +47,6 @@ typedef struct  {
 
 /// The size that contains all of the sections. This size is used to determine
 /// the content size of the scroll view.
-@property (nonatomic, assign) CGSize encompassingSize;
+@property (nonatomic, assign, readonly) CGSize encompassingSize;
 
 @end

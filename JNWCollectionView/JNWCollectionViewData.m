@@ -24,6 +24,8 @@
 
 @interface JNWCollectionViewData()
 @property (nonatomic, weak) JNWCollectionView *collectionView;
+@property (nonatomic, assign, readwrite) NSInteger numberOfSections;
+@property (nonatomic, assign, readwrite) CGSize encompassingSize;
 @end
 
 @implementation JNWCollectionViewData {

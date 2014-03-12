@@ -467,6 +467,7 @@
 		ABB0F32516FD7D19002004F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "JNWCollectionViewDemo/JNWCollectionViewDemo-Prefix.pch";
@@ -484,6 +485,7 @@
 		ABB0F32616FD7D19002004F5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "JNWCollectionViewDemo/JNWCollectionViewDemo-Prefix.pch";

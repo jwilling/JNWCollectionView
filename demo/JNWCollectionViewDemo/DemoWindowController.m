@@ -35,7 +35,7 @@ typedef enum {
 }
 
 - (void)selectLayout:(id)sender {
-	NSInteger layout = [sender selectedSegment];
+	LayoutType layout = (LayoutType)[sender selectedSegment];
 
 	if (self.layoutType == layout)
 		return;

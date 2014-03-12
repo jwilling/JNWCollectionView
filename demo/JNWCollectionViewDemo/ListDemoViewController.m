@@ -65,11 +65,11 @@ static NSString * const headerIdentifier = @"HEADER";
 //}
 
 - (NSUInteger)collectionView:(JNWCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-	return 2;
+	return 300;
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(JNWCollectionView *)collectionView {
-	return 5000;
+	return 5;
 }
 
 - (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForHeaderInSection:(NSInteger)index {

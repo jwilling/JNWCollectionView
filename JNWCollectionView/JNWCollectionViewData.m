@@ -82,7 +82,7 @@
 			self.sections[sectionIdx] = section;
 		}
 		
-		// Rp ecalculate the layout.
+		// Recalculate the layout.
 		[layout prepareLayout];
 	}
 	

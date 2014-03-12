@@ -52,7 +52,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 		unsigned int wantsLayout;
 	} _collectionViewFlags;
 	
-	CGRect _lastDrawnBounds;
+	CGSize _lastDrawnSize;
 }
 
 // Layout data/cache
@@ -551,8 +551,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 
 - (void)layout {
 	[super layout];
-	
-	if (CGRectEqualToRect(self.bounds, _lastDrawnBounds)) {
+
+	if (CGSizeEqualToSize(self.visibleSize, _lastDrawnSize)) {
 		[self layoutCells];
 		[self layoutSupplementaryViews];
 	} else {
@@ -582,7 +582,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	[self layoutCellsWithRedraw:YES];
 	[self layoutSupplementaryViewsWithRedraw:YES];
 	
-	_lastDrawnBounds = self.bounds;
+	_lastDrawnSize = self.visibleSize;
 }
 
 - (void)layoutDocumentView {
@@ -615,10 +615,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 
 - (CGSize)visibleSize {
 	return self.documentVisibleRect.size;
-}
-
-- (CGSize)documentSize {
-	return ((NSView *)self.documentView).bounds.size;
 }
 
 - (void)layoutCells {

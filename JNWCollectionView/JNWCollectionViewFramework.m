@@ -361,7 +361,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 
 - (NSIndexPath *)indexPathForItemAtPoint:(CGPoint)point {
 	// TODO: Optimize, and perhaps have an option to defer this to the layout class.
-	for (JNWCollectionViewSection *section in self.data.sections) {
+	for (int i = 0; i < self.data.numberOfSections; i++) {
+		JNWCollectionViewSection section = self.data.sections[i];
 		if (!CGRectContainsPoint(section.frame, point))
 			continue;
 		
@@ -383,12 +384,13 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (BOOL)validateIndexPath:(NSIndexPath *)indexPath {
-	return (indexPath.jnw_section < self.data.sections.count && indexPath.jnw_item < [self.data.sections[indexPath.jnw_section] numberOfItems]);
+	return (indexPath.jnw_section < self.data.numberOfSections && indexPath.jnw_item < self.data.sections[indexPath.jnw_section].numberOfItems);
 }
 
 - (NSArray *)allIndexPaths {
 	NSMutableArray *indexPaths = [NSMutableArray array];
-	for (JNWCollectionViewSection *section in self.data.sections) {
+	for (int i = 0; i < self.data.numberOfSections; i++) {
+		JNWCollectionViewSection section = self.data.sections[i];
 		for (NSInteger item = 0; item < section.numberOfItems; item++) {
 			[indexPaths addObject:[NSIndexPath jnw_indexPathForItem:item inSection:section.index]];
 		}
@@ -408,7 +410,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		
 	NSMutableArray *visibleCells = [NSMutableArray array];
 	
-	for (JNWCollectionViewSection *section in self.data.sections) {
+	for (int i = 0; i < self.data.numberOfSections; i++) {
+		JNWCollectionViewSection section = self.data.sections[i];
 		if (!CGRectIntersectsRect(section.frame, rect))
 			continue;
 		
@@ -433,7 +436,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	if (CGRectEqualToRect(rect, CGRectZero))
 		return visibleIdentifiers;
 	
-	for (JNWCollectionViewSection *section in self.data.sections) {
+	for (int i = 0; i < self.data.numberOfSections; i++) {
+		JNWCollectionViewSection section = self.data.sections[i];
 		for (NSString *identifier in allIdentifiers) {
 			NSString *kind = [self kindForSupplementaryViewIdentifier:identifier];
 			JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForSupplementaryItemInSection:section.index kind:kind];
@@ -452,7 +456,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	if (CGRectEqualToRect(rect, CGRectZero))
 		return indexes;
 	
-	for (JNWCollectionViewSection *section in self.data.sections) {
+	for (int i = 0; i < self.data.numberOfSections; i++) {
+		JNWCollectionViewSection section = self.data.sections[i];
 		if (CGRectIntersectsRect(rect, section.frame)) {
 			[indexes addIndex:section.index];
 		}
@@ -505,7 +510,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (CGRect)rectForItemAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath == nil || indexPath.jnw_section < self.data.sections.count) {
+	if (indexPath == nil || indexPath.jnw_section < self.data.numberOfSections) {
 		JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
 		return attributes.frame;
 	}
@@ -514,7 +519,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (CGRect)rectForSupplementaryViewWithKind:(NSString *)kind inSection:(NSInteger)section {
-	if (section >= 0 && section < self.data.sections.count) {
+	if (section >= 0 && section < self.data.numberOfSections) {
 		JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForSupplementaryItemInSection:section kind:kind];
 		return attributes.frame;
 	}
@@ -523,8 +528,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (CGRect)rectForSection:(NSInteger)index {
-	if (index >= 0 && index < self.data.sections.count) {
-		JNWCollectionViewSection *section = self.data.sections[index];
+	if (index >= 0 && index < self.data.numberOfSections) {
+		JNWCollectionViewSection section = self.data.sections[index];
 		return section.frame;
 	}
 	return CGRectZero;
@@ -883,7 +888,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (NSIndexPath *)indexPathForNextSelectableItemAfterIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.jnw_item + 1 >= [self.data.sections[indexPath.jnw_section] numberOfItems]) {
+	if (indexPath.jnw_item + 1 >= self.data.sections[indexPath.jnw_section].numberOfItems) {
 		// Jump up to the next section
 		NSIndexPath *newIndexPath = [NSIndexPath jnw_indexPathForItem:0 inSection:indexPath.jnw_section + 1];
 		if ([self validateIndexPath:newIndexPath])
@@ -897,8 +902,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 - (NSIndexPath *)indexPathForNextSelectableItemBeforeIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.jnw_item - 1 >= 0) {
 		return [NSIndexPath jnw_indexPathForItem:indexPath.jnw_item - 1 inSection:indexPath.jnw_section];
-	} else if(indexPath.jnw_section - 1 >= 0 && self.data.sections.count) {
-		NSInteger numberOfItems = [self.data.sections[indexPath.jnw_section - 1] numberOfItems];
+	} else if(indexPath.jnw_section - 1 >= 0 && self.data.numberOfSections) {
+		NSInteger numberOfItems = self.data.sections[indexPath.jnw_section - 1].numberOfItems;
 		NSIndexPath *newIndexPath = [NSIndexPath jnw_indexPathForItem:numberOfItems - 1 inSection:indexPath.jnw_section - 1];
 		if ([self validateIndexPath:newIndexPath])
 			return newIndexPath;

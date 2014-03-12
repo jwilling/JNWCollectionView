@@ -52,7 +52,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 		unsigned int wantsLayout;
 	} _collectionViewFlags;
 	
-	CGRect _lastDrawnBounds;
+	CGSize _lastDrawnSize;
 }
 
 // Layout data/cache
@@ -65,11 +65,13 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 @property (nonatomic, strong) NSMutableDictionary *reusableCells; // { identifier : (cells) }
 @property (nonatomic, strong) NSMutableDictionary *visibleCellsMap; // { index path : cell }
 @property (nonatomic, strong) NSMutableDictionary *cellClassMap; // { identifier : class }
+@property (nonatomic, strong) NSMutableDictionary *cellNibMap; // { identifier : nib }
 
 // Supplementary views
 @property (nonatomic, strong) NSMutableDictionary *reusableSupplementaryViews; // { "kind/identifier" : (views) }
 @property (nonatomic, strong) NSMutableDictionary *visibleSupplementaryViewsMap; // { "index/kind/identifier" : view } }
 @property (nonatomic, strong) NSMutableDictionary *supplementaryViewClassMap; // { "kind/identifier" : class }
+@property (nonatomic, strong) NSMutableDictionary *supplementaryViewNibMap; // { "kind/identifier" : nib }
 
 @end
 
@@ -84,9 +86,11 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	
 	collectionView.selectedIndexes = [NSMutableArray array];
 	collectionView.cellClassMap = [NSMutableDictionary dictionary];
+	collectionView.cellNibMap = [NSMutableDictionary dictionary];
 	collectionView.visibleCellsMap = [NSMutableDictionary dictionary];
 	collectionView.reusableCells = [NSMutableDictionary dictionary];
 	collectionView.supplementaryViewClassMap = [NSMutableDictionary dictionary];
+	collectionView.supplementaryViewNibMap = [NSMutableDictionary dictionary];
 	collectionView.visibleSupplementaryViewsMap = [NSMutableDictionary dictionary];
 	collectionView.reusableSupplementaryViews = [NSMutableDictionary dictionary];
 	
@@ -95,9 +99,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	
 	// Set the document view to a custom class that returns YES to -isFlipped.
 	collectionView.documentView = [[JNWCollectionViewDocumentView alloc] initWithFrame:CGRectZero];
-
-	collectionView.hasHorizontalScroller = NO;
-	collectionView.hasVerticalScroller = YES;
 		
 	// We don't want to perform an initial layout pass until the user has called -reloadData.
 	collectionView->_collectionViewFlags.wantsLayout = NO;
@@ -155,6 +156,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	NSParameterAssert(reuseIdentifier);
 	NSAssert([cellClass isSubclassOfClass:JNWCollectionViewCell.class], @"registered cell class must be a subclass of JNWCollectionViewCell");
 	self.cellClassMap[reuseIdentifier] = cellClass;
+	[self.cellNibMap removeObjectForKey:reuseIdentifier];
 }
 
 - (void)registerClass:(Class)supplementaryViewClass forSupplementaryViewOfKind:(NSString *)kind withReuseIdentifier:(NSString *)reuseIdentifier {
@@ -168,6 +170,25 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	// form the key for the supplementary views.
 	NSString *identifier = [self supplementaryViewIdentifierWithKind:kind reuseIdentifier:reuseIdentifier];
 	self.supplementaryViewClassMap[identifier] = supplementaryViewClass;
+	[self.supplementaryViewNibMap removeObjectForKey:identifier];
+}
+
+- (void)registerNib:(NSNib *)cellNib forCellWithReuseIdentifier:(NSString *)reuseIdentifier {
+	NSParameterAssert(cellNib);
+	NSParameterAssert(reuseIdentifier);
+	
+	self.cellNibMap[reuseIdentifier] = cellNib;
+	[self.cellClassMap removeObjectForKey:reuseIdentifier];
+}
+
+- (void)registerNib:(NSNib *)supplementaryViewNib forSupplementaryViewOfKind:(NSString *)kind withReuseIdentifier:(NSString *)reuseIdentifier {
+	NSParameterAssert(supplementaryViewNib);
+	NSParameterAssert(kind);
+	NSParameterAssert(reuseIdentifier);
+	
+	NSString *identifier = [self supplementaryViewIdentifierWithKind:kind reuseIdentifier:reuseIdentifier];
+	self.supplementaryViewNibMap[identifier] = supplementaryViewNib;
+	[self.supplementaryViewClassMap removeObjectForKey:identifier];
 }
 
 - (id)dequeueItemWithIdentifier:(NSString *)identifier inReusePool:(NSDictionary *)reuse {
@@ -200,6 +221,24 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	[reusableCells addObject:item];
 }
 
+- (id)firstTopLevelObjectOfClass:(Class)objectClass inNib:(NSNib *)nib {
+	id foundObject = nil;
+	NSArray *topLevelObjects = nil;
+	if([nib instantiateWithOwner:self topLevelObjects:&topLevelObjects]) {
+		NSUInteger objectIndex = [topLevelObjects indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+			if ([obj isKindOfClass:objectClass]) {
+				*stop = YES;
+				return YES;
+			}
+			return NO;
+		}];
+		if (objectIndex != NSNotFound) {
+			foundObject = [topLevelObjects objectAtIndex:objectIndex];
+		}
+	}
+	return foundObject;
+}
+
 - (JNWCollectionViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier {
 	NSParameterAssert(identifier);
 	JNWCollectionViewCell *cell = [self dequeueItemWithIdentifier:identifier inReusePool:self.reusableCells];
@@ -208,12 +247,17 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	// for this identifier, we use it, otherwise we just create an instance of JNWCollectionViewCell.
 	if (cell == nil) {
 		Class cellClass = self.cellClassMap[identifier];
-
-		if (cellClass == nil) {
+		NSNib *cellNib = self.cellNibMap[identifier];
+		
+		if (cellClass == nil && cellNib == nil) {
 			cellClass = JNWCollectionViewCell.class;
 		}
 		
-		cell = [[cellClass alloc] initWithFrame:CGRectZero];
+		if (cellNib != nil) {
+			cell = [self firstTopLevelObjectOfClass:JNWCollectionViewCell.class inNib:cellNib];
+		} else if (cellClass != nil) {
+			cell = [[cellClass alloc] initWithFrame:CGRectZero];
+		}
 	}
 	
 	cell.reuseIdentifier = identifier;
@@ -230,12 +274,17 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	
 	if (view == nil) {
 		Class viewClass = self.supplementaryViewClassMap[identifier];
+		NSNib *viewNib = self.supplementaryViewNibMap[identifier];
 		
-		if (viewClass == nil) {
+		if (viewClass == nil && viewNib == nil) {
 			viewClass = JNWCollectionViewReusableView.class;
 		}
 		
-		view = [[viewClass alloc] initWithFrame:CGRectZero];
+		if (viewNib != nil) {
+			view = [self firstTopLevelObjectOfClass:JNWCollectionViewReusableView.class inNib:viewNib];
+		} else if (viewClass != nil) {
+			view = [[viewClass alloc] initWithFrame:CGRectZero];
+		}
 	}
 	
 	view.reuseIdentifier = reuseIdentifier;
@@ -507,17 +556,18 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 
 - (void)layout {
 	[super layout];
-	
-	if (CGRectEqualToRect(self.bounds, _lastDrawnBounds)) {
+
+	if (CGSizeEqualToSize(self.visibleSize, _lastDrawnSize)) {
 		[self layoutCells];
 		[self layoutSupplementaryViews];
 	} else {
 		// Calling recalculate on our data will update the bounds needed for the collection
 		// view, and optionally prepare the layout once again if the layout subclass decides
 		// it needs a recalculation.
-		BOOL shouldInvalidate = [self.collectionViewLayout shouldInvalidateLayoutForBoundsChange:self.bounds];
+		CGRect visibleBounds = (CGRect){ .size = self.visibleSize };
+		BOOL shouldInvalidate = [self.collectionViewLayout shouldInvalidateLayoutForBoundsChange:visibleBounds];
 		[self.data recalculateAndPrepareLayout:shouldInvalidate];
-		
+
 		[self performFullRelayoutForcingSubviewsReset:shouldInvalidate];
 	}
 }
@@ -538,23 +588,39 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	[self layoutCellsWithRedraw:YES];
 	[self layoutSupplementaryViewsWithRedraw:YES];
 	
-	_lastDrawnBounds = self.bounds;
+	_lastDrawnSize = self.visibleSize;
 }
 
 - (void)layoutDocumentView {
 	if (!_collectionViewFlags.wantsLayout)
 		return;
+	
+	[self updateScrollDirection];
 
 	NSView *documentView = self.documentView;
 	documentView.frameSize = self.data.encompassingSize;
 }
 
-- (CGSize)visibleSize {
-	return self.documentVisibleRect.size;
+- (void)updateScrollDirection {
+	switch (self.collectionViewLayout.scrollDirection) {
+		case JNWCollectionViewScrollDirectionVertical:
+			self.hasVerticalScroller = YES;
+			self.hasHorizontalScroller = NO;
+			break;
+		case JNWCollectionViewScrollDirectionHorizontal:
+			self.hasVerticalScroller = NO;
+			self.hasHorizontalScroller = YES;
+			break;
+		case JNWCollectionViewScrollDirectionBoth:
+		default:
+			self.hasVerticalScroller = YES;
+			self.hasHorizontalScroller = YES;
+			break;
+	}
 }
 
-- (CGSize)documentSize {
-	return ((NSView *)self.documentView).bounds.size;
+- (CGSize)visibleSize {
+	return self.documentVisibleRect.size;
 }
 
 - (void)layoutCells {

@@ -92,7 +92,7 @@
 }
 
 - (void)prepareForReuse {
-	[self.backgroundView.layer removeAnimationForKey:@"contents"];
+	[self.backgroundView.layer removeAllAnimations];
 	
 	// for subclasses
 }
@@ -128,9 +128,9 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animate {
 	if (animate && self.selected != selected) {
-		CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"contents"];
-		animation.duration = self.crossfadeDuration;
-		[self.backgroundView.layer addAnimation:animation forKey:@"contents"];
+		CATransition *transition = [CATransition animation];
+		transition.duration = self.crossfadeDuration;
+		[self.backgroundView.layer addAnimation:transition forKey:@"fade"];
 	}
 	
 	self.selected = selected;

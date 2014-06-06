@@ -60,4 +60,9 @@ extern NSString * const JNWCollectionViewGridLayoutFooterKind;
 /// Default is YES.
 @property (nonatomic, assign) BOOL itemPaddingEnabled;
 
+/// The vertical spacing between rows in the grid.
+///
+/// Defaults to 0.
+@property (nonatomic, assign) CGFloat verticalSpacing;
+
 @end

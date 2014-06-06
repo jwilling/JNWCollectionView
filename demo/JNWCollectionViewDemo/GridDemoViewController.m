@@ -27,10 +27,13 @@ static NSString * const identifier = @"CELL";
 	
 	JNWCollectionViewGridLayout *gridLayout = [[JNWCollectionViewGridLayout alloc] init];
 	gridLayout.delegate = self;
+	gridLayout.verticalSpacing = 10.f;
+	
 	self.collectionView.collectionViewLayout = gridLayout;
 	self.collectionView.dataSource = self;
-	[self.collectionView registerClass:GridCell.class forCellWithReuseIdentifier:identifier];
 	self.collectionView.animatesSelection = NO; // (this is the default option)
+	
+	[self.collectionView registerClass:GridCell.class forCellWithReuseIdentifier:identifier];
 	
 	[self.collectionView reloadData];
 }

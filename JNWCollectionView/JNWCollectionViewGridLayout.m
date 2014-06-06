@@ -111,6 +111,7 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	CGFloat totalWidth = self.collectionView.visibleSize.width;
 	NSUInteger numberOfColumns = totalWidth / itemSize.width;
 	NSUInteger numberOfSections = [self.collectionView numberOfSections];
+	CGFloat verticalSpacing = self.verticalSpacing;
 	
 	self.itemPadding = 0;
 	if (numberOfColumns > 0) {
@@ -139,12 +140,15 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 		
 		for (NSInteger item = 0; item < numberOfItems; item++) {
 			CGPoint origin = CGPointZero;
+			NSInteger column = ((item - (item % numberOfColumns)) / numberOfColumns);
 			origin.x = self.itemPadding + (item % numberOfColumns) * (itemSize.width + self.itemPadding);
-			origin.y = ((item - (item % numberOfColumns)) / numberOfColumns) * itemSize.height;
+			origin.y = column * itemSize.height + column * verticalSpacing;
 			sectionInfo.itemInfo[item].origin = origin;
 		}
 		
-		sectionInfo.height = itemSize.height * ceilf((float)numberOfItems / (float)numberOfColumns);
+		NSInteger numberOfRows = ceilf((float)numberOfItems / (float)numberOfColumns);
+		
+		sectionInfo.height = itemSize.height * numberOfRows + verticalSpacing * MAX(numberOfRows - 1, 0);
 		totalHeight += sectionInfo.height + footerHeight + headerHeight;
 		[self.sections addObject:sectionInfo];
 	}
@@ -267,7 +271,7 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	
 	CGFloat relativeRectTop = MAX(0, CGRectGetMinY(rect) - section.offset);
 	CGFloat relativeRectBottom = CGRectGetMaxY(rect) - section.offset;
-	NSInteger rowBegin = relativeRectTop / self.itemSize.height;
+	NSInteger rowBegin = relativeRectTop / (self.itemSize.height + self.verticalSpacing);
 	NSInteger rowEnd = floorf(relativeRectBottom / self.itemSize.height);
 	return NSMakeRange(rowBegin, 1 + rowEnd - rowBegin);
 }

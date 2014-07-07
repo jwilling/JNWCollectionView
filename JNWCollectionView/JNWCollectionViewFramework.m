@@ -431,7 +431,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 
 - (NSArray *)layoutIdentifiersForSupplementaryViewsInRect:(CGRect)rect {
 	NSMutableArray *visibleIdentifiers = [NSMutableArray array];
-	NSArray *allIdentifiers = self.supplementaryViewClassMap.allKeys;
+	NSArray *allIdentifiers = [self allSupplementaryViewIdentifiers];
 	
 	if (CGRectEqualToRect(rect, CGRectZero))
 		return visibleIdentifiers;
@@ -707,7 +707,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 #pragma mark Supplementary Views
 
 - (NSArray *)allSupplementaryViewIdentifiers {
-	return self.supplementaryViewClassMap.allKeys;
+	return [self.supplementaryViewClassMap.allKeys arrayByAddingObjectsFromArray:self.supplementaryViewNibMap.allKeys];
 }
 
 - (NSString *)supplementaryViewIdentifierWithKind:(NSString *)kind reuseIdentifier:(NSString *)reuseIdentifier {

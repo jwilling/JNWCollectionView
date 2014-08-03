@@ -48,6 +48,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 		unsigned int delegateDidScroll:1;
 		unsigned int delegateDidDoubleClick:1;
 		unsigned int delegateDidRightClick:1;
+		unsigned int delegateDidRemoveCell:1;
 		
 		unsigned int wantsLayout;
 	} _collectionViewFlags;
@@ -135,6 +136,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	_collectionViewFlags.delegateDidDeselect = [delegate respondsToSelector:@selector(collectionView:didDeselectItemAtIndexPath:)];
 	_collectionViewFlags.delegateDidDoubleClick = [delegate respondsToSelector:@selector(collectionView:didDoubleClickItemAtIndexPath:)];
 	_collectionViewFlags.delegateDidRightClick = [delegate respondsToSelector:@selector(collectionView:didRightClickItemAtIndexPath:)];
+	_collectionViewFlags.delegateDidRemoveCell = [delegate respondsToSelector:@selector(collectionView:didRemoveCell:forItemAtIndexPath:)];
 }
 
 - (void)setDataSource:(id<JNWCollectionViewDataSource>)dataSource {
@@ -338,6 +340,11 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	[self.reusableSupplementaryViews removeAllObjects];
 	
 	// Remove any view mappings
+	if (_collectionViewFlags.delegateDidRemoveCell) {
+		for (JNWCollectionViewCell *cell in self.visibleCellsMap.allValues) {
+			[_delegate collectionView:self didRemoveCell:cell forItemAtIndexPath:cell.indexPath];
+		}
+	}
 	[self.visibleCellsMap removeAllObjects];
 	[self.visibleSupplementaryViewsMap removeAllObjects];
 	
@@ -657,6 +664,10 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		[self enqueueReusableCell:cell withIdentifier:cell.reuseIdentifier];
 		
 		[cell setHidden:YES];
+
+		if (_collectionViewFlags.delegateDidRemoveCell) {
+			[_delegate collectionView:self didRemoveCell:cell forItemAtIndexPath:indexPath];
+		}
 	}
 	
 	// Add the new cells

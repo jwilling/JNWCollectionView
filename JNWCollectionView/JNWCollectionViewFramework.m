@@ -342,7 +342,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	// Remove any view mappings
 	if (_collectionViewFlags.delegateDidEndDisplayingCell) {
 		for (JNWCollectionViewCell *cell in self.visibleCellsMap.allValues) {
-			[_delegate collectionView:self didEndDisplayingCell:cell forItemAtIndexPath:cell.indexPath];
+			[self.delegate collectionView:self didEndDisplayingCell:cell forItemAtIndexPath:cell.indexPath];
 		}
 	}
 	[self.visibleCellsMap removeAllObjects];
@@ -666,7 +666,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		[cell setHidden:YES];
 
 		if (_collectionViewFlags.delegateDidEndDisplayingCell) {
-			[_delegate collectionView:self didEndDisplayingCell:cell forItemAtIndexPath:indexPath];
+			[self.delegate collectionView:self didEndDisplayingCell:cell forItemAtIndexPath:indexPath];
 		}
 	}
 	

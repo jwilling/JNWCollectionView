@@ -65,4 +65,8 @@ extern NSString * const JNWCollectionViewGridLayoutFooterKind;
 /// Defaults to 0.
 @property (nonatomic, assign) CGFloat verticalSpacing;
 
+/// Optional margins for items in the grid layout.
+@property (nonatomic, assign) CGFloat itemHorizontalMargin;
+
+
 @end

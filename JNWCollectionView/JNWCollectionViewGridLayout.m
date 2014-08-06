@@ -73,6 +73,7 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	if (self == nil) return nil;
 	self.itemSize = JNWCollectionViewGridLayoutDefaultSize;
 	self.itemPaddingEnabled = YES;
+;
 	return self;
 }
 
@@ -108,17 +109,19 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	BOOL delegateHeightForHeader = [self.delegate respondsToSelector:@selector(collectionView:heightForHeaderInSection:)];
 	BOOL delegateHeightForFooter = [self.delegate respondsToSelector:@selector(collectionView:heightForFooterInSection:)];
 	
-	CGFloat totalWidth = self.collectionView.visibleSize.width;
-	NSUInteger numberOfColumns = totalWidth / itemSize.width;
+	CGFloat totalWidth = self.collectionView.visibleSize.width - self.itemHorizontalMargin;
+	NSUInteger numberOfColumns = totalWidth / (itemSize.width + self.itemHorizontalMargin);
 	NSUInteger numberOfSections = [self.collectionView numberOfSections];
 	CGFloat verticalSpacing = self.verticalSpacing;
 	
 	self.itemPadding = 0;
 	if (numberOfColumns > 0) {
-		if (self.itemPaddingEnabled) {
+		if (self.itemHorizontalMargin == 0 && self.itemPaddingEnabled) {
 			CGFloat totalPadding = totalWidth - (numberOfColumns * itemSize.width);
 			self.itemPadding = floorf(totalPadding / (numberOfColumns + 1));
-		}
+        } else {
+            self.itemPadding = self.itemHorizontalMargin;
+        }
 	}
 	else {
 		numberOfColumns = 1;

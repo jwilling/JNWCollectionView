@@ -108,7 +108,8 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	
 	BOOL delegateHeightForHeader = [self.delegate respondsToSelector:@selector(collectionView:heightForHeaderInSection:)];
 	BOOL delegateHeightForFooter = [self.delegate respondsToSelector:@selector(collectionView:heightForFooterInSection:)];
-	
+	BOOL delegateForSectionInsets = [self.delegate respondsToSelector:@selector(collectionView:layout:insetForSectionAtIndex:)];
+
 	CGFloat totalWidth = self.collectionView.visibleSize.width - self.itemHorizontalMargin;
 	NSUInteger numberOfColumns = totalWidth / (itemSize.width + self.itemHorizontalMargin);
 	NSUInteger numberOfSections = [self.collectionView numberOfSections];
@@ -133,9 +134,10 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 		NSInteger numberOfItems = [self.collectionView numberOfItemsInSection:section];
 		NSInteger headerHeight = delegateHeightForHeader ? [self.delegate collectionView:self.collectionView heightForHeaderInSection:section] : 0;
 		NSInteger footerHeight = delegateHeightForFooter ? [self.delegate collectionView:self.collectionView heightForFooterInSection:section] : 0;
-		
+		NSEdgeInsets sectionInsets = delegateForSectionInsets ? [self.delegate collectionView:self.collectionView layout:self insetForSectionAtIndex:section] : NSEdgeInsetsMake(0, 0, 0, 0);
+
 		JNWCollectionViewGridLayoutSection *sectionInfo = [[JNWCollectionViewGridLayoutSection alloc] initWithNumberOfItems:numberOfItems];
-		sectionInfo.offset = totalHeight + headerHeight;
+		sectionInfo.offset = totalHeight + headerHeight + sectionInsets.top;
 		sectionInfo.height = 0;
 		sectionInfo.index = section;
 		sectionInfo.headerHeight = headerHeight;
@@ -144,7 +146,7 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 		for (NSInteger item = 0; item < numberOfItems; item++) {
 			CGPoint origin = CGPointZero;
 			NSInteger column = ((item - (item % numberOfColumns)) / numberOfColumns);
-			origin.x = self.itemPadding + (item % numberOfColumns) * (itemSize.width + self.itemPadding);
+			origin.x = sectionInsets.left + self.itemPadding + (item % numberOfColumns) * (itemSize.width + self.itemPadding);
 			origin.y = column * itemSize.height + column * verticalSpacing;
 			sectionInfo.itemInfo[item].origin = origin;
 		}
@@ -152,7 +154,7 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 		NSInteger numberOfRows = ceilf((float)numberOfItems / (float)numberOfColumns);
 		
 		sectionInfo.height = itemSize.height * numberOfRows + verticalSpacing * MAX(numberOfRows - 1, 0);
-		totalHeight += sectionInfo.height + footerHeight + headerHeight;
+		totalHeight += sectionInfo.height + footerHeight + headerHeight + sectionInsets.bottom + sectionInsets.top;
 		[self.sections addObject:sectionInfo];
 	}
 }

@@ -19,6 +19,8 @@
 
 #import "JNWCollectionViewLayout.h"
 
+@class JNWCollectionViewGridLayout;
+
 /// The supplementary view kind identifiers used for the header and the footer.
 extern NSString * const JNWCollectionViewGridLayoutHeaderKind;
 extern NSString * const JNWCollectionViewGridLayoutFooterKind;
@@ -38,6 +40,11 @@ extern NSString * const JNWCollectionViewGridLayoutFooterKind;
 /// The default height for both the header and footer is 0.
 - (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForHeaderInSection:(NSInteger)index;
 - (CGFloat)collectionView:(JNWCollectionView *)collectionView heightForFooterInSection:(NSInteger)index;
+
+/// Asks the delegate for section insets for a section in the grid layout
+///
+/// The default is (0, 0, 0, 0).
+- (NSEdgeInsets)collectionView:(JNWCollectionView *)collectionView layout:(JNWCollectionViewGridLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section;
 
 @end
 
@@ -66,7 +73,8 @@ extern NSString * const JNWCollectionViewGridLayoutFooterKind;
 @property (nonatomic, assign) CGFloat verticalSpacing;
 
 /// Optional margins for items in the grid layout.
+///
+/// Defaults to 0
 @property (nonatomic, assign) CGFloat itemHorizontalMargin;
-
 
 @end

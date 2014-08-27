@@ -35,7 +35,6 @@
 		AB3C7209170CA8EF004A91DB /* JNWCollectionView-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AB3C7206170CA8EF004A91DB /* JNWCollectionView-Prefix.pch */; };
 		AB3C720C170CA8F3004A91DB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB3C720A170CA8F3004A91DB /* InfoPlist.strings */; };
 		AB3C7216170CAADB004A91DB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB024671707937F00537A92 /* QuartzCore.framework */; };
-		AB3C7249170CAD13004A91DB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB3C7211170CA981004A91DB /* InfoPlist.strings */; };
 		ABA276B2171D1C4B005C8E56 /* JNWCollectionViewDocumentView.h in Headers */ = {isa = PBXBuildFile; fileRef = ABA276B0171D1C4B005C8E56 /* JNWCollectionViewDocumentView.h */; };
 		ABA276B3171D1C4B005C8E56 /* JNWCollectionViewDocumentView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA276B1171D1C4B005C8E56 /* JNWCollectionViewDocumentView.m */; };
 		ABB023F5170791D300537A92 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB023F4170791D300537A92 /* Cocoa.framework */; };
@@ -160,7 +159,6 @@
 		AB3C7205170CA8EF004A91DB /* JNWCollectionView-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "JNWCollectionView-Info.plist"; path = "JNWCollectionView/JNWCollectionView-Info.plist"; sourceTree = SOURCE_ROOT; };
 		AB3C7206170CA8EF004A91DB /* JNWCollectionView-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JNWCollectionView-Prefix.pch"; path = "JNWCollectionView/JNWCollectionView-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		AB3C720B170CA8F3004A91DB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = JNWCollectionView/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
-		AB3C7212170CA981004A91DB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = JNWCollectionViewTests/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		AB3C7214170CA990004A91DB /* JNWCollectionViewTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "JNWCollectionViewTests-Info.plist"; path = "JNWCollectionViewTests/JNWCollectionViewTests-Info.plist"; sourceTree = SOURCE_ROOT; };
 		ABA276B0171D1C4B005C8E56 /* JNWCollectionViewDocumentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewDocumentView.h; path = JNWCollectionView/JNWCollectionViewDocumentView.h; sourceTree = SOURCE_ROOT; };
 		ABA276B1171D1C4B005C8E56 /* JNWCollectionViewDocumentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewDocumentView.m; path = JNWCollectionView/JNWCollectionViewDocumentView.m; sourceTree = SOURCE_ROOT; };
@@ -341,7 +339,6 @@
 			children = (
 				AB3C7205170CA8EF004A91DB /* JNWCollectionView-Info.plist */,
 				AB3C7206170CA8EF004A91DB /* JNWCollectionView-Prefix.pch */,
-				AB3C7211170CA981004A91DB /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -438,7 +435,7 @@
 			name = JNWCollectionViewTests;
 			productName = JNWTableViewTests;
 			productReference = ABB02409170791D300537A92 /* JNWCollectionViewTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.ocunit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -550,7 +547,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AB3C7249170CAD13004A91DB /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -629,15 +625,6 @@
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
-		};
-		AB3C7211170CA981004A91DB /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				AB3C7212170CA981004A91DB /* en */,
-			);
-			name = InfoPlist.strings;
-			path = JNWTableViewTests;
-			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXVariantGroup section */
 

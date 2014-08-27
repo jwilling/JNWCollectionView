@@ -18,15 +18,12 @@
 @implementation ListCell
 
 - (instancetype)initWithFrame:(NSRect)frameRect {
+
 	self = [super initWithFrame:frameRect];
 	if (self == nil) return nil;
 	
 	self.label = [[JNWLabel alloc] initWithFrame:CGRectZero];
-	[self.contentView addSubview:self.label];
-	
-	return self;
 }
-
 - (void)layout {
 	[super layout];
 	
@@ -36,6 +33,8 @@
 	}
 }
 
+- (void)setCellLabelText:(NSString *)cellLabelText { _cellLabelText = self.label.text = cellLabelText; }
+
 - (void)setCellLabelText:(NSString *)cellLabelText {
 	_cellLabelText = cellLabelText;
 	self.label.text = cellLabelText;
@@ -43,17 +42,17 @@
 
 - (void)setSelected:(BOOL)selected {
 	[super setSelected:selected];
-	[self updateBackgroundImage];
+- (void)setHovered:(BOOL)hovered { [super setHovered:hovered]; [self updateBackgroundImage]; }
 }
 
 - (void)updateBackgroundImage {
-	NSString *identifier = [NSString stringWithFormat:@"%@%x", NSStringFromClass(self.class), self.selected];
+	NSString *identifier = [NSString stringWithFormat:@"%@%x%x%@", self.className, self.selected, self.hovered,self.backgroundColor.description];
 	CGSize size = CGSizeMake(1, CGRectGetHeight(self.bounds));
-	self.backgroundImage = [DemoImageCache.sharedCache cachedImageWithIdentifier:identifier size:size withCreationBlock:^NSImage * (CGSize size) {
-		if (self.selected)
-			return [NSImage highlightedGradientImageWithHeight:size.height];
-		return [NSImage standardGradientImageWithHeight:size.height];
-	}];
+	self.backgroundImage  = [DemoImageCache.sharedCache cachedImageWithIdentifier:identifier size:size withCreationBlock:^NSImage * (CGSize size) {
+    return self.selected  ? [NSImage highlightedGradientImageWithHeight:size.height] :
+            self.hovered  ? [NSImage gradientImageWithHeight:size.height color:self.backgroundColor]
+                          : [NSImage standardGradientImageWithHeight:size.height];
+  }];
 }
 
 @end

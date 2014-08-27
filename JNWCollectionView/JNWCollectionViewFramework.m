@@ -41,6 +41,8 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 		
 		unsigned int delegateMouseDown:1;
 		unsigned int delegateMouseUp:1;
+    unsigned int delegateMouseEntered:1;
+    unsigned int delegateMouseExited:1;
 		unsigned int delegateShouldSelect:1;
 		unsigned int delegateDidSelect:1;
 		unsigned int delegateShouldDeselect:1;
@@ -57,28 +59,27 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 }
 
 // Layout data/cache
-@property (nonatomic, strong) JNWCollectionViewData *data;
+@property (nonatomic) JNWCollectionViewData *data;
 
 // Selection
-@property (nonatomic, strong) NSMutableArray *selectedIndexes;
+@property (nonatomic) NSMutableArray *selectedIndexes;
 
 // Cells
-@property (nonatomic, strong) NSMutableDictionary *reusableCells; // { identifier : (cells) }
-@property (nonatomic, strong) NSMutableDictionary *visibleCellsMap; // { index path : cell }
-@property (nonatomic, strong) NSMutableDictionary *cellClassMap; // { identifier : class }
-@property (nonatomic, strong) NSMutableDictionary *cellNibMap; // { identifier : nib }
+@property (nonatomic) NSMutableDictionary *reusableCells, // { identifier : (cells) }
+
+  * visibleCellsMap, // { index path : cell }
+  * cellClassMap, // { identifier : class }
+  * cellNibMap,  // { identifier : nib }
 
 // Supplementary views
-@property (nonatomic, strong) NSMutableDictionary *reusableSupplementaryViews; // { "kind/identifier" : (views) }
-@property (nonatomic, strong) NSMutableDictionary *visibleSupplementaryViewsMap; // { "index/kind/identifier" : view } }
-@property (nonatomic, strong) NSMutableDictionary *supplementaryViewClassMap; // { "kind/identifier" : class }
-@property (nonatomic, strong) NSMutableDictionary *supplementaryViewNibMap; // { "kind/identifier" : nib }
-
+  * reusableSupplementaryViews, // { "kind/identifier" : (views) }
+  * visibleSupplementaryViewsMap, // { "index/kind/identifier" : view } }
+  * supplementaryViewClassMap, // { "kind/identifier" : class }
+  * supplementaryViewNibMap; // { "kind/identifier" : nib }
+@property (nonatomic, readwrite) NSIndexPath *hoveredItemIndex;
 @end
 
-@implementation JNWCollectionView
-@dynamic drawsBackground;
-@dynamic backgroundColor;
+@implementation JNWCollectionView @dynamic drawsBackground, backgroundColor;
 
 // We're using a static function for the common initialization so that subclassers
 // don't accidentally override this method in their own common init method.
@@ -130,6 +131,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	_delegate = delegate;
 	_collectionViewFlags.delegateMouseUp = [delegate respondsToSelector:@selector(collectionView:mouseUpInItemAtIndexPath:)];
 	_collectionViewFlags.delegateMouseDown = [delegate respondsToSelector:@selector(collectionView:mouseDownInItemAtIndexPath:)];
+	_collectionViewFlags.delegateMouseEntered = [delegate respondsToSelector:@selector(collectionView:mouseEnteredItemAtIndexPath:)];
+	_collectionViewFlags.delegateMouseExited = [delegate respondsToSelector:@selector(collectionView:mouseExitedItemAtIndexPath:)];
 	_collectionViewFlags.delegateShouldSelect = [delegate respondsToSelector:@selector(collectionView:shouldSelectItemAtIndexPath:)];
 	_collectionViewFlags.delegateDidSelect = [delegate respondsToSelector:@selector(collectionView:didSelectItemAtIndexPath:)];
 	_collectionViewFlags.delegateShouldDeselect = [delegate respondsToSelector:@selector(collectionView:shouldDeselectItemAtIndexPath:)];
@@ -974,6 +977,27 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	[self deselectItemsAtIndexPaths:indexesToDeselect.allObjects animated:animated];
 	[self scrollToItemAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated];
 }
+
+- (void)mouseEnteredCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
+
+
+	if (!(self.hoveredItemIndex = [self indexPathForCell:cell])) NSLog(@"***index path not found for selection.");
+  NSLog(@"*** Entered: %@", self.hoveredItemIndex);
+	if (_collectionViewFlags.delegateMouseEntered)
+		[self.delegate collectionView:self mouseEnteredItemAtIndexPath:self.hoveredItemIndex];
+}
+
+- (void)mouseExitedCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
+
+  NSIndexPath *path;
+	if (!(path = [self indexPathForCell:cell])) NSLog(@"***index path not found for selection.");
+  if ([self.hoveredItemIndex isEqual:path]) self.hoveredItemIndex = nil;
+
+  NSLog(@"*** Exited: %@", path);
+  if (_collectionViewFlags.delegateMouseExited)
+		[self.delegate collectionView:self mouseExitedItemAtIndexPath:path];
+}
+
 
 - (void)mouseDownInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
 	[self.window makeFirstResponder:self];

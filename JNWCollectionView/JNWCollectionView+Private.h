@@ -22,6 +22,8 @@
 @class JNWCollectionViewCell;
 @interface JNWCollectionView ()
 
+- (void)mouseExitedCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event;
+- (void)mouseEnteredCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event;
 - (void)mouseDownInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event;
 - (void)mouseUpInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event;
 - (void)doubleClickInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event;

@@ -30,9 +30,9 @@
 
 @implementation JNWCollectionViewCellBackgroundView
 
-- (id)initWithFrame:(NSRect)frameRect {
-	self = [super initWithFrame:frameRect];
-	if (self == nil) return nil;
+- initWithFrame:(NSRect)frameRect {
+
+  if (!(self = [super initWithFrame:frameRect])) return nil;
 	self.wantsLayer = YES;
 	self.layerContentsRedrawPolicy = NSViewLayerContentsRedrawOnSetNeedsDisplay;
 	return self;
@@ -71,7 +71,7 @@
 @property (nonatomic, strong) JNWCollectionViewCellBackgroundView *backgroundView;
 @end
 
-@implementation JNWCollectionViewCell
+@implementation JNWCollectionViewCell {  NSTrackingArea *trackingArea; }
 @synthesize contentView = _contentView;
 
 - (instancetype)initWithFrame:(NSRect)frameRect {
@@ -128,8 +128,8 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animate {
 	if (animate && self.selected != selected) {
-		CATransition *transition = [CATransition animation];
-		transition.duration = self.crossfadeDuration;
+		CATransition   * transition = CATransition.animation;
+		transition.duration         = self.crossfadeDuration;
 		[self.backgroundView.layer addAnimation:transition forKey:@"fade"];
 	}
 	
@@ -157,6 +157,31 @@
 	return self.backgroundView.image;
 }
 
+
+- (void) updateTrackingAreas { [super updateTrackingAreas];
+
+  trackingArea && [self.trackingAreas containsObject:trackingArea] ?:
+                  [self              addTrackingArea:trackingArea = trackingArea ?:
+
+  [NSTrackingArea.alloc initWithRect:NSZeroRect
+                             options:NSTrackingInVisibleRect | NSTrackingActiveAlways | NSTrackingMouseEnteredAndExited
+                               owner:self userInfo:nil]];
+}
+
+- (void) mouseEntered:(NSEvent*)x {	[self setHovered:YES withEvent:x];  }
+- (void)  mouseExited:(NSEvent*)x { [self setHovered:NO  withEvent:x];  }
+
+- (void) setHovered:(BOOL)h withEvent:(NSEvent*)e { if (self.hovered == h) return; self.hovered = h;
+
+  h ? [self.collectionView mouseEnteredCollectionViewCell:self withEvent:e]
+    : [self.collectionView mouseExitedCollectionViewCell:self withEvent:e];
+}
+
+- (void) scrollWheel:(NSEvent *)x {
+
+  if (self.hovered && !NSPointInRect([self convertPoint:x.locationInWindow fromView:nil],self.frame)) [self setHovered:NO withEvent:x];
+  [super scrollWheel:x];
+}
 - (void)mouseDown:(NSEvent *)theEvent {
 	[super mouseDown:theEvent];
 	

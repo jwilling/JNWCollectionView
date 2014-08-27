@@ -6,18 +6,16 @@
 //  Copyright (c) 2013 AppJon. All rights reserved.
 //
 
-#import "AppDelegate.h"
+@import AppKit;
 #import "DemoWindowController.h"
 
-@interface AppDelegate()
-@property (nonatomic, strong) DemoWindowController *windowController;
+@interface AppDelegate : NSObject <NSApplicationDelegate>
 @end
 
-@implementation AppDelegate
+@implementation AppDelegate { DemoWindowController *windowController; }
 
 - (void)awakeFromNib {
-	self.windowController = [[DemoWindowController alloc] init];
-	[self.windowController showWindow:nil];
+	[windowController = DemoWindowController.new showWindow:nil];
 }
 
 @end

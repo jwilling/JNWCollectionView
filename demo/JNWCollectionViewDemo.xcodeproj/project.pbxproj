@@ -75,7 +75,6 @@
 		AB29A68F16FEFE1B00C9A941 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		AB2E95FD170CB107004678DC /* JNWCollectionView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JNWCollectionView.xcodeproj; path = ../JNWCollectionView.xcodeproj; sourceTree = "<group>"; };
 		AB2E960A170CB196004678DC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = JNWCollectionViewDemo/en.lproj/MainMenu.xib; sourceTree = SOURCE_ROOT; };
-		AB3C722F170CABFF004A91DB /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = JNWCollectionViewDemo/AppDelegate.h; sourceTree = SOURCE_ROOT; };
 		AB3C7230170CABFF004A91DB /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = JNWCollectionViewDemo/AppDelegate.m; sourceTree = SOURCE_ROOT; };
 		AB3C7232170CABFF004A91DB /* ListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ListCell.h; path = JNWCollectionViewDemo/ListCell.h; sourceTree = SOURCE_ROOT; };
 		AB3C7233170CABFF004A91DB /* ListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ListCell.m; path = JNWCollectionViewDemo/ListCell.m; sourceTree = SOURCE_ROOT; };
@@ -216,7 +215,6 @@
 			isa = PBXGroup;
 			children = (
 				ABAF15551718C39300658A1D /* JNWLabel */,
-				AB3C722F170CABFF004A91DB /* AppDelegate.h */,
 				AB3C7230170CABFF004A91DB /* AppDelegate.m */,
 				AB2E9609170CB196004678DC /* MainMenu.xib */,
 				ABAF15661718E67C00658A1D /* DemoWindowController.h */,
@@ -467,6 +465,7 @@
 		ABB0F32516FD7D19002004F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -485,6 +484,7 @@
 		ABB0F32616FD7D19002004F5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

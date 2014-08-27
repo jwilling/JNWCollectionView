@@ -12,6 +12,5 @@
 
 @property (nonatomic, weak) IBOutlet NSBox *containerBox;
 
-- (IBAction)selectLayout:(id)sender;
 
 @end

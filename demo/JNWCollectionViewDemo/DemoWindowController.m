@@ -12,54 +12,41 @@
 
 #import "NSTableViewDemoViewController.h"
 
-typedef enum {
-	ListLayout = 0,
-	GridLayout = 1,
-	NSTableViewLayout = 2
-} LayoutType;
+typedef NS_ENUM(NSUInteger, LayoutType) { ListLayout = 0, GridLayout, NSTableViewLayout, Unset };
 
 @interface DemoWindowController ()
-@property (nonatomic, strong) NSViewController *currentViewController;
-@property (nonatomic, assign) LayoutType layoutType;
+@property (nonatomic) LayoutType layoutType;
 @end
 
-@implementation DemoWindowController
+@implementation DemoWindowController { NSViewController *currentViewController; }
 
-- (void)windowDidLoad {
-    [super windowDidLoad];
-	self.currentViewController = [[ListDemoViewController alloc] init];
+- init {
+
+  return self = [super initWithWindowNibName:NSStringFromClass(self.class)] ?
+  _layoutType = Unset, self : nil;
 }
 
-- (id)init {
-	return [super initWithWindowNibName:NSStringFromClass(self.class)];
-}
+- (void) windowDidLoad {  self.layoutType = ListLayout; }
 
-- (void)selectLayout:(id)sender {
-	LayoutType layout = (LayoutType)[sender selectedSegment];
+- (void) setLayoutType:(LayoutType)type {
 
-	if (self.layoutType == layout)
-		return;
-	self.layoutType = layout;
+	if (_layoutType == type) return;
+      _layoutType =  type;
 	
-	if (layout == ListLayout) {
-		self.currentViewController = [[ListDemoViewController alloc] init];
-	} else if (layout == GridLayout) {
-		self.currentViewController = [[GridDemoViewController alloc] init];
-	} else if (layout == NSTableViewLayout) {
-		self.currentViewController = [[NSTableViewDemoViewController alloc] init];
-	}
-}
+  id newVC  = type == ListLayout         ? ListDemoViewController.new
+            : type == GridLayout         ? GridDemoViewController.new
+            : type == NSTableViewLayout  ? NSTableViewDemoViewController.new
+                                         : currentViewController;
 
-- (void)setCurrentViewController:(NSViewController *)currentViewController {
-	if (_currentViewController == currentViewController)
-		return;
-	
-	[_currentViewController.view removeFromSuperview];
+  if (currentViewController == newVC) return;
 
-	_currentViewController = currentViewController;
-	_currentViewController.view.autoresizingMask = (NSViewWidthSizable | NSViewHeightSizable);
+	[currentViewController.view removeFromSuperview];
+
+  currentViewController = newVC;
+
+	currentViewController.view.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
 	
-	self.containerBox.contentView = _currentViewController.view;
+	self.containerBox.contentView = currentViewController.view;
 }
 
 @end

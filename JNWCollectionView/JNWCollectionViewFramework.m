@@ -695,18 +695,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
 		[self applyLayoutAttributes:attributes toCell:cell];
 		
-		if (cell.superview == nil) {
-			[self.documentView addSubview:cell];
-		} else {
-			[cell setHidden:NO];
-		}
-
-		if ([self.selectedIndexes containsObject:indexPath])
-			cell.selected = YES;
-		else
-			cell.selected = NO;
-		
-		self.visibleCellsMap[indexPath] = cell;
+		!cell.superview ? [self.documentView addSubview:cell] : [cell setHidden:NO];
+	cell.selected = [self.selectedIndexes containsObject:indexPath];
+  	self.visibleCellsMap[indexPath] = cell;
 	}
 }
 
@@ -843,24 +834,19 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 // Returns the last object in the selection array.
-- (NSIndexPath *)indexPathForSelectedItem {
-	return self.selectedIndexes.lastObject;
+- (NSIndexPath *)indexPathForSelectedItem { return self.selectedIndexes.lastObject; }
+
+- (NSArray *)indexPathsForSelectedItems { return self.selectedIndexes.copy; }
+
+- (void)deselectItemsAtIndexPaths:(NSArray*)idxPaths animated:(BOOL)animated {
+
+	for (NSIndexPath *iPath in idxPaths) [self deselectItemAtIndexPath:iPath animated:animated];
+
 }
 
-- (NSArray *)indexPathsForSelectedItems {
-	return self.selectedIndexes.copy;
-}
+- (void)selectItemsAtIndexPaths:(NSArray*)idxPaths animated:(BOOL)animated {
 
-- (void)deselectItemsAtIndexPaths:(NSArray *)indexPaths animated:(BOOL)animated {
-	for (NSIndexPath *indexPath in indexPaths) {
-		[self deselectItemAtIndexPath:indexPath animated:animated];
-	}
-}
-
-- (void)selectItemsAtIndexPaths:(NSArray *)indexPaths animated:(BOOL)animated {
-	for (NSIndexPath *indexPath in indexPaths) {
-		[self selectItemAtIndexPath:indexPath animated:animated];
-	}
+  for (NSIndexPath *indexPath in idxPaths) [self selectItemAtIndexPath:indexPath animated:animated];
 }
 
 - (void)deselectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
@@ -929,20 +915,17 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 			atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition
 					animated:(BOOL)animated
 			   selectionType:(JNWCollectionViewSelectionType)selectionType {
-	if (indexPath == nil)
-		return;
+
+  if (!indexPath) return;
 	
-	NSMutableSet *indexesToSelect = [NSMutableSet set];
+	NSMutableSet *indexesToSelect = NSMutableSet.set;
 	
 	if (selectionType == JNWCollectionViewSelectionTypeSingle) {
 		[indexesToSelect addObject:indexPath];
 	} else if (selectionType == JNWCollectionViewSelectionTypeMultiple) {
 		[indexesToSelect addObjectsFromArray:self.selectedIndexes];
-		if ([indexesToSelect containsObject:indexPath]) {
-			[indexesToSelect removeObject:indexPath];
-		} else {
-			[indexesToSelect addObject:indexPath];
-		}
+      [indexesToSelect containsObject:indexPath] ? [indexesToSelect removeObject:indexPath]
+                                                 : [indexesToSelect addObject:indexPath];
 	} else if (selectionType == JNWCollectionViewSelectionTypeExtending) {
 		// From what I have determined, this behavior should be as follows.
 		// Take the index selected first, and select all items between there and the
@@ -1000,47 +983,45 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 
 
 - (void)mouseDownInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
+
 	[self.window makeFirstResponder:self];
 	
 	NSIndexPath *indexPath = [self indexPathForCell:cell];
-	if (indexPath == nil) {
-		NSLog(@"***index path not found for selection.");
-	}
+
+	if (!indexPath) NSLog(@"***index path not found for selection.");
 	
-	if (_collectionViewFlags.delegateMouseDown) {
-		[self.delegate collectionView:self mouseDownInItemAtIndexPath:indexPath];
-	}
+	!_collectionViewFlags.delegateMouseDown ?: [self.delegate collectionView:self mouseDownInItemAtIndexPath:indexPath];
 	
-	// Detect if modifier flags are held down.
-	// We prioritize the command key over the shift key.
-	if (event.modifierFlags & NSCommandKeyMask) {
-		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES selectionType:JNWCollectionViewSelectionTypeMultiple];
-	} else if (event.modifierFlags & NSShiftKeyMask) {
-		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES selectionType:JNWCollectionViewSelectionTypeExtending];
-	} else {
-		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];
-	}
+	/// Detect if modifier flags are held down. @note We prioritize the command key over the shift key.
+
+  BOOL multiple = event.modifierFlags & NSCommandKeyMask;
+
+  if (event.modifierFlags & NSCommandKeyMask || multiple)
+
+    [self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest
+                       animated:YES          selectionType: multiple ? JNWCollectionViewSelectionTypeMultiple :
+                                                                       JNWCollectionViewSelectionTypeExtending];
+
+  else [self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest
+                       animated:YES];
 }
 
 - (void)mouseUpInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
-	if (_collectionViewFlags.delegateMouseUp) {
-		NSIndexPath *indexPath = [self indexPathForCell:cell];
-		[self.delegate collectionView:self mouseUpInItemAtIndexPath:indexPath];
-	}
+
+  _collectionViewFlags.delegateMouseUp ?:
+  [self.delegate collectionView:self mouseUpInItemAtIndexPath:[self indexPathForCell:cell]];
 }
 
 - (void)doubleClickInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
-	if (_collectionViewFlags.delegateDidDoubleClick) {
-		NSIndexPath *indexPath = [self indexPathForCell:cell];
-		[self.delegate collectionView:self didDoubleClickItemAtIndexPath:indexPath];
-	}
+
+  !_collectionViewFlags.delegateDidDoubleClick ?:
+		[self.delegate collectionView:self didDoubleClickItemAtIndexPath:[self indexPathForCell:cell]];
 }
 
 - (void)rightClickInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
-	if (_collectionViewFlags.delegateDidRightClick) {
-		NSIndexPath *indexPath = [self indexPathForCell:cell];
-		[self.delegate collectionView:self didRightClickItemAtIndexPath:indexPath];
-	}
+
+  !_collectionViewFlags.delegateDidRightClick ?:
+		[self.delegate collectionView:self didRightClickItemAtIndexPath:[self indexPathForCell:cell]];
 }
 
 - (void)moveUp:(id)sender {

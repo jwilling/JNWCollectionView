@@ -10,59 +10,49 @@
 #import "DemoImageCache.h"
 
 @interface ListHeader()
-@property (nonatomic, strong) NSTextField *headerLabel;
+@property (nonatomic) NSTextField *headerLabel;
 @end
 
 @implementation ListHeader
 
-- (instancetype)initWithFrame:(NSRect)frameRect {
-	self = [super initWithFrame:frameRect];
+- initWithFrame:(NSRect)frameRect {
+
+	if (!(self = [super initWithFrame:frameRect])) return nil;
 	
-	self.headerLabel = [[NSTextField alloc] initWithFrame:CGRectZero];
-	self.headerLabel.bezeled = NO;
-	self.headerLabel.drawsBackground = NO;
-	self.headerLabel.selectable = NO;
-	self.headerLabel.font = [NSFont boldSystemFontOfSize:13];
+	_headerLabel                  = [NSTextField.alloc initWithFrame:CGRectOffset(frameRect, 15, -3)];
+	_headerLabel.bezeled          = _headerLabel.drawsBackground = _headerLabel.selectable = NO;
+  _headerLabel.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+	self.headerLabel.font         = [NSFont boldSystemFontOfSize:13];
 	
 	[self addSubview:self.headerLabel];
-	
-	return self;
+  _headerLabelText = @"";
+	[self.headerLabel bind:@"stringValue" toObject:self withKeyPath:@"headerLabelText" options:nil];
+
+  return self;
 }
 
-- (void)layout {
-	[super layout];
-	
-	CGRect cellLabelFrame = self.bounds;
-	cellLabelFrame.size.width = 100;
-	self.headerLabel.frame = CGRectOffset(cellLabelFrame, 15, -3);
-}
+- (void)layout { [super layout]; }
 
-- (BOOL)wantsUpdateLayer {
-	return YES;
-}
+- (BOOL)wantsUpdateLayer { return YES; }
 
 - (void)updateLayer {
+
 	CGSize size = CGSizeMake(1, CGRectGetHeight(self.bounds));
-	NSString *identifier = [NSString stringWithFormat:@"%@", NSStringFromClass(self.class)];
-	self.layer.contents = [DemoImageCache.sharedCache cachedImageWithIdentifier:identifier size:size withCreationBlock:^NSImage *(CGSize size) {
-		return [NSImage imageWithSize:CGSizeMake(2, 24) flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
-			NSColor *start = [NSColor colorWithCalibratedRed:0.9 green:0.9 blue:0.9 alpha:1];
-			NSColor *end = [NSColor colorWithCalibratedRed:0.95 green:0.95 blue:0.95 alpha:1];
-			NSGradient *gradient = nil;
+
+	self.layer.contents = [DemoImageCache.sharedCache cachedImageWithIdentifier:self.className size:size withCreationBlock:^NSImage *(CGSize size) {
+
+    return [NSImage imageWithSize:CGSizeMake(2, 24) flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
+
+      NSColor *start = [NSColor colorWithCalibratedRed:.9  green:.9  blue:.9  alpha:1],
+                *end = [NSColor colorWithCalibratedRed:.95 green:.95 blue:.95 alpha:1];
+
+			[[NSGradient.alloc initWithStartingColor:start endingColor:end] drawInRect:dstRect angle:90];
 			
-			gradient = [[NSGradient alloc] initWithStartingColor:start endingColor:end];
-			[gradient drawInRect:dstRect angle:90];
-			
-			[[start shadowWithLevel:0.1] set];
+			[[start shadowWithLevel:.1] set];
 			NSRectFill(NSMakeRect(0, 0, dstRect.size.width, 1));
 			return YES;
 		}];
 	}];	
-}
-
-- (void)setHeaderLabelText:(NSString *)headerLabelText {
-	_headerLabelText = headerLabelText;
-	self.headerLabel.stringValue = headerLabelText;
 }
 
 @end

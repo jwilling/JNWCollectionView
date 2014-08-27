@@ -10,7 +10,7 @@
 #import "GridCell.h"
 
 @interface GridDemoViewController()
-@property (nonatomic, strong) NSArray *images;
+@property (nonatomic) NSArray *images;
 @property (nonatomic, strong) IBOutlet NSSlider *sizeSlider;
 @end
 
@@ -18,14 +18,15 @@ static NSString * const identifier = @"CELL";
 
 @implementation GridDemoViewController
 
-- (id)init {
+- init {
 	return [self initWithNibName:NSStringFromClass(self.class) bundle:nil];
 }
 
 - (void)awakeFromNib {
-	[self generateImages];
+
+  [self generateImages];
 	
-	JNWCollectionViewGridLayout *gridLayout = [[JNWCollectionViewGridLayout alloc] init];
+	JNWCollectionViewGridLayout *gridLayout = JNWCollectionViewGridLayout.new;
 	gridLayout.delegate = self;
 	gridLayout.verticalSpacing = 10.f;
 	

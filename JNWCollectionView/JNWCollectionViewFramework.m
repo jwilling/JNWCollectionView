@@ -1,21 +1,3 @@
-/*
- Copyright (c) 2013, Jonathan Willing. All rights reserved.
- Licensed under the MIT license <http://opensource.org/licenses/MIT>
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- documentation files (the "Software"), to deal in the Software without restriction, including without limitation
- the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in all copies or substantial portions
- of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
- TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
- THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
- IN THE SOFTWARE.
- */
 
 #import "JNWCollectionViewFramework.h"
 #import "JNWCollectionView+Private.h"
@@ -41,6 +23,8 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 		
 		unsigned int delegateMouseDown:1;
 		unsigned int delegateMouseUp:1;
+    unsigned int delegateMouseEntered:1;
+    unsigned int delegateMouseExited:1;
 		unsigned int delegateShouldSelect:1;
 		unsigned int delegateDidSelect:1;
 		unsigned int delegateShouldDeselect:1;
@@ -57,69 +41,66 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 }
 
 // Layout data/cache
-@property (nonatomic, strong) JNWCollectionViewData *data;
+@property (nonatomic) JNWCollectionViewData *data;
 
 // Selection
-@property (nonatomic, strong) NSMutableArray *selectedIndexes;
+@property (nonatomic) NSMutableArray *selectedIndexes;
 
 // Cells
-@property (nonatomic, strong) NSMutableDictionary *reusableCells; // { identifier : (cells) }
-@property (nonatomic, strong) NSMutableDictionary *visibleCellsMap; // { index path : cell }
-@property (nonatomic, strong) NSMutableDictionary *cellClassMap; // { identifier : class }
-@property (nonatomic, strong) NSMutableDictionary *cellNibMap; // { identifier : nib }
+@property (nonatomic) NSMutableDictionary *reusableCells, // { identifier : (cells) }
+
+  * visibleCellsMap, // { index path : cell }
+  * cellClassMap, // { identifier : class }
+  * cellNibMap,  // { identifier : nib }
 
 // Supplementary views
-@property (nonatomic, strong) NSMutableDictionary *reusableSupplementaryViews; // { "kind/identifier" : (views) }
-@property (nonatomic, strong) NSMutableDictionary *visibleSupplementaryViewsMap; // { "index/kind/identifier" : view } }
-@property (nonatomic, strong) NSMutableDictionary *supplementaryViewClassMap; // { "kind/identifier" : class }
-@property (nonatomic, strong) NSMutableDictionary *supplementaryViewNibMap; // { "kind/identifier" : nib }
-
+  * reusableSupplementaryViews, // { "kind/identifier" : (views) }
+  * visibleSupplementaryViewsMap, // { "index/kind/identifier" : view } }
+  * supplementaryViewClassMap, // { "kind/identifier" : class }
+  * supplementaryViewNibMap; // { "kind/identifier" : nib }
+@property (nonatomic, readwrite) NSIndexPath *hoveredItemIndex;
 @end
 
-@implementation JNWCollectionView
-@dynamic drawsBackground;
-@dynamic backgroundColor;
+@implementation JNWCollectionView @dynamic drawsBackground, backgroundColor;
 
 // We're using a static function for the common initialization so that subclassers
 // don't accidentally override this method in their own common init method.
 static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
-	collectionView.data = [[JNWCollectionViewData alloc] initWithCollectionView:collectionView];
+
+  collectionView.data = [JNWCollectionViewData.alloc initWithCollectionView:collectionView];
 	
-	collectionView.selectedIndexes = [NSMutableArray array];
-	collectionView.cellClassMap = [NSMutableDictionary dictionary];
-	collectionView.cellNibMap = [NSMutableDictionary dictionary];
-	collectionView.visibleCellsMap = [NSMutableDictionary dictionary];
-	collectionView.reusableCells = [NSMutableDictionary dictionary];
-	collectionView.supplementaryViewClassMap = [NSMutableDictionary dictionary];
-	collectionView.supplementaryViewNibMap = [NSMutableDictionary dictionary];
-	collectionView.visibleSupplementaryViewsMap = [NSMutableDictionary dictionary];
-	collectionView.reusableSupplementaryViews = [NSMutableDictionary dictionary];
-	
-	// By default we are layer-backed.
-	collectionView.wantsLayer = YES;
-	
-	// Set the document view to a custom class that returns YES to -isFlipped.
-	collectionView.documentView = [[JNWCollectionViewDocumentView alloc] initWithFrame:CGRectZero];
+	collectionView.selectedIndexes              = @[].mutableCopy;
+	collectionView.cellClassMap                 = @{}.mutableCopy;
+	collectionView.cellNibMap                   = @{}.mutableCopy;
+	collectionView.visibleCellsMap              = @{}.mutableCopy;
+	collectionView.reusableCells                = @{}.mutableCopy;
+	collectionView.supplementaryViewClassMap    = @{}.mutableCopy;
+	collectionView.supplementaryViewNibMap      = @{}.mutableCopy;
+	collectionView.visibleSupplementaryViewsMap = @{}.mutableCopy;
+	collectionView.reusableSupplementaryViews   = @{}.mutableCopy;
+
+  // Set the document view to a custom class that returns YES to -isFlipped.
+  id doc = [JNWCollectionViewDocumentView.alloc initWithFrame:CGRectZero];
+	collectionView.documentView = doc;
 		
 	// We don't want to perform an initial layout pass until the user has called -reloadData.
 	collectionView->_collectionViewFlags.wantsLayout = NO;
 	
-	collectionView.allowsSelection = YES;
-	
-	collectionView.backgroundColor = NSColor.whiteColor;
+	// By default we are layer-backed.
+	collectionView.wantsLayer      =
+	collectionView.allowsSelection =
 	collectionView.drawsBackground = YES;
+  collectionView.backgroundColor = NSColor.whiteColor;
 }
 
 - (id)initWithFrame:(NSRect)frameRect {
-	self = [super initWithFrame:frameRect];
-	if (self == nil) return nil;
+	if (!(self = [super initWithFrame:frameRect])) return nil;
 	JNWCollectionViewCommonInit(self);
 	return self;
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	self = [super initWithCoder:aDecoder];
-	if (self == nil) return nil;
+	if (!(self = [super initWithCoder:aDecoder])) return nil;
 	JNWCollectionViewCommonInit(self);
 	return self;
 }
@@ -130,6 +111,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	_delegate = delegate;
 	_collectionViewFlags.delegateMouseUp = [delegate respondsToSelector:@selector(collectionView:mouseUpInItemAtIndexPath:)];
 	_collectionViewFlags.delegateMouseDown = [delegate respondsToSelector:@selector(collectionView:mouseDownInItemAtIndexPath:)];
+	_collectionViewFlags.delegateMouseEntered = [delegate respondsToSelector:@selector(collectionView:mouseEnteredItemAtIndexPath:)];
+	_collectionViewFlags.delegateMouseExited = [delegate respondsToSelector:@selector(collectionView:mouseExitedItemAtIndexPath:)];
 	_collectionViewFlags.delegateShouldSelect = [delegate respondsToSelector:@selector(collectionView:shouldSelectItemAtIndexPath:)];
 	_collectionViewFlags.delegateDidSelect = [delegate respondsToSelector:@selector(collectionView:didSelectItemAtIndexPath:)];
 	_collectionViewFlags.delegateShouldDeselect = [delegate respondsToSelector:@selector(collectionView:shouldDeselectItemAtIndexPath:)];
@@ -243,24 +226,19 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 
 - (JNWCollectionViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier {
 	NSParameterAssert(identifier);
-	JNWCollectionViewCell *cell = [self dequeueItemWithIdentifier:identifier inReusePool:self.reusableCells];
+	JNWCollectionViewCell *cell = [self dequeueItemWithIdentifier:identifier inReusePool:self.reusableCells] ?: ({
 
 	// If the view doesn't exist, we go ahead and create one. If we have a class registered
 	// for this identifier, we use it, otherwise we just create an instance of JNWCollectionViewCell.
-	if (cell == nil) {
 		Class cellClass = self.cellClassMap[identifier];
 		NSNib *cellNib = self.cellNibMap[identifier];
 		
-		if (cellClass == nil && cellNib == nil) {
-			cellClass = JNWCollectionViewCell.class;
-		}
-		
-		if (cellNib != nil) {
-			cell = [self firstTopLevelObjectOfClass:JNWCollectionViewCell.class inNib:cellNib];
-		} else if (cellClass != nil) {
-			cell = [[cellClass alloc] initWithFrame:CGRectZero];
-		}
-	}
+		cellClass = cellClass && cellNib ? JNWCollectionViewCell.class : cellClass;
+
+     cellNib ? [self firstTopLevelObjectOfClass:JNWCollectionViewCell.class inNib:cellNib] :
+   cellClass ? [cellClass.alloc initWithFrame:CGRectZero]
+                   : nil;
+	});
 	
 	cell.reuseIdentifier = identifier;
 	[cell prepareForReuse];
@@ -692,18 +670,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
 		[self applyLayoutAttributes:attributes toCell:cell];
 		
-		if (cell.superview == nil) {
-			[self.documentView addSubview:cell];
-		} else {
-			[cell setHidden:NO];
-		}
-
-		if ([self.selectedIndexes containsObject:indexPath])
-			cell.selected = YES;
-		else
-			cell.selected = NO;
-		
-		self.visibleCellsMap[indexPath] = cell;
+		!cell.superview ? [self.documentView addSubview:cell] : [cell setHidden:NO];
+	cell.selected = [self.selectedIndexes containsObject:indexPath];
+  	self.visibleCellsMap[indexPath] = cell;
 	}
 }
 
@@ -840,24 +809,19 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 // Returns the last object in the selection array.
-- (NSIndexPath *)indexPathForSelectedItem {
-	return self.selectedIndexes.lastObject;
+- (NSIndexPath *)indexPathForSelectedItem { return self.selectedIndexes.lastObject; }
+
+- (NSArray *)indexPathsForSelectedItems { return self.selectedIndexes.copy; }
+
+- (void)deselectItemsAtIndexPaths:(NSArray*)idxPaths animated:(BOOL)animated {
+
+	for (NSIndexPath *iPath in idxPaths) [self deselectItemAtIndexPath:iPath animated:animated];
+
 }
 
-- (NSArray *)indexPathsForSelectedItems {
-	return self.selectedIndexes.copy;
-}
+- (void)selectItemsAtIndexPaths:(NSArray*)idxPaths animated:(BOOL)animated {
 
-- (void)deselectItemsAtIndexPaths:(NSArray *)indexPaths animated:(BOOL)animated {
-	for (NSIndexPath *indexPath in indexPaths) {
-		[self deselectItemAtIndexPath:indexPath animated:animated];
-	}
-}
-
-- (void)selectItemsAtIndexPaths:(NSArray *)indexPaths animated:(BOOL)animated {
-	for (NSIndexPath *indexPath in indexPaths) {
-		[self selectItemAtIndexPath:indexPath animated:animated];
-	}
+  for (NSIndexPath *indexPath in idxPaths) [self selectItemAtIndexPath:indexPath animated:animated];
 }
 
 - (void)deselectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
@@ -926,20 +890,17 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 			atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition
 					animated:(BOOL)animated
 			   selectionType:(JNWCollectionViewSelectionType)selectionType {
-	if (indexPath == nil)
-		return;
+
+  if (!indexPath) return;
 	
-	NSMutableSet *indexesToSelect = [NSMutableSet set];
+	NSMutableSet *indexesToSelect = NSMutableSet.set;
 	
 	if (selectionType == JNWCollectionViewSelectionTypeSingle) {
 		[indexesToSelect addObject:indexPath];
 	} else if (selectionType == JNWCollectionViewSelectionTypeMultiple) {
 		[indexesToSelect addObjectsFromArray:self.selectedIndexes];
-		if ([indexesToSelect containsObject:indexPath]) {
-			[indexesToSelect removeObject:indexPath];
-		} else {
-			[indexesToSelect addObject:indexPath];
-		}
+      [indexesToSelect containsObject:indexPath] ? [indexesToSelect removeObject:indexPath]
+                                                 : [indexesToSelect addObject:indexPath];
 	} else if (selectionType == JNWCollectionViewSelectionTypeExtending) {
 		// From what I have determined, this behavior should be as follows.
 		// Take the index selected first, and select all items between there and the
@@ -975,48 +936,64 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	[self scrollToItemAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated];
 }
 
+- (void)mouseEnteredCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
+
+	if (!(self.hoveredItemIndex = [self indexPathForCell:cell])) NSLog(@"***index path not found for selection.");
+	if (_collectionViewFlags.delegateMouseEntered)
+		[self.delegate collectionView:self mouseEnteredItemAtIndexPath:self.hoveredItemIndex];
+}
+
+- (void)mouseExitedCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
+
+  NSIndexPath *path;
+	if (!(path = [self indexPathForCell:cell])) NSLog(@"***index path not found for selection.");
+  if ([self.hoveredItemIndex isEqual:path]) self.hoveredItemIndex = nil;
+
+  if (_collectionViewFlags.delegateMouseExited)
+		[self.delegate collectionView:self mouseExitedItemAtIndexPath:path];
+}
+
+
 - (void)mouseDownInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
+
 	[self.window makeFirstResponder:self];
 	
 	NSIndexPath *indexPath = [self indexPathForCell:cell];
-	if (indexPath == nil) {
-		NSLog(@"***index path not found for selection.");
-	}
+
+	if (!indexPath) NSLog(@"***index path not found for selection.");
 	
-	if (_collectionViewFlags.delegateMouseDown) {
-		[self.delegate collectionView:self mouseDownInItemAtIndexPath:indexPath];
-	}
+	!_collectionViewFlags.delegateMouseDown ?: [self.delegate collectionView:self mouseDownInItemAtIndexPath:indexPath];
 	
-	// Detect if modifier flags are held down.
-	// We prioritize the command key over the shift key.
-	if (event.modifierFlags & NSCommandKeyMask) {
-		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES selectionType:JNWCollectionViewSelectionTypeMultiple];
-	} else if (event.modifierFlags & NSShiftKeyMask) {
-		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES selectionType:JNWCollectionViewSelectionTypeExtending];
-	} else {
-		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];
-	}
+	/// Detect if modifier flags are held down. @note We prioritize the command key over the shift key.
+
+  BOOL multiple = event.modifierFlags & NSCommandKeyMask;
+
+  if (event.modifierFlags & NSCommandKeyMask || multiple)
+
+    [self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest
+                       animated:YES          selectionType: multiple ? JNWCollectionViewSelectionTypeMultiple :
+                                                                       JNWCollectionViewSelectionTypeExtending];
+
+  else [self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest
+                       animated:YES];
 }
 
 - (void)mouseUpInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
-	if (_collectionViewFlags.delegateMouseUp) {
-		NSIndexPath *indexPath = [self indexPathForCell:cell];
-		[self.delegate collectionView:self mouseUpInItemAtIndexPath:indexPath];
-	}
+
+  _collectionViewFlags.delegateMouseUp ?:
+  [self.delegate collectionView:self mouseUpInItemAtIndexPath:[self indexPathForCell:cell]];
 }
 
 - (void)doubleClickInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
-	if (_collectionViewFlags.delegateDidDoubleClick) {
-		NSIndexPath *indexPath = [self indexPathForCell:cell];
-		[self.delegate collectionView:self didDoubleClickItemAtIndexPath:indexPath];
-	}
+
+  !_collectionViewFlags.delegateDidDoubleClick ?:
+		[self.delegate collectionView:self didDoubleClickItemAtIndexPath:[self indexPathForCell:cell]];
 }
 
 - (void)rightClickInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
-	if (_collectionViewFlags.delegateDidRightClick) {
-		NSIndexPath *indexPath = [self indexPathForCell:cell];
-		[self.delegate collectionView:self didRightClickItemAtIndexPath:indexPath];
-	}
+
+  !_collectionViewFlags.delegateDidRightClick ?:
+		[self.delegate collectionView:self didRightClickItemAtIndexPath:[self indexPathForCell:cell]];
 }
 
 - (void)moveUp:(id)sender {

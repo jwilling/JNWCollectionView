@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:JNWCollectionViewDemo.xcodeproj">
+      location = "self:../../JNWCollectionView.xcodeproj">
    </FileRef>
 </Workspace>

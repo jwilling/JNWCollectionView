@@ -6,12 +6,11 @@
 //  Copyright (c) 2013 AppJon. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <AppKit/AppKit.h>
 
 @interface DemoWindowController : NSWindowController
 
 @property (nonatomic, weak) IBOutlet NSBox *containerBox;
 
-- (IBAction)selectLayout:(id)sender;
 
 @end

@@ -54,8 +54,8 @@
 /// is always beneath the content view.
 ///
 /// If both are set, the image takes precedence over the color.
-@property (nonatomic, strong) NSImage *backgroundImage;
-@property (nonatomic, strong) NSColor *backgroundColor;
+@property (nonatomic) NSImage *backgroundImage;
+@property (nonatomic) NSColor *backgroundColor;
 
 /// Determines the duration of the crossfade effect applied to the backgroundImage
 /// and backgroundColor properties when the animatesSelection property on the collection

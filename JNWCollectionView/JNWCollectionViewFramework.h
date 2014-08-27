@@ -89,6 +89,9 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 ///
 /// The mouse up event can occur outside of the originating cell.
 - (void)collectionView:(JNWCollectionView *)collectionView mouseUpInItemAtIndexPath:(NSIndexPath *)indexPath;
+/// Notifies delegate when the the mouse has "entered" or "exited" the item at the specified index path.
+- (void)collectionView:(JNWCollectionView*)v mouseEnteredItemAtIndexPath:(NSIndexPath*)iP;
+- (void)collectionView:(JNWCollectionView*)v  mouseExitedItemAtIndexPath:(NSIndexPath *)iP;
 
 /// Asks the delegate if the item at the specified index path should be selected.
 - (BOOL)collectionView:(JNWCollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath;
@@ -243,6 +246,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 
 /// Returns the index paths for any selected items. Order is not guaranteed.
 - (NSArray *)indexPathsForSelectedItems;
+@property (readonly) NSIndexPath * hoveredItemIndex;
 
 #pragma mark - Selection
 

@@ -17,7 +17,6 @@
  IN THE SOFTWARE.
  */
 
-#import <Cocoa/Cocoa.h>
 #import "JNWCollectionViewCell.h"
 #import "JNWCollectionViewReusableView.h"
 #import "NSIndexPath+JNWAdditions.h"

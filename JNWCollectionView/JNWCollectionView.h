@@ -17,7 +17,7 @@
  IN THE SOFTWARE.
  */
 
-#import <Cocoa/Cocoa.h>
+#import <AppKit/AppKit.h>
 #import "JNWCollectionViewFramework.h"
 #import "JNWCollectionViewCell.h"
 #import "JNWCollectionViewReusableView.h"

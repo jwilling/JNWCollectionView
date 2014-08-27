@@ -17,8 +17,6 @@
  IN THE SOFTWARE.
  */
 
-#import <Cocoa/Cocoa.h>
-
 /// This view is the base class for all cells. The properties can be set directly on this
 /// class for customization, or it can be subclassed to provide custom drawing.
 @class JNWCollectionView;

@@ -17,8 +17,6 @@
  IN THE SOFTWARE.
  */
 
-#import <Cocoa/Cocoa.h>
-
 /// The base class for all supplementary views.
 @interface JNWCollectionViewReusableView : NSView
 

@@ -12,5 +12,5 @@
 
 + (NSImage *)standardGradientImageWithHeight:(CGFloat)height;
 + (NSImage *)highlightedGradientImageWithHeight:(CGFloat)height;
-
++ (NSImage *)gradientImageWithHeight:(CGFloat)height color:(NSColor*)c;
 @end

@@ -1,0 +1,10 @@
+
+#ifdef __OBJC__
+#import <AppKit/AppKit.h>
+#import <XCTest/XCTest.h>
+#import <JNWCollectionView/JNWCollectionView.h>
+
+#import "Specta.h"
+#define EXP_SHORTHAND
+#import "Expecta.h"
+#endif

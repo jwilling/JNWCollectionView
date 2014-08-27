@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7B5FA4B019AE5B0000D532E7 /* JNWCollectionView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B5FA4AB19AE594100D532E7 /* JNWCollectionView.framework */; };
 		AB2E960B170CB196004678DC /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB2E9609170CB196004678DC /* MainMenu.xib */; };
 		AB3C7236170CABFF004A91DB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C7230170CABFF004A91DB /* AppDelegate.m */; };
 		AB3C7238170CABFF004A91DB /* ListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C7233170CABFF004A91DB /* ListCell.m */; };
@@ -27,30 +26,6 @@
 		ABB1B207171E095B009B9270 /* NSImage+DemoAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB1B206171E095B009B9270 /* NSImage+DemoAdditions.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		7B5FA4AA19AE594100D532E7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AB2E95FD170CB107004678DC /* JNWCollectionView.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = ABB023F1170791D300537A92;
-			remoteInfo = JNWCollectionView;
-		};
-		7B5FA4AC19AE594100D532E7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AB2E95FD170CB107004678DC /* JNWCollectionView.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = ABB02409170791D300537A92;
-			remoteInfo = JNWCollectionViewTests;
-		};
-		7B5FA4AE19AE5AF900D532E7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AB2E95FD170CB107004678DC /* JNWCollectionView.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = ABB023F0170791D300537A92;
-			remoteInfo = JNWCollectionView;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		ABB024E5170A598B00537A92 /* Copy Framework */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -65,7 +40,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		AB2E95FD170CB107004678DC /* JNWCollectionView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JNWCollectionView.xcodeproj; path = ../JNWCollectionView.xcodeproj; sourceTree = "<group>"; };
+		7BB0925C19AE6F9600E22ABC /* JNWCollectionView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JNWCollectionView.xcodeproj; path = ../../JNWCollectionView.xcodeproj; sourceTree = "<group>"; };
 		AB2E960A170CB196004678DC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = JNWCollectionViewDemo/en.lproj/MainMenu.xib; sourceTree = SOURCE_ROOT; };
 		AB3C7230170CABFF004A91DB /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = JNWCollectionViewDemo/AppDelegate.m; sourceTree = SOURCE_ROOT; };
 		AB3C7232170CABFF004A91DB /* ListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ListCell.h; path = JNWCollectionViewDemo/ListCell.h; sourceTree = SOURCE_ROOT; };
@@ -105,19 +80,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7B5FA4B019AE5B0000D532E7 /* JNWCollectionView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7B5FA4A619AE594100D532E7 /* Products */ = {
+		7BB0925D19AE6F9600E22ABC /* Products */ = {
 			isa = PBXGroup;
-			children = (
-				7B5FA4AB19AE594100D532E7 /* JNWCollectionView.framework */,
-				7B5FA4AD19AE594100D532E7 /* JNWCollectionViewTests.octest */,
-			);
 			name = Products;
 			sourceTree = "<group>";
 		};
@@ -170,17 +140,17 @@
 				ABA276A0171D00FF005C8E56 /* Grid Layout Demo */,
 				ABA276A7171D144B005C8E56 /* NSTableView (Comparison) Demo */,
 				ABB0F2FD16FD7D19002004F5 /* Supporting Files */,
-				AB2E95FD170CB107004678DC /* JNWCollectionView.xcodeproj */,
-				ABB1B205171E095B009B9270 /* NSImage+DemoAdditions.h */,
-				ABB1B206171E095B009B9270 /* NSImage+DemoAdditions.m */,
-				AB666C711749258D00545290 /* DemoImageCache.h */,
-				AB666C721749258D00545290 /* DemoImageCache.m */,
 			);
 			sourceTree = "<group>";
 		};
 		ABB0F2FD16FD7D19002004F5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				7BB0925C19AE6F9600E22ABC /* JNWCollectionView.xcodeproj */,
+				ABB1B205171E095B009B9270 /* NSImage+DemoAdditions.h */,
+				ABB1B206171E095B009B9270 /* NSImage+DemoAdditions.m */,
+				AB666C711749258D00545290 /* DemoImageCache.h */,
+				AB666C721749258D00545290 /* DemoImageCache.m */,
 				ABAF15551718C39300658A1D /* JNWLabel */,
 				ABB0F2F316FD7D19002004F5 /* JNWCollectionViewDemo.app */,
 				AB3C723A170CAC1B004A91DB /* JNWCollectionViewDemo-Info.plist */,
@@ -219,7 +189,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				7B5FA4AF19AE5AF900D532E7 /* PBXTargetDependency */,
 			);
 			name = JNWCollectionViewDemo;
 			productName = JNWTableViewDemo;
@@ -247,8 +216,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 7B5FA4A619AE594100D532E7 /* Products */;
-					ProjectRef = AB2E95FD170CB107004678DC /* JNWCollectionView.xcodeproj */;
+					ProductGroup = 7BB0925D19AE6F9600E22ABC /* Products */;
+					ProjectRef = 7BB0925C19AE6F9600E22ABC /* JNWCollectionView.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -257,23 +226,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		7B5FA4AB19AE594100D532E7 /* JNWCollectionView.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = JNWCollectionView.framework;
-			remoteRef = 7B5FA4AA19AE594100D532E7 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		7B5FA4AD19AE594100D532E7 /* JNWCollectionViewTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = JNWCollectionViewTests.octest;
-			remoteRef = 7B5FA4AC19AE594100D532E7 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		ABB0F2F116FD7D19002004F5 /* Resources */ = {
@@ -311,14 +263,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		7B5FA4AF19AE5AF900D532E7 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = JNWCollectionView;
-			targetProxy = 7B5FA4AE19AE5AF900D532E7 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		AB2E9609170CB196004678DC /* MainMenu.xib */ = {

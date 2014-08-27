@@ -1,21 +1,3 @@
-/*
- Copyright (c) 2013, Jonathan Willing. All rights reserved.
- Licensed under the MIT license <http://opensource.org/licenses/MIT>
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- documentation files (the "Software"), to deal in the Software without restriction, including without limitation
- the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in all copies or substantial portions
- of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
- TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
- THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
- IN THE SOFTWARE.
- */
 
 #import "JNWCollectionViewCell.h"
 #import "JNWCollectionViewCell+Private.h"
@@ -155,8 +137,7 @@
 	return self.backgroundView.image;
 }
 
-
-- (void) updateTrackingAreas { [super updateTrackingAreas];
+- (void)updateTrackingAreas { [super updateTrackingAreas];
 
   trackingArea && [self.trackingAreas containsObject:trackingArea] ?:
                   [self              addTrackingArea:trackingArea = trackingArea ?:
@@ -166,27 +147,27 @@
                                owner:self userInfo:nil]];
 }
 
-- (void) mouseEntered:(NSEvent*)x {	[self setHovered:YES withEvent:x];  }
-- (void)  mouseExited:(NSEvent*)x { [self setHovered:NO  withEvent:x];  }
+- (void) mouseEntered:(NSEvent*)e {	[self setHovered:YES withEvent:e];  }
+- (void)  mouseExited:(NSEvent*)e { [self setHovered:NO  withEvent:e];  }
+- (void)  scrollWheel:(NSEvent*)e { [super scrollWheel:e];
 
-- (void) setHovered:(BOOL)h withEvent:(NSEvent*)e { if (self.hovered == h) return; self.hovered = h;
-
-  h ? [self.collectionView mouseEnteredCollectionViewCell:self withEvent:e]
-    : [self.collectionView mouseExitedCollectionViewCell:self withEvent:e];
+  if (self.hovered && !NSPointInRect([self convertPoint:e.locationInWindow fromView:nil],self.frame))
+    [self setHovered:NO withEvent:e];
 }
 
-- (void) scrollWheel:(NSEvent *)x {
+- (void)setHovered:(BOOL)h withEvent:(NSEvent*)e { if (self.hovered == h) return;
 
-  if (self.hovered && !NSPointInRect([self convertPoint:x.locationInWindow fromView:nil],self.frame)) [self setHovered:NO withEvent:x];
-  [super scrollWheel:x];
+  (self.hovered = h) ? [self.collectionView mouseEnteredCollectionViewCell:self withEvent:e]
+                     : [self.collectionView mouseExitedCollectionViewCell:self  withEvent:e];
 }
-- (void)mouseDown:(NSEvent *)theEvent {
+
+- (void)     mouseDown:(NSEvent*)theEvent {
 	[super mouseDown:theEvent];
 	
 	[self.collectionView mouseDownInCollectionViewCell:self withEvent:theEvent];
 }
 
-- (void)mouseUp:(NSEvent *)theEvent {
+- (void)       mouseUp:(NSEvent *)theEvent {
 	[super mouseUp:theEvent];
 	
 	[self.collectionView mouseUpInCollectionViewCell:self withEvent:theEvent];

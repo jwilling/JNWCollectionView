@@ -56,17 +56,17 @@ extern NSString * const JNWCollectionViewListLayoutFooterKind;
 ///
 /// However, if the delegate method -collectionView:heightForRowAtIndexPath: is
 /// implemented, it will take precedence over any value set here.
-@property (nonatomic, assign) CGFloat rowHeight;
+@property (nonatomic) CGFloat rowHeight;
 
 /// The spacing between any adjacent cells.
 ///
 /// Defaults to 0.
-@property (nonatomic, assign) CGFloat verticalSpacing;
+@property (nonatomic) CGFloat verticalSpacing;
 
 /// If enabled, the headers will stick to the top of the visible area while
 /// the section is still visible.
 ///
 /// Defaults to NO.
-@property (nonatomic, assign) BOOL stickyHeaders;
+@property (nonatomic) BOOL stickyHeaders;
 
 @end

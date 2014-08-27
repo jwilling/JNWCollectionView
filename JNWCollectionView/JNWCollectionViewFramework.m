@@ -84,43 +84,41 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 // We're using a static function for the common initialization so that subclassers
 // don't accidentally override this method in their own common init method.
 static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
-	collectionView.data = [[JNWCollectionViewData alloc] initWithCollectionView:collectionView];
+
+  collectionView.data = [JNWCollectionViewData.alloc initWithCollectionView:collectionView];
 	
-	collectionView.selectedIndexes = [NSMutableArray array];
-	collectionView.cellClassMap = [NSMutableDictionary dictionary];
-	collectionView.cellNibMap = [NSMutableDictionary dictionary];
-	collectionView.visibleCellsMap = [NSMutableDictionary dictionary];
-	collectionView.reusableCells = [NSMutableDictionary dictionary];
-	collectionView.supplementaryViewClassMap = [NSMutableDictionary dictionary];
-	collectionView.supplementaryViewNibMap = [NSMutableDictionary dictionary];
-	collectionView.visibleSupplementaryViewsMap = [NSMutableDictionary dictionary];
-	collectionView.reusableSupplementaryViews = [NSMutableDictionary dictionary];
-	
-	// By default we are layer-backed.
-	collectionView.wantsLayer = YES;
-	
-	// Set the document view to a custom class that returns YES to -isFlipped.
-	collectionView.documentView = [[JNWCollectionViewDocumentView alloc] initWithFrame:CGRectZero];
+	collectionView.selectedIndexes              = @[].mutableCopy;
+	collectionView.cellClassMap                 = @{}.mutableCopy;
+	collectionView.cellNibMap                   = @{}.mutableCopy;
+	collectionView.visibleCellsMap              = @{}.mutableCopy;
+	collectionView.reusableCells                = @{}.mutableCopy;
+	collectionView.supplementaryViewClassMap    = @{}.mutableCopy;
+	collectionView.supplementaryViewNibMap      = @{}.mutableCopy;
+	collectionView.visibleSupplementaryViewsMap = @{}.mutableCopy;
+	collectionView.reusableSupplementaryViews   = @{}.mutableCopy;
+
+  // Set the document view to a custom class that returns YES to -isFlipped.
+  id doc = [JNWCollectionViewDocumentView.alloc initWithFrame:CGRectZero];
+	collectionView.documentView = doc;
 		
 	// We don't want to perform an initial layout pass until the user has called -reloadData.
 	collectionView->_collectionViewFlags.wantsLayout = NO;
 	
-	collectionView.allowsSelection = YES;
-	
-	collectionView.backgroundColor = NSColor.whiteColor;
+	// By default we are layer-backed.
+	collectionView.wantsLayer      =
+	collectionView.allowsSelection =
 	collectionView.drawsBackground = YES;
+  collectionView.backgroundColor = NSColor.whiteColor;
 }
 
 - (id)initWithFrame:(NSRect)frameRect {
-	self = [super initWithFrame:frameRect];
-	if (self == nil) return nil;
+	if (!(self = [super initWithFrame:frameRect])) return nil;
 	JNWCollectionViewCommonInit(self);
 	return self;
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	self = [super initWithCoder:aDecoder];
-	if (self == nil) return nil;
+	if (!(self = [super initWithCoder:aDecoder])) return nil;
 	JNWCollectionViewCommonInit(self);
 	return self;
 }
@@ -246,24 +244,19 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 
 - (JNWCollectionViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier {
 	NSParameterAssert(identifier);
-	JNWCollectionViewCell *cell = [self dequeueItemWithIdentifier:identifier inReusePool:self.reusableCells];
+	JNWCollectionViewCell *cell = [self dequeueItemWithIdentifier:identifier inReusePool:self.reusableCells] ?: ({
 
 	// If the view doesn't exist, we go ahead and create one. If we have a class registered
 	// for this identifier, we use it, otherwise we just create an instance of JNWCollectionViewCell.
-	if (cell == nil) {
 		Class cellClass = self.cellClassMap[identifier];
 		NSNib *cellNib = self.cellNibMap[identifier];
 		
-		if (cellClass == nil && cellNib == nil) {
-			cellClass = JNWCollectionViewCell.class;
-		}
-		
-		if (cellNib != nil) {
-			cell = [self firstTopLevelObjectOfClass:JNWCollectionViewCell.class inNib:cellNib];
-		} else if (cellClass != nil) {
-			cell = [[cellClass alloc] initWithFrame:CGRectZero];
-		}
-	}
+		cellClass = cellClass && cellNib ? JNWCollectionViewCell.class : cellClass;
+
+     cellNib ? [self firstTopLevelObjectOfClass:JNWCollectionViewCell.class inNib:cellNib] :
+   cellClass ? [cellClass.alloc initWithFrame:CGRectZero]
+                   : nil;
+	});
 	
 	cell.reuseIdentifier = identifier;
 	[cell prepareForReuse];

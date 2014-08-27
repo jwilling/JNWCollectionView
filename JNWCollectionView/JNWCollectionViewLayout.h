@@ -17,9 +17,6 @@
  IN THE SOFTWARE.
  */
 
-#import <Foundation/Foundation.h>
-#import "JNWCollectionViewFramework.h"
-
 typedef NS_ENUM(NSInteger, JNWCollectionViewDirection) {
 	JNWCollectionViewDirectionLeft,
 	JNWCollectionViewDirectionRight,
@@ -34,15 +31,16 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollDirection) {
 };
 
 @interface JNWCollectionViewLayoutAttributes : NSObject
-@property (nonatomic, assign) CGRect frame;
-@property (nonatomic, assign) CGFloat alpha;
-@property (nonatomic, assign) NSInteger zIndex;
+@property (nonatomic) CGRect frame;
+@property (nonatomic) CGFloat alpha;
+@property (nonatomic) NSInteger zIndex;
 @end
 
 @class JNWCollectionView;
+
 @interface JNWCollectionViewLayout : NSObject
 
-@property (nonatomic, weak, readonly) JNWCollectionView *collectionView;
+@property (weak, readonly) JNWCollectionView *collectionView;
 
 /// This method is provided as a way to inform the layout that it will
 /// need to invalidate the current layout and recalculate data.
@@ -108,7 +106,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollDirection) {
 /// if if an axis does not need to be scrolled a value of 0 can be provided.
 ///
 /// Defaults to CGSizeZero, which means it will fit the collection view's frame.
-- (CGSize)contentSize;
+@property (readonly) CGSize contentSize;
 
 /// The scroll direction determines which way the collection view will show scroll indicators.
 ///
@@ -120,7 +118,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollDirection) {
 /// scrolling.
 ///
 /// Defaults to JNWCollectionViewScrollDirectionVertical.
-- (JNWCollectionViewScrollDirection)scrollDirection;
+@property (readonly)  JNWCollectionViewScrollDirection scrollDirection;
 
 /// Subclasses must implement this method for arrowed selection to work.
 - (NSIndexPath *)indexPathForNextItemInDirection:(JNWCollectionViewDirection)direction currentIndexPath:(NSIndexPath *)currentIndexPath;
@@ -135,20 +133,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollDirection) {
 /// performs a new layout pass.
 ///
 /// The default return value is NO, for performance reasons.
-- (BOOL)shouldApplyExistingLayoutAttributesOnLayout;
-
-@end
-
-@interface JNWCollectionView()
-
-/// Returns whether an index path contains a valid item.
-- (BOOL)validateIndexPath:(NSIndexPath *)indexPath;
-
-/// Returns the next index path after the specified index path, or nil if it is the last index.
-- (NSIndexPath *)indexPathForNextSelectableItemAfterIndexPath:(NSIndexPath *)indexPath;
-
-/// Returns the next index path before the specified index path, or nil if it is the last index.
-- (NSIndexPath *)indexPathForNextSelectableItemBeforeIndexPath:(NSIndexPath *)indexPath;
+@property (readonly) BOOL shouldApplyExistingLayoutAttributesOnLayout;
 
 @end
 

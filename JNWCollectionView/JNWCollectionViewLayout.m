@@ -22,7 +22,6 @@
 #import "JNWCollectionViewLayout+Private.h"
 
 @implementation JNWCollectionViewLayoutAttributes
-
 @end
 
 @implementation JNWCollectionViewLayout
@@ -64,7 +63,7 @@
 	return JNWCollectionViewScrollDirectionVertical;
 }
 
-- (NSIndexPath *)indexPathForNextItemInDirection:(JNWCollectionViewDirection)direction currentIndexPath:(NSIndexPath *)currentIndexPath {
+- (NSIndexPath *)indexPathForNextItemInDirection:(JNWCollectionViewDirection)d currentIndexPath:(NSIndexPath *)currentIndexPath {
 	return currentIndexPath;
 }
 

@@ -34,14 +34,9 @@
 		AB3C7203170CA8D3004A91DB /* NSIndexPath+JNWAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3C71F3170CA8D3004A91DB /* NSIndexPath+JNWAdditions.m */; };
 		AB3C7209170CA8EF004A91DB /* JNWCollectionView-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AB3C7206170CA8EF004A91DB /* JNWCollectionView-Prefix.pch */; };
 		AB3C720C170CA8F3004A91DB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB3C720A170CA8F3004A91DB /* InfoPlist.strings */; };
-		AB3C7216170CAADB004A91DB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB024671707937F00537A92 /* QuartzCore.framework */; };
 		ABA276B2171D1C4B005C8E56 /* JNWCollectionViewDocumentView.h in Headers */ = {isa = PBXBuildFile; fileRef = ABA276B0171D1C4B005C8E56 /* JNWCollectionViewDocumentView.h */; };
 		ABA276B3171D1C4B005C8E56 /* JNWCollectionViewDocumentView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA276B1171D1C4B005C8E56 /* JNWCollectionViewDocumentView.m */; };
-		ABB023F5170791D300537A92 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB023F4170791D300537A92 /* Cocoa.framework */; };
-		ABB0240B170791D300537A92 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB0240A170791D300537A92 /* SenTestingKit.framework */; };
-		ABB0240C170791D300537A92 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB023F4170791D300537A92 /* Cocoa.framework */; };
 		ABB0240F170791D300537A92 /* JNWCollectionView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB023F1170791D300537A92 /* JNWCollectionView.framework */; };
-		ABB024681707937F00537A92 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB024671707937F00537A92 /* QuartzCore.framework */; };
 		ABBEA58B171E7D7A00A6F03D /* JNWCollectionViewSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = ABBEA58A171E7D7A00A6F03D /* JNWCollectionViewSpec.m */; };
 		ABC05C691807808E00CAED48 /* JNWCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = ABC05C681807808E00CAED48 /* JNWCollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		ABDE2699172BD9B100F8924F /* JNWTestImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = ABDE2698172BD9B100F8924F /* JNWTestImplementation.m */; };
@@ -163,13 +158,7 @@
 		ABA276B0171D1C4B005C8E56 /* JNWCollectionViewDocumentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionViewDocumentView.h; path = JNWCollectionView/JNWCollectionViewDocumentView.h; sourceTree = SOURCE_ROOT; };
 		ABA276B1171D1C4B005C8E56 /* JNWCollectionViewDocumentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewDocumentView.m; path = JNWCollectionView/JNWCollectionViewDocumentView.m; sourceTree = SOURCE_ROOT; };
 		ABB023F1170791D300537A92 /* JNWCollectionView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JNWCollectionView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		ABB023F4170791D300537A92 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		ABB023F7170791D300537A92 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		ABB023F8170791D300537A92 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		ABB023F9170791D300537A92 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		ABB02409170791D300537A92 /* JNWCollectionViewTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JNWCollectionViewTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		ABB0240A170791D300537A92 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		ABB024671707937F00537A92 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		ABBEA58A171E7D7A00A6F03D /* JNWCollectionViewSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWCollectionViewSpec.m; path = JNWCollectionViewTests/JNWCollectionViewSpec.m; sourceTree = SOURCE_ROOT; };
 		ABC05C681807808E00CAED48 /* JNWCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWCollectionView.h; path = JNWCollectionView/JNWCollectionView.h; sourceTree = SOURCE_ROOT; };
 		ABDE2697172BD9B100F8924F /* JNWTestImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWTestImplementation.h; path = JNWCollectionViewTests/JNWTestImplementation.h; sourceTree = SOURCE_ROOT; };
@@ -183,8 +172,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ABB024681707937F00537A92 /* QuartzCore.framework in Frameworks */,
-				ABB023F5170791D300537A92 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,9 +181,6 @@
 			files = (
 				8467C6FA171E58F700A1F343 /* libExpecta.a in Frameworks */,
 				8467C6FB171E58F700A1F343 /* libSpecta.a in Frameworks */,
-				AB3C7216170CAADB004A91DB /* QuartzCore.framework in Frameworks */,
-				ABB0240B170791D300537A92 /* SenTestingKit.framework in Frameworks */,
-				ABB0240C170791D300537A92 /* Cocoa.framework in Frameworks */,
 				ABB0240F170791D300537A92 /* JNWCollectionView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -247,6 +231,7 @@
 				AB1514811715361D00871248 /* JNWCollectionViewGridLayout.m */,
 			);
 			name = Layouts;
+			path = JNWTableView;
 			sourceTree = "<group>";
 		};
 		AB38E37917DEFA1E00D50B3C /* Private */ = {
@@ -258,6 +243,7 @@
 				AB0EA368189472A400E28525 /* JNWCollectionViewLayout+Private.h */,
 			);
 			name = Private;
+			path = JNWTableView;
 			sourceTree = "<group>";
 		};
 		AB46B0AF171F900100F727C7 /* external */ = {
@@ -272,47 +258,6 @@
 		ABB023E7170791D300537A92 = {
 			isa = PBXGroup;
 			children = (
-				ABB023FA170791D300537A92 /* JNWCollectionView */,
-				ABB02410170791D300537A92 /* JNWCollectionViewTests */,
-				ABB023F3170791D300537A92 /* Frameworks */,
-				ABB023F2170791D300537A92 /* Products */,
-			);
-			sourceTree = "<group>";
-		};
-		ABB023F2170791D300537A92 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				ABB023F1170791D300537A92 /* JNWCollectionView.framework */,
-				ABB02409170791D300537A92 /* JNWCollectionViewTests.octest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		ABB023F3170791D300537A92 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				ABB024671707937F00537A92 /* QuartzCore.framework */,
-				ABB023F4170791D300537A92 /* Cocoa.framework */,
-				ABB0240A170791D300537A92 /* SenTestingKit.framework */,
-				ABB023F6170791D300537A92 /* Other Frameworks */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		ABB023F6170791D300537A92 /* Other Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				ABB023F7170791D300537A92 /* AppKit.framework */,
-				ABB023F8170791D300537A92 /* CoreData.framework */,
-				ABB023F9170791D300537A92 /* Foundation.framework */,
-			);
-			name = "Other Frameworks";
-			sourceTree = "<group>";
-		};
-		ABB023FA170791D300537A92 /* JNWCollectionView */ = {
-			isa = PBXGroup;
-			children = (
-				AB1514711714D36200871248 /* Layouts */,
 				ABC05C681807808E00CAED48 /* JNWCollectionView.h */,
 				AB3C71E8170CA8D3004A91DB /* JNWCollectionViewFramework.h */,
 				AB3C71E9170CA8D3004A91DB /* JNWCollectionViewFramework.m */,
@@ -326,21 +271,33 @@
 				AB3C71EF170CA8D3004A91DB /* JNWCollectionViewReusableView.m */,
 				AB3C71F2170CA8D3004A91DB /* NSIndexPath+JNWAdditions.h */,
 				AB3C71F3170CA8D3004A91DB /* NSIndexPath+JNWAdditions.m */,
+				AB1514711714D36200871248 /* Layouts */,
 				AB38E37917DEFA1E00D50B3C /* Private */,
 				ABE0A77817C7E22F005F35A8 /* External */,
 				ABB023FB170791D300537A92 /* Supporting Files */,
 			);
-			name = JNWCollectionView;
-			path = JNWTableView;
+			sourceTree = "<group>";
+		};
+		ABB023F2170791D300537A92 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				ABB023F1170791D300537A92 /* JNWCollectionView.framework */,
+				ABB02409170791D300537A92 /* JNWCollectionViewTests.octest */,
+			);
+			name = Products;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		ABB023FB170791D300537A92 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				ABB02410170791D300537A92 /* JNWCollectionViewTests */,
+				ABB023F2170791D300537A92 /* Products */,
 				AB3C7205170CA8EF004A91DB /* JNWCollectionView-Info.plist */,
 				AB3C7206170CA8EF004A91DB /* JNWCollectionView-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			path = JNWTableView;
 			sourceTree = "<group>";
 		};
 		ABB02410170791D300537A92 /* JNWCollectionViewTests */ = {
@@ -355,7 +312,7 @@
 			);
 			name = JNWCollectionViewTests;
 			path = JNWTableViewTests;
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 		ABE0A77817C7E22F005F35A8 /* External */ = {
 			isa = PBXGroup;
@@ -366,6 +323,7 @@
 				AB38E38D17DF099A00D50B3C /* JNWScrollView.m */,
 			);
 			name = External;
+			path = JNWTableView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -635,6 +593,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -667,6 +626,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;

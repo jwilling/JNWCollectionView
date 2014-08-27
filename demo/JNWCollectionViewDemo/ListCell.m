@@ -19,31 +19,20 @@
 
 - (instancetype)initWithFrame:(NSRect)frameRect {
 
-	self = [super initWithFrame:frameRect];
-	if (self == nil) return nil;
-	
-	self.label = [[JNWLabel alloc] initWithFrame:CGRectZero];
-}
-- (void)layout {
-	[super layout];
-	
-	CGRect labelRect = CGRectMake(15, 10, 100, 20);
-	if (!CGRectEqualToRect(labelRect, self.label.frame)) {
-		self.label.frame = labelRect;
-	}
-}
-
-- (void)setCellLabelText:(NSString *)cellLabelText { _cellLabelText = self.label.text = cellLabelText; }
-
-- (void)setCellLabelText:(NSString *)cellLabelText {
-	_cellLabelText = cellLabelText;
-	self.label.text = cellLabelText;
+	if (!(self = [super initWithFrame:frameRect])) return nil;
+  [self addSubview:_label = [JNWLabel.alloc initWithFrame:(NSRect){15, 10, frameRect.size.width, 20}]];
+  _label.autoresizingMask = NSViewWidthSizable | NSViewMaxXMargin | NSViewMaxYMargin;
+  _cellLabelText = @"";
+  [self.label bind:@"text" toObject:self withKeyPath:@"cellLabelText" options:nil];
+  return self;
 }
 
 - (void)setSelected:(BOOL)selected {
+
 	[super setSelected:selected];
-- (void)setHovered:(BOOL)hovered { [super setHovered:hovered]; [self updateBackgroundImage]; }
+  [self updateBackgroundImage];
 }
+- (void)setHovered:(BOOL)hovered { [super setHovered:hovered]; [self updateBackgroundImage]; }
 
 - (void)updateBackgroundImage {
 	NSString *identifier = [NSString stringWithFormat:@"%@%x%x%@", self.className, self.selected, self.hovered,self.backgroundColor.description];

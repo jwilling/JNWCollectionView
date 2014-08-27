@@ -156,13 +156,11 @@
 				ABAF155A1718C39C00658A1D /* JNWLabel+Accessibility.m */,
 			);
 			name = JNWLabel;
-			path = JNWTableViewDemo;
 			sourceTree = "<group>";
 		};
 		ABB0F2EA16FD7D19002004F5 = {
 			isa = PBXGroup;
 			children = (
-				ABAF15551718C39300658A1D /* JNWLabel */,
 				AB3C7230170CABFF004A91DB /* AppDelegate.m */,
 				AB2E9609170CB196004678DC /* MainMenu.xib */,
 				ABAF15661718E67C00658A1D /* DemoWindowController.h */,
@@ -183,6 +181,7 @@
 		ABB0F2FD16FD7D19002004F5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				ABAF15551718C39300658A1D /* JNWLabel */,
 				ABB0F2F316FD7D19002004F5 /* JNWCollectionViewDemo.app */,
 				AB3C723A170CAC1B004A91DB /* JNWCollectionViewDemo-Info.plist */,
 				AB3C723B170CAC1B004A91DB /* JNWCollectionViewDemo-Prefix.pch */,

@@ -17,6 +17,7 @@
  IN THE SOFTWARE.
  */
 
+#import "JNWCollectionView.h"
 #import "JNWCollectionViewGridLayout.h"
 
 typedef struct {

@@ -17,8 +17,6 @@
  IN THE SOFTWARE.
  */
 
-#import <Foundation/Foundation.h>
-
 typedef struct  {
 	NSInteger index;
 	CGRect frame;
@@ -32,21 +30,19 @@ typedef struct  {
 /// Designated initializer.
 - (instancetype)initWithCollectionView:(JNWCollectionView *)collectionView;
 
-/// Recalculates the local section cache from the layout and data source, optionally
-/// re-preparing the layout.
+/// Recalculates the local section cache from the layout and data source, optionally re-preparing the layout.
 - (void)recalculateAndPrepareLayout:(BOOL)prepareLayout;
 
 /// The number of sections that the data source has reported.
-@property (nonatomic, assign, readonly) NSInteger numberOfSections;
+@property (readonly) NSInteger numberOfSections;
 
 /// Returns the number of items in the specified section.
 - (NSInteger)numberOfItemsInSection:(NSInteger)section;
 
 /// Contains all of the sections cached from the last -recalculate call.
-@property (nonatomic, assign, readonly) JNWCollectionViewSection *sections;
+@property (readonly) JNWCollectionViewSection *sections;
 
-/// The size that contains all of the sections. This size is used to determine
-/// the content size of the scroll view.
-@property (nonatomic, assign, readonly) CGSize encompassingSize;
+/// The size that contains all of the sections. This size is used to determine the content size of the scroll view.
+@property (readonly) CGSize encompassingSize;
 
 @end

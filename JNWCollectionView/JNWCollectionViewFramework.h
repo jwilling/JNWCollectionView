@@ -173,6 +173,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 
 /*! The following methods will return frames in flipped coordinates, where the origin is the top left point in the scroll view. All of these methods will return CGRectZero if an invalid index path or section is specified.
  */
+ - (CGRect)rectForItemAtIndexPath:(NSIndexPath *)indexPath;
 - (CGRect)rectForSupplementaryViewWithKind:(NSString *)kind inSection:(NSInteger)section;
 - (CGRect)rectForSection:(NSInteger)section; /// the frame encompassing the cells and views in the specified section
 
@@ -233,5 +234,18 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 
 /// Deselects all items in the collection view.
 - (void)deselectAllItems;
+
+@end
+
+@interface JNWCollectionView()
+
+/// Returns whether an index path contains a valid item.
+- (BOOL) validateIndexPath:(NSIndexPath *)indexPath;
+
+/// Returns the next index path after the specified index path, or nil if it is the last index.
+- (NSIndexPath *)indexPathForNextSelectableItemAfterIndexPath:(NSIndexPath *)indexPath;
+
+/// Returns the next index path before the specified index path, or nil if it is the last index.
+- (NSIndexPath *)indexPathForNextSelectableItemBeforeIndexPath:(NSIndexPath *)indexPath;
 
 @end

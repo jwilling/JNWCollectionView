@@ -30,7 +30,6 @@ static NSString * const headerIdentifier = @"HEADER";
 	self.collectionView = [[JNWCollectionView alloc] initWithFrame:self.view.bounds];
 	self.collectionView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
 	self.collectionView.dataSource = self;
-    self.collectionView.allowsEmptySelection = NO;
 	[self.view addSubview:self.collectionView];
 	
 	JNWCollectionViewListLayout *layout = [[JNWCollectionViewListLayout alloc] init];

@@ -319,7 +319,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
     
     // Select the first item if empty selection is not allowed
     // NOTE: If the delegate returns NO in collectionView:shouldSelectItemAtIndexPath: no cell will be selected.
-    [self selectItemAtIndexPath:[NSIndexPath jnw_indexPathForItem:0 inSection:0] animated:NO];
+    [self selectItemAtIndexPath:[self allIndexPaths].firstObject animated:NO];
 }
 
 - (void)setCollectionViewLayout:(JNWCollectionViewLayout *)collectionViewLayout {

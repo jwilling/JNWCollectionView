@@ -319,11 +319,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
     
     // Select the first item if empty selection is not allowed
     if (!self.allowsEmptySelection) {
-        NSArray *allIndexPaths = [self allIndexPaths];
-        if (allIndexPaths.count >= 1) {
-            // NOTE: If the delegate returns NO in collectionView:shouldSelectItemAtIndexPath: no cell will be selected.
-            [self selectItemAtIndexPath:allIndexPaths.firstObject animated:NO];
-        }
+        NSIndexPath *indexPath = [self indexPathForNextSelectableItemAfterIndexPath:nil];
+        [self selectItemAtIndexPath:indexPath animated:NO];
     }
 }
 
@@ -911,7 +908,16 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (NSIndexPath *)indexPathForNextSelectableItemAfterIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.jnw_item + 1 >= self.data.sections[indexPath.jnw_section].numberOfItems) {
+    if (!indexPath) {
+        // Passing `nil` will select the very first index path
+        for (int section = 0; section < self.data.numberOfSections; section++) {
+            for (int item = 0; item < [self.data numberOfItemsInSection:section]; item++) {
+                NSIndexPath *newIndexPath = [NSIndexPath jnw_indexPathForItem:item inSection:section];
+                if ([self validateIndexPath:indexPath])
+                    return newIndexPath;
+            }
+        }
+    } else if (indexPath.jnw_item + 1 >= self.data.sections[indexPath.jnw_section].numberOfItems) {
 		// Jump up to the next section
 		NSIndexPath *newIndexPath = [NSIndexPath jnw_indexPathForItem:0 inSection:indexPath.jnw_section + 1];
 		if ([self validateIndexPath:newIndexPath])

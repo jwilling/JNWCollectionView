@@ -318,10 +318,12 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	[self performFullRelayoutForcingSubviewsReset:YES];
     
     // Select the first item if empty selection is not allowed
-    NSArray *allIndexPaths = [self allIndexPaths];
-    if (allIndexPaths.count >= 1) {
-        // NOTE: If the delegate returns NO in collectionView:shouldSelectItemAtIndexPath: no cell will be selected.
-        [self selectItemAtIndexPath:allIndexPaths.firstObject animated:NO];
+    if (!self.allowsEmptySelection) {
+        NSArray *allIndexPaths = [self allIndexPaths];
+        if (allIndexPaths.count >= 1) {
+            // NOTE: If the delegate returns NO in collectionView:shouldSelectItemAtIndexPath: no cell will be selected.
+            [self selectItemAtIndexPath:allIndexPaths.firstObject animated:NO];
+        }
     }
 }
 

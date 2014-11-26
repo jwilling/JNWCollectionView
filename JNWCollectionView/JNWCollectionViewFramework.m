@@ -105,6 +105,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	collectionView->_collectionViewFlags.wantsLayout = NO;
 	
 	collectionView.allowsSelection = YES;
+    
+    collectionView.allowsEmptySelection = YES;
 	
 	collectionView.backgroundColor = NSColor.whiteColor;
 	collectionView.drawsBackground = YES;
@@ -314,6 +316,10 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	
 	[self.data recalculateAndPrepareLayout:YES];
 	[self performFullRelayoutForcingSubviewsReset:YES];
+    
+    // Select the first item if empty selection is not allowed
+    // NOTE: If the delegate returns NO in collectionView:shouldSelectItemAtIndexPath: no cell will be selected.
+    [self selectItemAtIndexPath:[NSIndexPath jnw_indexPathForItem:0 inSection:0] animated:NO];
 }
 
 - (void)setCollectionViewLayout:(JNWCollectionViewLayout *)collectionViewLayout {
@@ -862,7 +868,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 
 - (void)deselectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
 	if (!self.allowsSelection ||
-		(_collectionViewFlags.delegateShouldDeselect && ![self.delegate collectionView:self shouldDeselectItemAtIndexPath:indexPath])) {
+		(_collectionViewFlags.delegateShouldDeselect && ![self.delegate collectionView:self shouldDeselectItemAtIndexPath:indexPath]) ||
+        (!self.allowsEmptySelection && self.indexPathsForSelectedItems.count <= 1)) {
 		return;
 	}
 	

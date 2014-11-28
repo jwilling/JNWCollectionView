@@ -105,8 +105,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	collectionView->_collectionViewFlags.wantsLayout = NO;
 	
 	collectionView.allowsSelection = YES;
-    
-    collectionView.allowsEmptySelection = YES;
+	
+	collectionView.allowsEmptySelection = YES;
 	
 	collectionView.backgroundColor = NSColor.whiteColor;
 	collectionView.drawsBackground = YES;
@@ -316,12 +316,12 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	
 	[self.data recalculateAndPrepareLayout:YES];
 	[self performFullRelayoutForcingSubviewsReset:YES];
-    
-    // Select the first item if empty selection is not allowed
-    if (!self.allowsEmptySelection) {
-        NSIndexPath *indexPath = [self indexPathForNextSelectableItemAfterIndexPath:nil];
-        [self selectItemAtIndexPath:indexPath animated:NO];
-    }
+	
+	// Select the first item if empty selection is not allowed
+	if (!self.allowsEmptySelection) {
+		NSIndexPath *indexPath = [self indexPathForNextSelectableItemAfterIndexPath:nil];
+		[self selectItemAtIndexPath:indexPath animated:NO];
+	}
 }
 
 - (void)setCollectionViewLayout:(JNWCollectionViewLayout *)collectionViewLayout {
@@ -871,7 +871,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 - (void)deselectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
 	if (!self.allowsSelection ||
 		(_collectionViewFlags.delegateShouldDeselect && ![self.delegate collectionView:self shouldDeselectItemAtIndexPath:indexPath]) ||
-        (!self.allowsEmptySelection && self.indexPathsForSelectedItems.count <= 1)) {
+		(!self.allowsEmptySelection && self.indexPathsForSelectedItems.count <= 1)) {
 		return;
 	}
 	
@@ -908,16 +908,16 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (NSIndexPath *)indexPathForNextSelectableItemAfterIndexPath:(NSIndexPath *)indexPath {
-    if (!indexPath) {
-        // Passing `nil` will select the very first index path
-        for (int section = 0; section < self.data.numberOfSections; section++) {
-            for (int item = 0; item < [self.data numberOfItemsInSection:section]; item++) {
-                NSIndexPath *newIndexPath = [NSIndexPath jnw_indexPathForItem:item inSection:section];
-                if ([self validateIndexPath:indexPath])
-                    return newIndexPath;
-            }
-        }
-    } else if (indexPath.jnw_item + 1 >= self.data.sections[indexPath.jnw_section].numberOfItems) {
+	if (!indexPath) {
+		// Passing `nil` will select the very first index path
+		for (int section = 0; section < self.data.numberOfSections; section++) {
+			for (int item = 0; item < [self.data numberOfItemsInSection:section]; item++) {
+				NSIndexPath *newIndexPath = [NSIndexPath jnw_indexPathForItem:item inSection:section];
+				if ([self validateIndexPath:indexPath])
+					return newIndexPath;
+			}
+		}
+	} else if (indexPath.jnw_item + 1 >= self.data.sections[indexPath.jnw_section].numberOfItems) {
 		// Jump up to the next section
 		NSIndexPath *newIndexPath = [NSIndexPath jnw_indexPathForItem:0 inSection:indexPath.jnw_section + 1];
 		if ([self validateIndexPath:newIndexPath])

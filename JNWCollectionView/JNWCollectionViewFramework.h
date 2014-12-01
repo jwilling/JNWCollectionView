@@ -258,6 +258,12 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 /// Defaults to YES.
 @property (nonatomic, assign) BOOL allowsSelection;
 
+/// If set to NO, the collection view will force at least one cell to be selected as long as the
+/// collection view isn't empty. If no cells are selected, the first one will be selected automatically.
+///
+/// Defaults to YES.
+@property (nonatomic, assign) BOOL allowsEmptySelection;
+
 /// Scrolls the collection view to the item at the specified path, optionally animated. The scroll position determines
 /// where the item is positioned on the screen.
 - (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition animated:(BOOL)animated;

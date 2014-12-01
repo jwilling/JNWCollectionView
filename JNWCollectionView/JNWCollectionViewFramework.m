@@ -908,13 +908,11 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (NSIndexPath *)indexPathForNextSelectableItemAfterIndexPath:(NSIndexPath *)indexPath {
-	if (!indexPath) {
+	if (indexPath == nil) {
 		// Passing `nil` will select the very first index path
 		for (int section = 0; section < self.data.numberOfSections; section++) {
 			for (int item = 0; item < [self.data numberOfItemsInSection:section]; item++) {
-				NSIndexPath *newIndexPath = [NSIndexPath jnw_indexPathForItem:item inSection:section];
-				if ([self validateIndexPath:indexPath])
-					return newIndexPath;
+				return [NSIndexPath jnw_indexPathForItem:item inSection:section];
 			}
 		}
 	} else if (indexPath.jnw_item + 1 >= self.data.sections[indexPath.jnw_section].numberOfItems) {

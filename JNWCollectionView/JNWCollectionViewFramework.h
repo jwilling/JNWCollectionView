@@ -108,6 +108,9 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 /// Tells the delegate that the item at the specified index path has been right-clicked.
 - (void)collectionView:(JNWCollectionView *)collectionView didRightClickItemAtIndexPath:(NSIndexPath *)indexPath;
 
+/// Asks the delegate if the item at the specified index path should be scrolled to.
+- (BOOL)collectionView:(JNWCollectionView *)collectionView shouldScrollToItemAtIndexPath:(NSIndexPath *)indexPath;
+
 /// Tells the delegate that the specified index path has been scrolled to.
 - (void)collectionView:(JNWCollectionView *)collectionView didScrollToItemAtIndexPath:(NSIndexPath *)indexPath;
 

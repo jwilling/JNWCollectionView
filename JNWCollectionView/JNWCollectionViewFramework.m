@@ -45,7 +45,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 		unsigned int delegateDidSelect:1;
 		unsigned int delegateShouldDeselect:1;
 		unsigned int delegateDidDeselect:1;
-        unsigned int delegateShouldScroll:1;
+		unsigned int delegateShouldScroll:1;
 		unsigned int delegateDidScroll:1;
 		unsigned int delegateDidDoubleClick:1;
 		unsigned int delegateDidRightClick:1;

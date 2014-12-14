@@ -49,6 +49,8 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 		unsigned int delegateDidDoubleClick:1;
 		unsigned int delegateDidRightClick:1;
 		unsigned int delegateDidEndDisplayingCell:1;
+        unsigned int delegateWillDisplaySupplementaryView:1;
+        unsigned int delegateDidEndDisplayingSupplementaryView:1;
 		
 		unsigned int wantsLayout;
 	} _collectionViewFlags;
@@ -139,6 +141,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	_collectionViewFlags.delegateDidDoubleClick = [delegate respondsToSelector:@selector(collectionView:didDoubleClickItemAtIndexPath:)];
 	_collectionViewFlags.delegateDidRightClick = [delegate respondsToSelector:@selector(collectionView:didRightClickItemAtIndexPath:)];
 	_collectionViewFlags.delegateDidEndDisplayingCell = [delegate respondsToSelector:@selector(collectionView:didEndDisplayingCell:forItemAtIndexPath:)];
+    _collectionViewFlags.delegateWillDisplaySupplementaryView = [delegate respondsToSelector:@selector(collectionView:willDisplaySupplementaryView:ofKind:forsection:)];
+    _collectionViewFlags.delegateDidEndDisplayingSupplementaryView = [delegate respondsToSelector:@selector(collectionView:didEndDisplayingSupplementaryView:ofKind:forsection:)];
 }
 
 - (void)setDataSource:(id<JNWCollectionViewDataSource>)dataSource {
@@ -354,6 +358,17 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		}
 	}
 	[self.visibleCellsMap removeAllObjects];
+    
+    if (_collectionViewFlags.delegateDidEndDisplayingSupplementaryView)
+    {
+        [self.visibleSupplementaryViewsMap enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            
+            NSInteger section = [self sectionForSupplementaryLayoutIdentifier:key];
+            JNWCollectionViewReusableView *supplementaryView = obj;
+            [self.delegate collectionView:self didEndDisplayingSupplementaryView:supplementaryView ofKind:supplementaryView.kind forsection:section];
+            
+        }];
+    }
 	[self.visibleSupplementaryViewsMap removeAllObjects];
 	
 	// Remove any cells or views that might be added to the document view.
@@ -823,6 +838,11 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		[view removeFromSuperview];
 		
 		[self enqueueReusableSupplementaryView:view ofKind:view.kind withReuseIdentifier:view.reuseIdentifier];
+        
+        if (_collectionViewFlags.delegateDidEndDisplayingSupplementaryView)
+        {
+            [self.delegate collectionView:self didEndDisplayingSupplementaryView:view ofKind:view.kind forsection:[self sectionForSupplementaryLayoutIdentifier:layoutIdentifier]];
+        }
 	}
 		
 	// Add new views
@@ -838,6 +858,12 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForSupplementaryItemInSection:section kind:kind];
 		view.frame = attributes.frame;
 		view.alphaValue = attributes.alpha;
+        
+        if (_collectionViewFlags.delegateWillDisplaySupplementaryView)
+        {
+            [self.delegate collectionView:self willDisplaySupplementaryView:view ofKind:view.kind forsection:[self sectionForSupplementaryLayoutIdentifier:layoutIdentifier]];
+        }
+        
 		[self.documentView addSubview:view];
 		
 		self.visibleSupplementaryViewsMap[layoutIdentifier] = view;

@@ -115,6 +115,10 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 /// back into the reuse queue.
 - (void)collectionView:(JNWCollectionView *)collectionView didEndDisplayingCell:(JNWCollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath;
 
+- (void)collectionView:(JNWCollectionView *)collectionView willDisplaySupplementaryView:(JNWCollectionViewReusableView *)supplementaryView ofKind:(NSString *)kind forsection:(NSInteger)section;
+
+- (void)collectionView:(JNWCollectionView *)collectionView didEndDisplayingSupplementaryView:(JNWCollectionViewReusableView *)supplementaryView ofKind:(NSString *)kind forsection:(NSInteger)section;
+
 @end
 
 #pragma mark Reloading and customizing

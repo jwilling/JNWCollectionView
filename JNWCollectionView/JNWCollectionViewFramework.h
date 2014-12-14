@@ -235,6 +235,12 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 /// previously registered in -registerClass:forSupplementaryViewOfKind:reuseIdentifier:.
 - (JNWCollectionViewReusableView *)supplementaryViewForKind:(NSString *)kind reuseIdentifier:(NSString *)reuseIdentifier inSection:(NSInteger)section;
 
+/// Returns an array of all the currently visible supplementary views. The cells are not guaranteed to be in any order.
+- (NSArray *)visibleSupplementaryViews;
+
+/// Returns an array of all the currently visible supplementary views for the specified kind. The cells are not guaranteed to be in any order.
+- (NSArray *)visibleSupplementaryViewsForKind:(NSString *)kind;
+
 /// Returns an array of all the currently visible cells. The cells are not guaranteed to be in any order.
 - (NSArray *)visibleCells;
 

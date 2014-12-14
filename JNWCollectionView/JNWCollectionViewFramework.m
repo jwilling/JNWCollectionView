@@ -394,6 +394,27 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	return nil;
 }
 
+- (NSArray *)visibleSupplementaryViews
+{
+	return self.visibleSupplementaryViewsMap.allValues;
+}
+
+- (NSArray *)visibleSupplementaryViewsForKind:(NSString *)kind
+{
+	NSArray *allKeys = self.visibleSupplementaryViewsMap.allKeys;
+	NSMutableArray *visibleSupplementaryViews = [[NSMutableArray alloc] initWithCapacity:allKeys.count];
+	
+	for (NSString *key in allKeys)
+	{
+        NSString *supplementaryViewKind = [self kindForSupplementaryViewIdentifier:key];
+		if ([kind isEqualToString:supplementaryViewKind])
+		{
+			[visibleSupplementaryViews addObject:self.visibleSupplementaryViewsMap[key]];
+		}
+	}
+	return visibleSupplementaryViews;
+}
+
 - (NSArray *)visibleCells {
 	return self.visibleCellsMap.allValues;
 }

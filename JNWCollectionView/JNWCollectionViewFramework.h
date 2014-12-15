@@ -115,8 +115,10 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 /// back into the reuse queue.
 - (void)collectionView:(JNWCollectionView *)collectionView didEndDisplayingCell:(JNWCollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath;
 
+/// Tells the delegate that supplementary view will be added to document view.
 - (void)collectionView:(JNWCollectionView *)collectionView willDisplaySupplementaryView:(JNWCollectionViewReusableView *)supplementaryView ofKind:(NSString *)kind forsection:(NSInteger)section;
 
+/// Tells the delegate that supplementary view was removed from document view.
 - (void)collectionView:(JNWCollectionView *)collectionView didEndDisplayingSupplementaryView:(JNWCollectionViewReusableView *)supplementaryView ofKind:(NSString *)kind forsection:(NSInteger)section;
 
 @end

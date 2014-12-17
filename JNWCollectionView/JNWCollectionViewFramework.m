@@ -75,6 +75,8 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 @property (nonatomic, strong) NSMutableDictionary *supplementaryViewClassMap; // { "kind/identifier" : class }
 @property (nonatomic, strong) NSMutableDictionary *supplementaryViewNibMap; // { "kind/identifier" : nib }
 
+@property (nonatomic, strong) NSView *documentView;
+
 @end
 
 @implementation JNWCollectionView

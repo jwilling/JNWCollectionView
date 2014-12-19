@@ -35,8 +35,4 @@
 	return [self indexAtPosition:1];
 }
 
-- (NSString *)debugDescription {
-	return [NSString stringWithFormat:@"<%@: %p; section = %ld; item = %ld>", self.class, self, self.jnw_section, self.jnw_item];
-}
-
 @end

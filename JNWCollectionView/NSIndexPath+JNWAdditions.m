@@ -35,18 +35,4 @@
 	return [self indexAtPosition:1];
 }
 
-- (BOOL)isEqual:(id)object {
-	if ([object isKindOfClass:NSIndexPath.class]) {
-		if (self.jnw_section == [(NSIndexPath *)object jnw_section] && self.jnw_item == [(NSIndexPath *)object jnw_item]) {
-			return YES;
-		}
-	}
-
-	return NO;
-}
-
-- (NSString *)debugDescription {
-	return [NSString stringWithFormat:@"<%@: %p; section = %ld; item = %ld>", self.class, self, self.jnw_section, self.jnw_item];
-}
-
 @end

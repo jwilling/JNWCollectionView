@@ -225,13 +225,12 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	} else if (direction == JNWCollectionViewDirectionUp) {
 		CGPoint origin = [self.collectionView rectForItemAtIndexPath:currentIndexPath].origin;
 		// Bump the origin up to the cell directly above this one.
-		origin.y -= 1; // TODO: Use padding here when implemented.
+		origin.y -= (self.itemSize.height + self.verticalSpacing);
 		newIndexPath = [self.collectionView indexPathForItemAtPoint:origin];
 	} else if (direction == JNWCollectionViewDirectionDown) {
-		CGRect frame = [self.collectionView rectForItemAtIndexPath:currentIndexPath];
-		CGPoint origin = frame.origin;
+		CGPoint origin = [self.collectionView rectForItemAtIndexPath:currentIndexPath].origin;
 		// Bump the origin down to the cell directly below this one.
-		origin.y += frame.size.height + 1; // TODO: Use padding here when implemented.
+		origin.y += (self.itemSize.height + self.verticalSpacing);
 		newIndexPath = [self.collectionView indexPathForItemAtPoint:origin];
 	}
 	

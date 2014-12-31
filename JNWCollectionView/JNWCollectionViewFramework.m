@@ -506,8 +506,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 			break;
 		case JNWCollectionViewScrollPositionMiddle:
 			// TODO
+			rect.origin.y -= ((CGRectGetHeight(visibleRect)-CGRectGetHeight(rect)) / 2.f);
 			rect.size.height = self.bounds.size.height;
-			rect.origin.y += (CGRectGetHeight(visibleRect) / 2.f) - CGRectGetHeight(rect);
 			break;
 		case JNWCollectionViewScrollPositionBottom:
 			// make the bottom of our rect flush with the bottom of the visible bounds

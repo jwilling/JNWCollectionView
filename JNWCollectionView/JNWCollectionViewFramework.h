@@ -267,6 +267,11 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 /// Defaults to YES.
 @property (nonatomic, assign) BOOL allowsEmptySelection;
 
+/// If set to NO, the collection view will not extend the selection when using command and shift modifier keys
+///
+/// Defaults to YES.
+@property (nonatomic, assign) BOOL allowsMultipleSelection;
+
 /// Scrolls the collection view to the item at the specified path, optionally animated. The scroll position determines
 /// where the item is positioned on the screen.
 - (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition animated:(BOOL)animated;

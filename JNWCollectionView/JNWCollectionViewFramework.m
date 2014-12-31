@@ -31,7 +31,8 @@
 typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 	JNWCollectionViewSelectionTypeSingle,
 	JNWCollectionViewSelectionTypeExtending,
-	JNWCollectionViewSelectionTypeMultiple
+	JNWCollectionViewSelectionTypeMultiple,
+	JNWCollectionViewSelectionTypeMultipleDontAllowDeselection,
 };
 
 @interface JNWCollectionView() {
@@ -62,6 +63,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 
 // Selection
 @property (nonatomic, strong) NSMutableArray *selectedIndexes;
+@property (nonatomic, strong) NSIndexPath* multipleSelectionSelectedIndexPath;
 
 // Cells
 @property (nonatomic, strong) NSMutableDictionary *reusableCells; // { identifier : (cells) }
@@ -108,8 +110,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	collectionView->_collectionViewFlags.wantsLayout = NO;
 	
 	collectionView.allowsSelection = YES;
-	
 	collectionView.allowsEmptySelection = YES;
+	collectionView.allowsMultipleSelection = YES;
 	
 	collectionView.backgroundColor = NSColor.whiteColor;
 	collectionView.drawsBackground = YES;
@@ -901,8 +903,10 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	JNWCollectionViewCell *cell = [self cellForItemAtIndexPath:indexPath];
 	[cell setSelected:YES animated:self.animatesSelection];
 
-	if (![self.selectedIndexes containsObject:indexPath])
+	if (![self.selectedIndexes containsObject:indexPath]) {
 		[self.selectedIndexes addObject:indexPath];
+		[self.selectedIndexes sortUsingSelector:@selector(compare:)];
+	}
 	
 	if (_collectionViewFlags.delegateDidSelect) {
 		[self.delegate collectionView:self didSelectItemAtIndexPath:indexPath];
@@ -960,13 +964,20 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		} else {
 			[indexesToSelect addObject:indexPath];
 		}
+	} else if (selectionType == JNWCollectionViewSelectionTypeMultipleDontAllowDeselection) {
+		[indexesToSelect addObjectsFromArray:self.selectedIndexes];
+		if (![indexesToSelect containsObject:indexPath]) {
+			[indexesToSelect addObject:indexPath];
+		}
+	
 	} else if (selectionType == JNWCollectionViewSelectionTypeExtending) {
 		// From what I have determined, this behavior should be as follows.
 		// Take the index selected first, and select all items between there and the
 		// last selected item.
-		NSIndexPath *firstIndex = (self.selectedIndexes.count > 0 ? self.selectedIndexes[0] : nil);
+		NSIndexPath *firstIndex = [self.selectedIndexes firstObject];
 		if (firstIndex != nil) {
-			[indexesToSelect addObject:firstIndex];
+			[indexesToSelect addObjectsFromArray:self.selectedIndexes];
+			//[indexesToSelect addObject:firstIndex];
 			
 			if (![firstIndex isEqual:indexPath]) {
 				NSComparisonResult order = [firstIndex compare:indexPath];
@@ -1009,13 +1020,14 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	
 	// Detect if modifier flags are held down.
 	// We prioritize the command key over the shift key.
-	if (event.modifierFlags & NSCommandKeyMask) {
+	if (event.modifierFlags & NSCommandKeyMask && self.allowsMultipleSelection) {
 		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES selectionType:JNWCollectionViewSelectionTypeMultiple];
-	} else if (event.modifierFlags & NSShiftKeyMask) {
+	} else if (event.modifierFlags & NSShiftKeyMask && self.allowsMultipleSelection) {
 		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES selectionType:JNWCollectionViewSelectionTypeExtending];
 	} else {
 		[self selectItemAtIndexPath:indexPath atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];
 	}
+	self.multipleSelectionSelectedIndexPath = nil;
 }
 
 - (void)mouseUpInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
@@ -1039,45 +1051,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	}
 }
 
-- (void)moveUp:(id)sender {
-	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionUp currentIndexPath:[self indexPathForSelectedItem]];
-	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];}
-
-- (void)moveUpAndModifySelection:(id)sender {
-	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionUp currentIndexPath:[self indexPathForSelectedItem]];
-	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES selectionType:JNWCollectionViewSelectionTypeExtending];
-}
-
-- (void)moveDown:(id)sender {
-	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionDown currentIndexPath:[self indexPathForSelectedItem]];
-	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];
-}
-
-- (void)moveDownAndModifySelection:(id)sender {
-	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionDown currentIndexPath:[self indexPathForSelectedItem]];
-	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES selectionType:JNWCollectionViewSelectionTypeExtending];
-}
-
-- (void)moveRight:(id)sender {
-	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionRight currentIndexPath:[self indexPathForSelectedItem]];
-	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];
-}
-
-- (void)moveRightAndModifySelection:(id)sender {
-	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionRight currentIndexPath:[self indexPathForSelectedItem]];
-	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES selectionType:JNWCollectionViewSelectionTypeExtending];
-}
-
-- (void)moveLeft:(id)sender {
-	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionLeft currentIndexPath:[self indexPathForSelectedItem]];
-	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];
-}
-
-- (void)moveLeftAndModifySelection:(id)sender {
-	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionLeft currentIndexPath:[self indexPathForSelectedItem]];
-	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES selectionType:JNWCollectionViewSelectionTypeExtending];
-}
-
 - (void)selectAll:(id)sender {
 	[self selectItemsAtIndexPaths:[self allIndexPaths] animated:YES];
 }
@@ -1090,7 +1063,76 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	[self selectAll:nil];
 }
 
-#pragma mark NSObject
+#pragma mark - Keyboard Support
+
+- (void) _selectIndexPathAndAfterKeyPressAccountForMultiSelection:(NSIndexPath*)path animated:(BOOL)animated
+{
+	NSEvent* event = [NSApp currentEvent];
+	JNWCollectionViewSelectionType selectionType = JNWCollectionViewSelectionTypeSingle;
+	if (event.modifierFlags & NSCommandKeyMask && self.allowsMultipleSelection) {
+		selectionType = JNWCollectionViewSelectionTypeMultipleDontAllowDeselection;
+	}
+	else if (event.modifierFlags & NSShiftKeyMask && self.allowsMultipleSelection) {
+		selectionType = JNWCollectionViewSelectionTypeExtending;
+	}
+	[self selectItemAtIndexPath:path atScrollPosition:JNWCollectionViewScrollPositionNearest animated:animated selectionType:selectionType];
+	self.multipleSelectionSelectedIndexPath = path;
+}
+
+- (void)moveUp:(id)sender
+{
+	NSIndexPath* currentIndexPath = (self.multipleSelectionSelectedIndexPath) ? self.multipleSelectionSelectedIndexPath : [[self indexPathsForSelectedItems] firstObject];
+	
+	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionUp currentIndexPath:currentIndexPath];
+	
+	if ([self.selectedIndexes containsObject:toSelect]) {
+		toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionUp currentIndexPath:[[self indexPathsForSelectedItems] firstObject]];
+	}
+	
+	[self _selectIndexPathAndAfterKeyPressAccountForMultiSelection:toSelect animated:YES];
+}
+
+- (void)moveDown:(id)sender
+{
+	NSIndexPath* currentIndexPath = (self.multipleSelectionSelectedIndexPath) ? self.multipleSelectionSelectedIndexPath : [[self indexPathsForSelectedItems] lastObject];
+	
+	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionDown currentIndexPath:currentIndexPath];
+	
+	if ([self.selectedIndexes containsObject:toSelect]) {
+		toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionDown currentIndexPath:[[self indexPathsForSelectedItems] lastObject]];
+	}
+	
+	[self _selectIndexPathAndAfterKeyPressAccountForMultiSelection:toSelect animated:YES];
+}
+
+- (void)moveRight:(id)sender
+{
+	NSIndexPath* currentIndexPath = (self.multipleSelectionSelectedIndexPath) ? self.multipleSelectionSelectedIndexPath : [[self indexPathsForSelectedItems] lastObject];
+	
+	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionRight currentIndexPath:currentIndexPath];
+	
+	if ([self.selectedIndexes containsObject:toSelect]) {
+		toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionRight currentIndexPath:[[self indexPathsForSelectedItems] lastObject]];
+	}
+	
+	[self _selectIndexPathAndAfterKeyPressAccountForMultiSelection:toSelect animated:YES];
+}
+
+- (void)moveLeft:(id)sender
+{
+	NSIndexPath* currentIndexPath = (self.multipleSelectionSelectedIndexPath) ? self.multipleSelectionSelectedIndexPath : [[self indexPathsForSelectedItems] firstObject];
+	
+	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionLeft currentIndexPath:currentIndexPath];
+	
+	if ([self.selectedIndexes containsObject:toSelect]) {
+		toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionLeft currentIndexPath:[[self indexPathsForSelectedItems] firstObject]];
+	}
+	
+	[self _selectIndexPathAndAfterKeyPressAccountForMultiSelection:toSelect animated:YES];
+}
+
+
+#pragma mark - NSObject
 
 - (NSString *)description {
 	return [NSString stringWithFormat:@"<%@: %p; frame = %@; layer = <%@: %p>; content offset: %@> collection view layout: %@",

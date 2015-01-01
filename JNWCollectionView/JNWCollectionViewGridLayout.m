@@ -72,8 +72,6 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	self = [super init];
 	if (self == nil) return nil;
 	self.itemSize = JNWCollectionViewGridLayoutDefaultSize;
-	self.itemPaddingEnabled = YES;
-;
 	return self;
 }
 
@@ -117,12 +115,8 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	
 	CGFloat itemPadding = 0;
 	if (numberOfColumns > 0) {
-		if (self.itemHorizontalMargin == 0 && self.itemPaddingEnabled) {
-			CGFloat totalPadding = totalWidth - (numberOfColumns * itemSize.width);
-			itemPadding = floorf(totalPadding / numberOfColumns);
-        } else {
-            itemPadding = self.itemHorizontalMargin;
-        }
+        CGFloat totalPadding = totalWidth - (numberOfColumns * itemSize.width);
+        itemPadding = floorf(totalPadding / numberOfColumns);
 	}
 	else {
 		numberOfColumns = 1;
@@ -147,7 +141,7 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 		for (NSInteger item = 0; item < numberOfItems; item++) {
 			CGPoint origin = CGPointZero;
 			NSInteger column = ((item - (item % numberOfColumns)) / numberOfColumns);
-            origin.x = sectionInsets.left + itemPadding/2 + totalWidth/numberOfColumns * (item % numberOfColumns);
+            origin.x = sectionInsets.left + self.itemHorizontalMargin/2 + itemPadding/2 + totalWidth/numberOfColumns * (item % numberOfColumns);
 			origin.y = column * itemSize.height + column * verticalSpacing;
 			sectionInfo.itemInfo[item].origin = origin;
 		}

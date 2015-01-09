@@ -118,6 +118,10 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 /// back into the reuse queue.
 - (void)collectionView:(JNWCollectionView *)collectionView didEndDisplayingCell:(JNWCollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath;
 
+/// Tells the delegate that the collection view is about to reload the cells,
+/// view size has already been calculated,
+/// gives the delegate the chance the update the scroll position
+- (void)collectionViewWillRelayoutCells:(JNWCollectionView *)collectionView;
 @end
 
 #pragma mark Reloading and customizing

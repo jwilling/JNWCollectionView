@@ -51,6 +51,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 		unsigned int delegateDidDoubleClick:1;
 		unsigned int delegateDidRightClick:1;
 		unsigned int delegateDidEndDisplayingCell:1;
+		unsigned int delegateWillRelayoutCells:1;
 		
 		unsigned int wantsLayout;
 	} _collectionViewFlags;
@@ -146,6 +147,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
     _collectionViewFlags.delegateDidEndDisplayingCell = [delegate respondsToSelector:@selector(collectionView:didEndDisplayingCell:forItemAtIndexPath:)];
     _collectionViewFlags.delegateShouldScroll = [delegate respondsToSelector:@selector(collectionView:shouldScrollToItemAtIndexPath:)];
     _collectionViewFlags.delegateDidScroll = [delegate respondsToSelector:@selector(collectionView:didScrollToItemAtIndexPath:)];
+	_collectionViewFlags.delegateWillRelayoutCells = [delegate respondsToSelector:@selector(collectionViewWillRelayoutCells:)];
 }
 
 - (void)setDataSource:(id<JNWCollectionViewDataSource>)dataSource {
@@ -593,7 +595,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		BOOL shouldInvalidate = [self.collectionViewLayout shouldInvalidateLayoutForBoundsChange:visibleBounds];
 		[self.data recalculateAndPrepareLayout:shouldInvalidate];
 
-		[self performFullRelayoutForcingSubviewsReset:shouldInvalidate];
+#warning changed for performance reasons, what's the catch?
+		[self performFullRelayoutForcingSubviewsReset:YES];
 	}
 }
 
@@ -601,7 +604,13 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	// First we prepare the layout. In the future it would possibly be a good idea to coalesce
 	// this call to reduce unnecessary layout preparation calls.
 	[self.data recalculateAndPrepareLayout:YES];
-	[self performFullRelayoutForcingSubviewsReset:YES];
+	
+	if (_collectionViewFlags.delegateWillRelayoutCells) {
+		[self.delegate collectionViewWillRelayoutCells:self];
+	}
+	
+#warning changed for performance reasons, what's the catch?
+	[self performFullRelayoutForcingSubviewsReset:NO];
 }
 
 - (void)performFullRelayoutForcingSubviewsReset:(BOOL)forceReset {

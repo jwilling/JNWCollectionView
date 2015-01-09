@@ -1071,6 +1071,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	}
 }
 
+
+
 #pragma mark - Keyboard Support
 
 - (void) _selectIndexPathAndAfterKeyPressAccountForMultiSelection:(NSIndexPath*)path animated:(BOOL)animated
@@ -1140,6 +1142,26 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 
+- (BOOL)performKeyEquivalent:(NSEvent *)theEvent
+{
+	NSString* characters = [theEvent charactersIgnoringModifiers];
+	if ([characters length] == 0) {
+		return NO;
+	}
+	
+	unichar key = [[theEvent charactersIgnoringModifiers] characterAtIndex:0];
+	if (key == NSHomeFunctionKey && [self respondsToSelector:@selector(scrollToBeginningOfDocument:)]) {
+		[self scrollToBeginningOfDocument:theEvent];
+		return YES;
+	}
+	else if (key == NSEndFunctionKey && [self respondsToSelector:@selector(scrollToEndOfDocument:)]) {
+		[self scrollToEndOfDocument:theEvent];
+		return YES;
+	}
+	return NO;
+}
+
+
 #pragma mark - NSObject
 
 - (NSString *)description {
@@ -1147,5 +1169,19 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 			self.class, self, NSStringFromRect(self.frame), self.layer.class, self.layer,
 			NSStringFromPoint(self.documentVisibleRect.origin), self.collectionViewLayout];
 }
+
+#pragma mark - NSResponder
+
+// TODO: make these ask the layout for "where's the beginning/end?" in case of non-ltr layouts
+- (void)scrollToBeginningOfDocument:(id)sender {
+	[self.clipView scrollRectToVisible:NSMakeRect(0, 0, 0, 0) animated:self.animatesSelection];
+}
+
+- (void)scrollToEndOfDocument:(id)sender {
+	NSSize documentSize = ((JNWCollectionViewDocumentView *)self.clipView.documentView).frame.size;
+	NSRect scrollToRect = NSMakeRect(documentSize.width, documentSize.height, 0, 0);
+	[self.clipView scrollRectToVisible:scrollToRect animated:self.animatesSelection];
+}
+
 
 @end

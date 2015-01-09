@@ -1063,6 +1063,14 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	[self selectAll:nil];
 }
 
+- (void)mouseDown:(NSEvent *)theEvent
+{
+	NSEvent* event = [NSApp currentEvent];
+	if ((event.modifierFlags >> 16) == 0) {
+		[self deselectAllItems];
+	}
+}
+
 #pragma mark - Keyboard Support
 
 - (void) _selectIndexPathAndAfterKeyPressAccountForMultiSelection:(NSIndexPath*)path animated:(BOOL)animated

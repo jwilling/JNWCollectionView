@@ -52,6 +52,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 		unsigned int delegateDidRightClick:1;
 		unsigned int delegateDidEndDisplayingCell:1;
 		unsigned int delegateWillRelayoutCells:1;
+		unsigned int delegateWillDisplayCell:1;
 		
 		unsigned int wantsLayout;
 	} _collectionViewFlags;
@@ -148,6 +149,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
     _collectionViewFlags.delegateShouldScroll = [delegate respondsToSelector:@selector(collectionView:shouldScrollToItemAtIndexPath:)];
     _collectionViewFlags.delegateDidScroll = [delegate respondsToSelector:@selector(collectionView:didScrollToItemAtIndexPath:)];
 	_collectionViewFlags.delegateWillRelayoutCells = [delegate respondsToSelector:@selector(collectionViewWillRelayoutCells:)];
+	_collectionViewFlags.delegateWillDisplayCell = [delegate respondsToSelector:@selector(collectionView:willDisplayCell:forItemAtIndexPath:)];
 }
 
 - (void)setDataSource:(id<JNWCollectionViewDataSource>)dataSource {
@@ -718,6 +720,10 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		
 		JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
 		[self applyLayoutAttributes:attributes toCell:cell];
+		
+		if (_collectionViewFlags.delegateWillDisplayCell) {
+			[self.delegate collectionView:self willDisplayCell:cell forItemAtIndexPath:indexPath];
+		}
 		
 		if (cell.superview == nil) {
 			[self.documentView addSubview:cell];

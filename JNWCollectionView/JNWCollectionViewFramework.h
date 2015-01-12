@@ -114,10 +114,16 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 /// Tells the delegate that the specified index path has been scrolled to.
 - (void)collectionView:(JNWCollectionView *)collectionView didScrollToItemAtIndexPath:(NSIndexPath *)indexPath;
 
+- (void)collectionView:(JNWCollectionView *)collectionView willDisplayCell:(JNWCollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath;
+
 /// Tells the delegate that the cell for the specified index path has been put
 /// back into the reuse queue.
 - (void)collectionView:(JNWCollectionView *)collectionView didEndDisplayingCell:(JNWCollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath;
 
+/// Tells the delegate that the collection view is about to reload the cells,
+/// view size has already been calculated,
+/// gives the delegate the chance the update the scroll position
+- (void)collectionViewWillRelayoutCells:(JNWCollectionView *)collectionView;
 @end
 
 #pragma mark Reloading and customizing
@@ -267,6 +273,11 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 /// Defaults to YES.
 @property (nonatomic, assign) BOOL allowsEmptySelection;
 
+/// If set to NO, the collection view will not extend the selection when using command and shift modifier keys
+///
+/// Defaults to YES.
+@property (nonatomic, assign) BOOL allowsMultipleSelection;
+
 /// Scrolls the collection view to the item at the specified path, optionally animated. The scroll position determines
 /// where the item is positioned on the screen.
 - (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition animated:(BOOL)animated;
@@ -275,6 +286,12 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 /// The collection view will then scroll to that item in the position as determined by scrollPosition. If no scroll is
 /// desired, pass in JNWCollectionViewScrollPositionNone to prevent the scroll..
 - (void)selectItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition animated:(BOOL)animated;
+
+/// Selects the item at the specified index path, deselecting any other selected items in the process, optionally animated.
+/// The collection view will then scroll to that item in the position as determined by scrollPosition. If no scroll is
+/// desired, pass in JNWCollectionViewScrollPositionNone to prevent the scroll..
+/// extendSelection: A BOOL value that specifies whether to extend the current selection. Pass YES to extends the selection; NO replaces the current selection.
+- (void)selectItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition byExtendingSelection:(BOOL)extendSelection animated:(BOOL)animated;
 
 /// Selects all items in the collection view.
 - (void)selectAllItems;

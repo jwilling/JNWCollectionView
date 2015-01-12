@@ -62,11 +62,6 @@ extern NSString * const JNWCollectionViewGridLayoutFooterKind;
 /// override any value set here.
 @property (nonatomic, assign) CGSize itemSize;
 
-/// Choose whether even padding between horizontal items is enabled.
-///
-/// Default is YES.
-@property (nonatomic, assign) BOOL itemPaddingEnabled;
-
 /// The vertical spacing between rows in the grid.
 ///
 /// Defaults to 0.
@@ -77,4 +72,13 @@ extern NSString * const JNWCollectionViewGridLayoutFooterKind;
 /// Defaults to 0
 @property (nonatomic, assign) CGFloat itemHorizontalMargin;
 
+@end
+
+
+@interface JNWCollectionViewGridLayout (Deprecated)
+/// Choose whether even padding between horizontal items is enabled.
+/// Not used anymore. Please use Flow Layout.
+///
+/// Default is YES.
+@property (nonatomic, assign) BOOL itemPaddingEnabled;
 @end

@@ -157,15 +157,13 @@
 	return self.backgroundView.image;
 }
 
-- (void)mouseDown:(NSEvent *)theEvent {
-	[super mouseDown:theEvent];
-	
+- (void)mouseDown:(NSEvent *)theEvent
+{
 	[self.collectionView mouseDownInCollectionViewCell:self withEvent:theEvent];
 }
 
-- (void)mouseUp:(NSEvent *)theEvent {
-	[super mouseUp:theEvent];
-	
+- (void)mouseUp:(NSEvent *)theEvent
+{
 	[self.collectionView mouseUpInCollectionViewCell:self withEvent:theEvent];
 	
 	if (theEvent.clickCount == 2) {

@@ -72,8 +72,6 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	self = [super init];
 	if (self == nil) return nil;
 	self.itemSize = JNWCollectionViewGridLayoutDefaultSize;
-	self.itemPaddingEnabled = YES;
-;
 	return self;
 }
 
@@ -115,18 +113,15 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	NSUInteger numberOfSections = [self.collectionView numberOfSections];
 	CGFloat verticalSpacing = self.verticalSpacing;
 	
-	self.itemPadding = 0;
+	CGFloat itemPadding = 0;
 	if (numberOfColumns > 0) {
-		if (self.itemHorizontalMargin == 0 && self.itemPaddingEnabled) {
-			CGFloat totalPadding = totalWidth - (numberOfColumns * itemSize.width);
-			self.itemPadding = floorf(totalPadding / (numberOfColumns + 1));
-        } else {
-            self.itemPadding = self.itemHorizontalMargin;
-        }
+        CGFloat totalPadding = totalWidth - (numberOfColumns * itemSize.width);
+        itemPadding = floorf(totalPadding / numberOfColumns);
 	}
 	else {
 		numberOfColumns = 1;
 	}
+    self.itemPadding = itemPadding;
 	self.numberOfColumns = numberOfColumns;
 	
 	CGFloat totalHeight = 0;
@@ -146,7 +141,7 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 		for (NSInteger item = 0; item < numberOfItems; item++) {
 			CGPoint origin = CGPointZero;
 			NSInteger column = ((item - (item % numberOfColumns)) / numberOfColumns);
-			origin.x = sectionInsets.left + self.itemPadding + (item % numberOfColumns) * (itemSize.width + self.itemPadding);
+            origin.x = sectionInsets.left + self.itemHorizontalMargin/2 + itemPadding/2 + totalWidth/numberOfColumns * (item % numberOfColumns);
 			origin.y = column * itemSize.height + column * verticalSpacing;
 			sectionInfo.itemInfo[item].origin = origin;
 		}
@@ -224,13 +219,12 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	} else if (direction == JNWCollectionViewDirectionUp) {
 		CGPoint origin = [self.collectionView rectForItemAtIndexPath:currentIndexPath].origin;
 		// Bump the origin up to the cell directly above this one.
-		origin.y -= 1; // TODO: Use padding here when implemented.
+		origin.y -= (self.itemSize.height + self.verticalSpacing);
 		newIndexPath = [self.collectionView indexPathForItemAtPoint:origin];
 	} else if (direction == JNWCollectionViewDirectionDown) {
-		CGRect frame = [self.collectionView rectForItemAtIndexPath:currentIndexPath];
-		CGPoint origin = frame.origin;
+		CGPoint origin = [self.collectionView rectForItemAtIndexPath:currentIndexPath].origin;
 		// Bump the origin down to the cell directly below this one.
-		origin.y += frame.size.height + 1; // TODO: Use padding here when implemented.
+		origin.y += (self.itemSize.height + self.verticalSpacing);
 		newIndexPath = [self.collectionView indexPathForItemAtPoint:origin];
 	}
 	

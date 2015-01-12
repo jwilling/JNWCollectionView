@@ -507,18 +507,19 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 			break;
 		case JNWCollectionViewScrollPositionTop:
 			// make the top of our rect flush with the top of the visible bounds
-			rect.size.height = CGRectGetHeight(visibleRect);
+			rect.size.height = NSHeight(visibleRect);
 			//rect.origin.y = self.documentVisibleRect.origin.y + rect.size.height;
 			break;
 		case JNWCollectionViewScrollPositionMiddle:
 			// TODO
-			rect.origin.y -= ((CGRectGetHeight(visibleRect)-CGRectGetHeight(rect)) / 2.f);
+			
+			rect.origin.y -= ((NSHeight(visibleRect)-NSHeight(rect)) / 2.f);
 			rect.size.height = self.bounds.size.height;
 			break;
 		case JNWCollectionViewScrollPositionBottom:
 			// make the bottom of our rect flush with the bottom of the visible bounds
-			rect.size.height = CGRectGetHeight(visibleRect);
-			rect.origin.y -= CGRectGetHeight(visibleRect);
+			rect.size.height = NSHeight(visibleRect);
+			rect.origin.y -= NSHeight(visibleRect);
 			break;
 		case JNWCollectionViewScrollPositionNone:
 			// no scroll needed
@@ -607,10 +608,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	// this call to reduce unnecessary layout preparation calls.
 	[self.data recalculateAndPrepareLayout:YES];
 	
-	if (_collectionViewFlags.delegateWillRelayoutCells) {
-		[self.delegate collectionViewWillRelayoutCells:self];
-	}
-	
 #warning changed for performance reasons, what's the catch?
 	[self performFullRelayoutForcingSubviewsReset:NO];
 }
@@ -621,6 +618,11 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	}
 	
 	[self layoutDocumentView];
+	
+	if (_collectionViewFlags.delegateWillRelayoutCells) {
+		[self.delegate collectionViewWillRelayoutCells:self];
+	}
+	
 	[self layoutCellsWithRedraw:YES];
 	[self layoutSupplementaryViewsWithRedraw:YES];
 	

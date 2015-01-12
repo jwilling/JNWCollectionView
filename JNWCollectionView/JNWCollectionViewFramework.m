@@ -936,6 +936,15 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	[self selectItemAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated selectionType:JNWCollectionViewSelectionTypeSingle];
 }
 
+- (void)selectItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition byExtendingSelection:(BOOL)extendSelection animated:(BOOL)animated
+{
+	if (!extendSelection) {
+		[self selectItemAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated];
+	} else {
+		[self selectItemAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated selectionType:JNWCollectionViewSelectionTypeMultiple];
+	}
+}
+
 - (NSIndexPath *)indexPathForNextSelectableItemAfterIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath == nil && [self validateIndexPath:[NSIndexPath jnw_indexPathForItem:0 inSection:0]]) {
 		// Passing `nil` will select the very first index path

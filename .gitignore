@@ -16,3 +16,5 @@ DerivedData
 .idea/
 *.hmap
 *.xccheckout
+Podfile.lock
+Pods/

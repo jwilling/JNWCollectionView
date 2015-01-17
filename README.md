@@ -91,7 +91,7 @@ You now have a fully-functioning collection view. But that's just scratching the
 
 ### What makes this better than NSCollectionView / NSTableView? ###
 
-`NSCollectionView` is sadly neglected. `NSCollectionView` does not attempt to reuse cells at all, meaning it will every single cell, even if it's not onscreen. It cannot handle being layer-backed, and therefore scrolling performance is terrible. It is not very customizable.
+`NSCollectionView` is sadly neglected. `NSCollectionView` does not attempt to reuse cells at all, meaning it will instantiate every single cell, even if it's not onscreen. It cannot handle being layer-backed, and therefore scrolling performance is terrible. It is not very customizable.
 
 `NSTableView` is (still) a well designed class, however it is not perfect. For example, in newer versions of OS X, it forces Auto Layout to be enabled. It is not very easy to customize, and its support for legacy brings a lot of baggage along with the current API. Although scrolling performance is quite good, it can be improved upon.
 
@@ -131,10 +131,8 @@ Take a look [at the header itself](https://github.com/jwilling/jnwcollectionview
 
 ## How do I add it to my project? ##
 
-`JNWCollectionView` has external dependencies. When you clone the project, make sure you clone the project recursively to pull down the submodules.
+`JNWCollectionView` has external dependencies. After you clone the project run `pod install` then open `JNWCollectionView.xcworkspace`
 
-    git clone --recursive https://github.com/jwilling/JNWCollectionView.git
-    
 One you have the framework pulled, the next step is to link the framework with your app. The easiest way to do this is to add `JNWCollectionView` as a subproject of your project as a target dependency. If you're confused, the demo application demonstrates the correct way to link to the framework.
 
 ## Case Study ##

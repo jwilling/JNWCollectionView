@@ -328,6 +328,48 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	}
 }
 
+- (void)reloadCellAtIndexPath:(NSIndexPath*)indexPath{
+	
+	_collectionViewFlags.wantsLayout = YES;
+	
+	[self.selectedIndexes removeAllObjects];
+	[self.data recalculateAndPrepareLayout:YES];
+	[self layoutDocumentView];
+
+	JNWCollectionViewCell *cell = [self.dataSource collectionView:self cellForItemAtIndexPath:indexPath];
+	
+	cell.indexPath = indexPath;
+	cell.collectionView = self;
+	
+	JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
+	[self applyLayoutAttributes:attributes toCell:cell];
+	
+	NSMutableArray *tmp = [[NSMutableArray alloc] initWithArray:[[self.documentView subviews] copy]];
+	[tmp replaceObjectAtIndex:[indexPath indexAtPosition:1] withObject:cell];
+	
+	NSArray *subviews = [[self.documentView subviews] copy];
+	for (NSView *view in subviews) {
+		[view removeFromSuperview];
+	}
+	
+	for(NSView *newView in tmp){
+		[self.documentView addSubview:newView];
+	}
+	
+	if ([self.selectedIndexes containsObject:indexPath])
+		cell.selected = YES;
+	else
+		cell.selected = NO;
+	
+	self.visibleCellsMap[indexPath] = cell;
+	
+	_lastDrawnSize = self.visibleSize;
+	if (!self.allowsEmptySelection) {
+		NSIndexPath *indexPath = [self indexPathForNextSelectableItemAfterIndexPath:nil];
+		[self selectItemAtIndexPath:indexPath animated:NO];
+	}
+}
+
 - (void)setCollectionViewLayout:(JNWCollectionViewLayout *)collectionViewLayout {
 	if (self.collectionViewLayout == collectionViewLayout)
 		return;

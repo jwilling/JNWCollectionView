@@ -34,6 +34,7 @@
 	self = [super initWithFrame:frameRect];
 	if (self == nil) return nil;
 	self.wantsLayer = YES;
+    [self.layer setMasksToBounds:NO];
 	self.layerContentsRedrawPolicy = NSViewLayerContentsRedrawOnSetNeedsDisplay;
 	return self;
 }
@@ -80,7 +81,8 @@
 	
 	self.wantsLayer = YES;
 	self.layerContentsRedrawPolicy = NSViewLayerContentsRedrawOnSetNeedsDisplay;
-
+    [self.layer setMasksToBounds:NO];
+    
 	_backgroundView = [[JNWCollectionViewCellBackgroundView alloc] initWithFrame:self.bounds];
 	_backgroundView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
 	

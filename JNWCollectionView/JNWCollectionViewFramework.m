@@ -329,45 +329,47 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (void)reloadCellAtIndexPath:(NSIndexPath*)indexPath{
-	
-	_collectionViewFlags.wantsLayout = YES;
-	
-	[self.selectedIndexes removeAllObjects];
-	[self.data recalculateAndPrepareLayout:YES];
-	[self layoutDocumentView];
 
-	JNWCollectionViewCell *cell = [self.dataSource collectionView:self cellForItemAtIndexPath:indexPath];
-	
-	cell.indexPath = indexPath;
-	cell.collectionView = self;
-	
-	JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
-	[self applyLayoutAttributes:attributes toCell:cell];
-	
-	NSMutableArray *tmp = [[NSMutableArray alloc] initWithArray:[[self.documentView subviews] copy]];
-	[tmp replaceObjectAtIndex:[indexPath indexAtPosition:1] withObject:cell];
-	
-	NSArray *subviews = [[self.documentView subviews] copy];
-	for (NSView *view in subviews) {
-		[view removeFromSuperview];
-	}
-	
-	for(NSView *newView in tmp){
-		[self.documentView addSubview:newView];
-	}
-	
-	if ([self.selectedIndexes containsObject:indexPath])
-		cell.selected = YES;
-	else
-		cell.selected = NO;
-	
-	self.visibleCellsMap[indexPath] = cell;
-	
-	_lastDrawnSize = self.visibleSize;
-	if (!self.allowsEmptySelection) {
-		NSIndexPath *indexPath = [self indexPathForNextSelectableItemAfterIndexPath:nil];
-		[self selectItemAtIndexPath:indexPath animated:NO];
-	}
+    _collectionViewFlags.wantsLayout = YES;
+
+    [self.selectedIndexes removeAllObjects];
+    [self.data recalculateAndPrepareLayout:YES];
+    [self layoutDocumentView];
+
+    JNWCollectionViewCell *newCell = [self.dataSource collectionView:self cellForItemAtIndexPath:indexPath];
+
+    newCell.indexPath = indexPath;
+    newCell.collectionView = self;
+
+    JNWCollectionViewLayoutAttributes *attributes = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
+    [self applyLayoutAttributes:attributes toCell:newCell];
+
+    JNWCollectionViewCell *oldCell = [self cellForItemAtIndexPath:indexPath];
+    NSUInteger subviewIndex = [self.documentView.subviews indexOfObject:oldCell];
+
+    if (subviewIndex != NSNotFound) {
+        [oldCell removeFromSuperview];
+    }
+
+    if (newCell.superview == nil) {
+        [self.documentView addSubview:newCell];
+    }
+    else {
+        [newCell setHidden:NO];
+    }
+
+    if ([self.selectedIndexes containsObject:indexPath])
+        newCell.selected = YES;
+    else
+        newCell.selected = NO;
+
+    self.visibleCellsMap[indexPath] = newCell;
+
+    _lastDrawnSize = self.visibleSize;
+    if (!self.allowsEmptySelection) {
+        NSIndexPath *indexPath = [self indexPathForNextSelectableItemAfterIndexPath:nil];
+        [self selectItemAtIndexPath:indexPath animated:NO];
+    }
 }
 
 - (void)setCollectionViewLayout:(JNWCollectionViewLayout *)collectionViewLayout {

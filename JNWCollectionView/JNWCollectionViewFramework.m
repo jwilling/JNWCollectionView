@@ -79,13 +79,11 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 @property (nonatomic, strong) NSMutableDictionary *supplementaryViewClassMap; // { "kind/identifier" : class }
 @property (nonatomic, strong) NSMutableDictionary *supplementaryViewNibMap; // { "kind/identifier" : nib }
 
-@property (nonatomic, strong) NSView *documentView;
+@property (nonatomic, strong) NSView *myDocumentView;
 
 @end
 
 @implementation JNWCollectionView
-@dynamic drawsBackground;
-@dynamic backgroundColor;
 
 // We're using a static function for the common initialization so that subclassers
 // don't accidentally override this method in their own common init method.
@@ -106,7 +104,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	collectionView.wantsLayer = YES;
 	
 	// Set the document view to a custom class that returns YES to -isFlipped.
-	collectionView.documentView = [[JNWCollectionViewDocumentView alloc] initWithFrame:CGRectZero];
+	collectionView.myDocumentView = [[JNWCollectionViewDocumentView alloc] initWithFrame:CGRectZero];
+	collectionView.documentView = collectionView.myDocumentView;
 		
 	// We don't want to perform an initial layout pass until the user has called -reloadData.
 	collectionView->_collectionViewFlags.wantsLayout = NO;

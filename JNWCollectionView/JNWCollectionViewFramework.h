@@ -190,18 +190,6 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 /// Defaults to nil.
 @property (nonatomic, strong) JNWCollectionViewLayout *collectionViewLayout;
 
-/// The background color determines what is drawn underneath any cells that might be visible
-/// at the time. If this is a repeating pattern image, it will scroll along with the content.
-///
-/// Defaults to a white color.
-@property (nonatomic, strong) NSColor *backgroundColor;
-
-/// Whether or not the collection view draws the background color. If the collection view
-/// background color needs to be transparent, this should be disabled.
-///
-/// Defaults to YES.
-@property (nonatomic, assign) BOOL drawsBackground;
-
 #pragma mark - Information
 
 /// Returns the total number of sections.

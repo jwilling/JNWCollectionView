@@ -1,0 +1,44 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "623FF6F374D22BC9E79608E37B443A964F3B5FF7",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "8884BD3B878631A1500EC9895E6A3CF4CB0AB3DB" : 0,
+    "2FD0F96481B39E576130E173BF6923CF52C91FF7" : 0,
+    "52FC6C770A2EDF17C166C3492851DDC1B14F32C1" : 0,
+    "623FF6F374D22BC9E79608E37B443A964F3B5FF7" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "F46380DD-3E35-4BA3-94FD-E3089D4D267C",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "8884BD3B878631A1500EC9895E6A3CF4CB0AB3DB" : "JNWCollectionViewexternal\/Expecta",
+    "2FD0F96481B39E576130E173BF6923CF52C91FF7" : "JNWCollectionViewexternal\/Specta",
+    "52FC6C770A2EDF17C166C3492851DDC1B14F32C1" : "JNWCollectionViewexternal\/JNWScrollView",
+    "623FF6F374D22BC9E79608E37B443A964F3B5FF7" : "JNWCollectionView"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "JNWCollectionView",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "JNWCollectionView.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/petejkim\/specta.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "2FD0F96481B39E576130E173BF6923CF52C91FF7"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/jwilling\/JNWScrollView.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "52FC6C770A2EDF17C166C3492851DDC1B14F32C1"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/jwilling\/JNWCollectionView.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "623FF6F374D22BC9E79608E37B443A964F3B5FF7"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/petejkim\/expecta.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8884BD3B878631A1500EC9895E6A3CF4CB0AB3DB"
+    }
+  ]
+}

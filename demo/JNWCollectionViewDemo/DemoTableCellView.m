@@ -9,10 +9,10 @@
 #import "DemoTableCellView.h"
 #import "NSImage+DemoAdditions.h"
 #import "DemoImageCache.h"
-#import "JNWLabel.h"
+#import "Label.h"
 
 @interface DemoTableCellView()
-@property (nonatomic, strong) JNWLabel *label;
+@property (nonatomic, strong) Label *label;
 @end
 
 @implementation DemoTableCellView
@@ -20,10 +20,11 @@
 - (void)commonInit {
 	self.wantsLayer = YES;
 	self.layer.backgroundColor = [NSColor redColor].CGColor;
-	self.label = [[JNWLabel alloc] initWithFrame:self.bounds];
+	self.layerContentsRedrawPolicy = NSViewLayerContentsRedrawOnSetNeedsDisplay;
+	
+	self.label = [[Label alloc] initWithFrame:self.bounds];
 	self.label.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
 	[self addSubview:self.label];
-	self.layerContentsRedrawPolicy = NSViewLayerContentsRedrawOnSetNeedsDisplay;
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
@@ -43,7 +44,7 @@
 - (void)setLabelText:(NSString *)labelText {
 	_labelText = labelText;
 	
-	self.label.text = labelText;
+	self.label.stringValue = labelText;
 }
 
 - (BOOL)wantsUpdateLayer {

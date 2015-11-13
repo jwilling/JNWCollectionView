@@ -9,12 +9,11 @@
 #import "DemoWindowController.h"
 #import "ListDemoViewController.h"
 #import "GridDemoViewController.h"
-
 #import "NSTableViewDemoViewController.h"
 
 typedef enum {
-	ListLayout = 0,
-	GridLayout = 1,
+	GridLayout = 0,
+	ListLayout = 1,
 	NSTableViewLayout = 2
 } LayoutType;
 
@@ -27,7 +26,7 @@ typedef enum {
 
 - (void)windowDidLoad {
     [super windowDidLoad];
-	self.currentViewController = [[ListDemoViewController alloc] init];
+	self.currentViewController = [[GridDemoViewController alloc] init];
 }
 
 - (id)init {
@@ -41,10 +40,10 @@ typedef enum {
 		return;
 	self.layoutType = layout;
 	
-	if (layout == ListLayout) {
-		self.currentViewController = [[ListDemoViewController alloc] init];
-	} else if (layout == GridLayout) {
+	if (layout == GridLayout) {
 		self.currentViewController = [[GridDemoViewController alloc] init];
+	} else if (layout == ListLayout) {
+		self.currentViewController = [[ListDemoViewController alloc] init];
 	} else if (layout == NSTableViewLayout) {
 		self.currentViewController = [[NSTableViewDemoViewController alloc] init];
 	}

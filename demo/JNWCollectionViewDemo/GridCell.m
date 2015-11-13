@@ -7,9 +7,9 @@
 //
 
 #import "GridCell.h"
-#import "JNWLabel.h"
 #import "NSImage+DemoAdditions.h"
 #import "DemoImageCache.h"
+#import "Label.h"
 
 @implementation GridCell
 

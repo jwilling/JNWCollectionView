@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AB15147F171511DD00871248 /* JNWCollectionView.framework in Copy Framework */ = {isa = PBXBuildFile; fileRef = AB2E9603170CB107004678DC /* JNWCollectionView.framework */; };
+		AB15147F171511DD00871248 /* JNWCollectionView.framework in Copy Framework */ = {isa = PBXBuildFile; fileRef = AB2E9603170CB107004678DC /* JNWCollectionView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AB29A69016FEFE1B00C9A941 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB29A68F16FEFE1B00C9A941 /* QuartzCore.framework */; };
 		AB2E9606170CB116004678DC /* JNWCollectionView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB2E9603170CB107004678DC /* JNWCollectionView.framework */; };
 		AB2E960B170CB196004678DC /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB2E9609170CB196004678DC /* MainMenu.xib */; };
@@ -24,13 +24,12 @@
 		ABA276AB171D146D005C8E56 /* NSTableViewDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA276A9171D146D005C8E56 /* NSTableViewDemoViewController.m */; };
 		ABA276AC171D146D005C8E56 /* NSTableViewDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABA276AA171D146D005C8E56 /* NSTableViewDemoViewController.xib */; };
 		ABA276AF171D14E8005C8E56 /* DemoTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA276AE171D14E8005C8E56 /* DemoTableCellView.m */; };
-		ABAF155B1718C39C00658A1D /* JNWLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = ABAF15581718C39C00658A1D /* JNWLabel.m */; };
-		ABAF155C1718C39C00658A1D /* JNWLabel+Accessibility.m in Sources */ = {isa = PBXBuildFile; fileRef = ABAF155A1718C39C00658A1D /* JNWLabel+Accessibility.m */; };
 		ABAF15691718E67C00658A1D /* DemoWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABAF15671718E67C00658A1D /* DemoWindowController.m */; };
 		ABAF156A1718E67C00658A1D /* DemoWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABAF15681718E67C00658A1D /* DemoWindowController.xib */; };
 		ABAF156D1718F6D000658A1D /* ListDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABAF156C1718F6D000658A1D /* ListDemoViewController.m */; };
 		ABB0F2F716FD7D19002004F5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB0F2F616FD7D19002004F5 /* Cocoa.framework */; };
 		ABB1B207171E095B009B9270 /* NSImage+DemoAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB1B206171E095B009B9270 /* NSImage+DemoAdditions.m */; };
+		ABF854121BF5A1FC001087FE /* Label.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF854111BF5A1FC001087FE /* Label.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,13 +39,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = ABB023F1170791D300537A92;
 			remoteInfo = JNWCollectionView;
-		};
-		AB2E9604170CB107004678DC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AB2E95FD170CB107004678DC /* JNWCollectionView.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = ABB02409170791D300537A92;
-			remoteInfo = JNWCollectionViewTests;
 		};
 		AB2E9607170CB11D004678DC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -98,10 +90,6 @@
 		ABA276AA171D146D005C8E56 /* NSTableViewDemoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NSTableViewDemoViewController.xib; path = JNWCollectionViewDemo/NSTableViewDemoViewController.xib; sourceTree = SOURCE_ROOT; };
 		ABA276AD171D14E8005C8E56 /* DemoTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DemoTableCellView.h; path = JNWCollectionViewDemo/DemoTableCellView.h; sourceTree = SOURCE_ROOT; };
 		ABA276AE171D14E8005C8E56 /* DemoTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DemoTableCellView.m; path = JNWCollectionViewDemo/DemoTableCellView.m; sourceTree = SOURCE_ROOT; };
-		ABAF15571718C39C00658A1D /* JNWLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNWLabel.h; path = external/JNWLabel/JNWLabel.h; sourceTree = SOURCE_ROOT; };
-		ABAF15581718C39C00658A1D /* JNWLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JNWLabel.m; path = external/JNWLabel/JNWLabel.m; sourceTree = SOURCE_ROOT; };
-		ABAF15591718C39C00658A1D /* JNWLabel+Accessibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JNWLabel+Accessibility.h"; path = "external/JNWLabel/JNWLabel+Accessibility.h"; sourceTree = SOURCE_ROOT; };
-		ABAF155A1718C39C00658A1D /* JNWLabel+Accessibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "JNWLabel+Accessibility.m"; path = "external/JNWLabel/JNWLabel+Accessibility.m"; sourceTree = SOURCE_ROOT; };
 		ABAF15661718E67C00658A1D /* DemoWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DemoWindowController.h; path = JNWCollectionViewDemo/DemoWindowController.h; sourceTree = SOURCE_ROOT; };
 		ABAF15671718E67C00658A1D /* DemoWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DemoWindowController.m; path = JNWCollectionViewDemo/DemoWindowController.m; sourceTree = SOURCE_ROOT; };
 		ABAF15681718E67C00658A1D /* DemoWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DemoWindowController.xib; path = JNWCollectionViewDemo/DemoWindowController.xib; sourceTree = SOURCE_ROOT; };
@@ -114,6 +102,8 @@
 		ABB0F2FB16FD7D19002004F5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		ABB1B205171E095B009B9270 /* NSImage+DemoAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSImage+DemoAdditions.h"; path = "JNWCollectionViewDemo/NSImage+DemoAdditions.h"; sourceTree = SOURCE_ROOT; };
 		ABB1B206171E095B009B9270 /* NSImage+DemoAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSImage+DemoAdditions.m"; path = "JNWCollectionViewDemo/NSImage+DemoAdditions.m"; sourceTree = SOURCE_ROOT; };
+		ABF854101BF5A1FC001087FE /* Label.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Label.h; path = JNWCollectionViewDemo/Label.h; sourceTree = SOURCE_ROOT; };
+		ABF854111BF5A1FC001087FE /* Label.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Label.m; path = JNWCollectionViewDemo/Label.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,7 +124,6 @@
 			isa = PBXGroup;
 			children = (
 				AB2E9603170CB107004678DC /* JNWCollectionView.framework */,
-				AB2E9605170CB107004678DC /* JNWCollectionViewTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -161,17 +150,6 @@
 				ABA276AE171D14E8005C8E56 /* DemoTableCellView.m */,
 			);
 			name = "NSTableView (Comparison) Demo";
-			sourceTree = "<group>";
-		};
-		ABAF15551718C39300658A1D /* JNWLabel */ = {
-			isa = PBXGroup;
-			children = (
-				ABAF15571718C39C00658A1D /* JNWLabel.h */,
-				ABAF15581718C39C00658A1D /* JNWLabel.m */,
-				ABAF15591718C39C00658A1D /* JNWLabel+Accessibility.h */,
-				ABAF155A1718C39C00658A1D /* JNWLabel+Accessibility.m */,
-			);
-			name = JNWLabel;
 			sourceTree = "<group>";
 		};
 		ABB0F2EA16FD7D19002004F5 = {
@@ -215,7 +193,6 @@
 		ABB0F2FC16FD7D19002004F5 /* JNWCollectionViewDemo */ = {
 			isa = PBXGroup;
 			children = (
-				ABAF15551718C39300658A1D /* JNWLabel */,
 				AB3C722F170CABFF004A91DB /* AppDelegate.h */,
 				AB3C7230170CABFF004A91DB /* AppDelegate.m */,
 				AB2E9609170CB196004678DC /* MainMenu.xib */,
@@ -230,6 +207,8 @@
 				ABB1B206171E095B009B9270 /* NSImage+DemoAdditions.m */,
 				AB666C711749258D00545290 /* DemoImageCache.h */,
 				AB666C721749258D00545290 /* DemoImageCache.m */,
+				ABF854101BF5A1FC001087FE /* Label.h */,
+				ABF854111BF5A1FC001087FE /* Label.m */,
 			);
 			name = JNWCollectionViewDemo;
 			path = JNWTableViewDemo;
@@ -288,7 +267,7 @@
 		ABB0F2EB16FD7D19002004F5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = AppJon;
 			};
 			buildConfigurationList = ABB0F2EE16FD7D19002004F5 /* Build configuration list for PBXProject "JNWCollectionViewDemo" */;
@@ -322,13 +301,6 @@
 			remoteRef = AB2E9602170CB107004678DC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		AB2E9605170CB107004678DC /* JNWCollectionViewTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = JNWCollectionViewTests.octest;
-			remoteRef = AB2E9604170CB107004678DC /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -356,13 +328,12 @@
 				AB3C7238170CABFF004A91DB /* ListCell.m in Sources */,
 				AB3C7239170CABFF004A91DB /* ListHeader.m in Sources */,
 				AB3C7244170CAC32004A91DB /* main.m in Sources */,
-				ABAF155B1718C39C00658A1D /* JNWLabel.m in Sources */,
-				ABAF155C1718C39C00658A1D /* JNWLabel+Accessibility.m in Sources */,
 				ABAF15691718E67C00658A1D /* DemoWindowController.m in Sources */,
 				ABAF156D1718F6D000658A1D /* ListDemoViewController.m in Sources */,
 				ABA2769D171CFC80005C8E56 /* GridDemoViewController.m in Sources */,
 				ABA276A3171D0130005C8E56 /* GridCell.m in Sources */,
 				ABA276AB171D146D005C8E56 /* NSTableViewDemoViewController.m in Sources */,
+				ABF854121BF5A1FC001087FE /* Label.m in Sources */,
 				ABA276AF171D14E8005C8E56 /* DemoTableCellView.m in Sources */,
 				ABB1B207171E095B009B9270 /* NSImage+DemoAdditions.m in Sources */,
 				AB666C731749258D00545290 /* DemoImageCache.m in Sources */,
@@ -420,6 +391,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -433,7 +405,6 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
@@ -459,7 +430,6 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -477,6 +447,7 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/JNWCollectionViewDemo/JNWCollectionViewDemo-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.AppJon.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = JNWCollectionViewDemo;
 				WRAPPER_EXTENSION = app;
 			};
@@ -495,6 +466,7 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/JNWCollectionViewDemo/JNWCollectionViewDemo-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.AppJon.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = JNWCollectionViewDemo;
 				WRAPPER_EXTENSION = app;
 			};

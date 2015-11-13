@@ -8,11 +8,11 @@
 
 #import "ListCell.h"
 #import "NSImage+DemoAdditions.h"
-#import "JNWLabel.h"
 #import "DemoImageCache.h"
+#import "Label.h"
 
 @interface ListCell()
-@property (nonatomic, strong) JNWLabel *label;
+@property (nonatomic, strong) Label *label;
 @end
 
 @implementation ListCell
@@ -21,7 +21,7 @@
 	self = [super initWithFrame:frameRect];
 	if (self == nil) return nil;
 	
-	self.label = [[JNWLabel alloc] initWithFrame:CGRectZero];
+	self.label = [[Label alloc] initWithFrame:CGRectZero];
 	[self.contentView addSubview:self.label];
 	
 	return self;
@@ -38,7 +38,7 @@
 
 - (void)setCellLabelText:(NSString *)cellLabelText {
 	_cellLabelText = cellLabelText;
-	self.label.text = cellLabelText;
+	self.label.stringValue = cellLabelText;
 }
 
 - (void)setSelected:(BOOL)selected {

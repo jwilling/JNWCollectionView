@@ -188,13 +188,13 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 /// at the time. If this is a repeating pattern image, it will scroll along with the content.
 ///
 /// Defaults to a white color.
-@property (nonatomic, strong) NSColor *backgroundColor;
+@property (copy) NSColor *backgroundColor;
 
 /// Whether or not the collection view draws the background color. If the collection view
 /// background color needs to be transparent, this should be disabled.
 ///
 /// Defaults to YES.
-@property (nonatomic, assign) BOOL drawsBackground;
+@property (assign) BOOL drawsBackground;
 
 #pragma mark - Information
 

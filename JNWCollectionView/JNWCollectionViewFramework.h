@@ -24,7 +24,7 @@
 #if defined(COCOAPODS)
 #import <JNWScrollView/JNWScrollView.h>
 #else
-#import JNWScrollView.h
+#import "JNWScrollView.h"
 #endif
 
 typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {

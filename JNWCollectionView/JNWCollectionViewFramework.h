@@ -21,7 +21,11 @@
 #import "JNWCollectionViewCell.h"
 #import "JNWCollectionViewReusableView.h"
 #import "NSIndexPath+JNWAdditions.h"
+#if defined(COCOAPODS)
+#import <JNWScrollView/JNWScrollView.h>
+#else
 #import "JNWScrollView.h"
+#endif
 
 typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 	/// Does not scroll, only selects.

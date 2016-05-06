@@ -318,6 +318,11 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	_collectionViewFlags.wantsLayout = YES;
 			
 	// Remove any selected indexes we've been tracking.
+	if (_collectionViewFlags.delegateDidDeselect) {
+		for (NSIndexPath *indexPath in self.selectedIndexes) {
+			[self.delegate collectionView:self didDeselectItemAtIndexPath:indexPath];
+		}
+	}
 	[self.selectedIndexes removeAllObjects];
 	
 	[self.data recalculateAndPrepareLayout:YES];

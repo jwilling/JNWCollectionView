@@ -50,6 +50,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 		unsigned int delegateDidDoubleClick:1;
 		unsigned int delegateDidRightClick:1;
 		unsigned int delegateDidEndDisplayingCell:1;
+		unsigned int delegateMenuForEvent:1;
 		
 		unsigned int wantsLayout;
 	} _collectionViewFlags;
@@ -143,9 +144,10 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	_collectionViewFlags.delegateDidDeselect = [delegate respondsToSelector:@selector(collectionView:didDeselectItemAtIndexPath:)];
 	_collectionViewFlags.delegateDidDoubleClick = [delegate respondsToSelector:@selector(collectionView:didDoubleClickItemAtIndexPath:)];
 	_collectionViewFlags.delegateDidRightClick = [delegate respondsToSelector:@selector(collectionView:didRightClickItemAtIndexPath:)];
-    _collectionViewFlags.delegateDidEndDisplayingCell = [delegate respondsToSelector:@selector(collectionView:didEndDisplayingCell:forItemAtIndexPath:)];
-    _collectionViewFlags.delegateShouldScroll = [delegate respondsToSelector:@selector(collectionView:shouldScrollToItemAtIndexPath:)];
-    _collectionViewFlags.delegateDidScroll = [delegate respondsToSelector:@selector(collectionView:didScrollToItemAtIndexPath:)];
+	_collectionViewFlags.delegateDidEndDisplayingCell = [delegate respondsToSelector:@selector(collectionView:didEndDisplayingCell:forItemAtIndexPath:)];
+	_collectionViewFlags.delegateShouldScroll = [delegate respondsToSelector:@selector(collectionView:shouldScrollToItemAtIndexPath:)];
+	_collectionViewFlags.delegateDidScroll = [delegate respondsToSelector:@selector(collectionView:didScrollToItemAtIndexPath:)];
+	_collectionViewFlags.delegateMenuForEvent = [delegate respondsToSelector:@selector(collectionView:menuForEvent:)];
 }
 
 - (void)setDataSource:(id<JNWCollectionViewDataSource>)dataSource {
@@ -1099,6 +1101,14 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 
 - (void)selectAllItems {
 	[self selectAll:nil];
+}
+
+- (NSMenu *)menuForEvent:(NSEvent *)event {
+	if (_collectionViewFlags.delegateMenuForEvent) {
+		NSMenu *menu = [self.delegate collectionView:self menuForEvent:event];
+		return menu;
+	}
+	return nil;
 }
 
 #pragma mark NSObject

@@ -78,17 +78,30 @@
 	self = [super initWithFrame:frameRect];
 	if (self == nil) return nil;
 	
+	[self _commonInit];
+	
+	return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+	self = [super initWithCoder:coder];
+	if (self == nil) return nil;
+
+	[self _commonInit];
+	
+	return self;
+}
+
+- (void)_commonInit {
 	self.wantsLayer = YES;
 	self.layerContentsRedrawPolicy = NSViewLayerContentsRedrawOnSetNeedsDisplay;
 
 	_backgroundView = [[JNWCollectionViewCellBackgroundView alloc] initWithFrame:self.bounds];
 	_backgroundView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-	
+
 	_crossfadeDuration = 0.25;
-	
-	[self addSubview:_backgroundView positioned:NSWindowBelow relativeTo:_contentView];
-	
-	return self;
+
+	[self addSubview:_backgroundView positioned:NSWindowBelow relativeTo:nil];
 }
 
 - (void)prepareForReuse {

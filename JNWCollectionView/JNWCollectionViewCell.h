@@ -48,7 +48,7 @@
 /// Alternatively, a custom content view can be set for a flatter heirarchy. Note that
 /// any custom content views will have autoresizing masks applied to them, and the view
 /// will be layer-backed.
-@property (nonatomic, strong) NSView *contentView;
+@property (nonatomic, strong) IBOutlet NSView *contentView;
 
 /// Sets the background image or background color on a dedicated background view that
 /// is always beneath the content view.

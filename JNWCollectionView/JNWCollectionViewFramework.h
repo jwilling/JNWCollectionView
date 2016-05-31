@@ -122,6 +122,9 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 /// back into the reuse queue.
 - (void)collectionView:(JNWCollectionView *)collectionView didEndDisplayingCell:(JNWCollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath;
 
+// Asks the delegate if a contextual menu should be used for the given event.
+- (NSMenu *)collectionView:(JNWCollectionView *)collectionView menuForEvent:(NSEvent *)event;
+
 @end
 
 #pragma mark Reloading and customizing

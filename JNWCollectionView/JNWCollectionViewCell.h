@@ -38,6 +38,10 @@
 /// effects to the selection process.
 @property (nonatomic, assign) BOOL selected;
 
+/// Sets the hovering state with no animation. Subclassers should override this method to add side
+/// effects to the hovering process.
+@property (nonatomic, assign) BOOL hovered;
+
 /// Calls -setSelected:, animating any changes to the content of the background view, such as
 /// settting the background iamge or color.
 - (void)setSelected:(BOOL)selected animated:(BOOL)animate;

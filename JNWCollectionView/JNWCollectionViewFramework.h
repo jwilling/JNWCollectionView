@@ -94,6 +94,15 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 /// The mouse up event can occur outside of the originating cell.
 - (void)collectionView:(JNWCollectionView *)collectionView mouseUpInItemAtIndexPath:(NSIndexPath *)indexPath;
 
+/// Tells the delegate that the mouse moved inside the specified index path cell.
+- (void)collectionView:(JNWCollectionView *)collectionView mouseMovedInItemAtIndexPath:(NSIndexPath *)indexPath withModifierFlags:(NSEventModifierFlags)modFlags;
+
+/// Tells the delegate that the mouse entered in the specified index path cell.
+- (void)collectionView:(JNWCollectionView *)collectionView mouseEnteredInItemAtIndexPath:(NSIndexPath *)indexPath withModifierFlags:(NSEventModifierFlags)modFlags;
+
+/// Tells the delegate that the mouse exited from the specified index path cell.
+- (void)collectionView:(JNWCollectionView *)collectionView mouseExitedInItemAtIndexPath:(NSIndexPath *)indexPath withModifierFlags:(NSEventModifierFlags)modFlags;
+
 /// Asks the delegate if the item at the specified index path should be selected.
 - (BOOL)collectionView:(JNWCollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath;
 

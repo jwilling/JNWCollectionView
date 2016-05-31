@@ -101,6 +101,10 @@
 	// for subclasses
 }
 
+- (void)didLayoutWithFrame:(CGRect)frame {
+	// for subclasses
+}
+
 - (NSView *)contentView {
 	if (_contentView == nil) {
 		_contentView = [[NSView alloc] initWithFrame:self.bounds];

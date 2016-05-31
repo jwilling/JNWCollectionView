@@ -136,8 +136,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 
 - (void)setDelegate:(id<JNWCollectionViewDelegate>)delegate {	
 	_delegate = delegate;
-	_collectionViewFlags.delegateMouseUp = [delegate respondsToSelector:@selector(collectionView:mouseUpInItemAtIndexPath:)];
-	_collectionViewFlags.delegateMouseDown = [delegate respondsToSelector:@selector(collectionView:mouseDownInItemAtIndexPath:)];
+	_collectionViewFlags.delegateMouseUp = [delegate respondsToSelector:@selector(collectionView:mouseUpInItemAtIndexPath: withModifierFlags:)];
+	_collectionViewFlags.delegateMouseDown = [delegate respondsToSelector:@selector(collectionView:mouseDownInItemAtIndexPath:withModifierFlags:)];
 	_collectionViewFlags.delegateShouldSelect = [delegate respondsToSelector:@selector(collectionView:shouldSelectItemAtIndexPath:)];
 	_collectionViewFlags.delegateDidSelect = [delegate respondsToSelector:@selector(collectionView:didSelectItemAtIndexPath:)];
 	_collectionViewFlags.delegateShouldDeselect = [delegate respondsToSelector:@selector(collectionView:shouldDeselectItemAtIndexPath:)];
@@ -1019,7 +1019,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	}
 	
 	if (_collectionViewFlags.delegateMouseDown) {
-		[self.delegate collectionView:self mouseDownInItemAtIndexPath:indexPath];
+	    [self.delegate collectionView:self mouseDownInItemAtIndexPath:indexPath withModifierFlags:event.modifierFlags];
 	}
 	
 	// Detect if modifier flags are held down.
@@ -1036,7 +1036,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 - (void)mouseUpInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
 	if (_collectionViewFlags.delegateMouseUp) {
 		NSIndexPath *indexPath = [self indexPathForCell:cell];
-		[self.delegate collectionView:self mouseUpInItemAtIndexPath:indexPath];
+		[self.delegate collectionView:self mouseUpInItemAtIndexPath:indexPath withModifierFlags:event.modifierFlags];
 	}
 }
 

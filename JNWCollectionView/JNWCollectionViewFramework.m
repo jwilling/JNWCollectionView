@@ -738,6 +738,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	cell.frame = attributes.frame;
 	cell.alphaValue = attributes.alpha;
 	cell.layer.zPosition = attributes.zIndex;
+	
+	[cell didLayoutWithFrame:attributes.frame];
 }
 
 #pragma mark Supplementary Views

@@ -73,4 +73,7 @@
 /// Called when the cell will be layed out using the provided frame.
 - (void)willLayoutWithFrame:(CGRect)frame;
 
+/// Called when the cell has been laid out using the provided frame.
+- (void)didLayoutWithFrame:(CGRect)frame;
+
 @end

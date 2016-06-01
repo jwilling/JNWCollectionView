@@ -1055,6 +1055,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		[self.delegate collectionView:self mouseEnteredInItemAtIndexPath:indexPath withModifierFlags:event.modifierFlags];
 	}
 
+	[[self.visibleCellsMap allValues] enumerateObjectsUsingBlock:^(JNWCollectionViewCell *cell, NSUInteger index, BOOL *stop) {
+		cell.hovered = NO;
+	}];
 	cell.hovered = YES;
 }
 

@@ -1,5 +1,13 @@
 ![](http://jwilling.com/serve/github/jnwcollectionview/title.png)
 
+---
+
+**Important Note:**
+> With the release of OS X 10.11, Apple introduced a new version of `NSCollectionView` with an API similar to `UICollectionView`. I recommend using `NSCollectionView` for any new 10.11+ projects. This library remains a resource for projects needing backwards compatibility. This project has been soft-deprecated.
+
+---
+
+
 `JNWCollectionView` is a modern collection view for the Mac with an extremely flexible API. Cells are dequeued and memory usage is kept at a minimum. The collection view is layer-backed by default, and performance is highly optimized.
 
 Anyone familiar with `UICollectionView` should feel right at home with `JNWCollectionView`. Like `UICollectionView`, `JNWCollectionView` uses the concept of a layout class for determining how items should be displayed onscreen. 
@@ -45,7 +53,7 @@ collectionView.dataSource = self;
 `JNWCollectionView` does not automatically pick a layout class. Two layout classes are included (and will be described later). For this example, lets pick the grid layout. However, the layout class is designed to be subclassed so you are not limited to the built-in layouts.
 
 ```objc
-JNWCollectionViewGridLayout *gridLayout = [[JNWCollectionViewGridLayout alloc] initWithCollectionView:collectionView];
+JNWCollectionViewGridLayout *gridLayout = [[JNWCollectionViewGridLayout alloc] init];
 
 // The grid layout has its own delegate, so if we want to implement the delegate methods
 // we need to conform to JNWCollectionViewGridLayoutDelegate.
@@ -90,6 +98,9 @@ You now have a fully-functioning collection view. But that's just scratching the
 ## Lets dive deeper ##
 
 ### What makes this better than NSCollectionView / NSTableView? ###
+
+**Important Note:**
+> The following comments about `NSCollectionView` do not apply to the new version of `NSCollectionView` introduced by Apple in 10.11. The downsides mentioned below are no longer relevant.
 
 `NSCollectionView` is sadly neglected. `NSCollectionView` does not attempt to reuse cells at all, meaning it will every single cell, even if it's not onscreen. It cannot handle being layer-backed, and therefore scrolling performance is terrible. It is not very customizable.
 

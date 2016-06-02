@@ -214,6 +214,12 @@
 	[self.collectionView mouseExitedInCollectionViewCell:self withEvent:theEvent];
 }
 
+- (void)mouseDragged:(NSEvent *)theEvent {
+    [super mouseMoved:theEvent];
+
+    [self.collectionView mouseDraggedInCollectionViewCell:self withEvent:theEvent];
+}
+
 - (void)rightMouseDown:(NSEvent *)theEvent {
 	[self.collectionView rightClickInCollectionViewCell:self withEvent:theEvent];
 }

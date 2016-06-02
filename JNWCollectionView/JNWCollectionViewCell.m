@@ -118,6 +118,16 @@
 	// for subclasses
 }
 
+- (void)updateTrackingAreas {
+	[[self.trackingAreas copy] enumerateObjectsUsingBlock:^(NSTrackingArea * _Nonnull trackingArea, NSUInteger idx, BOOL * _Nonnull stop) {
+		[self removeTrackingArea:trackingArea];
+	}];
+
+	NSTrackingAreaOptions options = (NSTrackingActiveAlways | NSTrackingInVisibleRect | NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved);
+	NSTrackingArea *area = [[NSTrackingArea alloc] initWithRect:[self bounds] options:options owner:self userInfo:nil];
+	[self addTrackingArea:area];
+}
+
 - (NSView *)contentView {
 	if (_contentView == nil) {
 		_contentView = [[NSView alloc] initWithFrame:self.bounds];
@@ -184,6 +194,24 @@
 	if (theEvent.clickCount == 2) {
 		[self.collectionView doubleClickInCollectionViewCell:self withEvent:theEvent];
 	}
+}
+
+- (void)mouseMoved:(NSEvent *)theEvent {
+	[super mouseMoved:theEvent];
+
+	[self.collectionView mouseMovedInCollectionViewCell:self withEvent:theEvent];
+}
+
+- (void)mouseEntered:(NSEvent *)theEvent {
+	[super mouseMoved:theEvent];
+
+	[self.collectionView mouseEnteredInCollectionViewCell:self withEvent:theEvent];
+}
+
+- (void)mouseExited:(NSEvent *)theEvent {
+	[super mouseMoved:theEvent];
+
+	[self.collectionView mouseExitedInCollectionViewCell:self withEvent:theEvent];
 }
 
 - (void)rightMouseDown:(NSEvent *)theEvent {

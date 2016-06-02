@@ -24,6 +24,9 @@
 
 - (void)mouseDownInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event;
 - (void)mouseUpInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event;
+- (void)mouseMovedInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event;
+- (void)mouseExitedInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event;
+- (void)mouseEnteredInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event;
 - (void)doubleClickInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event;
 - (void)rightClickInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event;
 

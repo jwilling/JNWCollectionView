@@ -43,6 +43,9 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 		unsigned int delegateMouseDownWithModifiers:1;
 		unsigned int delegateMouseUp:1;
 		unsigned int delegateMouseUpWithModifiers:1;
+	    unsigned int delegateMouseMoved:1;
+	    unsigned int delegateMouseEntered:1;
+		unsigned int delegateMouseExited:1;
 		unsigned int delegateShouldSelect:1;
 		unsigned int delegateDidSelect:1;
 		unsigned int delegateShouldDeselect:1;
@@ -142,6 +145,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	_collectionViewFlags.delegateMouseUpWithModifiers = [delegate respondsToSelector:@selector(collectionView:mouseUpInItemAtIndexPath: withModifierFlags:)];
 	_collectionViewFlags.delegateMouseDown = [delegate respondsToSelector:@selector(collectionView:mouseDownInItemAtIndexPath:)];
 	_collectionViewFlags.delegateMouseDownWithModifiers = [delegate respondsToSelector:@selector(collectionView:mouseDownInItemAtIndexPath:withModifierFlags:)];
+	_collectionViewFlags.delegateMouseMoved = [delegate respondsToSelector:@selector(collectionView:mouseMovedInItemAtIndexPath:withModifierFlags:)];
+	_collectionViewFlags.delegateMouseEntered = [delegate respondsToSelector:@selector(collectionView:mouseEnteredInItemAtIndexPath:withModifierFlags:)];
+	_collectionViewFlags.delegateMouseExited = [delegate respondsToSelector:@selector(collectionView:mouseExitedInItemAtIndexPath:withModifierFlags:)];
 	_collectionViewFlags.delegateShouldSelect = [delegate respondsToSelector:@selector(collectionView:shouldSelectItemAtIndexPath:)];
 	_collectionViewFlags.delegateDidSelect = [delegate respondsToSelector:@selector(collectionView:didSelectItemAtIndexPath:)];
 	_collectionViewFlags.delegateShouldDeselect = [delegate respondsToSelector:@selector(collectionView:shouldDeselectItemAtIndexPath:)];
@@ -505,10 +511,10 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(JNWCollectionViewScrollPosition)scrollPosition animated:(BOOL)animated {
-    if (_collectionViewFlags.delegateShouldScroll && ![self.delegate collectionView:self shouldScrollToItemAtIndexPath:indexPath]) {
-        return;
-    }
-    
+	if (_collectionViewFlags.delegateShouldScroll && ![self.delegate collectionView:self shouldScrollToItemAtIndexPath:indexPath]) {
+		return;
+	}
+
 	CGRect rect = [self rectForItemAtIndexPath:indexPath];
 	CGRect visibleRect = self.documentVisibleRect;
 	
@@ -967,7 +973,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 			   selectionType:(JNWCollectionViewSelectionType)selectionType {
 	if (indexPath == nil)
 		return;
-    
+	
 	NSMutableSet *indexesToSelect = [NSMutableSet set];
 	
 	if (selectionType == JNWCollectionViewSelectionTypeSingle) {
@@ -1053,6 +1059,34 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		[self.delegate collectionView:self mouseUpInItemAtIndexPath:indexPath];
 #pragma clang diagnostic pop
 	}
+}
+
+- (void)mouseMovedInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
+	if (_collectionViewFlags.delegateMouseMoved) {
+		NSIndexPath *indexPath = [self indexPathForCell:cell];
+		[self.delegate collectionView:self mouseMovedInItemAtIndexPath:indexPath withModifierFlags:event.modifierFlags];
+	}
+}
+
+- (void)mouseEnteredInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
+	if (_collectionViewFlags.delegateMouseEntered) {
+		NSIndexPath *indexPath = [self indexPathForCell:cell];
+		[self.delegate collectionView:self mouseEnteredInItemAtIndexPath:indexPath withModifierFlags:event.modifierFlags];
+	}
+
+	[[self.visibleCellsMap allValues] enumerateObjectsUsingBlock:^(JNWCollectionViewCell *cell, NSUInteger index, BOOL *stop) {
+		cell.hovered = NO;
+	}];
+	cell.hovered = YES;
+}
+
+- (void)mouseExitedInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
+	if (_collectionViewFlags.delegateMouseExited) {
+		NSIndexPath *indexPath = [self indexPathForCell:cell];
+		[self.delegate collectionView:self mouseExitedInItemAtIndexPath:indexPath withModifierFlags:event.modifierFlags];
+	}
+
+	cell.hovered = NO;
 }
 
 - (void)doubleClickInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {

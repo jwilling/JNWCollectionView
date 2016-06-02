@@ -40,7 +40,9 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 		unsigned int dataSourceViewForSupplementaryView:1;
 		
 		unsigned int delegateMouseDown:1;
+		unsigned int delegateMouseDownWithModifiers:1;
 		unsigned int delegateMouseUp:1;
+		unsigned int delegateMouseUpWithModifiers:1;
 		unsigned int delegateShouldSelect:1;
 		unsigned int delegateDidSelect:1;
 		unsigned int delegateShouldDeselect:1;
@@ -137,7 +139,9 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 - (void)setDelegate:(id<JNWCollectionViewDelegate>)delegate {	
 	_delegate = delegate;
 	_collectionViewFlags.delegateMouseUp = [delegate respondsToSelector:@selector(collectionView:mouseUpInItemAtIndexPath:)];
+	_collectionViewFlags.delegateMouseUpWithModifiers = [delegate respondsToSelector:@selector(collectionView:mouseUpInItemAtIndexPath: withModifierFlags:)];
 	_collectionViewFlags.delegateMouseDown = [delegate respondsToSelector:@selector(collectionView:mouseDownInItemAtIndexPath:)];
+	_collectionViewFlags.delegateMouseDownWithModifiers = [delegate respondsToSelector:@selector(collectionView:mouseDownInItemAtIndexPath:withModifierFlags:)];
 	_collectionViewFlags.delegateShouldSelect = [delegate respondsToSelector:@selector(collectionView:shouldSelectItemAtIndexPath:)];
 	_collectionViewFlags.delegateDidSelect = [delegate respondsToSelector:@selector(collectionView:didSelectItemAtIndexPath:)];
 	_collectionViewFlags.delegateShouldDeselect = [delegate respondsToSelector:@selector(collectionView:shouldDeselectItemAtIndexPath:)];
@@ -1018,8 +1022,13 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		NSLog(@"***index path not found for selection.");
 	}
 	
-	if (_collectionViewFlags.delegateMouseDown) {
+	if (_collectionViewFlags.delegateMouseDownWithModifiers) {
+		[self.delegate collectionView:self mouseDownInItemAtIndexPath:indexPath withModifierFlags:event.modifierFlags];
+	} else if (_collectionViewFlags.delegateMouseDown) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 		[self.delegate collectionView:self mouseDownInItemAtIndexPath:indexPath];
+#pragma clang diagnostic pop
 	}
 	
 	// Detect if modifier flags are held down.
@@ -1034,9 +1043,15 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (void)mouseUpInCollectionViewCell:(JNWCollectionViewCell *)cell withEvent:(NSEvent *)event {
-	if (_collectionViewFlags.delegateMouseUp) {
+	if (_collectionViewFlags.delegateMouseUpWithModifiers) {
 		NSIndexPath *indexPath = [self indexPathForCell:cell];
+		[self.delegate collectionView:self mouseUpInItemAtIndexPath:indexPath withModifierFlags:event.modifierFlags];
+	} else if (_collectionViewFlags.delegateMouseUp) {
+		NSIndexPath *indexPath = [self indexPathForCell:cell];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 		[self.delegate collectionView:self mouseUpInItemAtIndexPath:indexPath];
+#pragma clang diagnostic pop
 	}
 }
 

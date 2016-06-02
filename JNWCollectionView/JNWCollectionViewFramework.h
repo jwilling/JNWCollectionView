@@ -86,10 +86,10 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 @protocol JNWCollectionViewDelegate <NSObject>
 
 @optional
-/// Tells the delegate that the mouse is down inside of the item at the specified index path with specific modifier flags.
+/// Tells the delegate that the mouse is down inside of the item at the specified index path with triggering event.
 - (void)collectionView:(JNWCollectionView *)collectionView mouseDownInItemAtIndexPath:(NSIndexPath *)indexPath withEvent:(NSEvent *)event;
 
-/// Tells the delegate that the mouse click originating from the item at the specified index path is now up with specific modifier flags.
+/// Tells the delegate that the mouse click originating from the item at the specified index path is now up with triggering event.
 ///
 /// The mouse up event can occur outside of the originating cell.
 - (void)collectionView:(JNWCollectionView *)collectionView mouseUpInItemAtIndexPath:(NSIndexPath *)indexPath withEvent:(NSEvent *)event;

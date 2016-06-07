@@ -430,14 +430,11 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (NSIndexPath *)firstIndexPath {
-	NSIndexPath *indexPath = nil;
-	if (self.data.numberOfSections > 0) {
-		JNWCollectionViewSection section = self.data.sections[0];
-		if (section.numberOfItems > 0) {
-			indexPath = [NSIndexPath jnw_indexPathForItem:0 inSection:0];
-		}
+	if ([self numberOfItemsInSection:0] > 0) {
+		return [NSIndexPath jnw_indexPathForItem:0 inSection:0];
 	}
-	return indexPath;
+	
+	return nil;
 }
 
 - (NSIndexPath *)lastIndexPath {
@@ -1120,16 +1117,12 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 
 - (void)moveToBeginningOfDocument:(id)sender {
 	NSIndexPath *toSelect = [self firstIndexPath];
-	if (toSelect) {
-		[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];
-	}
+	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];
 }
 
 - (void)moveToEndOfDocument:(id)sender {
 	NSIndexPath *toSelect = [self lastIndexPath];
-	if (toSelect) {
-		[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];
-	}
+	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];
 }
 
 - (void)selectAll:(id)sender {

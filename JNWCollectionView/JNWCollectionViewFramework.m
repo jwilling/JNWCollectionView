@@ -429,6 +429,27 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	return indexPaths.copy;
 }
 
+- (NSIndexPath *)firstIndexPath {
+	if ([self numberOfItemsInSection:0] > 0) {
+		return [NSIndexPath jnw_indexPathForItem:0 inSection:0];
+	}
+	
+	return nil;
+}
+
+- (NSIndexPath *)lastIndexPath {
+	NSIndexPath *indexPath = nil;
+	NSInteger numberOfSections = self.data.numberOfSections;
+	if (numberOfSections > 0) {
+		JNWCollectionViewSection section = self.data.sections[numberOfSections - 1];
+		NSInteger numberOfItems = section.numberOfItems;
+		if (numberOfItems > 0) {
+			indexPath = [NSIndexPath jnw_indexPathForItem:numberOfItems - 1 inSection:numberOfSections - 1];
+		}
+	}
+	return indexPath;
+}
+
 - (NSArray *)indexPathsForItemsInRect:(CGRect)rect {
 	if (CGRectEqualToRect(rect, CGRectZero))
 		return [NSArray array];
@@ -1056,7 +1077,8 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 
 - (void)moveUp:(id)sender {
 	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionUp currentIndexPath:[self indexPathForSelectedItem]];
-	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];}
+	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];
+}
 
 - (void)moveUpAndModifySelection:(id)sender {
 	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionUp currentIndexPath:[self indexPathForSelectedItem]];
@@ -1091,6 +1113,16 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 - (void)moveLeftAndModifySelection:(id)sender {
 	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionLeft currentIndexPath:[self indexPathForSelectedItem]];
 	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES selectionType:JNWCollectionViewSelectionTypeExtending];
+}
+
+- (void)moveToBeginningOfDocument:(id)sender {
+	NSIndexPath *toSelect = [self firstIndexPath];
+	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];
+}
+
+- (void)moveToEndOfDocument:(id)sender {
+	NSIndexPath *toSelect = [self lastIndexPath];
+	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];
 }
 
 - (void)selectAll:(id)sender {

@@ -217,10 +217,7 @@
 - (void)mouseDragged:(NSEvent *)theEvent {
 	[super mouseDragged:theEvent];
 
-	NSPoint pointInCell = [self.superview convertPoint:theEvent.locationInWindow fromView:nil];
-	if (NSPointInRect(pointInCell, self.frame)) {
-		[self.collectionView mouseDraggedInCollectionViewCell:self withEvent:theEvent];
-	}
+	[self.collectionView mouseDraggedInCollectionViewCell:self withEvent:theEvent];
 }
 
 - (void)rightMouseDown:(NSEvent *)theEvent {

@@ -203,21 +203,24 @@
 }
 
 - (void)mouseEntered:(NSEvent *)theEvent {
-	[super mouseMoved:theEvent];
+	[super mouseEntered:theEvent];
 
 	[self.collectionView mouseEnteredInCollectionViewCell:self withEvent:theEvent];
 }
 
 - (void)mouseExited:(NSEvent *)theEvent {
-	[super mouseMoved:theEvent];
+	[super mouseExited:theEvent];
 
 	[self.collectionView mouseExitedInCollectionViewCell:self withEvent:theEvent];
 }
 
 - (void)mouseDragged:(NSEvent *)theEvent {
-	[super mouseMoved:theEvent];
+	[super mouseDragged:theEvent];
 
-	[self.collectionView mouseDraggedInCollectionViewCell:self withEvent:theEvent];
+	NSPoint pointInCell = [self.superview convertPoint:theEvent.locationInWindow fromView:nil];
+	if (NSPointInRect(pointInCell, self.frame)) {
+		[self.collectionView mouseDraggedInCollectionViewCell:self withEvent:theEvent];
+	}
 }
 
 - (void)rightMouseDown:(NSEvent *)theEvent {

@@ -86,13 +86,28 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 @protocol JNWCollectionViewDelegate <NSObject>
 
 @optional
-/// Tells the delegate that the mouse is down inside of the item at the specified index path.
-- (void)collectionView:(JNWCollectionView *)collectionView mouseDownInItemAtIndexPath:(NSIndexPath *)indexPath;
+/// Tells the delegate that the mouse is down inside of the item at the specified index path with triggering event.
+- (void)collectionView:(JNWCollectionView *)collectionView mouseDownInItemAtIndexPath:(NSIndexPath *)indexPath withEvent:(NSEvent *)event;
 
-/// Tells the delegate that the mouse click originating from the item at the specified index path is now up.
+/// Tells the delegate that the mouse click originating from the item at the specified index path is now up with triggering event.
 ///
 /// The mouse up event can occur outside of the originating cell.
-- (void)collectionView:(JNWCollectionView *)collectionView mouseUpInItemAtIndexPath:(NSIndexPath *)indexPath;
+- (void)collectionView:(JNWCollectionView *)collectionView mouseUpInItemAtIndexPath:(NSIndexPath *)indexPath withEvent:(NSEvent *)event;
+
+- (void)collectionView:(JNWCollectionView *)collectionView mouseDownInItemAtIndexPath:(NSIndexPath *)indexPath __deprecated_msg("Use collectionView:mouseDownInItemAtIndexPath:withEvent: instead.");
+- (void)collectionView:(JNWCollectionView *)collectionView mouseUpInItemAtIndexPath:(NSIndexPath *)indexPath __deprecated_msg("Use collectionView:mouseUpInItemAtIndexPath:withEvent: instead.");
+
+/// Tells the delegate that the mouse moved inside the specified index path cell.
+- (void)collectionView:(JNWCollectionView *)collectionView mouseMovedInItemAtIndexPath:(NSIndexPath *)indexPath withEvent:(NSEvent *)event;
+
+/// Tells the delegate that the mouse started a drag session inside the specified index path cell.
+- (void)collectionView:(JNWCollectionView *)collectionView mouseDraggedInItemAtIndexPath:(NSIndexPath *)indexPath withEvent:(NSEvent *)event;
+
+/// Tells the delegate that the mouse entered in the specified index path cell.
+- (void)collectionView:(JNWCollectionView *)collectionView mouseEnteredInItemAtIndexPath:(NSIndexPath *)indexPath withEvent:(NSEvent *)event;
+
+/// Tells the delegate that the mouse exited from the specified index path cell.
+- (void)collectionView:(JNWCollectionView *)collectionView mouseExitedInItemAtIndexPath:(NSIndexPath *)indexPath withEvent:(NSEvent *)event;
 
 /// Asks the delegate if the item at the specified index path should be selected.
 - (BOOL)collectionView:(JNWCollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath;
@@ -122,7 +137,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 /// back into the reuse queue.
 - (void)collectionView:(JNWCollectionView *)collectionView didEndDisplayingCell:(JNWCollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath;
 
-// Asks the delegate if a contextual menu should be used for the given event.
+/// Asks the delegate if a contextual menu should be used for the given event.
 - (NSMenu *)collectionView:(JNWCollectionView *)collectionView menuForEvent:(NSEvent *)event;
 
 @end
@@ -273,6 +288,9 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 ///
 /// Defaults to YES.
 @property (nonatomic, assign) BOOL allowsEmptySelection;
+
+/// Returns the list of indexPaths of the selected items
+@property (nonatomic, readonly) NSMutableArray *selectedIndexes;
 
 /// Scrolls the collection view to the item at the specified path, optionally animated. The scroll position determines
 /// where the item is positioned on the screen.

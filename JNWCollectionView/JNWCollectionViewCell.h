@@ -80,4 +80,7 @@
 /// Called when the cell has been laid out using the provided frame.
 - (void)didLayoutWithFrame:(CGRect)frame;
 
+/// Object used for cell data binding.
+@property (nonatomic) id objectValue;
+
 @end

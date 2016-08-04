@@ -235,4 +235,18 @@
 	return [NSString stringWithFormat:@"<%@: %p; frame = %@; layer = <%@: %p>>", self.class, self, NSStringFromRect(self.frame), self.layer.class, self.layer];
 }
 
+- (id)valueForKey:(NSString *)key {
+    if ([key isEqualToString:@"objectValue"]) {
+        return self.objectValue;
+    }
+    return [super valueForKey:key];
+}
+
+- (void)setValue:(id)value forKey:(NSString *)key {
+    if ([key isEqualToString:@"objectValue"]) {
+        self.objectValue = value;
+    }
+    [super setValue:value forKey:key];
+}
+
 @end

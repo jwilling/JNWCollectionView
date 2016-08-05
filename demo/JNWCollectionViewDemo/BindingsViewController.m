@@ -6,6 +6,10 @@
 //  Copyright © 2016 AppJon. All rights reserved.
 //
 //  http://www.tomdalling.com/blog/cocoa/implementing-your-own-cocoa-bindings/
+//  I could make bindings work more nicely and like NSTableView if I could figure out
+//  how to allow for binding from the cell view(s) to the actual cell itself
+//  instead of the NSObjectController workaround.
+//  There's always non-IB bindings, of course, I guess...
 
 #import "BindingsViewController.h"
 

@@ -20,7 +20,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
-                        <binding destination="-2" name="value" keyPath="self.arrangedObjects.selection.name" id="X3B-CM-YPY"/>
+                        <binding destination="ycv-hz-PeW" name="value" keyPath="selection.objectValue.name" id="cJd-kN-OYy"/>
                     </connections>
                 </textField>
             </subviews>
@@ -29,5 +29,10 @@
             </connections>
             <point key="canvasLocation" x="436" y="297.5"/>
         </customView>
+        <objectController objectClassName="PersonCell" editable="NO" id="ycv-hz-PeW">
+            <connections>
+                <outlet property="content" destination="c22-O7-iKe" id="AFd-pO-eWf"/>
+            </connections>
+        </objectController>
     </objects>
 </document>

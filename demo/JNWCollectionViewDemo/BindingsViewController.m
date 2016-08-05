@@ -59,6 +59,7 @@ static NSString * const cellIdentifier = @"PersonCellID";
     self.collectionView.animatesSelection = YES;
     
     [self.collectionView reloadData];
+    self.listData[5].name = @"Binding update!";
 }
 
 - (NSUInteger)collectionView:(JNWCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -72,6 +73,7 @@ static NSString * const cellIdentifier = @"PersonCellID";
 - (JNWCollectionViewCell*)collectionView:(JNWCollectionView*)collectionView cellForItemAtIndexPath:(NSIndexPath*)indexPath {
     PersonCell *cell = (PersonCell *)[collectionView dequeueReusableCellWithIdentifier:cellIdentifier];
  //   cell.dataLabel.stringValue = [NSString stringWithFormat:@"%ld - %ld", indexPath.jnw_item, indexPath.jnw_section];
+    //cell.objectValue = self.listData[indexPath.jnw_item];
     return cell;
 }
 

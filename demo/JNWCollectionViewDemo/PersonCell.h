@@ -8,9 +8,8 @@
 
 #import <JNWCollectionView/JNWCollectionView.h>
 
-IB_DESIGNABLE
 @interface PersonCell : JNWCollectionViewCell
 
-@property (weak) IBInspectable IBOutlet NSTextField *dataLabel;
+@property IBOutlet NSTextField *dataLabel;
 
 @end

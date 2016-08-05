@@ -54,6 +54,11 @@ static NSString * const cellIdentifier = @"PersonCellID";
     
     [self.collectionView reloadData];
     self.listData[5].name = @"Updated via binding! (Person #6)";
+    [self performSelector:@selector(updateAfterTime) withObject:nil afterDelay:2];
+}
+
+-(void)updateAfterTime {
+    self.listData[0].name = @"Updated after 2 seconds! (Person #1)";
 }
 
 - (NSUInteger)collectionView:(JNWCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {

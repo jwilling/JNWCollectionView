@@ -81,6 +81,6 @@
 - (void)didLayoutWithFrame:(CGRect)frame;
 
 /// Object used for cell data binding.
-@property (nonatomic) IBOutlet id objectValue;
+@property (nonatomic, assign) IBOutlet id objectValue;
 
 @end

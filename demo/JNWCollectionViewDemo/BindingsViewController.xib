@@ -36,9 +36,6 @@
                         <rect key="frame" x="514" y="0.0" width="15" height="288"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
-                    <connections>
-                        <outlet property="arrayController" destination="5ug-CK-hBg" id="9uA-Wh-I6e"/>
-                    </connections>
                 </scrollView>
             </subviews>
             <constraints>
@@ -48,10 +45,5 @@
                 <constraint firstAttribute="trailing" secondItem="iiE-ZR-Gzd" secondAttribute="trailing" id="oPl-j4-HC5"/>
             </constraints>
         </customView>
-        <arrayController objectClassName="Person" editable="NO" id="5ug-CK-hBg">
-            <connections>
-                <binding destination="-2" name="contentArray" keyPath="self.listData" id="Irw-rb-TX5"/>
-            </connections>
-        </arrayController>
     </objects>
 </document>

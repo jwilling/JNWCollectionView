@@ -59,7 +59,7 @@ static NSString * const cellIdentifier = @"PersonCellID";
     self.collectionView.animatesSelection = YES;
     
     [self.collectionView reloadData];
-    self.listData[5].name = @"Binding update!";
+    self.listData[5].name = @"Updated via binding! (Person #6)";
 }
 
 - (NSUInteger)collectionView:(JNWCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {

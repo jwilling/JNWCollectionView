@@ -119,6 +119,7 @@
 }
 
 - (void)updateTrackingAreas {
+	[super updateTrackingAreas];
 	[[self.trackingAreas copy] enumerateObjectsUsingBlock:^(NSTrackingArea * _Nonnull trackingArea, NSUInteger idx, BOOL * _Nonnull stop) {
 		[self removeTrackingArea:trackingArea];
 	}];

@@ -29,7 +29,7 @@ static NSString * const cellIdentifier = @"PersonCellID";
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
+	[super viewDidLoad];
 }
 
 - (void)awakeFromNib {
@@ -42,14 +42,14 @@ static NSString * const cellIdentifier = @"PersonCellID";
 
 	self.collectionView.delegate = self;
 	self.collectionView.dataSource = self;
-    
+	
 	JNWCollectionViewListLayout *layout = [[JNWCollectionViewListLayout alloc] init];
 	layout.rowHeight = 44.f;
 	self.collectionView.collectionViewLayout = layout;
-    
+
 	[self.collectionView registerNib:[[NSNib alloc] initWithNibNamed:@"PersonCell" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:cellIdentifier];
 	self.collectionView.animatesSelection = YES;
-    
+
 	[self.collectionView reloadData];
 	self.listData[5].name = @"Updated via binding! (Person #6)";
 	[self performSelector:@selector(updateAfterTime) withObject:nil afterDelay:2];

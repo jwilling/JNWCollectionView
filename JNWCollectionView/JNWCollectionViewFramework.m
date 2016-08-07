@@ -57,8 +57,7 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 		unsigned int delegateDidRightClick:1;
 		unsigned int delegateDidEndDisplayingCell:1;
 		unsigned int delegateMenuForEvent:1;
-        
-        unsigned int delegateObjectValueForCell:1;
+		unsigned int delegateObjectValueForCell:1;
 		
 		unsigned int wantsLayout;
 	} _collectionViewFlags;
@@ -124,8 +123,6 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	
 	collectionView.backgroundColor = NSColor.whiteColor;
 	collectionView.drawsBackground = YES;
-    
-    
 }
 
 - (id)initWithFrame:(NSRect)frameRect {
@@ -164,7 +161,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	_collectionViewFlags.delegateShouldScroll = [delegate respondsToSelector:@selector(collectionView:shouldScrollToItemAtIndexPath:)];
 	_collectionViewFlags.delegateDidScroll = [delegate respondsToSelector:@selector(collectionView:didScrollToItemAtIndexPath:)];
 	_collectionViewFlags.delegateMenuForEvent = [delegate respondsToSelector:@selector(collectionView:menuForEvent:)];
-    _collectionViewFlags.delegateObjectValueForCell = [delegate respondsToSelector:@selector(collectionView:objectValueForItemAtIndexPath:)];
+	_collectionViewFlags.delegateObjectValueForCell = [delegate respondsToSelector:@selector(collectionView:objectValueForItemAtIndexPath:)];
 }
 
 - (void)setDataSource:(id<JNWCollectionViewDataSource>)dataSource {
@@ -251,10 +248,13 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (id)firstTopLevelObjectOfClass:(Class)objectClass inNib:(NSNib *)nib {
+	return [self firstTopLevelObjectOfClass:objectClass inNib:nib topLevelObjects:nil];
+}
+
+- (id)firstTopLevelObjectOfClass:(Class)objectClass inNib:(NSNib *)nib topLevelObjects:(NSArray**)objects {
 	id foundObject = nil;
-	NSArray *topLevelObjects = nil;
-	if([nib instantiateWithOwner:self topLevelObjects:&topLevelObjects]) {
-		NSUInteger objectIndex = [topLevelObjects indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+	if([nib instantiateWithOwner:self topLevelObjects:objects]) {
+		NSUInteger objectIndex = [*objects indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
 			if ([obj isKindOfClass:objectClass]) {
 				*stop = YES;
 				return YES;
@@ -262,7 +262,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 			return NO;
 		}];
 		if (objectIndex != NSNotFound) {
-			foundObject = [topLevelObjects objectAtIndex:objectIndex];
+			foundObject = [*objects objectAtIndex:objectIndex];
 		}
 	}
 	return foundObject;
@@ -283,7 +283,17 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		}
 		
 		if (cellNib != nil) {
-			cell = [self firstTopLevelObjectOfClass:JNWCollectionViewCell.class inNib:cellNib];
+			NSArray *topLevelObjects = nil;
+			cell = [self firstTopLevelObjectOfClass:JNWCollectionViewCell.class inNib:cellNib topLevelObjects:&topLevelObjects];
+			// If the delegate is looking to use data binding, rig up the cell to use the NSObjectController from the nib.
+			if (_collectionViewFlags.delegateObjectValueForCell) {
+				for (id obj in topLevelObjects) {
+					if ([obj isKindOfClass:[NSObjectController class]]) {
+						cell.objectController = obj;
+						break;
+					}
+				}
+			}
 		} else if (cellClass != nil) {
 			cell = [[cellClass alloc] initWithFrame:CGRectZero];
 		}
@@ -727,8 +737,13 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 		JNWCollectionViewCell *cell = [self cellForItemAtIndexPath:indexPath];
 		[self.visibleCellsMap removeObjectForKey:indexPath];
 		[self enqueueReusableCell:cell withIdentifier:cell.reuseIdentifier];
-        cell.objectValue = nil; // clear objectValue when cells are re-used
 		[cell setHidden:YES];
+		
+		// clear objectValue and objectController.content when cells are re-used
+		cell.objectValue = nil;
+		if (cell.objectController) {
+			cell.objectController.content = nil;
+		}
 
 		if (_collectionViewFlags.delegateDidEndDisplayingCell) {
 			[self.delegate collectionView:self didEndDisplayingCell:cell forItemAtIndexPath:indexPath];
@@ -767,11 +782,14 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 			cell.selected = YES;
 		else
 			cell.selected = NO;
-        
-        if (_collectionViewFlags.delegateObjectValueForCell) {
-            cell.objectValue = [self.delegate collectionView:self objectValueForItemAtIndexPath:indexPath];
-        }
-        
+		
+		if (_collectionViewFlags.delegateObjectValueForCell) {
+			if (cell.objectController) {
+				cell.objectController.content = [self.delegate collectionView:self objectValueForItemAtIndexPath:indexPath];
+			}
+			cell.objectValue = [self.delegate collectionView:self objectValueForItemAtIndexPath:indexPath];
+		}
+		
 		self.visibleCellsMap[indexPath] = cell;
 	}
 }

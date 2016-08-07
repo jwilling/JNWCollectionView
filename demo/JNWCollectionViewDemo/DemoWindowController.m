@@ -16,7 +16,7 @@ typedef enum {
 	GridLayout = 0,
 	ListLayout = 1,
 	NSTableViewLayout = 2,
-    Bindings = 3
+	Bindings = 3
 } LayoutType;
 
 @interface DemoWindowController ()
@@ -48,9 +48,9 @@ typedef enum {
 		self.currentViewController = [[ListDemoViewController alloc] init];
 	} else if (layout == NSTableViewLayout) {
 		self.currentViewController = [[NSTableViewDemoViewController alloc] init];
-    } else if (layout == Bindings) {
-        self.currentViewController = [[BindingsViewController alloc] init];
-    }
+	} else if (layout == Bindings) {
+		self.currentViewController = [[BindingsViewController alloc] init];
+	}
 }
 
 - (void)setCurrentViewController:(NSViewController *)currentViewController {

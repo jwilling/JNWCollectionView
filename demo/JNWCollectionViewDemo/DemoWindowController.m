@@ -27,7 +27,7 @@ typedef enum {
 @implementation DemoWindowController
 
 - (void)windowDidLoad {
-    [super windowDidLoad];
+	[super windowDidLoad];
 	self.currentViewController = [[GridDemoViewController alloc] init];
 }
 

@@ -123,6 +123,7 @@
 	[super updateTrackingAreas];
 	if (self.trackingArea) {
 		[self removeTrackingArea:self.trackingArea];
+		self.trackingArea = nil;
 	}
 
 	NSTrackingAreaOptions options = (NSTrackingActiveAlways | NSTrackingInVisibleRect | NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved);

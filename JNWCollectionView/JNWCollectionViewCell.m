@@ -69,6 +69,7 @@
 
 @interface JNWCollectionViewCell()
 @property (nonatomic, strong) JNWCollectionViewCellBackgroundView *backgroundView;
+@property (nonatomic, strong) NSTrackingArea *trackingArea;
 @end
 
 @implementation JNWCollectionViewCell
@@ -120,13 +121,13 @@
 
 - (void)updateTrackingAreas {
 	[super updateTrackingAreas];
-	[[self.trackingAreas copy] enumerateObjectsUsingBlock:^(NSTrackingArea * _Nonnull trackingArea, NSUInteger idx, BOOL * _Nonnull stop) {
-		[self removeTrackingArea:trackingArea];
-	}];
+	if (self.trackingArea) {
+		[self removeTrackingArea:self.trackingArea];
+	}
 
 	NSTrackingAreaOptions options = (NSTrackingActiveAlways | NSTrackingInVisibleRect | NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved);
-	NSTrackingArea *area = [[NSTrackingArea alloc] initWithRect:[self bounds] options:options owner:self userInfo:nil];
-	[self addTrackingArea:area];
+	self.trackingArea = [[NSTrackingArea alloc] initWithRect:[self bounds] options:options owner:self userInfo:nil];
+	[self addTrackingArea:self.trackingArea];
 }
 
 - (NSView *)contentView {

@@ -28,6 +28,10 @@
 #import "JNWCollectionViewLayout.h"
 #import "JNWCollectionViewLayout+Private.h"
 
+#ifndef NSAppKitVersionNumber10_11
+#define NSAppKitVersionNumber10_11 1404
+#endif
+
 typedef NS_ENUM(NSInteger, JNWCollectionViewSelectionType) {
 	JNWCollectionViewSelectionTypeSingle,
 	JNWCollectionViewSelectionTypeExtending,
@@ -652,6 +656,17 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 
 		[self performFullRelayoutForcingSubviewsReset:NO];
 	}
+}
+
+- (void)reflectScrolledClipView:(NSClipView*)clipView {
+    [super reflectScrolledClipView:clipView];
+    
+    // 10.12 started optimizing the layout pass and reducing the number of calls to layout(). As
+    // such, invalidate our layout when the scroll changes on 10.12 and above.
+    if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_11) {
+        // Invalidate our layout when we our scrolled. This is required for 10.12 and above.
+        self.needsLayout = YES;
+    }
 }
 
 - (void)collectionViewLayoutWasInvalidated:(JNWCollectionViewLayout *)layout {

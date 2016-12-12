@@ -128,6 +128,8 @@ Every `JNWCollectionViewCell` instance has two subviews by default. One is the b
 
 The other subview is the `contentView`. Any subviews added to the cell should be added to this view to guarantee correct ordering with the background view.
 
+Each `JNWCollectionViewCell` has both an `NSObjectController` and an `id objectValue` that can be used for data binding. The easiest way to make use of this data binding is by adding an `NSObjectController` to your `JNWCollectionViewCell` nib file, then binding your view to the added `NSObjectController`. Setting the `Class Name` of the `NSObjectController` in Interface Builder may be helpful as well. If you are not using a nib, then you can manually set the  `NSObjectController` on the cell in `collectionView:cellForItemAtIndexPath:`. The `objectValue` property can also be used for data binding if necessary. See the Bindings Demo in the demo project for an example.
+
 There are many more methods and details available for discovery in the header.
 
 ### Supplementary Views ###

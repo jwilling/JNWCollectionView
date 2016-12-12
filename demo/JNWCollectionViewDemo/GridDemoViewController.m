@@ -75,7 +75,7 @@ static NSString * const identifier = @"CELL";
 		
 		// Just get a randomly-tinted template image.
 		NSImage *image = [NSImage imageWithSize:CGSizeMake(150.f, 150.f) flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
-			[[NSImage imageNamed:NSImageNameUser] drawInRect:dstRect fromRect:CGRectZero operation:NSCompositeSourceOver fraction:1];
+			[[NSImage imageNamed:NSImageNameUser] drawInRect:dstRect fromRect:CGRectZero operation:NSCompositingOperationSourceOver fraction:1];
 			
 			CGFloat hue = arc4random() % 256 / 256.0;
 			CGFloat saturation = arc4random() % 128 / 256.0 + 0.5;
@@ -83,7 +83,7 @@ static NSString * const identifier = @"CELL";
 			NSColor *color = [NSColor colorWithCalibratedHue:hue saturation:saturation brightness:brightness alpha:1];
 			
 			[color set];
-			NSRectFillUsingOperation(dstRect, NSCompositeDestinationAtop);
+			NSRectFillUsingOperation(dstRect, NSCompositingOperationDestinationAtop);
 			
 			return YES;
 		}];

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="PersonCell"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="c22-O7-iKe" customClass="PersonCell">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="37"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iuL-e4-iyj">
+                    <rect key="frame" x="10" y="10" width="353" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="6JY-BT-up7">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="ycv-hz-PeW" name="value" keyPath="selection.name" id="QW0-UV-gbl"/>
+                    </connections>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstItem="iuL-e4-iyj" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="12" id="GMZ-fa-CrR"/>
+                <constraint firstItem="iuL-e4-iyj" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="10" id="SLS-5i-95t"/>
+                <constraint firstAttribute="bottom" secondItem="iuL-e4-iyj" secondAttribute="bottom" constant="10" id="aih-Jl-eVX"/>
+                <constraint firstAttribute="trailing" secondItem="iuL-e4-iyj" secondAttribute="trailing" constant="119" id="fNH-Rj-joq"/>
+            </constraints>
+            <connections>
+                <outlet property="dataLabel" destination="iuL-e4-iyj" id="51l-A0-AUd"/>
+            </connections>
+            <point key="canvasLocation" x="436" y="297.5"/>
+        </customView>
+        <objectController objectClassName="Person" editable="NO" id="ycv-hz-PeW"/>
+    </objects>
+</document>

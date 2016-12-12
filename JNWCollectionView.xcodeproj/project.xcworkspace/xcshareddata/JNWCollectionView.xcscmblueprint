@@ -13,8 +13,8 @@
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "8884BD3B878631A1500EC9895E6A3CF4CB0AB3DB" : "JNWCollectionViewexternal\/Expecta",
     "2FD0F96481B39E576130E173BF6923CF52C91FF7" : "JNWCollectionViewexternal\/Specta",
-    "52FC6C770A2EDF17C166C3492851DDC1B14F32C1" : "JNWCollectionViewexternal\/JNWScrollView",
-    "623FF6F374D22BC9E79608E37B443A964F3B5FF7" : "JNWCollectionView"
+    "52FC6C770A2EDF17C166C3492851DDC1B14F32C1" : "JNWCollectionView\/external\/JNWScrollView\/",
+    "623FF6F374D22BC9E79608E37B443A964F3B5FF7" : "JNWCollectionView\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "JNWCollectionView",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,

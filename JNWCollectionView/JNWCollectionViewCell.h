@@ -80,4 +80,12 @@
 /// Called when the cell has been laid out using the provided frame.
 - (void)didLayoutWithFrame:(CGRect)frame;
 
+/// Object used for cell data binding. You do not need to manually set this property
+/// in code. Add an NSObjectController to your nib, and it will automatically be found
+/// and set up for you for data binding by the collection view.
+@property (nonatomic, strong) NSObjectController *objectController;
+
+/// Object used for cell data binding (if not using NSObjectController).
+@property (nonatomic, assign) IBOutlet id objectValue;
+
 @end

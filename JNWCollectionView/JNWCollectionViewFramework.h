@@ -140,6 +140,10 @@ typedef NS_ENUM(NSInteger, JNWCollectionViewScrollPosition) {
 /// Asks the delegate if a contextual menu should be used for the given event.
 - (NSMenu *)collectionView:(JNWCollectionView *)collectionView menuForEvent:(NSEvent *)event;
 
+/// Asks the delegate for an objectValue for the JNWCollectionViewCell at the given indexPath.
+/// The objectValue object is used for data binding. 
+- (id)collectionView:(JNWCollectionView *)collectionView objectValueForItemAtIndexPath:(NSIndexPath *)indexPath;
+
 @end
 
 #pragma mark Reloading and customizing

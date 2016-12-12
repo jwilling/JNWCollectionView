@@ -19,10 +19,10 @@
 	[gradient drawInRect:b angle:90];
 	
 	[[[NSColor whiteColor] colorWithAlphaComponent:0.6] setFill];
-	NSRectFillUsingOperation(CGRectMake(0, b.size.height-1, b.size.width, 1), NSCompositeSourceOver);
+	NSRectFillUsingOperation(CGRectMake(0, b.size.height-1, b.size.width, 1), NSCompositingOperationSourceOver);
 	
 	[[[NSColor blackColor] colorWithAlphaComponent:0.08] setFill];
-	NSRectFillUsingOperation(CGRectMake(0, 0, b.size.width, 1), NSCompositeSourceOver);
+	NSRectFillUsingOperation(CGRectMake(0, 0, b.size.width, 1), NSCompositingOperationSourceOver);
 }
 
 + (NSImage *)standardGradientImageWithHeight:(CGFloat)height {

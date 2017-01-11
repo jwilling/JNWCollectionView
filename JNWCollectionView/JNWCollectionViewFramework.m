@@ -1175,6 +1175,10 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	}
 }
 
+- (void)keyDown:(NSEvent *)theEvent {
+	[self interpretKeyEvents:@[theEvent]];
+}
+
 - (void)moveUp:(id)sender {
 	NSIndexPath *toSelect = [self.collectionViewLayout indexPathForNextItemInDirection:JNWCollectionViewDirectionUp currentIndexPath:[self indexPathForSelectedItem]];
 	[self selectItemAtIndexPath:toSelect atScrollPosition:JNWCollectionViewScrollPositionNearest animated:YES];

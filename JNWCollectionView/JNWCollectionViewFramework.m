@@ -127,6 +127,12 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	
 	collectionView.backgroundColor = NSColor.whiteColor;
 	collectionView.drawsBackground = YES;
+	
+	[[NSNotificationCenter defaultCenter] addObserver:collectionView selector:@selector(preferredScrollerStyleDidChangeNotification:) name:NSPreferredScrollerStyleDidChangeNotification object:nil];
+}
+
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPreferredScrollerStyleDidChangeNotification object:nil];
 }
 
 - (id)initWithFrame:(NSRect)frameRect {
@@ -143,9 +149,23 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 	return self;
 }
 
+#pragma mark Notifications
+
+- (void)preferredScrollerStyleDidChangeNotification:(NSNotification *)note {
+	NSView *documentView = self.documentView;
+	
+	if (!CGSizeEqualToSize(NSSizeToCGSize(documentView.frame.size), NSSizeToCGSize(self.contentSize))) {
+		CGRect documentFrame = documentView.frame;
+		documentFrame.size.width = self.contentSize.width;
+		documentView.frame = documentFrame;
+		
+		[self.collectionViewLayout invalidateLayout];
+	}
+}
+
 #pragma mark Delegate and data source
 
-- (void)setDelegate:(id<JNWCollectionViewDelegate>)delegate {	
+- (void)setDelegate:(id<JNWCollectionViewDelegate>)delegate {
 	_delegate = delegate;
 	_collectionViewFlags.delegateMouseUp = [delegate respondsToSelector:@selector(collectionView:mouseUpInItemAtIndexPath:)];
 	_collectionViewFlags.delegateMouseUpWithEvent = [delegate respondsToSelector:@selector(collectionView:mouseUpInItemAtIndexPath:withEvent:)];

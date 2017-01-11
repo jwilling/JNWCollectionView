@@ -129,6 +129,11 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 	}
 	self.numberOfColumns = numberOfColumns;
 	
+    CGFloat extraHorizonSpace = 0.f;
+    if (self.itemPaddingEnabled == NO) {
+        extraHorizonSpace = totalWidth - (self.numberOfColumns * (itemSize.width + self.itemPadding));
+    }
+
 	CGFloat totalHeight = 0;
 	for (NSUInteger section = 0; section < numberOfSections; section++) {
 		NSInteger numberOfItems = [self.collectionView numberOfItemsInSection:section];
@@ -147,6 +152,10 @@ static const CGSize JNWCollectionViewGridLayoutDefaultSize = (CGSize){ 44.f, 44.
 			CGPoint origin = CGPointZero;
 			NSInteger column = ((item - (item % numberOfColumns)) / numberOfColumns);
 			origin.x = sectionInsets.left + self.itemPadding + (item % numberOfColumns) * (itemSize.width + self.itemPadding);
+            if (self.itemPaddingEnabled == NO && self.cellAlignment == NSCellAlignmentCenter)
+                origin.x += (extraHorizonSpace/2);
+            else if (self.itemPaddingEnabled == NO && self.cellAlignment == NSCellAlignmentRight)
+                origin.x += extraHorizonSpace;
 			origin.y = column * itemSize.height + column * verticalSpacing;
 			sectionInfo.itemInfo[item].origin = origin;
 		}

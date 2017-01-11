@@ -28,6 +28,10 @@ static NSString * const identifier = @"CELL";
 	JNWCollectionViewGridLayout *gridLayout = [[JNWCollectionViewGridLayout alloc] init];
 	gridLayout.delegate = self;
 	gridLayout.verticalSpacing = 10.f;
+
+    // ex) Cell Alignment
+    //gridLayout.itemPaddingEnabled = NO;
+    //gridLayout.cellAlignment = NSCellAlignmentCenter;
 	
 	self.collectionView.collectionViewLayout = gridLayout;
 	self.collectionView.dataSource = self;

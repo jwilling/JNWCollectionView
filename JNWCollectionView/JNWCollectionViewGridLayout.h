@@ -21,6 +21,12 @@
 
 @class JNWCollectionViewGridLayout;
 
+typedef NS_ENUM(NSUInteger, NSCellAlignment) {
+    NSCellAlignmentLeft      = 0,    // Visually left aligned
+    NSCellAlignmentRight     = 1,    // Visually right aligned
+    NSCellAlignmentCenter    = 2,    // Visually centered
+};
+
 /// The supplementary view kind identifiers used for the header and the footer.
 extern NSString * const JNWCollectionViewGridLayoutHeaderKind;
 extern NSString * const JNWCollectionViewGridLayoutFooterKind;
@@ -76,5 +82,10 @@ extern NSString * const JNWCollectionViewGridLayoutFooterKind;
 ///
 /// Defaults to 0
 @property (nonatomic, assign) CGFloat itemHorizontalMargin;
+
+/// Optional grid cell's horizon alignment, when 'itemPaddingEnabled' was disabled
+///
+/// Default to NSCellAlignmentLeft
+@property (nonatomic, assign) NSCellAlignment cellAlignment;
 
 @end

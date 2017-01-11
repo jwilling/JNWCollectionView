@@ -252,7 +252,7 @@ static void JNWCollectionViewCommonInit(JNWCollectionView *collectionView) {
 }
 
 - (id)firstTopLevelObjectOfClass:(Class)objectClass inNib:(NSNib *)nib {
-    NSArray *topLevelObjects = nil;
+	NSArray *topLevelObjects = nil;
 	return [self firstTopLevelObjectOfClass:objectClass inNib:nib topLevelObjects:&topLevelObjects];
 }
 
